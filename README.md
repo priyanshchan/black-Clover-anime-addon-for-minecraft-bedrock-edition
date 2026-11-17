@@ -1,6 +1,6 @@
 # Black Clover: Grimoire Awakening
 
-> **Early Access – v0.1.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please open an issue.
+> **Early Access – v0.1.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
 **An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 24 magic attributes, draw anti-magic demon swords, wear Magic Knight squad robes and fight Dark Disciples and a full Devil boss.
 
@@ -43,6 +43,24 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 
 ---
 
+## Documentation
+
+Every detail lives in **[docs/](docs/README.md)** (generated from the game data, so the numbers always match the build):
+
+| Page | |
+|---|---|
+| [Getting started](docs/getting-started.md) | install, your first hour, where to go next |
+| [Magic](docs/magic.md) | all 24 attributes with altar odds, all 96 spells with numbers, anti-magic, techniques |
+| [Abyss Fruits](docs/fruits.md) | all 22 fruits and 66 abilities with numbers, the rules, Will |
+| [AI & simulation](docs/ai-and-simulation.md) | how NPCs think, battles (tactics, morale, leaders, bets, camera), the world simulation, knights and orders |
+| [World events](docs/world-events.md) | every event, its odds, conditions and rewards |
+| [Mobs & bosses](docs/mobs-and-bosses.md) | every creature's health, attack, spawning and drops; all 7 bosses; factions; structures |
+| [Items & recipes](docs/items-and-recipes.md) | every crafting recipe, every item id, both shops |
+| [Progression](docs/progression.md) | magic levels and mana, ranks and stars, robes, bounties |
+| [Commands](docs/commands.md) | every `/give`, `/summon` and `/scriptevent` |
+| [FAQ](docs/faq.md) | install problems, multiplayer, turning events off, known issues |
+| [Development](docs/development.md) | building, code map, adding spells, releasing ([contributing](CONTRIBUTING.md)) |
+
 ## Install
 
 1. Download **`BlackClover_GrimoireAwakening_v0.1.0.mcaddon`** from the **[Releases page](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases)** and open it – Minecraft imports both packs.
@@ -54,7 +72,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 
 1. On your first spawn you receive a **Grimoire Altar** and the **Magic Knight's Handbook**.
 2. Place the altar and **interact** with it. After a short ceremony a grimoire chooses you
-   (12 attributes; see Wave 3 below for the odds).
+   (24 attributes; [odds](docs/magic.md#attributes-and-altar-odds)).
 3. Hold your grimoire:
    * **Use** (right-click / tap & hold) – cast the selected spell.
    * **Sneak + Use** – flip to the next unlocked spell (or pick one in the Handbook).
@@ -517,6 +535,7 @@ Everything in `packs/` and `dist/` is generated. Requirements: Python 3.10+, `nu
 python3 tools/build.py        # models, textures, particles, sounds, JSON, scripts -> packs/ and dist/
 python3 tools/validate.py     # cross-checks every texture/model/animation/particle/sound reference
 python3 tools/previews.py     # re-renders the images in docs/images
+python3 tools/docs.py         # regenerates the reference pages in docs/
 ```
 
 | Path | What it is |

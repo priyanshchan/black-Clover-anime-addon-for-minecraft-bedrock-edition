@@ -1,0 +1,15 @@
+name: Idea / feature request
+description: Suggest new magic, fruits, bosses, AI behaviour or simulation features
+labels: [idea]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: Keep crossover content original (no named characters from other series).
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it would be fun

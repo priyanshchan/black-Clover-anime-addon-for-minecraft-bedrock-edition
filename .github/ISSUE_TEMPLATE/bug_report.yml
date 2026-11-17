@@ -1,0 +1,40 @@
+name: Bug report
+description: Something is broken (a crash, an error, a spell or mob not working)
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Addon version
+      description: Shown in the pack description, e.g. v0.1.0
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: input
+    id: mc
+    attributes:
+      label: Minecraft version and device
+      placeholder: 1.21.90, Android / Windows / Xbox / Realms
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to make it happen again
+      placeholder: |
+        1. Hold the Time grimoire
+        2. Cast Time Stop near three zombies
+        3. ...
+  - type: textarea
+    id: log
+    attributes:
+      label: Content log (optional)
+      description: Settings → Creator → Enable Content Log GUI, then copy any [Scripting] lines here.
+      render: text

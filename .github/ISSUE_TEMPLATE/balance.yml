@@ -1,0 +1,30 @@
+name: Balance feedback
+description: Something works but feels too strong, too weak, too slow or too fast
+labels: [balance]
+body:
+  - type: input
+    id: thing
+    attributes:
+      label: What feels off?
+      placeholder: e.g. Storm Kraken, Blood Rage, War Table bets, knight morale
+    validations:
+      required: true
+  - type: dropdown
+    id: dir
+    attributes:
+      label: It is...
+      options: [too strong, too weak, too slow, too fast, too common, too rare, other]
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Tell us more
+      description: What happened in your game, and what would feel right?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Addon version
+      placeholder: v0.1.0
