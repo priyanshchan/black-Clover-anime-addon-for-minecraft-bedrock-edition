@@ -1,0 +1,55 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "bc:slash_fx",
+      "basic_render_parameters": {
+        "material": "particles_blend",
+        "texture": "textures/particle/bc/slash"
+      }
+    },
+    "components": {
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 1
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.05
+      },
+      "minecraft:emitter_shape_point": {},
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": 0.25
+      },
+      "minecraft:particle_initial_spin": {
+        "rotation": "v.rot ?? math.random(-40, 40)",
+        "rotation_rate": 0
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "(v.size ?? 3.0) * (0.8 + v.particle_age * 2.0)",
+          "(v.size ?? 3.0) * 0.5 * (0.8 + v.particle_age * 2.0)"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 64,
+          "texture_height": 32,
+          "uv": [
+            0,
+            0
+          ],
+          "uv_size": [
+            64,
+            32
+          ]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": [
+          "(v.color.r ?? 0.0) * 1.0",
+          "(v.color.g ?? 0.0) * 1.0",
+          "(v.color.b ?? 0.0) * 1.0",
+          "1.0 - v.particle_age / v.particle_lifetime"
+        ]
+      }
+    }
+  }
+}

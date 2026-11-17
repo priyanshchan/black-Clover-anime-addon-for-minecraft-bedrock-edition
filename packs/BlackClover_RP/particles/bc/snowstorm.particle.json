@@ -1,0 +1,82 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "bc:snowstorm",
+      "basic_render_parameters": {
+        "material": "particles_add",
+        "texture": "textures/particle/bc/snow"
+      }
+    },
+    "components": {
+      "minecraft:emitter_initialization": {
+        "creation_expression": "v.sc = v.scale ?? 1.0;"
+      },
+      "minecraft:emitter_rate_steady": {
+        "spawn_rate": 200,
+        "max_particles": 400
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 1.0
+      },
+      "minecraft:emitter_shape_disc": {
+        "radius": "(v.radius ?? 6.0) * v.sc",
+        "plane_normal": "y",
+        "direction": [
+          0,
+          1,
+          0
+        ]
+      },
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": "1.6 * (0.7 + v.particle_random_1 * 0.6)"
+      },
+      "minecraft:particle_initial_speed": "0.3 * (0.6 + v.particle_random_2 * 0.8)",
+      "minecraft:particle_motion_dynamic": {
+        "linear_drag_coefficient": 0.8
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "0.22 * (1.0 - v.particle_age / v.particle_lifetime * 0.5)",
+          "0.22 * (1.0 - v.particle_age / v.particle_lifetime * 0.5)"
+        ],
+        "facing_camera_mode": "rotate_xyz",
+        "uv": {
+          "texture_width": 16,
+          "texture_height": 16,
+          "uv": [
+            0,
+            0
+          ],
+          "uv_size": [
+            16,
+            16
+          ]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": {
+          "gradient": {
+            "0.0": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "1.0": [
+              0.541,
+              0.847,
+              0.941,
+              0.0
+            ]
+          },
+          "interpolant": "v.particle_age / v.particle_lifetime"
+        }
+      },
+      "minecraft:particle_initial_spin": {
+        "rotation": "math.random(0,360)",
+        "rotation_rate": 300
+      }
+    }
+  }
+}

@@ -1,0 +1,152 @@
+#!/usr/bin/env python3
+"""Cross-reference checks for the generated packs (run after build.py)."""
+import json
+import os
+import re
+import sys
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+BP = os.path.join(ROOT, 'packs', 'BlackClover_BP')
+RP = os.path.join(ROOT, 'packs', 'BlackClover_RP')
+errors = []
+
+
+def load(p):
+    with open(p, encoding='utf-8') as fh:
+        return json.load(fh)
+
+
+def walk(base, ext):
+    for d, _, fs in os.walk(base):
+        for f in fs:
+            if f.endswith(ext):
+                yield os.path.join(d, f)
+
+
+# every json parses
+for base in (BP, RP):
+    for p in walk(base, '.json'):
+        try:
+            load(p)
+        except Exception as e:
+            errors.append(f'bad json {p}: {e}')
+
+geos = set()
+for p in walk(os.path.join(RP, 'models'), '.json'):
+    for g in load(p).get('minecraft:geometry', []):
+        geos.add(g['description']['identifier'])
+anims = set()
+for p in walk(os.path.join(RP, 'animations'), '.json'):
+    anims |= set(load(p)['animations'])
+particles = set()
+looping = set()
+for p in walk(os.path.join(RP, 'particles'), '.json'):
+    d = load(p)['particle_effect']
+    particles.add(d['description']['identifier'])
+    if 'minecraft:emitter_lifetime_expression' in d['components']:
+        looping.add(d['description']['identifier'])
+    tex = d['description']['basic_render_parameters']['texture']
+    if not os.path.exists(os.path.join(RP, tex + '.png')):
+        errors.append(f'particle texture missing {tex}')
+rcs = set(load(os.path.join(RP, 'render_controllers', 'bc.render_controllers.json'))['render_controllers'])
+item_tex = load(os.path.join(RP, 'textures', 'item_texture.json'))['texture_data']
+for k, v in item_tex.items():
+    if not os.path.exists(os.path.join(RP, v['textures'] + '.png')):
+        errors.append(f'item texture missing {v}')
+sounds = set(load(os.path.join(RP, 'sounds', 'sound_definitions.json'))['sound_definitions'])
+for k, v in load(os.path.join(RP, 'sounds', 'sound_definitions.json'))['sound_definitions'].items():
+    for s in v['sounds']:
+        if not os.path.exists(os.path.join(RP, s['name'] + '.ogg')):
+            errors.append(f'sound file missing {s}')
+
+def check_client(desc, where):
+    for g in desc.get('geometry', {}).values():
+        if g not in geos:
+            errors.append(f'{where}: unknown geometry {g}')
+    for t in desc.get('textures', {}).values():
+        if not t.startswith('textures/misc/') and not os.path.exists(os.path.join(RP, t + '.png')):
+            errors.append(f'{where}: missing texture {t}')
+    for a in desc.get('animations', {}).values():
+        if a not in anims:
+            errors.append(f'{where}: unknown animation {a}')
+    for pe in desc.get('particle_effects', {}).values():
+        if pe not in particles:
+            errors.append(f'{where}: unknown particle {pe}')
+    for rc in desc.get('render_controllers', []):
+        name = rc if isinstance(rc, str) else list(rc)[0]
+        if name.startswith('controller.render.bc') and name not in rcs:
+            errors.append(f'{where}: unknown render controller {name}')
+
+bp_ids = set()
+for p in walk(os.path.join(BP, 'entities'), '.json'):
+    bp_ids.add(load(p)['minecraft:entity']['description']['identifier'])
+for p in walk(os.path.join(RP, 'entity'), '.json'):
+    d = load(p)['minecraft:client_entity']['description']
+    check_client(d, p)
+    if d['identifier'] not in bp_ids:
+        errors.append(f'client entity without server entity {d["identifier"]}')
+item_ids = set()
+for p in walk(os.path.join(BP, 'items'), '.json'):
+    it = load(p)['minecraft:item']
+    item_ids.add(it['description']['identifier'])
+    icon = it['components']['minecraft:icon']['textures']['default']
+    if icon not in item_tex:
+        errors.append(f'{p}: icon {icon} not in item_texture.json')
+for p in walk(os.path.join(RP, 'attachables'), '.json'):
+    d = load(p)['minecraft:attachable']['description']
+    check_client(d, p)
+    if d['identifier'] not in item_ids:
+        errors.append(f'attachable for unknown item {d["identifier"]}')
+blk = load(os.path.join(BP, 'blocks', 'grimoire_altar.json'))['minecraft:block']
+if blk['components']['minecraft:geometry'] not in geos:
+    errors.append('altar geometry missing')
+terrain = load(os.path.join(RP, 'textures', 'terrain_texture.json'))['texture_data']
+for mi in blk['components']['minecraft:material_instances'].values():
+    if mi['texture'] not in terrain:
+        errors.append(f'altar texture {mi["texture"]} not in terrain_texture.json')
+
+# recipes / loot reference known items
+known = item_ids | {'bc:grimoire_altar'}
+for p in list(walk(os.path.join(BP, 'recipes'), '.json')) + list(walk(os.path.join(BP, 'loot_tables'), '.json')):
+    for m in re.findall(r'"(bc:[a-z_]+)"', open(p).read()):
+        if m not in known and not p.endswith('.json') is False:
+            pass
+        if m not in known and 'recipes' in p and m != load(p).get('minecraft:recipe_shaped', load(p).get('minecraft:recipe_shapeless', {})).get('description', {}).get('identifier'):
+            errors.append(f'{p}: unknown item {m}')
+
+# scripts: particles, sounds, animations, entity types referenced
+VANILLA_SOUNDS = {'mob.blaze.shoot', 'mob.blaze.breathe', 'mob.ghast.fireball', 'bucket.empty_water', 'random.splash', 'ambient.weather.thunder',
+                  'beacon.activate', 'mob.wither.shoot', 'mob.wither.spawn', 'mob.endermen.portal', 'mob.warden.sonic_boom', 'random.glass',
+                  'random.explode', 'random.orb', 'random.anvil_land', 'mob.evocation_illager.cast_spell', 'mob.evocation_illager.prepare_summon',
+                  'mob.ravager.bite'}
+js = ''
+for p in walk(os.path.join(BP, 'scripts'), '.js'):
+    js += open(p, encoding='utf-8').read()
+for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
+    if m in particles or m in bp_ids or m in item_ids or m == 'bc:grimoire_altar':
+        continue
+    if m in ('bc:attr', 'bc:level', 'bc:xp', 'bc:mana', 'bc:spell', 'bc:anti', 'bc:joined', 'bc:thunder_until', 'bc:shadow_strike',
+             'bc:black_form', 'bc:expire', 'bc:altar_logic', 'bc:grimoire_', 'bc:demon_'):
+        continue
+    errors.append(f'script references unknown id {m}')
+for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
+    if m in looping:
+        errors.append(f'script spawns never-ending emitter {m}')
+for m in set(re.findall(r"sound\([^,]+,\s*'([a-z0-9_.]+)'", js)):
+    if m not in sounds and m not in VANILLA_SOUNDS:
+        errors.append(f'script plays unknown sound {m}')
+for m in set(re.findall(r"'(animation\.[a-z0-9_.]+)'", js)):
+    if m not in anims:
+        errors.append(f'script plays unknown animation {m}')
+
+# lang keys for entities
+lang = open(os.path.join(RP, 'texts', 'en_US.lang'), encoding='utf-8').read()
+for e in bp_ids:
+    if f'entity.{e}.name=' not in lang:
+        errors.append(f'missing lang for {e}')
+
+print(f'geometries={len(geos)} animations={len(anims)} particles={len(particles)} items={len(item_ids)} entities={len(bp_ids)} sounds={len(sounds)}')
+if errors:
+    print('\n'.join('ERROR: ' + e for e in errors))
+    sys.exit(1)
+print('validation OK')

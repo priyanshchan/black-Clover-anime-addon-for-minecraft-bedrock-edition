@@ -1,0 +1,40 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:grimoire_altar"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "MBM",
+      "GLG",
+      "SSS"
+    ],
+    "key": {
+      "M": {
+        "item": "bc:mana_crystal"
+      },
+      "B": {
+        "item": "minecraft:book"
+      },
+      "G": {
+        "item": "minecraft:gold_ingot"
+      },
+      "L": {
+        "item": "minecraft:lectern"
+      },
+      "S": {
+        "item": "minecraft:stone_bricks"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:grimoire_altar",
+      "count": 1
+    }
+  }
+}

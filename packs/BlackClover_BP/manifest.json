@@ -1,0 +1,65 @@
+{
+  "format_version": 2,
+  "header": {
+    "name": "Black Clover: Grimoire Awakening §7(Behavior)",
+    "description": "Grimoires, 32 spells, anti-magic swords, Magic Knight robes, the Grimoire Altar, Dark Disciples and a Devil boss. Unofficial fan addon.",
+    "uuid": "e31c2aa6-e171-5e62-8d60-e4fb08605627",
+    "version": [
+      1,
+      0,
+      0
+    ],
+    "min_engine_version": [
+      1,
+      21,
+      90
+    ]
+  },
+  "modules": [
+    {
+      "type": "data",
+      "uuid": "7a204969-4e4b-52ad-86a4-9560f8777441",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "script",
+      "language": "javascript",
+      "uuid": "0f990b2f-059e-5390-9de6-781d9993b2f6",
+      "version": [
+        1,
+        0,
+        0
+      ],
+      "entry": "scripts/main.js"
+    }
+  ],
+  "dependencies": [
+    {
+      "uuid": "fb6916dc-6965-5317-97d9-c2f0276ce444",
+      "version": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "module_name": "@minecraft/server",
+      "version": "2.0.0"
+    },
+    {
+      "module_name": "@minecraft/server-ui",
+      "version": "2.0.0"
+    }
+  ],
+  "metadata": {
+    "authors": [
+      "sub0pc"
+    ],
+    "license": "MIT",
+    "product_type": "addon"
+  }
+}

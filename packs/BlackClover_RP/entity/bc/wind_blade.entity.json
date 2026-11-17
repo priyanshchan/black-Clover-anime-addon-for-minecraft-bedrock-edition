@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:wind_blade",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/wind_blade"
+      },
+      "geometry": {
+        "default": "geometry.bc.wind_blade"
+      },
+      "animations": {
+        "fly": "animation.bc.wind_blade.fly",
+        "trail": "animation.bc.spell.trail"
+      },
+      "particle_effects": {
+        "trail": "bc:trail_wind"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ]
+    }
+  }
+}

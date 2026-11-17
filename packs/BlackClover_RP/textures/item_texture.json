@@ -1,0 +1,63 @@
+{
+  "resource_pack_name": "black_clover",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "bc_black_bull_robe": {
+      "textures": "textures/items/bc/black_bull_robe"
+    },
+    "bc_clover_charm": {
+      "textures": "textures/items/bc/clover_charm"
+    },
+    "bc_crimson_lion_robe": {
+      "textures": "textures/items/bc/crimson_lion_robe"
+    },
+    "bc_demon_destroyer_sword": {
+      "textures": "textures/items/bc/demon_destroyer_sword"
+    },
+    "bc_demon_dweller_sword": {
+      "textures": "textures/items/bc/demon_dweller_sword"
+    },
+    "bc_demon_slayer_sword": {
+      "textures": "textures/items/bc/demon_slayer_sword"
+    },
+    "bc_devil_contract": {
+      "textures": "textures/items/bc/devil_contract"
+    },
+    "bc_devil_heart": {
+      "textures": "textures/items/bc/devil_heart"
+    },
+    "bc_golden_dawn_robe": {
+      "textures": "textures/items/bc/golden_dawn_robe"
+    },
+    "bc_grimoire_anti": {
+      "textures": "textures/items/bc/grimoire_anti"
+    },
+    "bc_grimoire_dark": {
+      "textures": "textures/items/bc/grimoire_dark"
+    },
+    "bc_grimoire_flame": {
+      "textures": "textures/items/bc/grimoire_flame"
+    },
+    "bc_grimoire_ice": {
+      "textures": "textures/items/bc/grimoire_ice"
+    },
+    "bc_grimoire_light": {
+      "textures": "textures/items/bc/grimoire_light"
+    },
+    "bc_grimoire_lightning": {
+      "textures": "textures/items/bc/grimoire_lightning"
+    },
+    "bc_grimoire_water": {
+      "textures": "textures/items/bc/grimoire_water"
+    },
+    "bc_grimoire_wind": {
+      "textures": "textures/items/bc/grimoire_wind"
+    },
+    "bc_handbook": {
+      "textures": "textures/items/bc/handbook"
+    },
+    "bc_mana_crystal": {
+      "textures": "textures/items/bc/mana_crystal"
+    }
+  }
+}

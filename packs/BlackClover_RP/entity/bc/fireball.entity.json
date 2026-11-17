@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:fireball",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/fireball"
+      },
+      "geometry": {
+        "default": "geometry.bc.fireball"
+      },
+      "animations": {
+        "fly": "animation.bc.fireball.fly",
+        "trail": "animation.bc.spell.trail"
+      },
+      "particle_effects": {
+        "trail": "bc:trail_flame"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ]
+    }
+  }
+}

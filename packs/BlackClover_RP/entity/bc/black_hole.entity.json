@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:black_hole",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/black_hole"
+      },
+      "geometry": {
+        "default": "geometry.bc.black_hole"
+      },
+      "animations": {
+        "spin": "animation.bc.black_hole.spin",
+        "trail": "animation.bc.spell.trail"
+      },
+      "particle_effects": {
+        "trail": "bc:black_hole_fx"
+      },
+      "scripts": {
+        "animate": [
+          "spin",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ]
+    }
+  }
+}

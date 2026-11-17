@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:dark_disciple",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/dark_disciple"
+      },
+      "geometry": {
+        "default": "geometry.bc.dark_disciple"
+      },
+      "animations": {
+        "idle": "animation.bc.dark_disciple.idle",
+        "walk": "animation.bc.dark_disciple.walk",
+        "look": "animation.bc.dark_disciple.look_at_target",
+        "aura": "animation.bc.mob.aura"
+      },
+      "particle_effects": {
+        "aura": "bc:disciple_aura"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look",
+          "aura"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#1e1030",
+        "overlay_color": "#a066e0"
+      }
+    }
+  }
+}

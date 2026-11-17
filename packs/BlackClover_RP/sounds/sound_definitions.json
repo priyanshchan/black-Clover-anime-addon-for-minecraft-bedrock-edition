@@ -1,0 +1,185 @@
+{
+  "format_version": "1.20.20",
+  "sound_definitions": {
+    "bc.cast": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/cast",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.grimoire.flip": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/grimoire_flip",
+          "volume": 0.8,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.grimoire.awaken": {
+      "category": "block",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/grimoire_awaken",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.levelup": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/levelup",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.anti.slash": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/anti_slash",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.anti.nullify": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/anti_nullify",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.blackform": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/blackform",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.wind.gust": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/wind_gust",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.mana.empty": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/mana_empty",
+          "volume": 0.8,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.spell.impact": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/spell_impact",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.lightning.zap": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/lightning_zap",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.devil.roar": {
+      "category": "hostile",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/devil_roar",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.water.surge": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/water_surge",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.ice.form": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/ice_form",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.light.shine": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/light_shine",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,468 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.wind_blade.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ],
+          "scale": [
+            "1.0 + math.sin(q.life_time * 900.0) * 0.06",
+            1,
+            1
+          ]
+        }
+      }
+    },
+    "animation.bc.fireball.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            "q.life_time * 540.0",
+            "q.life_time * 360.0",
+            0
+          ],
+          "scale": "1.0 + math.sin(q.life_time * 1100.0) * 0.08"
+        }
+      }
+    },
+    "animation.bc.flame_lion.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "head": {
+          "position": [
+            0,
+            "math.sin(q.life_time * 400.0) * 0.6",
+            0
+          ]
+        },
+        "jaw": {
+          "rotation": [
+            "15.0 + math.sin(q.life_time * 700.0) * 12.0",
+            0,
+            0
+          ]
+        },
+        "mane": {
+          "scale": "1.0 + math.sin(q.life_time * 1500.0) * 0.07",
+          "rotation": [
+            0,
+            0,
+            "math.sin(q.life_time * 300.0) * 6.0"
+          ]
+        },
+        "trail": {
+          "rotation": [
+            0,
+            0,
+            "q.life_time * 400.0"
+          ],
+          "scale": "1.0 + math.sin(q.life_time * 1200.0) * 0.12"
+        }
+      }
+    },
+    "animation.bc.water_orb.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            "q.life_time * 540.0",
+            "q.life_time * 360.0",
+            0
+          ],
+          "scale": "1.0 + math.sin(q.life_time * 1100.0) * 0.08"
+        }
+      }
+    },
+    "animation.bc.water_dragon.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ],
+          "scale": 1.6
+        },
+        "head": {
+          "rotation": [
+            "math.sin(q.life_time * 500.0) * 6.0",
+            0,
+            0
+          ]
+        },
+        "seg0": {
+          "rotation": [
+            "math.sin(q.life_time * 420.0 - 0) * 6.0",
+            "math.sin(q.life_time * 360.0 - 0) * 16.0",
+            0
+          ]
+        },
+        "seg1": {
+          "rotation": [
+            "math.sin(q.life_time * 420.0 - 55) * 6.0",
+            "math.sin(q.life_time * 360.0 - 50) * 16.0",
+            0
+          ]
+        },
+        "seg2": {
+          "rotation": [
+            "math.sin(q.life_time * 420.0 - 110) * 6.0",
+            "math.sin(q.life_time * 360.0 - 100) * 16.0",
+            0
+          ]
+        },
+        "seg3": {
+          "rotation": [
+            "math.sin(q.life_time * 420.0 - 165) * 6.0",
+            "math.sin(q.life_time * 360.0 - 150) * 16.0",
+            0
+          ]
+        },
+        "seg4": {
+          "rotation": [
+            "math.sin(q.life_time * 420.0 - 220) * 6.0",
+            "math.sin(q.life_time * 360.0 - 200) * 16.0",
+            0
+          ]
+        },
+        "seg5": {
+          "rotation": [
+            "math.sin(q.life_time * 420.0 - 275) * 6.0",
+            "math.sin(q.life_time * 360.0 - 250) * 16.0",
+            0
+          ]
+        },
+        "seg6": {
+          "rotation": [
+            "math.sin(q.life_time * 420.0 - 330) * 6.0",
+            "math.sin(q.life_time * 360.0 - 300) * 16.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.thunder_spear.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "bolts": {
+          "rotation": [
+            0,
+            0,
+            "q.life_time * 2000.0"
+          ],
+          "scale": "1.0 + math.sin(q.life_time * 3000.0) * 0.15"
+        }
+      }
+    },
+    "animation.bc.light_sword.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.dark_crescent.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.ice_spear.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            "q.life_time * 360.0"
+          ]
+        }
+      }
+    },
+    "animation.bc.anti_magic_slash.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "tilt": {
+          "scale": [
+            "1.0 + math.sin(q.life_time * 1200.0) * 0.04",
+            1,
+            1
+          ]
+        }
+      }
+    },
+    "animation.bc.dark_bolt.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            "q.life_time * 540.0",
+            "q.life_time * 360.0",
+            0
+          ],
+          "scale": "1.0 + math.sin(q.life_time * 1100.0) * 0.08"
+        }
+      }
+    },
+    "animation.bc.devil_orb.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            "q.life_time * 540.0",
+            "q.life_time * 360.0",
+            0
+          ],
+          "scale": "1.0 + math.sin(q.life_time * 1100.0) * 0.08"
+        }
+      }
+    },
+    "animation.bc.tornado.spin": {
+      "loop": true,
+      "bones": {
+        "ring0": {
+          "rotation": [
+            0,
+            "q.life_time * 720.0",
+            0
+          ],
+          "position": [
+            "math.sin(q.life_time * 260.0 + 0) * 0.3",
+            0,
+            "math.cos(q.life_time * 260.0 + 0) * 0.3"
+          ]
+        },
+        "ring1": {
+          "rotation": [
+            0,
+            "q.life_time * 810.0",
+            0
+          ],
+          "position": [
+            "math.sin(q.life_time * 260.0 + 40) * 0.44999999999999996",
+            0,
+            "math.cos(q.life_time * 260.0 + 40) * 0.44999999999999996"
+          ]
+        },
+        "ring2": {
+          "rotation": [
+            0,
+            "q.life_time * 900.0",
+            0
+          ],
+          "position": [
+            "math.sin(q.life_time * 260.0 + 80) * 0.6",
+            0,
+            "math.cos(q.life_time * 260.0 + 80) * 0.6"
+          ]
+        },
+        "ring3": {
+          "rotation": [
+            0,
+            "q.life_time * 990.0",
+            0
+          ],
+          "position": [
+            "math.sin(q.life_time * 260.0 + 120) * 0.75",
+            0,
+            "math.cos(q.life_time * 260.0 + 120) * 0.75"
+          ]
+        },
+        "ring4": {
+          "rotation": [
+            0,
+            "q.life_time * 1080.0",
+            0
+          ],
+          "position": [
+            "math.sin(q.life_time * 260.0 + 160) * 0.8999999999999999",
+            0,
+            "math.cos(q.life_time * 260.0 + 160) * 0.8999999999999999"
+          ]
+        },
+        "ring5": {
+          "rotation": [
+            0,
+            "q.life_time * 1170.0",
+            0
+          ],
+          "position": [
+            "math.sin(q.life_time * 260.0 + 200) * 1.05",
+            0,
+            "math.cos(q.life_time * 260.0 + 200) * 1.05"
+          ]
+        },
+        "ring6": {
+          "rotation": [
+            0,
+            "q.life_time * 1260.0",
+            0
+          ],
+          "position": [
+            "math.sin(q.life_time * 260.0 + 240) * 1.2",
+            0,
+            "math.cos(q.life_time * 260.0 + 240) * 1.2"
+          ]
+        },
+        "ring7": {
+          "rotation": [
+            0,
+            "q.life_time * 1350.0",
+            0
+          ],
+          "position": [
+            "math.sin(q.life_time * 260.0 + 280) * 1.35",
+            0,
+            "math.cos(q.life_time * 260.0 + 280) * 1.35"
+          ]
+        },
+        "ring8": {
+          "rotation": [
+            0,
+            "q.life_time * 1440.0",
+            0
+          ],
+          "position": [
+            "math.sin(q.life_time * 260.0 + 320) * 1.5",
+            0,
+            "math.cos(q.life_time * 260.0 + 320) * 1.5"
+          ]
+        },
+        "root": {
+          "scale": "1.0 + math.sin(q.life_time * 180.0) * 0.04"
+        }
+      }
+    },
+    "animation.bc.black_hole.spin": {
+      "loop": true,
+      "bones": {
+        "core": {
+          "rotation": [
+            "q.life_time * 90.0",
+            "q.life_time * 120.0",
+            0
+          ],
+          "scale": "1.0 + math.sin(q.life_time * 500.0) * 0.05"
+        },
+        "disk": {
+          "rotation": [
+            0,
+            "q.life_time * 400.0",
+            0
+          ]
+        },
+        "halo": {
+          "rotation": [
+            0,
+            "-q.life_time * 600.0",
+            0
+          ]
+        },
+        "root": {
+          "scale": "math.min(q.life_time * 3.0, 1.0)"
+        }
+      }
+    },
+    "animation.bc.ice_prison.form": {
+      "loop": "hold_on_last_frame",
+      "animation_length": 0.35,
+      "bones": {
+        "root": {
+          "scale": {
+            "0.0": [
+              1.0,
+              0.05,
+              1.0
+            ],
+            "0.25": [
+              1.05,
+              1.1,
+              1.05
+            ],
+            "0.35": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.spell.trail": {
+      "loop": "hold_on_last_frame",
+      "animation_length": 0.05,
+      "particle_effects": {
+        "0.0": {
+          "effect": "trail"
+        }
+      }
+    }
+  }
+}

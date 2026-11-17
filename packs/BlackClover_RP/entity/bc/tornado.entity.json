@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:tornado",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/tornado"
+      },
+      "geometry": {
+        "default": "geometry.bc.tornado"
+      },
+      "animations": {
+        "spin": "animation.bc.tornado.spin",
+        "trail": "animation.bc.spell.trail"
+      },
+      "particle_effects": {
+        "trail": "bc:tornado_fx"
+      },
+      "scripts": {
+        "animate": [
+          "spin",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ]
+    }
+  }
+}

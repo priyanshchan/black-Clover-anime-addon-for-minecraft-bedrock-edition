@@ -1,0 +1,345 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.devil.hover": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "position": [
+            0,
+            "6.0 + math.sin(q.life_time * 90.0) * 1.6",
+            0
+          ]
+        },
+        "body": {
+          "rotation": [
+            "6.0 + math.sin(q.life_time * 90.0 + 40.0) * 2.0",
+            0,
+            0
+          ]
+        },
+        "rightArm": {
+          "rotation": [
+            "-8.0 + math.sin(q.life_time * 90.0) * 4.0",
+            0,
+            "8.0"
+          ]
+        },
+        "leftArm": {
+          "rotation": [
+            "-8.0 - math.sin(q.life_time * 90.0) * 4.0",
+            0,
+            "-8.0"
+          ]
+        },
+        "rightForearm": {
+          "rotation": [
+            "-20.0",
+            0,
+            0
+          ]
+        },
+        "leftForearm": {
+          "rotation": [
+            "-20.0",
+            0,
+            0
+          ]
+        },
+        "rightLeg": {
+          "rotation": [
+            "-18.0 + math.sin(q.life_time * 90.0) * 4.0",
+            0,
+            4
+          ]
+        },
+        "leftLeg": {
+          "rotation": [
+            "-10.0 - math.sin(q.life_time * 90.0) * 4.0",
+            0,
+            -4
+          ]
+        },
+        "jaw": {
+          "rotation": [
+            "math.max(0.0, math.sin(q.life_time * 45.0)) * 6.0",
+            0,
+            0
+          ]
+        },
+        "tail0": {
+          "rotation": [
+            "-6 + math.sin(q.life_time * 100.0 - 0) * 6.0",
+            "math.sin(q.life_time * 80.0 - 0) * 14.0",
+            0
+          ]
+        },
+        "tail1": {
+          "rotation": [
+            "-2 + math.sin(q.life_time * 100.0 - 45) * 6.0",
+            "math.sin(q.life_time * 80.0 - 50) * 14.0",
+            0
+          ]
+        },
+        "tail2": {
+          "rotation": [
+            "2 + math.sin(q.life_time * 100.0 - 90) * 6.0",
+            "math.sin(q.life_time * 80.0 - 100) * 14.0",
+            0
+          ]
+        },
+        "tail3": {
+          "rotation": [
+            "6 + math.sin(q.life_time * 100.0 - 135) * 6.0",
+            "math.sin(q.life_time * 80.0 - 150) * 14.0",
+            0
+          ]
+        },
+        "tail4": {
+          "rotation": [
+            "10 + math.sin(q.life_time * 100.0 - 180) * 6.0",
+            "math.sin(q.life_time * 80.0 - 200) * 14.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.devil.wings": {
+      "loop": true,
+      "bones": {
+        "rightWing": {
+          "rotation": [
+            0,
+            "-25.0 + math.sin(q.life_time * 220.0) * 30.0",
+            "10.0 + math.sin(q.life_time * 220.0) * 12.0"
+          ]
+        },
+        "leftWing": {
+          "rotation": [
+            0,
+            "25.0 - math.sin(q.life_time * 220.0) * 30.0",
+            "-10.0 - math.sin(q.life_time * 220.0) * 12.0"
+          ]
+        },
+        "rightWingTip": {
+          "rotation": [
+            0,
+            "-20.0 + math.sin(q.life_time * 220.0) * 25.0",
+            0
+          ]
+        },
+        "leftWingTip": {
+          "rotation": [
+            0,
+            "20.0 - math.sin(q.life_time * 220.0) * 25.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.devil.look_at_target": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": [
+            "q.target_x_rotation",
+            "q.target_y_rotation",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.devil.attack": {
+      "animation_length": 0.6,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.15": [
+              -150,
+              -20,
+              20
+            ],
+            "0.32": [
+              -30,
+              25,
+              -10
+            ],
+            "0.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "chest": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.15": [
+              -10,
+              20,
+              0
+            ],
+            "0.32": [
+              12,
+              -25,
+              0
+            ],
+            "0.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "jaw": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.2": [
+              22,
+              0,
+              0
+            ],
+            "0.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.devil.cast": {
+      "animation_length": 1.2,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -160,
+              0,
+              35
+            ],
+            "0.9": [
+              -150,
+              0,
+              30
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -160,
+              0,
+              -35
+            ],
+            "0.9": [
+              -150,
+              0,
+              -30
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "head": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -25,
+              0,
+              0
+            ],
+            "0.9": [
+              -20,
+              0,
+              0
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "jaw": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              28,
+              0,
+              0
+            ],
+            "0.9": [
+              25,
+              0,
+              0
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "chest": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -14,
+              0,
+              0
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

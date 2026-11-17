@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:devil",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/devil"
+      },
+      "geometry": {
+        "default": "geometry.bc.devil"
+      },
+      "animations": {
+        "hover": "animation.bc.devil.hover",
+        "wings": "animation.bc.devil.wings",
+        "look": "animation.bc.devil.look_at_target",
+        "aura": "animation.bc.mob.aura"
+      },
+      "particle_effects": {
+        "aura": "bc:devil_aura"
+      },
+      "scripts": {
+        "animate": [
+          "hover",
+          "wings",
+          "look",
+          "aura"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#2b1016",
+        "overlay_color": "#ff3a2a"
+      }
+    }
+  }
+}
