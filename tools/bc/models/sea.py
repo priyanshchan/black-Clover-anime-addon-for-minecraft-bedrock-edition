@@ -611,12 +611,51 @@ def power_geo(fid):
             a = math.radians(k * 60)
             cx, cz = hx + math.cos(a) * 4.0, hz + math.sin(a) * 4.0
             g.box('orbit', (cx, 14, cz), (2.6, 3.4, 0.3), pane, rotation=[0, -k * 60 + 90, 0], pivot=(cx, 14, cz))
-    else:  # quicksilver
+    elif fid == 'quicksilver':
         silver = tex.Metal(tex.ramp('5d6370', '858c9a', 'aab1be', 'cfd5df', 'f1f4f8', 'ffffff'), sheen=0.6)
         g.cube('aura', (-8.5, 11.2, -2.5), (5.0, 7, 5.0), silver)
         for sx in (-1.4, 0, 1.4):
             g.cube('aura', (hx + sx - 0.3, 11.6, -9.5), (0.6, 0.8, 7.2), silver)
+    else:
+        _generic_aura(g, fid, glow, hx, hz)
     return g
+
+
+def _generic_aura(g, fid, glow, hx, hz):
+    """Wave 4 fruits: a glowing fist with orbiting motes, shaped a little for each power."""
+    solid = {
+        'lava': tex.Stone(tex.ramp('1a0a06', '2e140c', '421e12', '5a2a18'), brick=0),
+        'ash': tex.Material(tex.ramp('2a2a30', '3e3e46', '56565e', '707078'), noise=0.3, edge=0, highlight=False),
+        'lodestone': tex.Metal(tex.ramp('3a1a16', '5a2a24', '7a3a32', 'a85048', 'd07060'), sheen=0.4),
+        'ink': tex.Material(tex.ramp('06040c', '0e0a1a', '181230', '241a48'), noise=0.2, edge=0, highlight=False),
+        'cloud': tex.Material(tex.ramp('9aa4c0', 'c0c8e0', 'dce2f4', 'f4f6ff', 'ffffff'), noise=0.15, edge=0, highlight=False),
+    }.get(fid)
+    g.box('aura', (hx, 13.5, hz), (4.6, 3.2, 4.6), glow)
+    if fid == 'lava':
+        g.cube('aura', (-8.6, 11.0, -2.6), (5.2, 4.2, 5.2), tex.Painted(solid, {'*': lambda a, c: (a.__setitem__((slice(1, None, 3), slice(None), slice(0, 3)), [255, 110, 30]), a)[1]}))
+    elif fid in ('ash', 'cloud', 'ink'):
+        for k in range(6):
+            a = math.radians(k * 60)
+            g.box('orbit', (hx + math.cos(a) * 3.0, 15 + (k % 3) * 1.6, hz + math.sin(a) * 3.0), (2.4, 2.4, 2.4), solid,
+                  rotation=[k * 20, k * 35, 0], pivot=(hx + math.cos(a) * 3.0, 15, hz + math.sin(a) * 3.0))
+    elif fid == 'lodestone':
+        for k in range(10):
+            a = math.radians(k * 36)
+            g.box('orbit', (hx + math.cos(a) * 4.0, 13.5, hz + math.sin(a) * 4.0), (2.0, 0.8, 0.8), solid if k % 2 else glow,
+                  rotation=[0, -k * 36 - 90, 0], pivot=(hx + math.cos(a) * 4.0, 13.5, hz + math.sin(a) * 4.0))
+    elif fid == 'prism':
+        crys = tex.Crystal(tex.ramp('5a2a7a', '8a4ac0', 'c08aff', 'f0d8ff', 'ffffff'), alpha=200)
+        for k in range(5):
+            a = math.radians(k * 72)
+            g.box('orbit', (hx + math.cos(a) * 3.4, 14 + (k % 2) * 2, hz + math.sin(a) * 3.4), (1.2, 3.6, 1.2), crys,
+                  rotation=[25, k * 72, 0], pivot=(hx + math.cos(a) * 3.4, 14, hz + math.sin(a) * 3.4))
+    else:  # bounce / blast / acid: rings and motes
+        for ring in range(2):
+            for k in range(8):
+                a = math.radians(k * 45 + ring * 22.5)
+                r = 3.2 + ring * 1.2
+                g.box('orbit', (hx + math.cos(a) * r, 12.5 + ring * 3, hz + math.sin(a) * r), (1.4, 0.6, 0.6), glow,
+                      rotation=[0, -k * 45 - ring * 22.5 - 90, 0], pivot=(hx + math.cos(a) * r, 12.5 + ring * 3, hz + math.sin(a) * r))
 
 
 def power_animations():

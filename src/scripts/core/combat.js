@@ -1,5 +1,5 @@
 // Targeting, damage and projectile helpers.
-import { Player, world } from '@minecraft/server';
+import { Player, system, world } from '@minecraft/server';
 import { V, alive, safe, segDist } from './util.js';
 
 const EXCLUDE_TYPES = ['minecraft:item', 'minecraft:xp_orb', 'minecraft:arrow', 'minecraft:armor_stand', 'minecraft:painting',
@@ -12,10 +12,58 @@ export const HOSTILE_PROJECTILES = ['minecraft:arrow', 'minecraft:fireball', 'mi
   'minecraft:wither_skull_dangerous', 'minecraft:dragon_fireball', 'minecraft:shulker_bullet', 'minecraft:llama_spit',
   'minecraft:breeze_wind_charge_projectile', 'minecraft:snowball', 'minecraft:thrown_trident', 'minecraft:evocation_fang'];
 
+// ---------------------------------------------------------------------------- factions
+/** Natural sides: entities of one side never hurt each other with magic. */
+const FACTION = {
+  'bc:magic_knight': 'clover', 'bc:construct': 'clover', 'bc:magic_merchant': 'clover',
+  'bc:dark_disciple': 'devil', 'bc:devil': 'devil', 'bc:imp': 'devil', 'bc:archdevil': 'devil', 'bc:devil_gate': 'devil',
+  'bc:sea_raider': 'pirate', 'bc:raider_captain': 'pirate', 'bc:phantom_raider': 'pirate', 'bc:phantom_galleon': 'pirate',
+  'bc:tidewatch_sentinel': 'navy', 'bc:tidewatch_commodore': 'navy',
+};
+/** NPCs that only harm a player who attacked them first. */
+const PEACEFUL = new Set(['bc:magic_knight', 'bc:construct', 'bc:magic_merchant', 'bc:shade_soldier', 'bc:earth_golem', 'bc:mirror_clone']);
+/** @type {Map<string, Map<string, number>>} npc id -> player id -> tick the grudge ends */
+const grudges = new Map();
+
+export function factionOf(e) {
+  return FACTION[safe(() => e.typeId) ?? ''] ?? '';
+}
+/** War Table side ('a' / 'b') or ''. */
+export function teamOf(e) {
+  const v = safe(() => e.getDynamicProperty('bc:team'));
+  return typeof v === 'string' ? v : '';
+}
+export function ownerOf(e) {
+  const v = safe(() => e.getDynamicProperty('bc:owner'));
+  return typeof v === 'string' ? v : '';
+}
+export function holdGrudge(npc, player, ticks = 600) {
+  let m = grudges.get(npc.id);
+  if (!m) grudges.set(npc.id, (m = new Map()));
+  m.set(player.id, system.currentTick + ticks);
+}
+function angryAt(npc, player) {
+  return (grudges.get(npc.id)?.get(player.id) ?? 0) > system.currentTick;
+}
+
 /** May `attacker` hurt `target` with magic? */
 export function canHit(attacker, target) {
   if (!alive(target) || target === attacker) return false;
   if (attacker && target.id === attacker.id) return false;
+  if (attacker && !(attacker instanceof Player)) {
+    const ta = teamOf(attacker);
+    if (ta) {
+      if (target instanceof Player) return angryAt(attacker, target);
+      const tt = teamOf(target);
+      return !!tt && tt !== ta;
+    }
+    const owner = ownerOf(attacker);
+    if (owner && (owner === target.id || ownerOf(target) === owner)) return false;
+    if (target instanceof Player && PEACEFUL.has(attacker.typeId)) return angryAt(attacker, target);
+    const fa = factionOf(attacker);
+    if (fa && fa === factionOf(target) && !teamOf(target)) return false;
+  }
+  if (attacker instanceof Player && ownerOf(target) === attacker.id) return false;
   if (target instanceof Player) {
     if (!(attacker instanceof Player)) return true;
     try {
@@ -135,7 +183,9 @@ export const projectiles = new Map();
  */
 export function launch(owner, type, from, dir, speed, meta) {
   return safe(() => {
-    const e = owner.dimension.spawnEntity(type, from);
+    const ev = meta.extra?.spawnEvent;
+    const e = ev ? owner.dimension.spawnEntity(type, from, { spawnEvent: ev }) : owner.dimension.spawnEntity(type, from);
+    if (meta.extra?.paint) meta.extra.paint(e);
     const vel = V.mul(V.norm(dir), speed);
     const proj = e.getComponent('minecraft:projectile');
     if (proj) {
@@ -191,3 +241,14 @@ export function blinkDestination(player, maxDist) {
   const feet = V.add(player.location, V.mul(dir, d));
   return feet;
 }
+
+// NPCs remember who struck them (so peaceful knights only fight back at that player)
+world.afterEvents.entityHurt.subscribe((ev) => {
+  const src = ev.damageSource.damagingEntity;
+  if (!(src instanceof Player)) return;
+  const e = ev.hurtEntity;
+  if (PEACEFUL.has(e.typeId) || teamOf(e)) safe(() => holdGrudge(e, src));
+});
+system.runInterval(() => {
+  for (const id of [...grudges.keys()]) if (!world.getEntity(id)) grudges.delete(id);
+}, 1200);

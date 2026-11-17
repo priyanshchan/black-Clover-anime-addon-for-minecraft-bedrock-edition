@@ -1,0 +1,55 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.phantom_galleon.drift": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "position": [
+            0,
+            "math.sin(q.life_time * 60.0) * 2.0",
+            0
+          ],
+          "rotation": [
+            "math.sin(q.life_time * 45.0) * 2.0",
+            0,
+            "math.sin(q.life_time * 35.0) * 3.0"
+          ]
+        },
+        "sail": {
+          "rotation": [
+            "math.sin(q.life_time * 90.0) * 3.0",
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            "1.4 + math.sin(q.life_time * 70.0) * 0.2"
+          ]
+        },
+        "topsail": {
+          "rotation": [
+            "math.sin(q.life_time * 100.0) * 3.0",
+            0,
+            0
+          ]
+        },
+        "flag": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 320.0) * 18.0",
+            0
+          ]
+        },
+        "wheel": {
+          "rotation": [
+            0,
+            0,
+            "q.life_time * 40.0"
+          ]
+        }
+      }
+    }
+  }
+}

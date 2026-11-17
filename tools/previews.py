@@ -379,3 +379,79 @@ def wave3_sheet():
     for i, a in enumerate(ims):
         img.alpha_composite(tex.to_image(a).resize((64, 64), Image.NEAREST), (16 + i * 76, 16))
     img.convert('RGB').save(os.path.join(OUT, 'wave3_items.png'), optimize=True)
+
+
+def wave4_sheet():
+    """A living world: knights, merchant, constructs, giant bosses, beast forms, new grimoires and fruits."""
+    from bc.data import ATTR_ORDER, FRUIT_ORDER, KNIGHT_ROBES
+    from bc.models import grand, sea as seam, wave4
+    entries = []
+    ka = wave4.knight_animations()
+    for i, (rid, yaw) in enumerate(((KNIGHT_ROBES[0], 30), (KNIGHT_ROBES[1], 200), (KNIGHT_ROBES[4], 160))):
+        pose = {}
+        render.pose_from_anim(ka['animation.bc.magic_knight.cast' if i == 0 else 'animation.bc.magic_knight.idle'], 0.3, pose=pose)
+        entries.append(('Magic Knight' if i == 0 else 'Magic Knight (robe variant)', model(wave4.knight_geo(rid, i)), pose, yaw, 10, 1.5))
+    entries.append(('Travelling Magic Merchant', model(wave4.merchant_geo()), {}, 150, 10, 1.5))
+    for k, label in (('sand', 'Sand Construct'), ('crystal', 'Crystal Construct')):
+        entries.append((label, model(wave4.construct_geo(k)), {}, 30, 10, 1.4))
+    dp = {}
+    for a in mobs.devil_animations().values():
+        if a.get('loop'):
+            render.pose_from_anim(a, 0.3, pose=dp)
+    entries.append(('The Archdevil (boss)', model(mobs.devil_geo(True)), dp, 20, 10, 1.35))
+    cp = {}
+    render.pose_from_anim(grand.golem_animations('stone_colossus')['animation.bc.stone_colossus.idle'], 0.3, pose=cp)
+    entries.append(('The Stone Colossus (boss)', model(wave4.colossus_geo()), cp, 30, 10, 1.35))
+    kp = {}
+    render.pose_from_anim(wave4.kraken_animations()['animation.bc.storm_kraken.swim'], 0.7, pose=kp)
+    entries.append(('The Storm Kraken (boss)', model(wave4.kraken_geo()), kp, 30, 25, 1.3))
+    g = seam.ship_geo()
+    g.identifier = 'geometry.bc.phantom_galleon'
+    g.paint()
+    g.atlas = wave4.ghostify(g.atlas)
+    gp = {}
+    render.pose_from_anim(wave4.galleon_animations()['animation.bc.phantom_galleon.drift'], 0.4, pose=gp)
+    entries.append(('The Phantom Galleon (boss)', render.Model(g.to_json(), g.atlas, emissive=True), gp, 35, 18, 1.15))
+    entries.append(('War Table', model(wave4.war_table_geo()), {}, 30, 35, 1.25))
+    gate, _, ga = grand.warp_gate()
+    gate.paint()
+    gate.atlas = wave4.recolor_devil(gate.atlas)
+    pose = {}
+    render.pose_from_anim(ga['animation.bc.warp_gate.spin'], 1.0, pose=pose)
+    entries.append(('Devil Gate (world event)', render.Model(gate.to_json(), gate.atlas, emissive=True), pose, 20, 10, 1.4))
+    grid(entries, 4, 300, 'wave4.png', 'A living world: knights, giants, events & the War Table')
+    # beast forms
+    out_img = background(1350, 330, '1a1410', '0a0806', ring=False)
+    d = ImageDraw.Draw(out_img)
+    d.text((20, 14), 'Beast fruits: Bear, Tiger & Wyvern forms', font=font(26), fill=(235, 235, 235, 255))
+    p = ref_player()
+    for i, (fid, yaw) in enumerate((('bear', 25), ('bear', 160), ('tiger', 25), ('tiger', 160), ('wyvern', 25), ('wyvern', 160))):
+        g, anim = grand.beast_geo(fid)
+        pose = {}
+        for a in anim.values():
+            render.pose_from_anim(a, 0.2, pose=pose)
+        sc = render.Scene(225, 280, ss=2)
+        sc.add(p, pose)
+        sc.add(model(g), pose)
+        sc.render(render.orbit_eye((0, 18, 0), 66, yaw, 10), (0, 18, 0), fov=40)
+        out_img.alpha_composite(sc.image(), (i * 225, 50))
+    out_img.convert('RGB').save(os.path.join(OUT, 'beasts4.png'), optimize=True)
+    # mana bolt shapes in a few tints
+    bolts = background(8 * 150, 170, '101018', '06060a', ring=False)
+    geo_file = wave4.bolt_geometry_file()['minecraft:geometry']
+    for i, (shape, tint) in enumerate([(s, t) for s in range(4) for t in (12, 17, 23)][:8]):
+        j = {'format_version': '1.16.0', 'minecraft:geometry': [geo_file[shape]]}
+        m = render.Model(j, wave4.bolt_tint_texture(wave4.TINTS[tint][1]), emissive=True)
+        sc = render.Scene(150, 150, ss=2)
+        sc.add(m, {})
+        sc.render(render.orbit_eye((0, 0, 0), 26, 60, 25), (0, 0, 0), fov=40)
+        bolts.alpha_composite(sc.image(), (i * 150, 10))
+    bolts.convert('RGB').save(os.path.join(OUT, 'bolts.png'), optimize=True)
+    # new grimoires, fruits and items
+    ims = [items.grimoire_icon(a) for a in ATTR_ORDER[12:]] + [icons.fruit_icon(f) for f in FRUIT_ORDER[10:]] + list(wave4.wave4_icons().values())
+    cols = 16
+    rows = (len(ims) + cols - 1) // cols
+    img = background(cols * 76 + 20, rows * 76 + 20, '22222c', '101016', ring=False)
+    for i, a in enumerate(ims):
+        img.alpha_composite(tex.to_image(a).resize((64, 64), Image.NEAREST), (16 + (i % cols) * 76, 16 + (i // cols) * 76))
+    img.convert('RGB').save(os.path.join(OUT, 'wave4_items.png'), optimize=True)

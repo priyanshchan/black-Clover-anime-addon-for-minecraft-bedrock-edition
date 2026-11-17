@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:magic_merchant",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/magic_merchant"
+      },
+      "geometry": {
+        "default": "geometry.bc.magic_merchant"
+      },
+      "animations": {
+        "idle": "animation.bc.magic_merchant.idle",
+        "walk": "animation.bc.magic_merchant.walk",
+        "look": "animation.bc.magic_merchant.look_at_target"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#185856",
+        "overlay_color": "#d39a2c"
+      }
+    }
+  }
+}

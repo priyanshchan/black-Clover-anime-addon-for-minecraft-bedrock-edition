@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:phantom_galleon",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/phantom_galleon"
+      },
+      "geometry": {
+        "default": "geometry.bc.phantom_galleon"
+      },
+      "animations": {
+        "drift": "animation.bc.phantom_galleon.drift",
+        "aura": "animation.bc.mob.aura"
+      },
+      "scripts": {
+        "animate": [
+          "drift",
+          "aura"
+        ],
+        "scale": "1.6"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:disciple_aura"
+      },
+      "spawn_egg": {
+        "base_color": "#0a1e22",
+        "overlay_color": "#96ffdc"
+      }
+    }
+  }
+}

@@ -328,6 +328,73 @@ def beast_geo(fid):
             'tail': {'rotation': [0, 'math.sin(q.life_time * 400.0) * 18.0', 0]},
             'ears': {'rotation': ['math.max(0.0, math.sin(q.life_time * 90.0)) * 8.0', 0, 0]},
         }}
+    elif fid in ('bear', 'tiger'):
+        bear = fid == 'bear'
+        fur_r = tex.ramp('2e1c10', '432a18', '5a3a22', '724c2e', '8a5e3a') if bear else tex.ramp('7a3a08', 'b0560e', 'e07a1a', 'ff9a2a', 'ffc070')
+
+        def stripes(a, ctx):
+            if bear:
+                return a
+            h, w = a.shape[:2]
+            for x in range(1, w, 4):
+                for y in range(h):
+                    if (y + x // 4) % 5 < 3:
+                        a[y, x:x + 1, :3] = rgb('1a120a')[:3]
+            return a
+        fur = tex.Painted(tex.Material(fur_r, noise=0.25), {'*': stripes})
+        pale = tex.Material(tex.ramp('8a6a4a', 'a8886a', 'c8a888') if bear else tex.ramp('c8c0b0', 'e8e0d0', 'fffaf0'), noise=0.15)
+        claw = tex.Material(P['bone'] if not bear else tex.ramp('1a1612', '2a241e', '3a322a'), noise=0.05)
+        g.bone('ears', 'head', (0, 32, 0))
+        for sx in (-1, 1):
+            if bear:
+                g.box('ears', (sx * 3.0, 32.8, 0.5), (2.6, 2.6, 1.4), tex.PerFace(fur, north=pale))
+            else:
+                g.box('ears', (sx * 2.8, 33.4, 0.4), (2.4, 3.2, 1.2), tex.PerFace(fur, north=pale), rotation=[0, 0, sx * -10], pivot=(sx * 2.8, 32, 0))
+        g.cube('body', (-4.8, 18.5 if bear else 21.0, -2.8), (9.6, 5.8 if bear else 3.0, 5.6), fur)
+        if bear:
+            g.cube('body', (-3.6, 19, 2.6), (7.2, 5, 2.0), fur)                                  # shoulder hump
+        g.bone('tail', 'body', (0, 13, 2))
+        if bear:
+            g.cube('tail', (-1.2, 11.8, 2), (2.4, 2.4, 2.2), fur)
+        else:
+            g.cube('tail', (-0.9, 12.6, 2), (1.8, 1.8, 8), fur, rotation=[-30, 0, 0], pivot=(0, 13, 2))
+            g.cube('tail', (-0.8, 9.2, 8.6), (1.6, 1.6, 6), tex.PerFace(fur, south=pale), rotation=[-70, 0, 0], pivot=(0, 10, 9))
+        for side, x0 in (('rightArm', -8), ('leftArm', 4)):
+            g.cube(side, (x0 - 0.6, 11.6, -2.6), (5.2, 4 if bear else 3, 5.2), fur)
+            for k in range(3):
+                g.cube(side, (x0 + 0.5 + k * 1.3, 9.8, -2.6), (0.8 if bear else 0.6, 2.4, 0.8 if bear else 0.6), claw, rotation=[-25, 0, 0], pivot=(x0 + 0.9 + k * 1.3, 11.6, -2.2))
+        anim = {'loop': True, 'bones': {
+            'tail': {'rotation': [0, f'math.sin(q.life_time * {120 if bear else 300}.0) * {6 if bear else 22}.0', 0]},
+            'ears': {'rotation': ['math.max(0.0, math.sin(q.life_time * 90.0)) * 6.0', 0, 0]},
+        }}
+    elif fid == 'wyvern':
+        scale = tex.Material(tex.ramp('0e2a1c', '184030', '245a44', '327458', '44906e'), noise=0.3)
+        membrane = tex.Material(tex.ramp('1a3a2a', '2a5a40', '3c7a58', '58a078'), noise=0.15, edge=0, highlight=False)
+        horn = tex.Material(P['bone'], noise=0.05)
+        g.bone('horns', 'head', (0, 32, 0))
+        for sx in (-1, 1):
+            g.box('horns', (sx * 2.6, 33.6, 2.0), (1.2, 4.0, 1.2), horn, rotation=[-35, 0, sx * -12], pivot=(sx * 2.6, 32, 2.0))
+        g.bone('rightWing', 'body', (-2, 22.5, 2.5))
+        g.bone('leftWing', 'body', (2, 22.5, 2.5))
+        for side, sx in (('rightWing', -1), ('leftWing', 1)):
+            x0 = -18 if sx < 0 else 2
+            g.cube(side, (x0, 21, 2.5), (16, 1.6, 1.6), scale)
+            g.cube(side, (x0, 9, 3.2), (16, 12, 0), membrane)
+            for k in range(3):
+                fx = (-6 - k * 5) if sx < 0 else (5 + k * 5)
+                g.cube(side, (fx, 9, 3.0), (0.8, 12, 0.6), scale, rotation=[0, 0, sx * (10 + k * 8)], pivot=(fx + 0.4, 21, 3.0))
+            g.box(side, (sx * 18.5, 23, 3.0), (1.0, 3.2, 1.0), horn, rotation=[0, 0, sx * 30], pivot=(sx * 18, 21.5, 3.0))
+        g.bone('tail', 'body', (0, 13, 2))
+        g.cube('tail', (-1.4, 12.2, 2), (2.8, 2.8, 8), scale, rotation=[-35, 0, 0], pivot=(0, 13, 2))
+        g.cube('tail', (-1.0, 8.0, 8.6), (2.0, 2.0, 7), scale, rotation=[-65, 0, 0], pivot=(0, 9.5, 9))
+        g.box('tail', (0, 2.6, 13.6), (3.6, 0.6, 3.6), horn, rotation=[-20, 45, 0], pivot=(0, 2.6, 13.6))
+        for side, x0 in (('rightArm', -8), ('leftArm', 4)):
+            g.cube(side, (x0 - 0.4, 15, -2.4), (4.8, 6, 4.8), scale)
+        anim = {'loop': True, 'bones': {
+            'rightWing': {'rotation': ['8.0', 'math.sin(q.life_time * 200.0) * 22.0 - 20.0', '18.0 + math.sin(q.life_time * 200.0) * 10.0']},
+            'leftWing': {'rotation': ['8.0', '-math.sin(q.life_time * 200.0) * 22.0 + 20.0', '-18.0 - math.sin(q.life_time * 200.0) * 10.0']},
+            'tail': {'rotation': [0, 'math.sin(q.life_time * 150.0) * 15.0', 0]},
+        }}
     else:  # hawk
         feather = tex.Material(tex.ramp('3a2410', '5a3a1c', '7a5228', '9c6c36', 'c08c48'), noise=0.2)
         tip = tex.Material(tex.ramp('1a120a', '2a1e12', '3a2a1a'), noise=0.15)

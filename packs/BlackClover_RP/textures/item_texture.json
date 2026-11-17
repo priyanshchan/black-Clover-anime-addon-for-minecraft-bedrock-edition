@@ -8,6 +8,9 @@
     "bc_aqua_deer_robe": {
       "textures": "textures/items/bc/aqua_deer_robe"
     },
+    "bc_archdevil_sigil": {
+      "textures": "textures/items/bc/archdevil_sigil"
+    },
     "bc_black_bull_robe": {
       "textures": "textures/items/bc/black_bull_robe"
     },
@@ -19,6 +22,9 @@
     },
     "bc_clover_charm": {
       "textures": "textures/items/bc/clover_charm"
+    },
+    "bc_colossus_core": {
+      "textures": "textures/items/bc/colossus_core"
     },
     "bc_coral_peacock_robe": {
       "textures": "textures/items/bc/coral_peacock_robe"
@@ -50,11 +56,29 @@
     "bc_flintlock": {
       "textures": "textures/items/bc/flintlock"
     },
+    "bc_fruit_acid": {
+      "textures": "textures/items/bc/fruit_acid"
+    },
+    "bc_fruit_ash": {
+      "textures": "textures/items/bc/fruit_ash"
+    },
     "bc_fruit_barrier": {
       "textures": "textures/items/bc/fruit_barrier"
     },
+    "bc_fruit_bear": {
+      "textures": "textures/items/bc/fruit_bear"
+    },
+    "bc_fruit_blast": {
+      "textures": "textures/items/bc/fruit_blast"
+    },
     "bc_fruit_bloom": {
       "textures": "textures/items/bc/fruit_bloom"
+    },
+    "bc_fruit_bounce": {
+      "textures": "textures/items/bc/fruit_bounce"
+    },
+    "bc_fruit_cloud": {
+      "textures": "textures/items/bc/fruit_cloud"
     },
     "bc_fruit_ember": {
       "textures": "textures/items/bc/fruit_ember"
@@ -68,6 +92,18 @@
     "bc_fruit_hawk": {
       "textures": "textures/items/bc/fruit_hawk"
     },
+    "bc_fruit_ink": {
+      "textures": "textures/items/bc/fruit_ink"
+    },
+    "bc_fruit_lava": {
+      "textures": "textures/items/bc/fruit_lava"
+    },
+    "bc_fruit_lodestone": {
+      "textures": "textures/items/bc/fruit_lodestone"
+    },
+    "bc_fruit_prism": {
+      "textures": "textures/items/bc/fruit_prism"
+    },
     "bc_fruit_quicksilver": {
       "textures": "textures/items/bc/fruit_quicksilver"
     },
@@ -77,8 +113,17 @@
     "bc_fruit_stone": {
       "textures": "textures/items/bc/fruit_stone"
     },
+    "bc_fruit_tiger": {
+      "textures": "textures/items/bc/fruit_tiger"
+    },
     "bc_fruit_wolf": {
       "textures": "textures/items/bc/fruit_wolf"
+    },
+    "bc_fruit_wyvern": {
+      "textures": "textures/items/bc/fruit_wyvern"
+    },
+    "bc_galleon_bell": {
+      "textures": "textures/items/bc/galleon_bell"
     },
     "bc_golden_dawn_robe": {
       "textures": "textures/items/bc/golden_dawn_robe"
@@ -88,6 +133,18 @@
     },
     "bc_grimoire_anti": {
       "textures": "textures/items/bc/grimoire_anti"
+    },
+    "bc_grimoire_blood": {
+      "textures": "textures/items/bc/grimoire_blood"
+    },
+    "bc_grimoire_bone": {
+      "textures": "textures/items/bc/grimoire_bone"
+    },
+    "bc_grimoire_bubble": {
+      "textures": "textures/items/bc/grimoire_bubble"
+    },
+    "bc_grimoire_crystal": {
+      "textures": "textures/items/bc/grimoire_crystal"
     },
     "bc_grimoire_dark": {
       "textures": "textures/items/bc/grimoire_dark"
@@ -107,14 +164,38 @@
     "bc_grimoire_lightning": {
       "textures": "textures/items/bc/grimoire_lightning"
     },
+    "bc_grimoire_magma": {
+      "textures": "textures/items/bc/grimoire_magma"
+    },
     "bc_grimoire_mirror": {
       "textures": "textures/items/bc/grimoire_mirror"
+    },
+    "bc_grimoire_mist": {
+      "textures": "textures/items/bc/grimoire_mist"
+    },
+    "bc_grimoire_plant": {
+      "textures": "textures/items/bc/grimoire_plant"
+    },
+    "bc_grimoire_poison": {
+      "textures": "textures/items/bc/grimoire_poison"
+    },
+    "bc_grimoire_sand": {
+      "textures": "textures/items/bc/grimoire_sand"
+    },
+    "bc_grimoire_sound": {
+      "textures": "textures/items/bc/grimoire_sound"
     },
     "bc_grimoire_spatial": {
       "textures": "textures/items/bc/grimoire_spatial"
     },
+    "bc_grimoire_star": {
+      "textures": "textures/items/bc/grimoire_star"
+    },
     "bc_grimoire_steel": {
       "textures": "textures/items/bc/grimoire_steel"
+    },
+    "bc_grimoire_time": {
+      "textures": "textures/items/bc/grimoire_time"
     },
     "bc_grimoire_water": {
       "textures": "textures/items/bc/grimoire_water"
@@ -131,6 +212,12 @@
     "bc_hearty_roast": {
       "textures": "textures/items/bc/hearty_roast"
     },
+    "bc_knight_contract": {
+      "textures": "textures/items/bc/knight_contract"
+    },
+    "bc_kraken_lure": {
+      "textures": "textures/items/bc/kraken_lure"
+    },
     "bc_lead_shot": {
       "textures": "textures/items/bc/lead_shot"
     },
@@ -143,11 +230,29 @@
     "bc_mana_crystal": {
       "textures": "textures/items/bc/mana_crystal"
     },
+    "bc_power_acid": {
+      "textures": "textures/items/bc/power_acid"
+    },
+    "bc_power_ash": {
+      "textures": "textures/items/bc/power_ash"
+    },
     "bc_power_barrier": {
       "textures": "textures/items/bc/power_barrier"
     },
+    "bc_power_bear": {
+      "textures": "textures/items/bc/power_bear"
+    },
+    "bc_power_blast": {
+      "textures": "textures/items/bc/power_blast"
+    },
     "bc_power_bloom": {
       "textures": "textures/items/bc/power_bloom"
+    },
+    "bc_power_bounce": {
+      "textures": "textures/items/bc/power_bounce"
+    },
+    "bc_power_cloud": {
+      "textures": "textures/items/bc/power_cloud"
     },
     "bc_power_ember": {
       "textures": "textures/items/bc/power_ember"
@@ -161,6 +266,18 @@
     "bc_power_hawk": {
       "textures": "textures/items/bc/power_hawk"
     },
+    "bc_power_ink": {
+      "textures": "textures/items/bc/power_ink"
+    },
+    "bc_power_lava": {
+      "textures": "textures/items/bc/power_lava"
+    },
+    "bc_power_lodestone": {
+      "textures": "textures/items/bc/power_lodestone"
+    },
+    "bc_power_prism": {
+      "textures": "textures/items/bc/power_prism"
+    },
     "bc_power_quicksilver": {
       "textures": "textures/items/bc/power_quicksilver"
     },
@@ -170,8 +287,14 @@
     "bc_power_stone": {
       "textures": "textures/items/bc/power_stone"
     },
+    "bc_power_tiger": {
+      "textures": "textures/items/bc/power_tiger"
+    },
     "bc_power_wolf": {
       "textures": "textures/items/bc/power_wolf"
+    },
+    "bc_power_wyvern": {
+      "textures": "textures/items/bc/power_wyvern"
     },
     "bc_purple_orca_robe": {
       "textures": "textures/items/bc/purple_orca_robe"
@@ -182,11 +305,17 @@
     "bc_silver_eagle_robe": {
       "textures": "textures/items/bc/silver_eagle_robe"
     },
+    "bc_skirmish_horn": {
+      "textures": "textures/items/bc/skirmish_horn"
+    },
     "bc_treasure_map": {
       "textures": "textures/items/bc/treasure_map"
     },
     "bc_wanted_poster": {
       "textures": "textures/items/bc/wanted_poster"
+    },
+    "bc_war_table": {
+      "textures": "textures/items/bc/war_table"
     }
   }
 }

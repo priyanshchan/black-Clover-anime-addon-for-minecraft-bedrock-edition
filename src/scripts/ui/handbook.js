@@ -15,7 +15,7 @@ function statusBody(p) {
   const s = state(p);
   if (!s.attr) {
     return '§7You have not received a grimoire yet.\n\n§fPlace a §dGrimoire Altar§f and interact with it. '
-      + 'The altar chooses an attribute for you: Wind, Flame, Water, Lightning, Ice, the rare Light and Dark, '
+      + `The altar chooses one of ${DATA.order.length} attributes for you - from Wind, Flame and Sand to the rare Star and Time, `
       + 'or - very rarely - a five-leaf grimoire of §0§lAnti-Magic§r§f.';
   }
   const a = DATA.attributes[s.attr];
@@ -47,6 +47,10 @@ export async function openHandbook(p) {
   actions.push(() => seaGuide(p));
   form.button('§lRank, robes & renown\n§r§8Stars, squad robes, your bounty');
   actions.push(() => rankPage(p));
+  form.button('§lBosses & world events\n§r§8Giants, gates, raids, the merchant');
+  actions.push(() => livingPage(p));
+  form.button('§lKnights & the War Table\n§r§8Factions, battles, bets');
+  actions.push(() => warPage(p));
   form.button('§lHow to play\n§r§8Altar, mana, robes, the Devil');
   actions.push(() => guide(p));
   sound(p.dimension, 'bc.grimoire.flip', p.location, 0.8, 1);
@@ -168,6 +172,34 @@ async function seaGuide(p) {
     '§l§0Anti-Magic vs fruits§r\n§7Demon-sword hits and anti-magic slashes seal a fruit user\'s powers for a few seconds.',
   ].join('\n\n');
   await new MessageFormData().title('The Abyssal Seas').body(body).button1('Back').button2('Close').show(p).then((r) => {
+    if (r.selection === 0) return openHandbook(p);
+    return undefined;
+  });
+}
+
+async function livingPage(p) {
+  const body = [
+    '§l§4The Archdevil§r\n§7Craft an §4Archdevil Sigil§7 (crying obsidian, mana crystals, a devil heart). Dark lances, hellfire, a crushing nova, and imps. Enrages at half health.',
+    '§l§6The Stone Colossus§r\n§7A §6Colossus Core§7 (mossy cobblestone, ancient pages, a diamond block) wakes a walking mountain that slams, hurls boulders and splits the earth.',
+    '§l§3The Phantom Galleon§r\n§7Ring a §3Phantom Galleon Bell§7 (phantom membranes, doubloons, a bell). A ghost ship sails the sky, fires broadsides and drops its drowned crew.',
+    '§l§9The Storm Kraken§r\n§7Throw a §9Storm Kraken Lure§7 (Leviathan scales, lightning rods, a heart of the sea) into deep water. Lightning, whirlpools and tentacle slams.',
+    '§l§eWorld events§r\n§7Every few minutes something happens near a player: mana meteor showers (catch the crystals), Devil Gates (break them!), pirate landings, faction skirmishes, Magic Knight patrols, the Travelling Merchant, sky treasure, a Crimson Night, or a giant boss rising. Toggle events at a War Table.',
+  ].join('\n\n');
+  await new MessageFormData().title('Bosses & world events').body(body).button1('Back').button2('Close').show(p).then((r) => {
+    if (r.selection === 0) return openHandbook(p);
+    return undefined;
+  });
+}
+
+async function warPage(p) {
+  const body = [
+    '§l§aMagic Knights§r\n§7Named knights of every attribute roam plains and forests. They hunt monsters, pirates and devils with real spells, and only fight you if you strike first.',
+    '§l§bHire a knight§r\n§7A §aKnight Contract§7 (emeralds, paper, a mana crystal) - or the merchant - brings a knight to your side. They follow you and defend you.',
+    '§l§6The War Table§r\n§7Craft one (map, iron sword, feather, planks, sticks) and use it: pick two armies - ' + Object.values(DATA.factions).map((f) => `${f.mc}${f.name}§7`).join(', ') + ' - choose the size, and bet doubloons on the winner.',
+    '§l§eSkirmish Horn§r\n§7Blow it (gold and a bone) and two random armies clash in front of you.',
+    '§l§7Factions in the wild§r\n§7Knights fight devils and pirates; the Tidewatch hunt pirates and devils; pirates and devils fight knights and the navy.',
+  ].join('\n\n');
+  await new MessageFormData().title('Knights & the War Table').body(body).button1('Back').button2('Close').show(p).then((r) => {
     if (r.selection === 0) return openHandbook(p);
     return undefined;
   });

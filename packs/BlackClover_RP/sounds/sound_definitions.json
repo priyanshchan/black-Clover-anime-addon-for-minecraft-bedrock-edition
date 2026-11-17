@@ -1,6 +1,66 @@
 {
   "format_version": "1.20.20",
   "sound_definitions": {
+    "bc.horn": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 64.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/horn",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.clock": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/clock",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.bubble": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/bubble",
+          "volume": 0.9,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.chord": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/chord",
+          "volume": 0.9,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.gong": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 64.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/gong",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
     "bc.pistol": {
       "category": "player",
       "min_distance": 1.0,

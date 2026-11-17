@@ -1,6 +1,6 @@
 # Black Clover: Grimoire Awakening
 
-**An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of eight magic attributes, draw anti-magic demon swords, wear Magic Knight squad robes and fight Dark Disciples and a full Devil boss.
+**An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 24 magic attributes, draw anti-magic demon swords, wear Magic Knight squad robes and fight Dark Disciples and a full Devil boss.
 
 ![Hero](docs/images/hero.png)
 
@@ -12,18 +12,19 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 
 ## Features
 
-* **12 grimoires, 48 spells** – Wind, Flame, Water, Lightning, Ice, Earth, Steel, the rarer Light, Dark, Spatial and Mirror (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
+* **24 grimoires, 96 spells** – Wind, Flame, Water, Lightning, Ice, Earth, Steel, Sand, Bubble, Plant, Poison, Blood, Sound, Mist, Crystal, Bone, Magma, the rarer Light, Dark, Spatial, Mirror, Star and Time (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
 * **3D held grimoires** – your grimoire floats open beside your shoulder with flipping pages, glowing rune text and a spinning magic sigil (first-person view included).
 * **3D anti-magic swords** – Demon-Slayer, Demon-Dweller and Demon-Destroyer, each with its own ability, spell-cutting and an Anti-Magic gauge that powers **Black Form**.
 * **3D spell entities with animations** – wind crescents, fireballs, a roaring flame lion, a serpentine water dragon, a spinning tornado, thunder spears, swords of light, dark crescents, a black hole, ice spears and ice prisons.
-* **54 custom particle effects** – magic circles that face your cast direction, ground circles, element trails, shockwaves, lightning strikes, black anti-magic crackle, clover leaves, snowstorms and more.
-* **23 custom sound effects** synthesised for the addon (cast shimmer, page flips, anti-magic slashes, Black Form roar, level-up chime, Devil roar…).
+* **62 custom particle effects** – magic circles that face your cast direction, ground circles, element trails, shockwaves, lightning strikes, black anti-magic crackle, clover leaves, snowstorms and more.
+* **34 custom sound effects** synthesised for the addon (cast shimmer, page flips, anti-magic slashes, Black Form roar, level-up chime, Devil roar…).
 * **Mana, levels and progression** – mana bar HUD made from custom font glyphs, magic XP, 20 levels, new spells at levels 3 / 6 / 10.
 * **The Grimoire Altar** – a 3D block with a ceremony that chooses your attribute.
 * **Magic Knight robes** – Black Bull, Golden Dawn and Crimson Lion capes (3D, animated cape) with set perks.
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **Wave 4 – a living world:** a data-driven spell engine, 12 more grimoires and 12 more Abyss Fruits (Bear, Tiger and Wyvern beast forms), four giant bosses (Archdevil, Stone Colossus, Phantom Galleon, Storm Kraken), random world events, roaming Magic Knight NPCs, factions that fight each other, a travelling merchant, and the **War Table** battle simulator.
 * **Wave 3:** Spatial, Earth, Steel and Mirror magic, all nine squad robes, Magic Knight ranks, Mana Skin and Mana Zone, ancient dungeons with traps and a Guardian, Imps, four more Abyss Fruits (including Wolf and Hawk beast forms), a bounty on your head and the Tidewatch navy, treasure maps, cutlass, flintlock and grappling harpoon.
 * **Expansion – The Abyssal Seas:** 6 Abyss Fruits with 18 abilities, the Will system, steerable sailing ships with cannons, Sea Raiders and fruit-wielding Raider Captains, generated outposts and shipwrecks, a Bounty Board with a doubloon shop, and the Abyssal Leviathan boss.
 
@@ -252,7 +253,7 @@ Use a **Leviathan Lure** (heart of the sea, prismarine crystals, 2 mana crystals
 |  | Reflection Barrier | 6 | 30 | 12s | For a while, incoming spells and arrows are reflected. |
 |  | Kaleidoscope | 10 | 85 | 25s | Mirror panes surround your aim and burn it from every angle. |
 
-The Grimoire Altar now picks from all 12 attributes (Wind/Flame/Water/Lightning/Ice 11% each, Earth 10%, Steel 9%, Light/Dark 8%, Spatial/Mirror 6%, Anti-Magic 6%).
+At the time of wave 3 the Grimoire Altar picked from 12 attributes (Wind/Flame/Water/Lightning/Ice 11% each, Earth 10%, Steel 9%, Light/Dark 8%, Spatial/Mirror 6%, Anti-Magic 6%).
 
 ### All nine squad robes
 
@@ -316,6 +317,155 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 
 ---
 
+## Wave 4: a living world
+
+![Wave 4](docs/images/wave4.png)
+
+![Beast forms](docs/images/beasts4.png)
+
+![New grimoires, fruits and items](docs/images/wave4_items.png)
+
+The world now moves on its own. **Magic Knights** roam and hunt monsters, factions fight each other, giant bosses wake up, and every few minutes a **world event** happens near you. A new **spell engine** runs every new spell and fruit ability from a short recipe in `tools/bc/data.py`, so the pack now has **24 grimoires (96 spells)** and **22 Abyss Fruits (66 abilities)**.
+
+![Spell bolts](docs/images/bolts.png)
+
+### Twelve new magic attributes (48 spells)
+
+| Attribute | Spell | Lv | Mana | Cooldown | Effect |
+|---|---|---|---|---|---|
+| **Sand** (Three-leaf) | Sand Bullets | 1 | 10 | 0.6s | Three grains of hardened sand that grind foes down. |
+|  | Quicksand | 3 | 26 | 7s | The ground near your aim becomes sucking quicksand. |
+|  | Sand Coffin | 6 | 40 | 9s | Bury enemies near your aim in sand, then crush them. |
+|  | Desert Storm | 10 | 80 | 24s | A roaring sandstorm around you blinds and shreds foes. |
+| **Bubble** (Three-leaf) | Bubble Shot | 1 | 8 | 0.5s | A big bubble that pops with a stunning burst. |
+|  | Bubble Barrage | 3 | 22 | 3s | A fan of seven popping bubbles. |
+|  | Bubble Prison | 6 | 34 | 9s | Trap enemies in floating bubbles and lift them away. |
+|  | Foam Flood | 10 | 72 | 22s | A wide wall of crashing foam rolls over everything ahead. |
+| **Plant** (Three-leaf) | Thorn Seeds | 1 | 12 | 0.8s | Three thorned seeds that poison what they hit. |
+|  | Vine Snare | 3 | 24 | 6s | Vines burst up and bind enemies near your aim. |
+|  | Healing Garden | 6 | 34 | 14s | A blooming garden heals you and your allies. |
+|  | Great Tree Wrath | 10 | 85 | 26s | Giant roots erupt all around you and hurl foes skyward. |
+| **Poison** (Three-leaf) | Venom Needles | 1 | 10 | 0.6s | Two needles dripping with venom. |
+|  | Toxic Mist | 3 | 28 | 8s | A cloud of choking poison settles over your aim. |
+|  | Serpent Fang | 6 | 36 | 7s | A venom serpent fang that pierces a line of foes. |
+|  | Plague Bloom | 10 | 80 | 24s | A flower of plague bursts open around you. |
+| **Blood** (Three-leaf) | Blood Lances | 1 | 6 | 0.7s | Three lances of blood that heal you as they hit. Costs 2 health. |
+|  | Crimson Drain | 3 | 18 | 4s | A beam that drains the life of everything it touches. |
+|  | Blood Rage | 6 | 20 | 18s | Spend your own blood for raw power and speed. Costs 6 health. |
+|  | Sanguine Moon | 10 | 80 | 26s | A blood moon strikes every foe around you and feeds you. Costs 8 health. |
+| **Star** (Four-leaf) | Star Shards | 1 | 14 | 1s | A spray of five shards of starlight. |
+|  | Constellation | 3 | 30 | 8s | Stars lock onto enemies near your aim and strike them. |
+|  | Comet Fall | 6 | 48 | 12s | Call a comet down on your aim. |
+|  | Supernova | 10 | 90 | 26s | Explode with the light of a dying star. |
+| **Sound** (Three-leaf) | Sonic Pulse | 1 | 10 | 0.6s | A ringing pulse that passes through foes. |
+|  | Resonance | 3 | 24 | 6s | A shattering chord blasts everything away from you. |
+|  | War Song | 6 | 30 | 20s | A battle song that strengthens you and your allies. |
+|  | Sonic Boom | 10 | 78 | 22s | A deafening boom that tears through everything ahead. |
+| **Mist** (Three-leaf) | Mist Needles | 1 | 10 | 0.6s | Three needles of condensed mist. |
+|  | Vanishing Mist | 3 | 26 | 16s | Vanish into a thick mist that blinds those nearby. |
+|  | Phantom Step | 6 | 18 | 3s | Blink through the mist, cutting everything you pass. |
+|  | Mist Labyrinth | 10 | 70 | 24s | Trap your foes in a maze of mist that saps their strength. |
+| **Crystal** (Three-leaf) | Crystal Shards | 1 | 12 | 0.8s | Three razor crystal shards. |
+|  | Prism Wall | 3 | 24 | 12s | Raise a wall of crystal. |
+|  | Crystal Lances | 6 | 36 | 7s | Crystal lances burst from the ground in a line. |
+|  | Diamond Storm | 10 | 82 | 24s | Two rings of diamond shards blast out from you. |
+| **Bone** (Three-leaf) | Bone Spear | 1 | 12 | 0.8s | A heavy spear of bone that pierces one foe. |
+|  | Ribcage Prison | 3 | 28 | 9s | A cage of ribs snaps shut around enemies near your aim. |
+|  | Bone Legion | 6 | 50 | 30s | Raise two bone warriors to fight for you. |
+|  | Graveyard | 10 | 80 | 24s | Bone spikes tear out of the ground in eight directions. |
+| **Magma** (Three-leaf) | Magma Ball | 1 | 14 | 0.9s | A lobbed ball of magma that bursts into flame. |
+|  | Lava Geyser | 3 | 30 | 7s | Geysers of lava erupt at your aim. |
+|  | Molten Wall | 6 | 30 | 12s | Raise a wall of glowing magma. |
+|  | Eruption | 10 | 85 | 26s | Lava bombs rain down around your aim. |
+| **Time** (Four-leaf) | Clock Hands | 1 | 12 | 0.8s | Two clock-hand blades that slow what they cut. |
+|  | Rewind | 3 | 34 | 20s | Turn back your own clock to where you stood 3 seconds ago, and heal. |
+|  | Accelerate | 6 | 30 | 22s | Speed up your own time. |
+|  | Time Stop | 10 | 90 | 30s | Stop time for every foe around you. When it flows again, the hits land at once. |
+
+The Grimoire Altar picks from all 24 attributes: Wind 5.9%, Flame 5.9%, Water 5.9%, Lightning 5.9%, Ice 5.9%, Earth 5.4%, Steel 4.9%, Plant 4.9%, Light 4.3%, Dark 4.3%, Sand 4.3%, Bubble 4.3%, Poison 3.8%, Sound 3.8%, Mist 3.8%, Crystal 3.8%, Magma 3.8%, Spatial 3.2%, Mirror 3.2%, Bone 3.2%, Anti-Magic 2.7%, Blood 2.7%, Star 2.2%, Time 1.6%.
+
+### Twelve new Abyss Fruits
+
+| Fruit | Passive | Abilities |
+|---|---|---|
+| **Lava Fruit** | Immune to fire and lava; your blows scorch. | **Lava Fist** (1.8s) – Lob a fist of molten rock that bursts into flame.<br>**Magma Pool** (8s) – Turn the ground near your aim into a burning pool.<br>**Volcanic Rain** (20s) – Lava bombs pour down around your aim. |
+| **Ash Fruit** | Your body turns to ash: blows sometimes pass right through you. | **Cinder Spear** (2s) – A spear of glowing cinders that pierces foes.<br>**Ash Veil** (9s) – A choking veil of ash smothers your aim.<br>**Ash Cyclone** (16s) – A cyclone of ash drags foes in and burns them. |
+| **Prism Fruit** | Your eyes drink in light: you see clearly in the dark. | **Prism Ray** (2.5s) – A blazing ray of split light.<br>**Rainbow Burst** (8s) – Sixteen shards of colour burst out from you.<br>**Refraction** (4s) – Bend the light and appear further ahead. |
+| **Bounce Fruit** | Springy body: you jump higher and never take fall damage. | **Ricochet** (3s) – Bounce forward, slamming into everything in your path.<br>**Recoil Wave** (7s) – A springy shock that flings everything away from you.<br>**Meteor Bounce** (12s) – Spring sky-high and crash down on your aim. |
+| **Blast Fruit** | Your punches go off with a small blast. | **Blast Shot** (1.6s) – A shot that explodes on impact.<br>**Mine Field** (9s) – Scatter blast mines around your aim.<br>**Big Bang** (18s) – Detonate yourself in a huge (harmless to you) explosion. |
+| **Acid Fruit** | Acid blood: poison can never take hold of you. | **Acid Spit** (1.6s) – Three globs of acid that weaken foes.<br>**Acid Rain** (10s) – Acid rains down on your aim.<br>**Corrode** (6s) – A stream of acid that eats through armour and flesh. |
+| **Lodestone Fruit** | Magnetic body: arrows veer away from you. | **Magnet Pull** (5s) – Drag every foe near your aim together and crush them.<br>**Magnet Push** (6s) – Repel everything around you.<br>**Iron Tempest** (16s) – Iron blades spin out from you in every direction. |
+| **Cloud Fruit** | Light as a cloud: you drift down slowly when sneaking in the air. | **Thunderhead** (6s) – Thunder strikes foes near your aim.<br>**Cloud Ride** (12s) – Rise on a cloud and drift where you like.<br>**Downpour** (10s) – A cold downpour that slows and soaks foes. |
+| **Ink Fruit** | Ink seeps from your wounds and blinds whoever hit you. | **Ink Blot** (1.6s) – Three blots of blinding ink.<br>**Ink Serpent** (6s) – A serpent of ink that coils through a line of foes.<br>**Ink Sea** (16s) – Flood the ground around you with ink. |
+| **Bear Fruit** (beast) | Beast form: crushing strength and a thick hide. | **Maul** (1.6s) – A crushing swipe at everything in front of you.<br>**Roar** (16s) – A roar that weakens and slows every foe nearby.<br>**Ground Slam** (10s) – Leap and slam the earth on your aim. |
+| **Tiger Fruit** (beast) | Beast form: blinding speed and keen night sight. | **Lunge** (3s) – Lunge forward, tearing through your path.<br>**Claw Rush** (7s) – Four lightning-fast claw strikes.<br>**Predator** (20s) – Enter the hunt: speed, strength and night sight. |
+| **Wyvern Fruit** (beast) | Beast form: wings to glide on and a hide that ignores fire. | **Wyvern Breath** (3s) – A roaring stream of dragonfire.<br>**Wing Gust** (6s) – A beat of your wings blasts everything away.<br>**Sky Dive** (12s) – Soar up and dive onto your aim in flames. |
+
+Beast fruits show their form (bear ears and claws, tiger stripes and tail, wyvern wings and horns) while you hold the power. Raider Captains can now carry any of the 22 fruits.
+
+### Giant bosses
+
+| Boss | Summon with | What it does |
+|---|---|---|
+| **The Archdevil** (900 HP) | **Archdevil Sigil** – crying obsidian ×4, mana crystal ×4, devil heart | Flies. Dark lances, hellfire rain, a crushing crimson nova, calls imps; enraged: void vortex and a meteor storm. |
+| **The Stone Colossus** (1200 HP) | **Colossus Core** – mossy cobblestone ×4, ancient page ×4, diamond block | A walking mountain with a tree on its back. Ground slams, thrown boulders, eight-way earth splits; enraged: magma meteors and sand coffins. |
+| **The Phantom Galleon** (800 HP) | **Phantom Galleon Bell** – phantom membrane ×4, doubloon ×4, bell | A ghost ship that sails the sky above you, fires cannon broadsides and drops its drowned crew (Phantom Raiders). |
+| **The Storm Kraken** (1000 HP) | **Storm Kraken Lure** – Leviathan scale ×4, lightning rod ×4, heart of the sea (use it near deep water) | Lightning strikes, tentacle waves, whirlpools, bubble prisons; enraged it calls a thunderstorm. |
+
+Every boss has a boss bar, a second phase below half health, big loot, and gives **stars** to everyone who fought it.
+
+### World events
+
+Every 4–7 minutes, one of these happens near a random player (toggle at a War Table, or trigger with `/scriptevent bc:event <name>`):
+
+| Event | |
+|---|---|
+| `meteor_shower` | Mana meteors rain down for thirty seconds; fallen stars can leave mana crystals. |
+| `devil_gate` | A Devil Gate opens and pours out imps and Dark Disciples. Break it (120 HP) for XP and a star – leave it and the Archdevil may step through. |
+| `pirate_landing` | A Raider Captain and a raiding party come ashore. |
+| `skirmish` | Two random factions clash nearby – watch, or join in. |
+| `knight_patrol` | A patrol of Magic Knights passes by (day). |
+| `merchant` | The **Travelling Magic Merchant** sets up shop for six minutes. |
+| `sky_treasure` | A golden beam marks a treasure chest falling from the sky – pirates go for it too. |
+| `crimson_night` | Under a red moon, devils swarm for two minutes and give extra magic XP (night). |
+| `colossus` / `phantom_galleon` / `kraken` | A giant boss rises (Colossus by day, Galleon by night, Kraken near deep water). |
+
+### Magic Knights, factions and the War Table
+
+* **Magic Knights** spawn in plains, forests, meadows and savannas. Each has a name, one of 23 attributes (shown by the glyph over their head) and one of the nine squad robes. They cast real spells at monsters, pirates and devils – and only fight you if you hit them first.
+* **Knight Contract** (emerald ×4, paper ×4, mana crystal): a Magic Knight joins you, follows you and defends you.
+* **Factions in the wild:** knights fight devils and pirates; the Tidewatch also hunt devils and Dark Disciples; pirates and devils attack knights and the navy.
+* **War Table** (map, iron sword, feather / planks ×3 / sticks): a battle simulator. Pick two armies from **Clover Magic Knights**, **Devil Host**, **Sea Raiders**, **Tidewatch Navy**, **Ancient Constructs**, choose 2–12 soldiers a side, decide whether leaders (captains, commodores) join, and **bet doubloons** – win and you get double. Soldiers only fight the other army.
+* **Skirmish Horn** (bone, gold ingot ×2): two random armies clash right in front of you.
+
+### The Travelling Magic Merchant
+
+| Ware | Doubloons |
+|---|---|
+| Mana Crystals x8 | 30 |
+| Ancient Grimoire Pages x2 | 60 |
+| Mystery Abyss Fruit | 450 |
+| Knight Contract (hire a Magic Knight) | 140 |
+| Skirmish Horn | 90 |
+| Archdevil Sigil | 600 |
+| Colossus Core | 500 |
+| Phantom Galleon Bell | 500 |
+| Storm Kraken Lure | 550 |
+| Wishing Clover Charm | 900 |
+
+```
+/give @s bc:grimoire_time       (sand bubble plant poison blood star sound mist crystal bone magma time)
+/give @s bc:fruit_wyvern        (lava ash prism bounce blast acid lodestone cloud ink bear tiger wyvern)
+/give @s bc:war_table
+/give @s bc:archdevil_sigil     (colossus_core galleon_bell kraken_lure)
+/give @s bc:knight_contract
+/summon bc:magic_knight
+/summon bc:magic_merchant
+/scriptevent bc:event skirmish
+```
+
+---
+
 ## Building from source
 
 Everything in `packs/` and `dist/` is generated. Requirements: Python 3.10+, `numpy`, `Pillow`, and `ffmpeg` (for the OGG sounds).
@@ -331,6 +481,8 @@ python3 tools/previews.py     # re-renders the images in docs/images
 | `tools/bc/data.py` | attributes, spells, swords, robes (single source of truth, also exported to the scripts) |
 | `tools/bc/models/` | 3D models (grimoires, swords, robes, altar, spells, mobs, ship, raiders, Leviathan, fruit auras) and their animations |
 | `tools/bc/seagen.py`, `structures.py` | Abyssal Seas pack content and the outpost / wreck blueprints |
+| `tools/bc/grandgen.py`, `wave4gen.py` | wave 3 and wave 4 pack content (bosses, knights, the War Table, faction team groups) |
+| `src/scripts/living/` | wave 4 scripts: the spell engine, knights, battles, bosses, world events, merchant, War Table |
 | `tools/bc/tex.py` | procedural pixel-art material painter |
 | `tools/bc/geo.py`, `render.py` | Bedrock geometry builder with UV atlas packing, and a software preview renderer |
 | `tools/bc/fx.py` | particle textures and particle effects |

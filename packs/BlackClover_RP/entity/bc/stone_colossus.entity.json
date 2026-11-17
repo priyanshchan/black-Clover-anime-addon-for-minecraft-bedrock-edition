@@ -1,0 +1,40 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:stone_colossus",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/stone_colossus"
+      },
+      "geometry": {
+        "default": "geometry.bc.stone_colossus"
+      },
+      "animations": {
+        "idle": "animation.bc.stone_colossus.idle",
+        "walk": "animation.bc.stone_colossus.walk",
+        "look": "animation.bc.stone_colossus.look_at_target",
+        "slam": "animation.bc.stone_colossus.slam"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ],
+        "scale": "3.0"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#404437",
+        "overlay_color": "#ff8a2a"
+      }
+    }
+  }
+}

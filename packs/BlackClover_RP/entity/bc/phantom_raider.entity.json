@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:phantom_raider",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/phantom_raider"
+      },
+      "geometry": {
+        "default": "geometry.bc.sea_raider"
+      },
+      "animations": {
+        "idle": "animation.bc.sea_raider.idle",
+        "walk": "animation.bc.sea_raider.walk",
+        "look": "animation.bc.sea_raider.look_at_target"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#0a1e22",
+        "overlay_color": "#96ffdc"
+      }
+    }
+  }
+}

@@ -228,9 +228,10 @@ def _membrane(a, ctx):
     return a
 
 
-def devil_geo():
-    g = Geo('geometry.bc.devil', res=2, atlas_width=256, visible=(5, 5, (0, 1.8, 0)))
-    skin = tex.Material(P['devil_skin'], noise=0.16, edge=0.7)
+def devil_geo(arch=False):
+    g = Geo('geometry.bc.archdevil' if arch else 'geometry.bc.devil', res=2, atlas_width=256, visible=(6, 6, (0, 2, 0)) if arch else (5, 5, (0, 1.8, 0)))
+    skin_r = tex.ramp('120204', '26050a', '3e0a12', '5a101c', '781a28', '962638') if arch else P['devil_skin']
+    skin = tex.Material(skin_r, noise=0.16, edge=0.7)
     skin_v = tex.Painted(skin, {'*': _veins()})
     horn = tex.Material(tex.ramp('0a0806', '1c1610', '3a3024', '5a4a38', '7a6850', 'a08a6c'), noise=0.08, grad=0.3)
     bone_m = tex.Material(P['bone'], noise=0.06)
@@ -311,7 +312,28 @@ def devil_geo():
         y0 = 16 - k * 0.2 - s / 2
         g.cube(f'tail{k}' if k < 5 else 'tail4', (-s / 2, y0, z0), (s, s, 6.8), skin)
     g.box('tail4', (0, 15.2, 35.5), (4.2, 0.8, 4.2), horn, rotation=[0, 45, 0], pivot=(0, 15.2, 35.5))
+    if arch:
+        _archdevil_extras(g, horn)
     return g
+
+
+def _archdevil_extras(g, horn):
+    """Archdevil: a burning halo, a crown of horns, a chest sigil and gilded bracers."""
+    halo = tex.Energy(tex.ramp('3a0408', '8a0a10', 'd0201a', 'ff7a3a', 'ffe0a0'), alpha=135)
+    gold = tex.Metal(P['gold'])
+    sigil = tex.Energy(tex.ramp('5a0008', 'b0101a', 'ff4a3a', 'ffc8a0', 'ffffff'), alpha=130)
+    g.bone('halo', 'head', (0, 59, 4))
+    for k in range(16):
+        a = math.radians(k * 22.5)
+        cx, cy = math.cos(a) * 8, 59 + math.sin(a) * 8
+        g.box('halo', (cx, cy, 4), (3.4, 1.2, 1.2), halo if k % 2 else horn, rotation=[0, 0, k * 22.5 + 90], pivot=(cx, cy, 4))
+    for k, sx in enumerate((-2.6, -0.9, 0.9, 2.6)):
+        g.box('head', (sx, 48.5 + (1.2 if abs(sx) < 1 else 0), -4.6), (1.0, 3.6, 1.0), horn, rotation=[-20, 0, sx * -6], pivot=(sx, 47, -4.6))
+    g.box('chest', (0, 32, -4.75), (4, 4, 0.4), sigil, rotation=[0, 0, 45], pivot=(0, 32, -4.75))
+    for side, sx in (('right', -1), ('left', 1)):
+        fx0 = 8 if sx > 0 else -14
+        g.cube(f'{side}Forearm', (fx0 - 0.4, 17, -3.8), (6.8, 3.2, 7.6), gold)
+        g.cube(f'{side}Arm', (fx0 - 0.6 if sx > 0 else fx0 + 0.2, 36.4, -3.0), (6.4, 1.2, 6.0), gold)
 
 
 def _abs_chest(a, ctx):

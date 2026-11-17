@@ -48,7 +48,10 @@ for p in walk(os.path.join(RP, 'particles'), '.json'):
     tex = d['description']['basic_render_parameters']['texture']
     if not os.path.exists(os.path.join(RP, tex + '.png')):
         errors.append(f'particle texture missing {tex}')
-rcs = set(load(os.path.join(RP, 'render_controllers', 'bc.render_controllers.json'))['render_controllers'])
+RC_DEFS = {}
+for p_ in walk(os.path.join(RP, 'render_controllers'), '.json'):
+    RC_DEFS.update(load(p_)['render_controllers'])
+rcs = set(RC_DEFS)
 item_tex = load(os.path.join(RP, 'textures', 'item_texture.json'))['texture_data']
 for k, v in item_tex.items():
     if not os.path.exists(os.path.join(RP, v['textures'] + '.png')):
@@ -76,10 +79,26 @@ def check_client(desc, where):
         name = rc if isinstance(rc, str) else list(rc)[0]
         if name.startswith('controller.render.bc') and name not in rcs:
             errors.append(f'{where}: unknown render controller {name}')
+        # array entries must name textures / geometries this client entity defines
+        for kind, key in (('textures', 'textures'), ('geometries', 'geometry')):
+            for arr in RC_DEFS.get(name, {}).get('arrays', {}).get(kind, {}).values():
+                for ref in arr:
+                    if ref.split('.', 1)[1] not in desc.get(key, {}):
+                        errors.append(f'{where}: render controller {name} uses missing {ref}')
 
 bp_ids = set()
+ent_props = set()    # entity property names (bc:tint ...)
+ent_events = set()   # entity event names (bc:team_a ...)
 for p in walk(os.path.join(BP, 'entities'), '.json'):
-    bp_ids.add(load(p)['minecraft:entity']['description']['identifier'])
+    ent = load(p)['minecraft:entity']
+    bp_ids.add(ent['description']['identifier'])
+    ent_props.update(ent['description'].get('properties', {}))
+    ent_events.update(ent.get('events', {}))
+block_ids = set()
+for p in walk(os.path.join(BP, 'blocks'), '.json'):
+    blk = load(p)['minecraft:block']
+    block_ids.add(blk['description']['identifier'])
+    block_ids.update(k for k in blk['components'] if k.startswith('bc:'))
 for p in walk(os.path.join(RP, 'entity'), '.json'):
     d = load(p)['minecraft:client_entity']['description']
     check_client(d, p)
@@ -123,14 +142,16 @@ js = ''
 for p in walk(os.path.join(BP, 'scripts'), '.js'):
     js += open(p, encoding='utf-8').read()
 for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
-    if m in particles or m in bp_ids or m in item_ids or m == 'bc:grimoire_altar':
+    if m in particles or m in bp_ids or m in item_ids or m in block_ids or m in ent_props or m in ent_events:
         continue
     if m in ('bc:attr', 'bc:level', 'bc:xp', 'bc:mana', 'bc:spell', 'bc:anti', 'bc:joined', 'bc:thunder_until', 'bc:shadow_strike',
              'bc:black_form', 'bc:expire', 'bc:altar_logic', 'bc:grimoire_', 'bc:demon_',
              # Abyssal Seas: dynamic-property keys, id prefixes and custom component names
              'bc:sealed', 'bc:fruit', 'bc:fruit_', 'bc:fruit_ab', 'bc:will', 'bc:will_xp', 'bc:will_lv', 'bc:owner', 'bc:power_',
              'bc:bounty_logic', 'bc:bounty', 'bc:fortress_until', 'bc:sea_structs',
-             'bc:stars', 'bc:notoriety', 'bc:traps', 'bc:bulwark_until', 'bc:reflect_until', 'bc:tx', 'bc:tz'):
+             'bc:stars', 'bc:notoriety', 'bc:traps', 'bc:bulwark_until', 'bc:reflect_until', 'bc:tx', 'bc:tz',
+             # living world: dynamic-property keys and the /scriptevent id
+             'bc:team', 'bc:kname', 'bc:leave_at', 'bc:events', 'bc:event'):
         continue
     errors.append(f'script references unknown id {m}')
 for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):

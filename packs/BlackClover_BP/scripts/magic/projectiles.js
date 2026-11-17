@@ -186,7 +186,7 @@ world.afterEvents.projectileHitEntity.subscribe((ev) => safe(() => {
   const target = ev.getEntityHit()?.entity;
   const owner = m.owner ? world.getEntity(m.owner) : ev.source;
   const loc = ev.location;
-  burst(ev.dimension, loc, h.fx, 0.7);
+  if (h.fx) burst(ev.dimension, loc, h.fx, 0.7);
   if (target && !m.hit.has(target.id) && (!owner || canHit(owner, target))) {
     m.hit.add(target.id);
     h.entity?.(m, owner, target, loc);
@@ -208,7 +208,7 @@ world.afterEvents.projectileHitBlock.subscribe((ev) => safe(() => {
   const m = metaFor(ev.projectile, typeId);
   if (!m) return;
   const owner = m.owner ? world.getEntity(m.owner) : ev.source;
-  burst(ev.dimension, ev.location, h.fx, 0.6);
+  if (h.fx) burst(ev.dimension, ev.location, h.fx, 0.6);
   h.block?.(m, owner, ev.location, ev.dimension);
   projectiles.delete(ev.projectile.id);
 }, 'hitBlock'));

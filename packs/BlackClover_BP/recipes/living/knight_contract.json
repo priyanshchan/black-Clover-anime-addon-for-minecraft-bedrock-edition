@@ -1,0 +1,34 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:knight_contract"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "EPE",
+      "PCP",
+      "EPE"
+    ],
+    "key": {
+      "E": {
+        "item": "minecraft:emerald"
+      },
+      "P": {
+        "item": "minecraft:paper"
+      },
+      "C": {
+        "item": "bc:mana_crystal"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:knight_contract",
+      "count": 1
+    }
+  }
+}

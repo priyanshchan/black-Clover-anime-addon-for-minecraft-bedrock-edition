@@ -9,5 +9,8 @@
   },
   "bc:bounty_board": {
     "sound": "wood"
+  },
+  "bc:war_table": {
+    "sound": "wood"
   }
 }

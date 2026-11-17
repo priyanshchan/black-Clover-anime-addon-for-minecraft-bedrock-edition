@@ -6,7 +6,7 @@ from .data import ATTR_ORDER, ATTRIBUTES, NS, ROBES, SPELLS, SWORDS
 from .models import items, mobs, spells, world
 from .out import BP, RP, write_json, write_png, write_text
 
-VERSION = [1, 0, 0]
+VERSION = [1, 4, 0]  # bump on every release so Minecraft replaces the installed packs
 MIN_ENGINE = [1, 21, 90]
 ITEM_FMT = '1.21.60'
 ENTITY_FMT = '1.21.0'
@@ -656,7 +656,8 @@ def flush(ctx: Ctx):
         'resource_pack_name': 'black_clover', 'texture_name': 'atlas.terrain', 'padding': 8, 'num_mip_levels': 4,
         'texture_data': {k: {'textures': v} for k, v in sorted(ctx.terrain_textures.items())},
     })
-    write_json(RP, 'blocks.json', {'format_version': [1, 1, 0], f'{NS}:grimoire_altar': {'sound': 'stone'}, f'{NS}:bounty_board': {'sound': 'wood'}})
+    write_json(RP, 'blocks.json', {'format_version': [1, 1, 0], f'{NS}:grimoire_altar': {'sound': 'stone'}, f'{NS}:bounty_board': {'sound': 'wood'},
+                            f'{NS}:war_table': {'sound': 'wood'}})
     gen_render_controllers()
     gen_lang(ctx)
     write_json(BP, 'manifest.json', manifest_bp())
@@ -674,8 +675,9 @@ def build():
     gen_loot(ctx)
     gen_spell_entities(ctx)
     gen_mobs(ctx)
-    from . import grandgen, seagen  # expansions (import this module, so loaded lazily)
+    from . import grandgen, seagen, wave4gen  # expansions (import this module, so loaded lazily)
     seagen.build(ctx)
     grandgen.build(ctx)
+    wave4gen.build(ctx)
     flush(ctx)
     return ctx

@@ -10,6 +10,7 @@ import { anim, beam, burst, particle, rgb, shakeArea, shockwave, sound, title } 
 import { V, alive, isCreative, rand, repeat, safe, timer } from '../core/util.js';
 import { registerHandler } from '../magic/projectiles.js';
 import { addWill, sea } from './state.js';
+import { castSpec } from '../living/engine.js';
 
 const F = DATA.fruits;
 export const FRUIT_IDS = DATA.fruitOrder;
@@ -328,9 +329,15 @@ export const ABILITIES = {
 
 /** Cast an ability with any entity (used by players and Raider Captains). */
 export function castAbility(caster, fid, abilityId, target) {
+  if (isSealed(caster)) return false;
   const fn = ABILITIES[abilityId];
-  if (!fn || isSealed(caster)) return false;
   const x = ctxFor(caster, fid, target);
+  if (!fn) {
+    // wave 4 fruits are recipes for the spell engine
+    const spec = F[fid]?.abilities.find((a) => a.id === abilityId)?.spec;
+    if (!spec) return false;
+    return safe(() => castSpec(caster, spec, `f:${fid}`, x.pw, x.target), `fruit:${abilityId}`);
+  }
   return safe(() => fn(x), `fruit:${abilityId}`);
 }
 

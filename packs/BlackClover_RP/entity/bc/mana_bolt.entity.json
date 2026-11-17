@@ -1,0 +1,82 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:mana_bolt",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "t0": "textures/entity/bc/bolt/t0",
+        "t1": "textures/entity/bc/bolt/t1",
+        "t2": "textures/entity/bc/bolt/t2",
+        "t3": "textures/entity/bc/bolt/t3",
+        "t4": "textures/entity/bc/bolt/t4",
+        "t5": "textures/entity/bc/bolt/t5",
+        "t6": "textures/entity/bc/bolt/t6",
+        "t7": "textures/entity/bc/bolt/t7",
+        "t8": "textures/entity/bc/bolt/t8",
+        "t9": "textures/entity/bc/bolt/t9",
+        "t10": "textures/entity/bc/bolt/t10",
+        "t11": "textures/entity/bc/bolt/t11",
+        "t12": "textures/entity/bc/bolt/t12",
+        "t13": "textures/entity/bc/bolt/t13",
+        "t14": "textures/entity/bc/bolt/t14",
+        "t15": "textures/entity/bc/bolt/t15",
+        "t16": "textures/entity/bc/bolt/t16",
+        "t17": "textures/entity/bc/bolt/t17",
+        "t18": "textures/entity/bc/bolt/t18",
+        "t19": "textures/entity/bc/bolt/t19",
+        "t20": "textures/entity/bc/bolt/t20",
+        "t21": "textures/entity/bc/bolt/t21",
+        "t22": "textures/entity/bc/bolt/t22",
+        "t23": "textures/entity/bc/bolt/t23",
+        "t24": "textures/entity/bc/bolt/t24",
+        "t25": "textures/entity/bc/bolt/t25",
+        "t26": "textures/entity/bc/bolt/t26",
+        "t27": "textures/entity/bc/bolt/t27",
+        "t28": "textures/entity/bc/bolt/t28",
+        "t29": "textures/entity/bc/bolt/t29",
+        "t30": "textures/entity/bc/bolt/t30",
+        "t31": "textures/entity/bc/bolt/t31",
+        "t32": "textures/entity/bc/bolt/t32",
+        "t33": "textures/entity/bc/bolt/t33",
+        "t34": "textures/entity/bc/bolt/t34",
+        "t35": "textures/entity/bc/bolt/t35",
+        "t36": "textures/entity/bc/bolt/t36",
+        "t37": "textures/entity/bc/bolt/t37",
+        "t38": "textures/entity/bc/bolt/t38",
+        "t39": "textures/entity/bc/bolt/t39",
+        "t40": "textures/entity/bc/bolt/t40",
+        "t41": "textures/entity/bc/bolt/t41",
+        "t42": "textures/entity/bc/bolt/t42",
+        "t43": "textures/entity/bc/bolt/t43",
+        "t44": "textures/entity/bc/bolt/t44",
+        "t45": "textures/entity/bc/bolt/t45"
+      },
+      "geometry": {
+        "orb": "geometry.bc.bolt_orb",
+        "shard": "geometry.bc.bolt_shard",
+        "blade": "geometry.bc.bolt_blade",
+        "needle": "geometry.bc.bolt_needle"
+      },
+      "animations": {
+        "fly": "animation.bc.mana_bolt.fly",
+        "trail": "animation.bc.mana_bolt.trail"
+      },
+      "particle_effects": {
+        "trail": "bc:trail_mana"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "trail"
+        ],
+        "scale": "1.0 + q.property('bc:size') * 0.55"
+      },
+      "render_controllers": [
+        "controller.render.bc.mana_bolt"
+      ]
+    }
+  }
+}

@@ -134,6 +134,10 @@ def tex_small(kind):
             d.polygon([(8 * s, 1 * s), (11.5 * s, 9 * s), (4.5 * s, 9 * s)], fill=(255, 255, 255, 255))
         elif kind == 'clover':
             tex.clover_shape(d, c, c - s, 6 * s, 3, (90, 200, 90, 255), stem=True)
+        elif kind == 'note':
+            d.ellipse([2 * s, 10 * s, 7.5 * s, 14.5 * s], fill=(255, 255, 255, 255))
+            d.rectangle([5.8 * s, 2 * s, 7.5 * s, 12.5 * s], fill=(255, 255, 255, 255))
+            d.polygon([(7.5 * s, 2 * s), (13 * s, 4.5 * s), (13 * s, 7 * s), (7.5 * s, 5 * s)], fill=(255, 255, 255, 255))
         elif kind == 'plus':
             d.rectangle([6 * s, 2 * s, 10 * s, 14 * s], fill=(255, 255, 255, 255))
             d.rectangle([2 * s, 6 * s, 14 * s, 10 * s], fill=(255, 255, 255, 255))
@@ -154,7 +158,7 @@ def gen_textures():
     write_png(RP, T + 'bolt.png', tex_bolt())
     write_png(RP, T + 'slash.png', tex_slash())
     write_png(RP, T + 'swirl.png', tex_swirl())
-    for k in ('shard', 'bubble', 'snow', 'drop', 'clover', 'plus'):
+    for k in ('shard', 'bubble', 'snow', 'drop', 'clover', 'plus', 'note'):
         write_png(RP, T + f'{k}.png', tex_small(k))
 
 
@@ -177,7 +181,7 @@ def uv(texture, w, h, flip=None):
 
 SIZES = {'glow': (32, 32), 'spark': (32, 32), 'circle': (128, 128), 'ring': (64, 64), 'flame': (32, 32), 'smoke': (32, 32),
          'bolt': (32, 128), 'slash': (64, 32), 'swirl': (32, 32), 'shard': (16, 16), 'bubble': (16, 16), 'snow': (16, 16),
-         'drop': (16, 16), 'clover': (16, 16), 'plus': (16, 16)}
+         'drop': (16, 16), 'clover': (16, 16), 'plus': (16, 16), 'note': (16, 16)}
 
 
 def P(ident, texture, material, comps):
@@ -552,7 +556,67 @@ def sea_particles():
     return out
 
 
+def wave4_particles(tints):
+    """Coloured bursts for the spell engine, the mana-bolt trail and world-event effects."""
+    out = []
+
+    def one(ident, texture, material, n, speed, life, size, tint, gravity=0.0, drag=2.0, spin=0, radius=0.3, flip=None, shape=None):
+        c = {
+            'minecraft:emitter_initialization': {'creation_expression': 'v.sc = v.scale ?? 1.0;'},
+            **once(n),
+            'minecraft:emitter_shape_sphere': {'radius': f'{radius} * v.sc', 'direction': 'outwards'},
+            'minecraft:particle_lifetime_expression': {'max_lifetime': f'{life} * (0.6 + v.particle_random_1 * 0.8)'},
+            'minecraft:particle_initial_speed': f'({speed}) * v.sc * (0.5 + v.particle_random_2)',
+            'minecraft:particle_motion_dynamic': {'linear_acceleration': [0, gravity, 0], 'linear_drag_coefficient': drag},
+            'minecraft:particle_appearance_billboard': billboard(texture, [f'{size} * v.sc * (1.0 - v.particle_age / v.particle_lifetime * 0.5)'] * 2, flip=flip),
+            'minecraft:particle_appearance_tinting': tint,
+        }
+        if shape:
+            del c['minecraft:emitter_shape_sphere']
+            c.update(shape)
+        if spin:
+            c['minecraft:particle_initial_spin'] = {'rotation': 'math.random(0,360)', 'rotation_rate': spin}
+        return P(ident, texture, material, c)
+
+    out.append(one('bc:dust_burst', 'smoke', 'particles_blend', 26, 4, 1.1, 0.8, color_var(f'0.85 * ({FADE_OUT})'), gravity=0.6, drag=2.2, flip=(4, 6, True), radius=0.6))
+    out.append(one('bc:bubble_burst', 'bubble', 'particles_add', 22, 4, 0.9, 0.3, color_var(FADE_OUT), gravity=2.0, drag=2.0, radius=0.5))
+    out.append(one('bc:note_burst', 'note', 'particles_add', 12, 2.5, 1.2, 0.35, color_var(FADE_OUT), gravity=1.5, drag=1.5, radius=0.6))
+    out.append(one('bc:pillar', 'glow', 'particles_add', 40, 9, 0.55, 0.45, color_var(FADE_OUT), drag=1.2,
+                   shape={'minecraft:emitter_shape_disc': {'radius': '0.5 * v.sc', 'plane_normal': 'y', 'direction': [0, 1, 0]}}))
+    out.append(one('bc:fog_cloud', 'smoke', 'particles_blend', 18, 0.4, 5.0, 3.2,
+                   {'color': [0.75, 0.85, 0.82, f'0.45 * math.clamp(v.particle_age, 0.0, 1.0) * ({FADE_OUT})']}, drag=0.5, flip=(4, 2, True), radius=6))
+    out.append(one('bc:sky_beam', 'glow', 'particles_add', 70, 0.2, 1.1, 0.6, color_var(FADE_OUT), drag=1.0,
+                   shape={'minecraft:emitter_shape_box': {'offset': [0, 16, 0], 'half_dimensions': [0.15, 16, 0.15], 'direction': [0, 1, 0]}}))
+    out.append(one('bc:blood_moon', 'glow', 'particles_add', 30, 0.5, 2.5, 1.4,
+                   {'color': [1.0, 0.15, 0.15, f'0.6 * ({FADE_OUT})']}, drag=0.8, radius=12))
+    # mana-bolt trail: the tint comes from the bolt's bc:tint property (set in the trail animation)
+    out.append(P('bc:trail_mana', 'glow', 'particles_add', {
+        **steady(55, 60),
+        'minecraft:emitter_local_space': {'position': False, 'rotation': False},
+        'minecraft:emitter_shape_sphere': {'radius': 0.15, 'direction': 'outwards'},
+        'minecraft:particle_lifetime_expression': {'max_lifetime': '0.35 * (0.7 + v.particle_random_1 * 0.6)'},
+        'minecraft:particle_initial_speed': 0.3,
+        'minecraft:particle_motion_dynamic': {'linear_drag_coefficient': 2.0},
+        'minecraft:particle_appearance_billboard': billboard('glow', ['0.35 * (1.0 - v.particle_age / v.particle_lifetime * 0.7)'] * 2),
+        'minecraft:particle_appearance_tinting': {'color': ['v.tr ?? 1.0', 'v.tg ?? 1.0', 'v.tb ?? 1.0', FADE_OUT]},
+    }))
+    return out
+
+
+def tint_script(tints):
+    """Molang that turns the bolt's bc:tint index into v.tr / v.tg / v.tb for its trail."""
+    chans = []
+    for ci, name in enumerate(('tr', 'tg', 'tb')):
+        expr = '1.0'
+        for i, (_, hexc) in reversed(list(enumerate(tints))):
+            v = int(hexc[ci * 2:ci * 2 + 2], 16) / 255
+            expr = f'(v.tt == {i} ? {round(v, 3)} : {expr})'
+        chans.append(f'v.{name} = {expr};')
+    return "v.tt = q.property('bc:tint'); " + ' '.join(chans)
+
+
 def build():
     gen_textures()
-    for ident, data in particles() + sea_particles():
+    from .models.wave4 import TINTS
+    for ident, data in particles() + sea_particles() + wave4_particles(TINTS):
         write_json(RP, f"particles/bc/{ident.split(':')[1]}.particle.json", data)

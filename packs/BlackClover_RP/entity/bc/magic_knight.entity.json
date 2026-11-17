@@ -1,0 +1,48 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:magic_knight",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "r0": "textures/entity/bc/knight/black_bull_robe",
+        "r1": "textures/entity/bc/knight/golden_dawn_robe",
+        "r2": "textures/entity/bc/knight/crimson_lion_robe",
+        "r3": "textures/entity/bc/knight/silver_eagle_robe",
+        "r4": "textures/entity/bc/knight/blue_rose_robe",
+        "r5": "textures/entity/bc/knight/green_mantis_robe",
+        "r6": "textures/entity/bc/knight/coral_peacock_robe",
+        "r7": "textures/entity/bc/knight/purple_orca_robe",
+        "r8": "textures/entity/bc/knight/aqua_deer_robe"
+      },
+      "geometry": {
+        "default": "geometry.bc.magic_knight"
+      },
+      "animations": {
+        "idle": "animation.bc.magic_knight.idle",
+        "walk": "animation.bc.magic_knight.walk",
+        "look": "animation.bc.magic_knight.look_at_target",
+        "cast": "animation.bc.magic_knight.cast",
+        "attack": "animation.bc.magic_knight.attack"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.magic_knight"
+      ],
+      "spawn_egg": {
+        "base_color": "#1a1a22",
+        "overlay_color": "#d39a2c"
+      }
+    }
+  }
+}

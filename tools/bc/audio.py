@@ -393,7 +393,67 @@ def s_slam():
     return norm(np.tanh((thud + rubble) * 1.6))
 
 
+def s_horn():
+    d = 2.4
+    t = t_(d)
+    f = 98 + 12 * np.clip(t / 0.4, 0, 1) - 6 * np.clip((t - 1.8) / 0.6, 0, 1)
+    v = 1 + 0.01 * np.sin(2 * np.pi * 5 * t)
+    x = osc(f * v, d, 'saw') * 0.6 + osc(f * 2 * v, d, 'saw') * 0.3 + osc(f * 3 * v, d) * 0.15
+    x = lowpass(np.tanh(x * 1.5), 900 + 500 * np.clip(t / 0.5, 0, 1))
+    return norm(reverb(x * env(len(t), 0.25, 0.2, 0.85, 0.7, d), 0.5))
+
+
+def s_clock():
+    d = 1.4
+    x = np.zeros(int(round(SR * d)))
+    for k in range(4):
+        i = int(SR * k * 0.22)
+        n = 1600
+        tt = np.arange(n) / SR
+        x[i:i + n] += highpass(noise(n, 90 + k), 2500) * np.exp(-tt * 120) * (0.9 if k % 2 == 0 else 0.6)
+    i = int(SR * 0.9)
+    tt = np.arange(len(x) - i) / SR
+    x[i:] += (np.sin(2 * np.pi * 1318 * tt) + np.sin(2 * np.pi * 1975 * tt) * 0.5) * np.exp(-tt * 5) * 0.5
+    return norm(reverb(x, 0.35))
+
+
+def s_bubble():
+    d = 0.8
+    x = np.zeros(int(round(SR * d)))
+    rng = np.random.default_rng(93)
+    for _ in range(9):
+        i = int(rng.integers(0, len(x) - 3000))
+        tt = np.arange(3000) / SR
+        f0 = rng.uniform(400, 900)
+        x[i:i + 3000] += np.sin(2 * np.pi * (f0 + 2200 * tt) * tt) * np.exp(-tt * 28)
+    return norm(reverb(x, 0.25))
+
+
+def s_chord():
+    d = 1.6
+    t = t_(d)
+    x = np.zeros(len(t))
+    for k, f in enumerate((523.3, 659.3, 784.0, 1046.5)):
+        st = int(SR * k * 0.07)
+        tt = t[:len(t) - st]
+        x[st:] += (osc(f, d)[:len(tt)] * 0.6 + osc(f * 2, d)[:len(tt)] * 0.15) * np.exp(-tt * 2.5)
+    return norm(reverb(x, 0.5))
+
+
+def s_gong():
+    d = 3.0
+    t = t_(d)
+    x = sum(osc(f, d) * np.exp(-t * dec) * a for f, a, dec in ((82, 1.0, 1.2), (164.5, 0.5, 1.6), (227, 0.35, 2.0), (311, 0.25, 2.6), (523, 0.12, 3.5)))
+    x = x * (1 + 0.15 * np.sin(2 * np.pi * 3.2 * t)) + lowpass(noise(len(t), 94), 400) * np.exp(-t * 18) * 0.8
+    return norm(reverb(x, 0.5))
+
+
 SOUNDS = {
+    'bc.horn': (s_horn, 'neutral', 1.0),
+    'bc.clock': (s_clock, 'player', 1.0),
+    'bc.bubble': (s_bubble, 'neutral', 0.9),
+    'bc.chord': (s_chord, 'player', 0.9),
+    'bc.gong': (s_gong, 'neutral', 1.0),
     'bc.pistol': (s_pistol, 'player', 1.0),
     'bc.howl': (s_howl, 'player', 1.0),
     'bc.portal': (s_portal, 'neutral', 1.0),
@@ -450,6 +510,6 @@ def build():
                 subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', wav, '-c:a', 'libvorbis', '-q:a', '4', dst], check=True)
             elif not os.path.exists(dst):
                 raise RuntimeError('ffmpeg is required to encode sounds')
-            defs[key] = {'category': cat, 'min_distance': 1.0, 'max_distance': 32.0,
+            defs[key] = {'category': cat, 'min_distance': 1.0, 'max_distance': 64.0 if key in ('bc.horn', 'bc.gong') else 32.0,
                          'sounds': [{'name': f'sounds/bc/{name}', 'volume': vol, 'load_on_low_memory': True}]}
     write_json(RP, 'sounds/sound_definitions.json', {'format_version': '1.20.20', 'sound_definitions': defs})

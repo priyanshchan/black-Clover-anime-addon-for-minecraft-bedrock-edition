@@ -10,6 +10,7 @@ import { ANTI_SPELLS } from './antimagic.js';
 import { SPELLS } from './spells.js';
 import { SPELLS2 } from './spells2.js';
 import { zoneBonus } from './techniques.js';
+import { castSpec } from '../living/engine.js';
 
 const IMPL = { ...SPELLS, ...SPELLS2, ...ANTI_SPELLS };
 
@@ -58,7 +59,7 @@ export function useGrimoire(p, item) {
     s.lastCast = t;
     return;
   }
-  const impl = IMPL[sp.id];
+  const impl = IMPL[sp.id] ?? (sp.spec ? (/** @type {any} */ c) => castSpec(c.p, sp.spec, `a:${attr}`, c.pw) : undefined);
   if (!impl) return;
   if (!creative) s.mana -= cost;
   const zone = zoneBonus(p);

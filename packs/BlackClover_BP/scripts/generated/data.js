@@ -6,84 +6,168 @@ export const DATA = {
       "color": "6fe0a0",
       "leaves": 3,
       "mc": "\u00a7a",
-      "glyph": "\ue700"
+      "glyph": "\ue7a0"
     },
     "flame": {
       "name": "Flame",
       "color": "ff7a1a",
       "leaves": 3,
       "mc": "\u00a7c",
-      "glyph": "\ue701"
+      "glyph": "\ue7a1"
     },
     "water": {
       "name": "Water",
       "color": "3ca8ff",
       "leaves": 3,
       "mc": "\u00a79",
-      "glyph": "\ue702"
+      "glyph": "\ue7a2"
     },
     "lightning": {
       "name": "Lightning",
       "color": "ffe03a",
       "leaves": 3,
       "mc": "\u00a7e",
-      "glyph": "\ue703"
+      "glyph": "\ue7a3"
     },
     "light": {
       "name": "Light",
       "color": "fff1b0",
       "leaves": 4,
       "mc": "\u00a7f",
-      "glyph": "\ue704"
+      "glyph": "\ue7a4"
     },
     "dark": {
       "name": "Dark",
       "color": "8a46c8",
       "leaves": 4,
       "mc": "\u00a75",
-      "glyph": "\ue705"
+      "glyph": "\ue7a5"
     },
     "ice": {
       "name": "Ice",
       "color": "8ae6ff",
       "leaves": 3,
       "mc": "\u00a7b",
-      "glyph": "\ue706"
+      "glyph": "\ue7a6"
     },
     "anti": {
       "name": "Anti-Magic",
       "color": "e23a3a",
       "leaves": 5,
       "mc": "\u00a78",
-      "glyph": "\ue707"
+      "glyph": "\ue7a7"
     },
     "spatial": {
       "name": "Spatial",
       "color": "e08aff",
       "leaves": 4,
       "mc": "\u00a7d",
-      "glyph": "\ue708"
+      "glyph": "\ue7a8"
     },
     "earth": {
       "name": "Earth",
       "color": "c49a5a",
       "leaves": 3,
       "mc": "\u00a76",
-      "glyph": "\ue709"
+      "glyph": "\ue7a9"
     },
     "steel": {
       "name": "Steel",
       "color": "b8c4d0",
       "leaves": 3,
       "mc": "\u00a77",
-      "glyph": "\ue70a"
+      "glyph": "\ue7aa"
     },
     "mirror": {
       "name": "Mirror",
       "color": "c8d8ff",
       "leaves": 4,
       "mc": "\u00a79",
-      "glyph": "\ue70b"
+      "glyph": "\ue7ab"
+    },
+    "sand": {
+      "name": "Sand",
+      "color": "e0c27a",
+      "leaves": 3,
+      "mc": "\u00a76",
+      "glyph": "\ue7ac"
+    },
+    "bubble": {
+      "name": "Bubble",
+      "color": "9ad8ff",
+      "leaves": 3,
+      "mc": "\u00a7b",
+      "glyph": "\ue7ad"
+    },
+    "plant": {
+      "name": "Plant",
+      "color": "3fae4a",
+      "leaves": 3,
+      "mc": "\u00a72",
+      "glyph": "\ue7ae"
+    },
+    "poison": {
+      "name": "Poison",
+      "color": "b6e83a",
+      "leaves": 3,
+      "mc": "\u00a7a",
+      "glyph": "\ue7af"
+    },
+    "blood": {
+      "name": "Blood",
+      "color": "d01a34",
+      "leaves": 3,
+      "mc": "\u00a74",
+      "glyph": "\ue7b0"
+    },
+    "star": {
+      "name": "Star",
+      "color": "9fb4ff",
+      "leaves": 4,
+      "mc": "\u00a79",
+      "glyph": "\ue7b1"
+    },
+    "sound": {
+      "name": "Sound",
+      "color": "ff8ad8",
+      "leaves": 3,
+      "mc": "\u00a7d",
+      "glyph": "\ue7b2"
+    },
+    "mist": {
+      "name": "Mist",
+      "color": "c8d2dc",
+      "leaves": 3,
+      "mc": "\u00a77",
+      "glyph": "\ue7b3"
+    },
+    "crystal": {
+      "name": "Crystal",
+      "color": "7affd8",
+      "leaves": 3,
+      "mc": "\u00a73",
+      "glyph": "\ue7b4"
+    },
+    "bone": {
+      "name": "Bone",
+      "color": "e8e0c8",
+      "leaves": 3,
+      "mc": "\u00a7f",
+      "glyph": "\ue7b5"
+    },
+    "magma": {
+      "name": "Magma",
+      "color": "ff4a1a",
+      "leaves": 3,
+      "mc": "\u00a7c",
+      "glyph": "\ue7b6"
+    },
+    "time": {
+      "name": "Time",
+      "color": "e8c060",
+      "leaves": 4,
+      "mc": "\u00a7e",
+      "glyph": "\ue7b7"
     }
   },
   "order": [
@@ -98,7 +182,19 @@ export const DATA = {
     "spatial",
     "earth",
     "steel",
-    "mirror"
+    "mirror",
+    "sand",
+    "bubble",
+    "plant",
+    "poison",
+    "blood",
+    "star",
+    "sound",
+    "mist",
+    "crystal",
+    "bone",
+    "magma",
+    "time"
   ],
   "spells": {
     "wind": [
@@ -508,6 +604,1032 @@ export const DATA = {
         "level": 10,
         "desc": "Mirror panes surround your aim and burn it from every angle."
       }
+    ],
+    "sand": [
+      {
+        "id": "sand_bullets",
+        "name": "Sand Bullets",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "Three grains of hardened sand that grind foes down.",
+        "spec": {
+          "t": "bolt",
+          "d": 4,
+          "n": 3,
+          "spread": 6,
+          "shape": 0,
+          "speed": 1.9,
+          "fx": "sand",
+          "eff": [
+            [
+              "slowness",
+              1,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "quicksand",
+        "name": "Quicksand",
+        "mana": 26,
+        "cooldown": 7.0,
+        "level": 3,
+        "desc": "The ground near your aim becomes sucking quicksand.",
+        "spec": {
+          "t": "zone",
+          "d": 1.5,
+          "r": 4,
+          "dur": 5,
+          "pull": 0.25,
+          "fx": "sand",
+          "eff": [
+            [
+              "slowness",
+              2,
+              3
+            ]
+          ]
+        }
+      },
+      {
+        "id": "sand_coffin",
+        "name": "Sand Coffin",
+        "mana": 40,
+        "cooldown": 9.0,
+        "level": 6,
+        "desc": "Bury enemies near your aim in sand, then crush them.",
+        "spec": {
+          "t": "prison",
+          "d": 14,
+          "r": 3.5,
+          "dur": 3,
+          "fx": "sand"
+        }
+      },
+      {
+        "id": "desert_storm",
+        "name": "Desert Storm",
+        "mana": 80,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "A roaring sandstorm around you blinds and shreds foes.",
+        "spec": {
+          "t": "zone",
+          "at": "self",
+          "d": 3,
+          "r": 9,
+          "dur": 6,
+          "fx": "sand",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ],
+            [
+              "slowness",
+              2,
+              1
+            ]
+          ]
+        }
+      }
+    ],
+    "bubble": [
+      {
+        "id": "bubble_shot",
+        "name": "Bubble Shot",
+        "mana": 8,
+        "cooldown": 0.5,
+        "level": 1,
+        "desc": "A big bubble that pops with a stunning burst.",
+        "spec": {
+          "t": "bolt",
+          "d": 3.5,
+          "speed": 1.0,
+          "shape": 0,
+          "size": 2,
+          "aoe": 2.2,
+          "fx": "bubble",
+          "eff": [
+            [
+              "slowness",
+              2,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "bubble_barrage",
+        "name": "Bubble Barrage",
+        "mana": 22,
+        "cooldown": 3.0,
+        "level": 3,
+        "desc": "A fan of seven popping bubbles.",
+        "spec": {
+          "t": "bolt",
+          "d": 3,
+          "n": 7,
+          "spread": 26,
+          "speed": 0.9,
+          "shape": 0,
+          "size": 1,
+          "aoe": 1.5,
+          "fx": "bubble"
+        }
+      },
+      {
+        "id": "bubble_prison",
+        "name": "Bubble Prison",
+        "mana": 34,
+        "cooldown": 9.0,
+        "level": 6,
+        "desc": "Trap enemies in floating bubbles and lift them away.",
+        "spec": {
+          "t": "prison",
+          "d": 6,
+          "r": 4,
+          "dur": 4,
+          "fx": "bubble",
+          "eff": [
+            [
+              "levitation",
+              3,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "foam_flood",
+        "name": "Foam Flood",
+        "mana": 72,
+        "cooldown": 22.0,
+        "level": 10,
+        "desc": "A wide wall of crashing foam rolls over everything ahead.",
+        "spec": {
+          "t": "wave",
+          "d": 10,
+          "len": 16,
+          "lanes": 3,
+          "fx": "bubble",
+          "kb": [
+            1.8,
+            0.6
+          ]
+        }
+      }
+    ],
+    "plant": [
+      {
+        "id": "thorn_seeds",
+        "name": "Thorn Seeds",
+        "mana": 12,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "Three thorned seeds that poison what they hit.",
+        "spec": {
+          "t": "bolt",
+          "d": 4,
+          "n": 3,
+          "spread": 10,
+          "shape": 3,
+          "fx": "leaf",
+          "eff": [
+            [
+              "poison",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "vine_snare",
+        "name": "Vine Snare",
+        "mana": 24,
+        "cooldown": 6.0,
+        "level": 3,
+        "desc": "Vines burst up and bind enemies near your aim.",
+        "spec": {
+          "t": "prison",
+          "d": 4,
+          "r": 3,
+          "dur": 3,
+          "fx": "leaf"
+        }
+      },
+      {
+        "id": "healing_garden",
+        "name": "Healing Garden",
+        "mana": 34,
+        "cooldown": 14.0,
+        "level": 6,
+        "desc": "A blooming garden heals you and your allies.",
+        "spec": {
+          "t": "heal",
+          "heal": 8,
+          "r": 7,
+          "regen": 6,
+          "fx": "leaf"
+        }
+      },
+      {
+        "id": "great_tree_wrath",
+        "name": "Great Tree Wrath",
+        "mana": 85,
+        "cooldown": 26.0,
+        "level": 10,
+        "desc": "Giant roots erupt all around you and hurl foes skyward.",
+        "spec": {
+          "t": "nova",
+          "d": 16,
+          "r": 9,
+          "kb": [
+            0.6,
+            1.1
+          ],
+          "fx": "leaf",
+          "eff": [
+            [
+              "slowness",
+              4,
+              2
+            ]
+          ]
+        }
+      }
+    ],
+    "poison": [
+      {
+        "id": "venom_needles",
+        "name": "Venom Needles",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "Two needles dripping with venom.",
+        "spec": {
+          "t": "bolt",
+          "d": 3,
+          "n": 2,
+          "spread": 4,
+          "shape": 3,
+          "speed": 2.2,
+          "fx": "poison",
+          "eff": [
+            [
+              "poison",
+              4,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "toxic_mist",
+        "name": "Toxic Mist",
+        "mana": 28,
+        "cooldown": 8.0,
+        "level": 3,
+        "desc": "A cloud of choking poison settles over your aim.",
+        "spec": {
+          "t": "zone",
+          "d": 1,
+          "r": 4.5,
+          "dur": 6,
+          "fx": "poison",
+          "eff": [
+            [
+              "poison",
+              3,
+              1
+            ],
+            [
+              "nausea",
+              4,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "serpent_fang",
+        "name": "Serpent Fang",
+        "mana": 36,
+        "cooldown": 7.0,
+        "level": 6,
+        "desc": "A venom serpent fang that pierces a line of foes.",
+        "spec": {
+          "t": "bolt",
+          "d": 12,
+          "shape": 2,
+          "speed": 2.0,
+          "pierce": 3,
+          "size": 1,
+          "fx": "poison",
+          "eff": [
+            [
+              "poison",
+              5,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "plague_bloom",
+        "name": "Plague Bloom",
+        "mana": 80,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "A flower of plague bursts open around you.",
+        "spec": {
+          "t": "nova",
+          "d": 10,
+          "r": 8,
+          "fx": "poison",
+          "eff": [
+            [
+              "poison",
+              8,
+              2
+            ],
+            [
+              "weakness",
+              8,
+              1
+            ]
+          ]
+        }
+      }
+    ],
+    "blood": [
+      {
+        "id": "blood_lances",
+        "name": "Blood Lances",
+        "mana": 6,
+        "cooldown": 0.7,
+        "level": 1,
+        "desc": "Three lances of blood that heal you as they hit. Costs 2 health.",
+        "spec": {
+          "t": "bolt",
+          "d": 6,
+          "n": 3,
+          "spread": 5,
+          "shape": 3,
+          "speed": 2.0,
+          "fx": "blood",
+          "ls": 0.25,
+          "hp": 2
+        }
+      },
+      {
+        "id": "crimson_drain",
+        "name": "Crimson Drain",
+        "mana": 18,
+        "cooldown": 4.0,
+        "level": 3,
+        "desc": "A beam that drains the life of everything it touches.",
+        "spec": {
+          "t": "beam",
+          "d": 8,
+          "range": 20,
+          "fx": "blood",
+          "ls": 0.6
+        }
+      },
+      {
+        "id": "blood_rage",
+        "name": "Blood Rage",
+        "mana": 20,
+        "cooldown": 18.0,
+        "level": 6,
+        "desc": "Spend your own blood for raw power and speed. Costs 6 health.",
+        "spec": {
+          "t": "buff",
+          "fx": "blood",
+          "hp": 6,
+          "self": [
+            [
+              "strength",
+              12,
+              1
+            ],
+            [
+              "speed",
+              12,
+              1
+            ],
+            [
+              "haste",
+              12,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "sanguine_moon",
+        "name": "Sanguine Moon",
+        "mana": 80,
+        "cooldown": 26.0,
+        "level": 10,
+        "desc": "A blood moon strikes every foe around you and feeds you. Costs 8 health.",
+        "spec": {
+          "t": "strikes",
+          "d": 14,
+          "n": 8,
+          "r": 12,
+          "fx": "blood",
+          "ls": 0.3,
+          "hp": 8
+        }
+      }
+    ],
+    "star": [
+      {
+        "id": "star_shards",
+        "name": "Star Shards",
+        "mana": 14,
+        "cooldown": 1.0,
+        "level": 1,
+        "desc": "A spray of five shards of starlight.",
+        "spec": {
+          "t": "bolt",
+          "d": 3.5,
+          "n": 5,
+          "spread": 18,
+          "shape": 1,
+          "speed": 2.0,
+          "fx": "star"
+        }
+      },
+      {
+        "id": "constellation",
+        "name": "Constellation",
+        "mana": 30,
+        "cooldown": 8.0,
+        "level": 3,
+        "desc": "Stars lock onto enemies near your aim and strike them.",
+        "spec": {
+          "t": "strikes",
+          "d": 9,
+          "n": 5,
+          "r": 8,
+          "fx": "star"
+        }
+      },
+      {
+        "id": "comet_fall",
+        "name": "Comet Fall",
+        "mana": 48,
+        "cooldown": 12.0,
+        "level": 6,
+        "desc": "Call a comet down on your aim.",
+        "spec": {
+          "t": "meteor",
+          "d": 20,
+          "n": 1,
+          "r": 0,
+          "aoe": 5,
+          "size": 3,
+          "fx": "star"
+        }
+      },
+      {
+        "id": "supernova",
+        "name": "Supernova",
+        "mana": 90,
+        "cooldown": 26.0,
+        "level": 10,
+        "desc": "Explode with the light of a dying star.",
+        "spec": {
+          "t": "nova",
+          "d": 22,
+          "r": 11,
+          "kb": [
+            2.0,
+            0.8
+          ],
+          "fx": "star",
+          "eff": [
+            [
+              "blindness",
+              3,
+              0
+            ]
+          ]
+        }
+      }
+    ],
+    "sound": [
+      {
+        "id": "sonic_pulse",
+        "name": "Sonic Pulse",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "A ringing pulse that passes through foes.",
+        "spec": {
+          "t": "bolt",
+          "d": 5,
+          "shape": 0,
+          "speed": 2.4,
+          "pierce": 2,
+          "fx": "sound",
+          "kb": [
+            1.2,
+            0.3
+          ]
+        }
+      },
+      {
+        "id": "resonance",
+        "name": "Resonance",
+        "mana": 24,
+        "cooldown": 6.0,
+        "level": 3,
+        "desc": "A shattering chord blasts everything away from you.",
+        "spec": {
+          "t": "nova",
+          "d": 6,
+          "r": 5,
+          "kb": [
+            2.2,
+            0.5
+          ],
+          "fx": "sound",
+          "eff": [
+            [
+              "nausea",
+              4,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "war_song",
+        "name": "War Song",
+        "mana": 30,
+        "cooldown": 20.0,
+        "level": 6,
+        "desc": "A battle song that strengthens you and your allies.",
+        "spec": {
+          "t": "buff",
+          "allies": 8,
+          "fx": "sound",
+          "self": [
+            [
+              "strength",
+              10,
+              0
+            ],
+            [
+              "speed",
+              10,
+              0
+            ],
+            [
+              "regeneration",
+              6,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "sonic_boom",
+        "name": "Sonic Boom",
+        "mana": 78,
+        "cooldown": 22.0,
+        "level": 10,
+        "desc": "A deafening boom that tears through everything ahead.",
+        "spec": {
+          "t": "beam",
+          "d": 20,
+          "range": 28,
+          "width": 2.0,
+          "fx": "sound",
+          "kb": [
+            2.5,
+            0.8
+          ]
+        }
+      }
+    ],
+    "mist": [
+      {
+        "id": "mist_needles",
+        "name": "Mist Needles",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "Three needles of condensed mist.",
+        "spec": {
+          "t": "bolt",
+          "d": 3.5,
+          "n": 3,
+          "spread": 8,
+          "shape": 3,
+          "speed": 2.0,
+          "fx": "mist",
+          "eff": [
+            [
+              "slowness",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "vanishing_mist",
+        "name": "Vanishing Mist",
+        "mana": 26,
+        "cooldown": 16.0,
+        "level": 3,
+        "desc": "Vanish into a thick mist that blinds those nearby.",
+        "spec": {
+          "t": "buff",
+          "fx": "mist",
+          "self": [
+            [
+              "invisibility",
+              8,
+              0
+            ],
+            [
+              "speed",
+              8,
+              1
+            ]
+          ],
+          "then": {
+            "t": "zone",
+            "at": "self",
+            "d": 0,
+            "r": 5,
+            "dur": 5,
+            "fx": "mist",
+            "eff": [
+              [
+                "blindness",
+                2,
+                0
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": "phantom_step",
+        "name": "Phantom Step",
+        "mana": 18,
+        "cooldown": 3.0,
+        "level": 6,
+        "desc": "Blink through the mist, cutting everything you pass.",
+        "spec": {
+          "t": "leap",
+          "d": 6,
+          "dist": 10,
+          "mode": "blink",
+          "fx": "mist"
+        }
+      },
+      {
+        "id": "mist_labyrinth",
+        "name": "Mist Labyrinth",
+        "mana": 70,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "Trap your foes in a maze of mist that saps their strength.",
+        "spec": {
+          "t": "zone",
+          "d": 2,
+          "r": 8,
+          "dur": 8,
+          "fx": "mist",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ],
+            [
+              "slowness",
+              2,
+              2
+            ],
+            [
+              "weakness",
+              2,
+              1
+            ]
+          ]
+        }
+      }
+    ],
+    "crystal": [
+      {
+        "id": "crystal_shards",
+        "name": "Crystal Shards",
+        "mana": 12,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "Three razor crystal shards.",
+        "spec": {
+          "t": "bolt",
+          "d": 4.5,
+          "n": 3,
+          "spread": 8,
+          "shape": 1,
+          "speed": 2.0,
+          "fx": "crystal"
+        }
+      },
+      {
+        "id": "prism_wall",
+        "name": "Prism Wall",
+        "mana": 24,
+        "cooldown": 12.0,
+        "level": 3,
+        "desc": "Raise a wall of crystal.",
+        "spec": {
+          "t": "wall",
+          "block": "minecraft:light_blue_stained_glass",
+          "w": 5,
+          "h": 3,
+          "dur": 10,
+          "fx": "crystal"
+        }
+      },
+      {
+        "id": "crystal_lances",
+        "name": "Crystal Lances",
+        "mana": 36,
+        "cooldown": 7.0,
+        "level": 6,
+        "desc": "Crystal lances burst from the ground in a line.",
+        "spec": {
+          "t": "wave",
+          "d": 11,
+          "len": 14,
+          "fx": "crystal",
+          "kb": [
+            0.2,
+            0.9
+          ]
+        }
+      },
+      {
+        "id": "diamond_storm",
+        "name": "Diamond Storm",
+        "mana": 82,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "Two rings of diamond shards blast out from you.",
+        "spec": {
+          "t": "radial",
+          "d": 8,
+          "n": 24,
+          "rings": 2,
+          "shape": 1,
+          "speed": 1.4,
+          "fx": "crystal"
+        }
+      }
+    ],
+    "bone": [
+      {
+        "id": "bone_spear",
+        "name": "Bone Spear",
+        "mana": 12,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "A heavy spear of bone that pierces one foe.",
+        "spec": {
+          "t": "bolt",
+          "d": 7,
+          "shape": 3,
+          "speed": 2.0,
+          "pierce": 1,
+          "size": 1,
+          "fx": "bone"
+        }
+      },
+      {
+        "id": "ribcage_prison",
+        "name": "Ribcage Prison",
+        "mana": 28,
+        "cooldown": 9.0,
+        "level": 3,
+        "desc": "A cage of ribs snaps shut around enemies near your aim.",
+        "spec": {
+          "t": "prison",
+          "d": 6,
+          "r": 3,
+          "dur": 4,
+          "fx": "bone"
+        }
+      },
+      {
+        "id": "bone_legion",
+        "name": "Bone Legion",
+        "mana": 50,
+        "cooldown": 30.0,
+        "level": 6,
+        "desc": "Raise two bone warriors to fight for you.",
+        "spec": {
+          "t": "summon",
+          "id": "bc:construct",
+          "variant": 2,
+          "n": 2,
+          "life": 30,
+          "fx": "bone"
+        }
+      },
+      {
+        "id": "graveyard",
+        "name": "Graveyard",
+        "mana": 80,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "Bone spikes tear out of the ground in eight directions.",
+        "spec": {
+          "t": "wave",
+          "d": 12,
+          "len": 12,
+          "dirs": 8,
+          "fx": "bone",
+          "kb": [
+            0.2,
+            0.8
+          ]
+        }
+      }
+    ],
+    "magma": [
+      {
+        "id": "magma_ball",
+        "name": "Magma Ball",
+        "mana": 14,
+        "cooldown": 0.9,
+        "level": 1,
+        "desc": "A lobbed ball of magma that bursts into flame.",
+        "spec": {
+          "t": "bolt",
+          "d": 6,
+          "shape": 0,
+          "size": 1,
+          "speed": 1.4,
+          "grav": 0.03,
+          "aoe": 2.2,
+          "fire": 4,
+          "fx": "magma"
+        }
+      },
+      {
+        "id": "lava_geyser",
+        "name": "Lava Geyser",
+        "mana": 30,
+        "cooldown": 7.0,
+        "level": 3,
+        "desc": "Geysers of lava erupt at your aim.",
+        "spec": {
+          "t": "rain",
+          "d": 8,
+          "n": 3,
+          "r": 2,
+          "every": 4,
+          "fire": 5,
+          "kb": [
+            0,
+            1.0
+          ],
+          "fx": "magma"
+        }
+      },
+      {
+        "id": "molten_wall",
+        "name": "Molten Wall",
+        "mana": 30,
+        "cooldown": 12.0,
+        "level": 6,
+        "desc": "Raise a wall of glowing magma.",
+        "spec": {
+          "t": "wall",
+          "block": "minecraft:magma",
+          "w": 5,
+          "h": 2,
+          "dur": 8,
+          "fx": "magma"
+        }
+      },
+      {
+        "id": "eruption",
+        "name": "Eruption",
+        "mana": 85,
+        "cooldown": 26.0,
+        "level": 10,
+        "desc": "Lava bombs rain down around your aim.",
+        "spec": {
+          "t": "meteor",
+          "d": 12,
+          "n": 10,
+          "r": 8,
+          "aoe": 3,
+          "fire": 6,
+          "size": 1,
+          "fx": "magma"
+        }
+      }
+    ],
+    "time": [
+      {
+        "id": "clock_hands",
+        "name": "Clock Hands",
+        "mana": 12,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "Two clock-hand blades that slow what they cut.",
+        "spec": {
+          "t": "bolt",
+          "d": 5,
+          "n": 2,
+          "spread": 6,
+          "shape": 2,
+          "speed": 2.0,
+          "fx": "time",
+          "eff": [
+            [
+              "slowness",
+              2,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "rewind",
+        "name": "Rewind",
+        "mana": 34,
+        "cooldown": 20.0,
+        "level": 3,
+        "desc": "Turn back your own clock to where you stood 3 seconds ago, and heal.",
+        "spec": {
+          "t": "rewind",
+          "heal": 6,
+          "fx": "time"
+        }
+      },
+      {
+        "id": "accelerate",
+        "name": "Accelerate",
+        "mana": 30,
+        "cooldown": 22.0,
+        "level": 6,
+        "desc": "Speed up your own time.",
+        "spec": {
+          "t": "buff",
+          "fx": "time",
+          "self": [
+            [
+              "speed",
+              10,
+              2
+            ],
+            [
+              "haste",
+              10,
+              2
+            ],
+            [
+              "jump_boost",
+              10,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "time_stop",
+        "name": "Time Stop",
+        "mana": 90,
+        "cooldown": 30.0,
+        "level": 10,
+        "desc": "Stop time for every foe around you. When it flows again, the hits land at once.",
+        "spec": {
+          "t": "timestop",
+          "d": 10,
+          "r": 12,
+          "dur": 5,
+          "fx": "time"
+        }
+      }
     ]
   },
   "swords": {
@@ -561,7 +1683,7 @@ export const DATA = {
       "mc": "\u00a76",
       "power": "Ember Body",
       "passive": "Immune to fire. Your punches set foes ablaze.",
-      "glyph": "\ue750",
+      "glyph": "\ue7c0",
       "beast": false,
       "abilities": [
         {
@@ -590,7 +1712,7 @@ export const DATA = {
       "mc": "\u00a77",
       "power": "Stone Body",
       "passive": "Hardened skin: you take less damage and shrug off knockback.",
-      "glyph": "\ue751",
+      "glyph": "\ue7c1",
       "beast": false,
       "abilities": [
         {
@@ -619,7 +1741,7 @@ export const DATA = {
       "mc": "\u00a7d",
       "power": "Gravity Grip",
       "passive": "You never take fall damage.",
-      "glyph": "\ue752",
+      "glyph": "\ue7c2",
       "beast": false,
       "abilities": [
         {
@@ -648,7 +1770,7 @@ export const DATA = {
       "mc": "\u00a78",
       "power": "Shadow Grasp",
       "passive": "Night vision, and you vanish while sneaking in the dark.",
-      "glyph": "\ue753",
+      "glyph": "\ue7c3",
       "beast": false,
       "abilities": [
         {
@@ -677,7 +1799,7 @@ export const DATA = {
       "mc": "\u00a7a",
       "power": "Bloom Touch",
       "passive": "You slowly regenerate while standing on grass or leaves.",
-      "glyph": "\ue754",
+      "glyph": "\ue7c4",
       "beast": false,
       "abilities": [
         {
@@ -706,7 +1828,7 @@ export const DATA = {
       "mc": "\u00a7f",
       "power": "Quicksilver Arm",
       "passive": "Liquid-metal body: arrows and blades glance off you more often.",
-      "glyph": "\ue755",
+      "glyph": "\ue7c5",
       "beast": false,
       "abilities": [
         {
@@ -735,7 +1857,7 @@ export const DATA = {
       "mc": "\u00a7b",
       "power": "Frost Body",
       "passive": "Immune to freezing; the sea freezes under your feet.",
-      "glyph": "\ue756",
+      "glyph": "\ue7c6",
       "beast": false,
       "abilities": [
         {
@@ -764,7 +1886,7 @@ export const DATA = {
       "mc": "\u00a7e",
       "power": "Barrier Palm",
       "passive": "Standing still hardens the air around you (damage resistance).",
-      "glyph": "\ue757",
+      "glyph": "\ue7c7",
       "beast": false,
       "abilities": [
         {
@@ -793,7 +1915,7 @@ export const DATA = {
       "mc": "\u00a77",
       "power": "Wolf Form",
       "passive": "Beast form: speed, keen night sight and sharp claws.",
-      "glyph": "\ue758",
+      "glyph": "\ue7c8",
       "beast": true,
       "abilities": [
         {
@@ -822,7 +1944,7 @@ export const DATA = {
       "mc": "\u00a76",
       "power": "Hawk Form",
       "passive": "Beast form: glide by holding Jump while falling; no fall damage.",
-      "glyph": "\ue759",
+      "glyph": "\ue7c9",
       "beast": true,
       "abilities": [
         {
@@ -844,6 +1966,770 @@ export const DATA = {
           "desc": "A fan of razor feathers."
         }
       ]
+    },
+    "lava": {
+      "name": "Lava Fruit",
+      "color": "ff3a10",
+      "mc": "\u00a7c",
+      "power": "Lava Body",
+      "passive": "Immune to fire and lava; your blows scorch.",
+      "glyph": "\ue7ca",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "lava_fist",
+          "name": "Lava Fist",
+          "cooldown": 1.8,
+          "desc": "Lob a fist of molten rock that bursts into flame.",
+          "spec": {
+            "t": "bolt",
+            "d": 8,
+            "shape": 0,
+            "size": 1,
+            "speed": 1.5,
+            "grav": 0.02,
+            "aoe": 2.5,
+            "fire": 6,
+            "fx": "magma"
+          }
+        },
+        {
+          "id": "magma_pool",
+          "name": "Magma Pool",
+          "cooldown": 8.0,
+          "desc": "Turn the ground near your aim into a burning pool.",
+          "spec": {
+            "t": "zone",
+            "d": 3,
+            "r": 3.5,
+            "dur": 6,
+            "fire": 4,
+            "fx": "magma"
+          }
+        },
+        {
+          "id": "volcanic_rain",
+          "name": "Volcanic Rain",
+          "cooldown": 20.0,
+          "desc": "Lava bombs pour down around your aim.",
+          "spec": {
+            "t": "meteor",
+            "d": 10,
+            "n": 8,
+            "r": 7,
+            "aoe": 3,
+            "fire": 5,
+            "size": 1,
+            "fx": "magma"
+          }
+        }
+      ]
+    },
+    "ash": {
+      "name": "Ash Fruit",
+      "color": "8a8a94",
+      "mc": "\u00a78",
+      "power": "Ash Body",
+      "passive": "Your body turns to ash: blows sometimes pass right through you.",
+      "glyph": "\ue7cb",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "cinder_spear",
+          "name": "Cinder Spear",
+          "cooldown": 2.0,
+          "desc": "A spear of glowing cinders that pierces foes.",
+          "spec": {
+            "t": "bolt",
+            "d": 7,
+            "shape": 3,
+            "speed": 2.0,
+            "pierce": 2,
+            "fire": 3,
+            "fx": "ash"
+          }
+        },
+        {
+          "id": "ash_veil",
+          "name": "Ash Veil",
+          "cooldown": 9.0,
+          "desc": "A choking veil of ash smothers your aim.",
+          "spec": {
+            "t": "zone",
+            "d": 1,
+            "r": 5,
+            "dur": 6,
+            "fx": "ash",
+            "eff": [
+              [
+                "blindness",
+                2,
+                0
+              ],
+              [
+                "wither",
+                2,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "id": "ash_cyclone",
+          "name": "Ash Cyclone",
+          "cooldown": 16.0,
+          "desc": "A cyclone of ash drags foes in and burns them.",
+          "spec": {
+            "t": "vortex",
+            "d": 12,
+            "r": 7,
+            "dur": 3,
+            "fire": 3,
+            "fx": "ash"
+          }
+        }
+      ]
+    },
+    "prism": {
+      "name": "Prism Fruit",
+      "color": "f0a0ff",
+      "mc": "\u00a7d",
+      "power": "Prism Eye",
+      "passive": "Your eyes drink in light: you see clearly in the dark.",
+      "glyph": "\ue7cc",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "prism_ray",
+          "name": "Prism Ray",
+          "cooldown": 2.5,
+          "desc": "A blazing ray of split light.",
+          "spec": {
+            "t": "beam",
+            "d": 10,
+            "range": 26,
+            "fx": "light"
+          }
+        },
+        {
+          "id": "rainbow_burst",
+          "name": "Rainbow Burst",
+          "cooldown": 8.0,
+          "desc": "Sixteen shards of colour burst out from you.",
+          "spec": {
+            "t": "radial",
+            "d": 5,
+            "n": 16,
+            "shape": 1,
+            "speed": 1.8,
+            "fx": "light"
+          }
+        },
+        {
+          "id": "refraction",
+          "name": "Refraction",
+          "cooldown": 4.0,
+          "desc": "Bend the light and appear further ahead.",
+          "spec": {
+            "t": "leap",
+            "d": 5,
+            "dist": 12,
+            "mode": "blink",
+            "fx": "light"
+          }
+        }
+      ]
+    },
+    "bounce": {
+      "name": "Bounce Fruit",
+      "color": "ff9ac8",
+      "mc": "\u00a7d",
+      "power": "Bounce Body",
+      "passive": "Springy body: you jump higher and never take fall damage.",
+      "glyph": "\ue7cd",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "ricochet",
+          "name": "Ricochet",
+          "cooldown": 3.0,
+          "desc": "Bounce forward, slamming into everything in your path.",
+          "spec": {
+            "t": "leap",
+            "d": 9,
+            "dist": 10,
+            "mode": "dash",
+            "fx": "sound"
+          }
+        },
+        {
+          "id": "recoil_wave",
+          "name": "Recoil Wave",
+          "cooldown": 7.0,
+          "desc": "A springy shock that flings everything away from you.",
+          "spec": {
+            "t": "nova",
+            "d": 7,
+            "r": 5,
+            "kb": [
+              2.6,
+              0.9
+            ],
+            "fx": "sound"
+          }
+        },
+        {
+          "id": "meteor_bounce",
+          "name": "Meteor Bounce",
+          "cooldown": 12.0,
+          "desc": "Spring sky-high and crash down on your aim.",
+          "spec": {
+            "t": "dive",
+            "d": 12,
+            "r": 4,
+            "fx": "sound"
+          }
+        }
+      ]
+    },
+    "blast": {
+      "name": "Blast Fruit",
+      "color": "ffb030",
+      "mc": "\u00a76",
+      "power": "Blast Palm",
+      "passive": "Your punches go off with a small blast.",
+      "glyph": "\ue7ce",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "blast_shot",
+          "name": "Blast Shot",
+          "cooldown": 1.6,
+          "desc": "A shot that explodes on impact.",
+          "spec": {
+            "t": "bolt",
+            "d": 6,
+            "shape": 0,
+            "speed": 1.8,
+            "aoe": 3,
+            "fx": "flame"
+          }
+        },
+        {
+          "id": "mine_field",
+          "name": "Mine Field",
+          "cooldown": 9.0,
+          "desc": "Scatter blast mines around your aim.",
+          "spec": {
+            "t": "rain",
+            "d": 8,
+            "n": 6,
+            "r": 4,
+            "every": 5,
+            "fx": "flame"
+          }
+        },
+        {
+          "id": "big_bang",
+          "name": "Big Bang",
+          "cooldown": 18.0,
+          "desc": "Detonate yourself in a huge (harmless to you) explosion.",
+          "spec": {
+            "t": "nova",
+            "d": 18,
+            "r": 8,
+            "kb": [
+              2.0,
+              1.0
+            ],
+            "fx": "flame"
+          }
+        }
+      ]
+    },
+    "acid": {
+      "name": "Acid Fruit",
+      "color": "9cff3a",
+      "mc": "\u00a7a",
+      "power": "Acid Body",
+      "passive": "Acid blood: poison can never take hold of you.",
+      "glyph": "\ue7cf",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "acid_spit",
+          "name": "Acid Spit",
+          "cooldown": 1.6,
+          "desc": "Three globs of acid that weaken foes.",
+          "spec": {
+            "t": "bolt",
+            "d": 4,
+            "n": 3,
+            "spread": 10,
+            "shape": 0,
+            "speed": 1.6,
+            "fx": "acid",
+            "eff": [
+              [
+                "poison",
+                3,
+                0
+              ],
+              [
+                "weakness",
+                3,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "id": "acid_rain",
+          "name": "Acid Rain",
+          "cooldown": 10.0,
+          "desc": "Acid rains down on your aim.",
+          "spec": {
+            "t": "rain",
+            "d": 4,
+            "n": 14,
+            "r": 5,
+            "every": 2,
+            "fx": "acid",
+            "eff": [
+              [
+                "poison",
+                3,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "id": "corrode",
+          "name": "Corrode",
+          "cooldown": 6.0,
+          "desc": "A stream of acid that eats through armour and flesh.",
+          "spec": {
+            "t": "beam",
+            "d": 8,
+            "range": 16,
+            "fx": "acid",
+            "eff": [
+              [
+                "weakness",
+                6,
+                1
+              ],
+              [
+                "wither",
+                3,
+                0
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "lodestone": {
+      "name": "Lodestone Fruit",
+      "color": "c05a4a",
+      "mc": "\u00a7c",
+      "power": "Lodestone Grip",
+      "passive": "Magnetic body: arrows veer away from you.",
+      "glyph": "\ue7d0",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "magnet_pull",
+          "name": "Magnet Pull",
+          "cooldown": 5.0,
+          "desc": "Drag every foe near your aim together and crush them.",
+          "spec": {
+            "t": "vortex",
+            "d": 6,
+            "r": 6,
+            "dur": 1.5,
+            "fx": "metal"
+          }
+        },
+        {
+          "id": "magnet_push",
+          "name": "Magnet Push",
+          "cooldown": 6.0,
+          "desc": "Repel everything around you.",
+          "spec": {
+            "t": "nova",
+            "d": 6,
+            "r": 7,
+            "kb": [
+              3.0,
+              0.6
+            ],
+            "fx": "metal"
+          }
+        },
+        {
+          "id": "iron_tempest",
+          "name": "Iron Tempest",
+          "cooldown": 16.0,
+          "desc": "Iron blades spin out from you in every direction.",
+          "spec": {
+            "t": "radial",
+            "d": 7,
+            "n": 16,
+            "shape": 2,
+            "speed": 1.6,
+            "fx": "metal"
+          }
+        }
+      ]
+    },
+    "cloud": {
+      "name": "Cloud Fruit",
+      "color": "e8f0ff",
+      "mc": "\u00a7f",
+      "power": "Cloud Body",
+      "passive": "Light as a cloud: you drift down slowly when sneaking in the air.",
+      "glyph": "\ue7d1",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "thunderhead",
+          "name": "Thunderhead",
+          "cooldown": 6.0,
+          "desc": "Thunder strikes foes near your aim.",
+          "spec": {
+            "t": "strikes",
+            "d": 9,
+            "n": 4,
+            "r": 8,
+            "fx": "lightning"
+          }
+        },
+        {
+          "id": "cloud_ride",
+          "name": "Cloud Ride",
+          "cooldown": 12.0,
+          "desc": "Rise on a cloud and drift where you like.",
+          "spec": {
+            "t": "buff",
+            "fx": "mist",
+            "self": [
+              [
+                "levitation",
+                2,
+                0
+              ],
+              [
+                "slow_falling",
+                10,
+                0
+              ],
+              [
+                "speed",
+                10,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "downpour",
+          "name": "Downpour",
+          "cooldown": 10.0,
+          "desc": "A cold downpour that slows and soaks foes.",
+          "spec": {
+            "t": "zone",
+            "d": 1.5,
+            "r": 5,
+            "dur": 6,
+            "fx": "water",
+            "eff": [
+              [
+                "slowness",
+                2,
+                1
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "ink": {
+      "name": "Ink Fruit",
+      "color": "6050a0",
+      "mc": "\u00a75",
+      "power": "Ink Body",
+      "passive": "Ink seeps from your wounds and blinds whoever hit you.",
+      "glyph": "\ue7d2",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "ink_blot",
+          "name": "Ink Blot",
+          "cooldown": 1.6,
+          "desc": "Three blots of blinding ink.",
+          "spec": {
+            "t": "bolt",
+            "d": 4,
+            "n": 3,
+            "spread": 9,
+            "shape": 0,
+            "speed": 1.6,
+            "fx": "ink",
+            "eff": [
+              [
+                "blindness",
+                3,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "id": "ink_serpent",
+          "name": "Ink Serpent",
+          "cooldown": 6.0,
+          "desc": "A serpent of ink that coils through a line of foes.",
+          "spec": {
+            "t": "bolt",
+            "d": 10,
+            "shape": 2,
+            "size": 2,
+            "speed": 1.4,
+            "pierce": 3,
+            "fx": "ink"
+          }
+        },
+        {
+          "id": "ink_sea",
+          "name": "Ink Sea",
+          "cooldown": 16.0,
+          "desc": "Flood the ground around you with ink.",
+          "spec": {
+            "t": "zone",
+            "at": "self",
+            "d": 1,
+            "r": 7,
+            "dur": 6,
+            "fx": "ink",
+            "eff": [
+              [
+                "blindness",
+                2,
+                0
+              ],
+              [
+                "slowness",
+                2,
+                1
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "bear": {
+      "name": "Bear Fruit",
+      "color": "8a5a3a",
+      "mc": "\u00a76",
+      "power": "Bear Form",
+      "passive": "Beast form: crushing strength and a thick hide.",
+      "glyph": "\ue7d3",
+      "beast": true,
+      "abilities": [
+        {
+          "id": "maul",
+          "name": "Maul",
+          "cooldown": 1.6,
+          "desc": "A crushing swipe at everything in front of you.",
+          "spec": {
+            "t": "nova",
+            "at": "front",
+            "d": 12,
+            "r": 3,
+            "kb": [
+              1.6,
+              0.4
+            ],
+            "fx": "earth"
+          }
+        },
+        {
+          "id": "bear_roar",
+          "name": "Roar",
+          "cooldown": 16.0,
+          "desc": "A roar that weakens and slows every foe nearby.",
+          "spec": {
+            "t": "nova",
+            "d": 2,
+            "r": 7,
+            "kb": [
+              1.2,
+              0.3
+            ],
+            "fx": "sound",
+            "eff": [
+              [
+                "weakness",
+                6,
+                1
+              ],
+              [
+                "slowness",
+                4,
+                1
+              ]
+            ],
+            "self": [
+              [
+                "strength",
+                8,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "ground_slam",
+          "name": "Ground Slam",
+          "cooldown": 10.0,
+          "desc": "Leap and slam the earth on your aim.",
+          "spec": {
+            "t": "dive",
+            "d": 14,
+            "r": 5,
+            "fx": "earth"
+          }
+        }
+      ]
+    },
+    "tiger": {
+      "name": "Tiger Fruit",
+      "color": "ff9a2a",
+      "mc": "\u00a76",
+      "power": "Tiger Form",
+      "passive": "Beast form: blinding speed and keen night sight.",
+      "glyph": "\ue7d4",
+      "beast": true,
+      "abilities": [
+        {
+          "id": "tiger_lunge",
+          "name": "Lunge",
+          "cooldown": 3.0,
+          "desc": "Lunge forward, tearing through your path.",
+          "spec": {
+            "t": "leap",
+            "d": 9,
+            "dist": 9,
+            "mode": "dash",
+            "fx": "wind"
+          }
+        },
+        {
+          "id": "claw_rush",
+          "name": "Claw Rush",
+          "cooldown": 7.0,
+          "desc": "Four lightning-fast claw strikes.",
+          "spec": {
+            "t": "repeat",
+            "n": 4,
+            "every": 4,
+            "spec": {
+              "t": "nova",
+              "at": "front",
+              "d": 5,
+              "r": 2.8,
+              "kb": [
+                0.4,
+                0.1
+              ],
+              "fx": "blood"
+            }
+          }
+        },
+        {
+          "id": "predator",
+          "name": "Predator",
+          "cooldown": 20.0,
+          "desc": "Enter the hunt: speed, strength and night sight.",
+          "spec": {
+            "t": "buff",
+            "fx": "blood",
+            "self": [
+              [
+                "speed",
+                12,
+                2
+              ],
+              [
+                "strength",
+                12,
+                1
+              ],
+              [
+                "night_vision",
+                15,
+                0
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "wyvern": {
+      "name": "Wyvern Fruit",
+      "color": "5ab48a",
+      "mc": "\u00a72",
+      "power": "Wyvern Form",
+      "passive": "Beast form: wings to glide on and a hide that ignores fire.",
+      "glyph": "\ue7d5",
+      "beast": true,
+      "abilities": [
+        {
+          "id": "wyvern_breath",
+          "name": "Wyvern Breath",
+          "cooldown": 3.0,
+          "desc": "A roaring stream of dragonfire.",
+          "spec": {
+            "t": "beam",
+            "d": 9,
+            "range": 14,
+            "width": 1.6,
+            "fire": 5,
+            "fx": "flame"
+          }
+        },
+        {
+          "id": "wing_gust",
+          "name": "Wing Gust",
+          "cooldown": 6.0,
+          "desc": "A beat of your wings blasts everything away.",
+          "spec": {
+            "t": "nova",
+            "d": 5,
+            "r": 6,
+            "kb": [
+              2.5,
+              0.8
+            ],
+            "fx": "wind"
+          }
+        },
+        {
+          "id": "sky_dive",
+          "name": "Sky Dive",
+          "cooldown": 12.0,
+          "desc": "Soar up and dive onto your aim in flames.",
+          "spec": {
+            "t": "dive",
+            "d": 16,
+            "r": 5,
+            "fire": 4,
+            "fx": "flame"
+          }
+        }
+      ]
     }
   },
   "fruitOrder": [
@@ -856,7 +2742,19 @@ export const DATA = {
     "frost",
     "barrier",
     "wolf",
-    "hawk"
+    "hawk",
+    "lava",
+    "ash",
+    "prism",
+    "bounce",
+    "blast",
+    "acid",
+    "lodestone",
+    "cloud",
+    "ink",
+    "bear",
+    "tiger",
+    "wyvern"
   ],
   "willMax": 10,
   "captainFirst": [
@@ -995,5 +2893,451 @@ export const DATA = {
       "bounty": 12000,
       "title": "Scourge of the Seas"
     }
-  ]
+  ],
+  "tints": {
+    "a:wind": 0,
+    "a:flame": 1,
+    "a:water": 2,
+    "a:lightning": 3,
+    "a:light": 4,
+    "a:dark": 5,
+    "a:ice": 6,
+    "a:anti": 7,
+    "a:spatial": 8,
+    "a:earth": 9,
+    "a:steel": 10,
+    "a:mirror": 11,
+    "a:sand": 12,
+    "a:bubble": 13,
+    "a:plant": 14,
+    "a:poison": 15,
+    "a:blood": 16,
+    "a:star": 17,
+    "a:sound": 18,
+    "a:mist": 19,
+    "a:crystal": 20,
+    "a:bone": 21,
+    "a:magma": 22,
+    "a:time": 23,
+    "f:ember": 24,
+    "f:stone": 25,
+    "f:gravity": 26,
+    "f:shadow": 27,
+    "f:bloom": 28,
+    "f:quicksilver": 29,
+    "f:frost": 30,
+    "f:barrier": 31,
+    "f:wolf": 32,
+    "f:hawk": 33,
+    "f:lava": 34,
+    "f:ash": 35,
+    "f:prism": 36,
+    "f:bounce": 37,
+    "f:blast": 38,
+    "f:acid": 39,
+    "f:lodestone": 40,
+    "f:cloud": 41,
+    "f:ink": 42,
+    "f:bear": 43,
+    "f:tiger": 44,
+    "f:wyvern": 45
+  },
+  "altarWeights": {
+    "wind": 11,
+    "flame": 11,
+    "water": 11,
+    "lightning": 11,
+    "ice": 11,
+    "earth": 10,
+    "steel": 9,
+    "light": 8,
+    "dark": 8,
+    "spatial": 6,
+    "mirror": 6,
+    "anti": 5,
+    "sand": 8,
+    "bubble": 8,
+    "plant": 9,
+    "poison": 7,
+    "blood": 5,
+    "star": 4,
+    "sound": 7,
+    "mist": 7,
+    "crystal": 7,
+    "bone": 6,
+    "magma": 7,
+    "time": 3
+  },
+  "npcKits": {
+    "wind": [
+      {
+        "t": "bolt",
+        "d": 4,
+        "n": 3,
+        "spread": 12,
+        "shape": 2,
+        "speed": 2.0,
+        "fx": "wind",
+        "kb": [
+          1.0,
+          0.3
+        ]
+      },
+      {
+        "t": "nova",
+        "d": 5,
+        "r": 5,
+        "kb": [
+          2.2,
+          0.8
+        ],
+        "fx": "wind"
+      }
+    ],
+    "flame": [
+      {
+        "t": "bolt",
+        "d": 6,
+        "shape": 0,
+        "speed": 1.8,
+        "aoe": 2,
+        "fire": 4,
+        "fx": "flame"
+      },
+      {
+        "t": "rain",
+        "d": 7,
+        "n": 4,
+        "r": 3,
+        "every": 4,
+        "fire": 4,
+        "fx": "flame"
+      }
+    ],
+    "water": [
+      {
+        "t": "bolt",
+        "d": 4,
+        "n": 2,
+        "spread": 6,
+        "shape": 0,
+        "speed": 1.6,
+        "fx": "water"
+      },
+      {
+        "t": "heal",
+        "heal": 6,
+        "r": 6,
+        "fx": "water"
+      }
+    ],
+    "lightning": [
+      {
+        "t": "bolt",
+        "d": 6,
+        "shape": 3,
+        "speed": 2.6,
+        "fx": "lightning"
+      },
+      {
+        "t": "strikes",
+        "d": 7,
+        "n": 3,
+        "r": 8,
+        "fx": "lightning"
+      }
+    ],
+    "light": [
+      {
+        "t": "bolt",
+        "d": 4,
+        "n": 3,
+        "spread": 10,
+        "shape": 2,
+        "speed": 2.2,
+        "fx": "light"
+      },
+      {
+        "t": "beam",
+        "d": 9,
+        "range": 22,
+        "fx": "light"
+      }
+    ],
+    "dark": [
+      {
+        "t": "bolt",
+        "d": 7,
+        "shape": 2,
+        "speed": 1.8,
+        "pierce": 2,
+        "fx": "dark"
+      },
+      {
+        "t": "vortex",
+        "d": 6,
+        "r": 5,
+        "dur": 1.5,
+        "fx": "dark"
+      }
+    ],
+    "ice": [
+      {
+        "t": "bolt",
+        "d": 5,
+        "shape": 3,
+        "speed": 2.0,
+        "fx": "ice",
+        "eff": [
+          [
+            "slowness",
+            3,
+            1
+          ]
+        ]
+      },
+      {
+        "t": "prison",
+        "d": 4,
+        "r": 3,
+        "dur": 3,
+        "fx": "ice"
+      }
+    ],
+    "spatial": [
+      {
+        "t": "bolt",
+        "d": 5,
+        "shape": 0,
+        "speed": 2.0,
+        "fx": "spatial"
+      },
+      {
+        "t": "leap",
+        "d": 4,
+        "dist": 8,
+        "mode": "blink",
+        "fx": "spatial"
+      }
+    ],
+    "earth": [
+      {
+        "t": "bolt",
+        "d": 4,
+        "n": 3,
+        "spread": 8,
+        "shape": 0,
+        "speed": 1.6,
+        "grav": 0.02,
+        "fx": "earth"
+      },
+      {
+        "t": "wave",
+        "d": 8,
+        "len": 10,
+        "fx": "earth",
+        "kb": [
+          0.2,
+          0.8
+        ]
+      }
+    ],
+    "steel": [
+      {
+        "t": "bolt",
+        "d": 5,
+        "n": 3,
+        "spread": 6,
+        "shape": 2,
+        "speed": 2.0,
+        "fx": "steel"
+      },
+      {
+        "t": "rain",
+        "d": 5,
+        "n": 6,
+        "r": 3,
+        "every": 2,
+        "fx": "steel"
+      }
+    ],
+    "mirror": [
+      {
+        "t": "beam",
+        "d": 7,
+        "range": 20,
+        "fx": "mirror"
+      },
+      {
+        "t": "bolt",
+        "d": 4,
+        "n": 2,
+        "spread": 8,
+        "shape": 1,
+        "speed": 2.2,
+        "fx": "mirror"
+      }
+    ]
+  },
+  "knightFirst": [
+    "Aldric",
+    "Mirela",
+    "Corvin",
+    "Sela",
+    "Bastian",
+    "Elowen",
+    "Rook",
+    "Tamsin",
+    "Garrick",
+    "Lys",
+    "Oren",
+    "Petra",
+    "Fenn",
+    "Ilsa",
+    "Dorian",
+    "Maren",
+    "Cassian",
+    "Wren",
+    "Edda",
+    "Lucan",
+    "Brielle",
+    "Hale",
+    "Odette",
+    "Tobias"
+  ],
+  "knightLast": [
+    "Vale",
+    "Thorne",
+    "Ashford",
+    "Brightwater",
+    "Ravensworth",
+    "Hollow",
+    "Stormridge",
+    "Fairhaven",
+    "Greymoor",
+    "Silverbrook",
+    "Oakheart",
+    "Duskmere",
+    "Emberly",
+    "Windmere",
+    "Coldwell",
+    "Larkspur"
+  ],
+  "knightRobes": [
+    "black_bull_robe",
+    "golden_dawn_robe",
+    "crimson_lion_robe",
+    "silver_eagle_robe",
+    "blue_rose_robe",
+    "green_mantis_robe",
+    "coral_peacock_robe",
+    "purple_orca_robe",
+    "aqua_deer_robe"
+  ],
+  "merchant": [
+    {
+      "item": "bc:mana_crystal",
+      "count": 8,
+      "price": 30,
+      "label": "Mana Crystals x8"
+    },
+    {
+      "item": "bc:ancient_page",
+      "count": 2,
+      "price": 60,
+      "label": "Ancient Grimoire Pages x2"
+    },
+    {
+      "item": "random_fruit",
+      "count": 1,
+      "price": 450,
+      "label": "Mystery Abyss Fruit"
+    },
+    {
+      "item": "bc:knight_contract",
+      "count": 1,
+      "price": 140,
+      "label": "Knight Contract (hire a Magic Knight)"
+    },
+    {
+      "item": "bc:skirmish_horn",
+      "count": 1,
+      "price": 90,
+      "label": "Skirmish Horn"
+    },
+    {
+      "item": "bc:archdevil_sigil",
+      "count": 1,
+      "price": 600,
+      "label": "Archdevil Sigil"
+    },
+    {
+      "item": "bc:colossus_core",
+      "count": 1,
+      "price": 500,
+      "label": "Colossus Core"
+    },
+    {
+      "item": "bc:galleon_bell",
+      "count": 1,
+      "price": 500,
+      "label": "Phantom Galleon Bell"
+    },
+    {
+      "item": "bc:kraken_lure",
+      "count": 1,
+      "price": 550,
+      "label": "Storm Kraken Lure"
+    },
+    {
+      "item": "bc:clover_charm",
+      "count": 1,
+      "price": 900,
+      "label": "Wishing Clover Charm"
+    }
+  ],
+  "factions": {
+    "knights": {
+      "name": "Clover Magic Knights",
+      "mc": "\u00a7a",
+      "units": [
+        "bc:magic_knight"
+      ],
+      "leader": "bc:magic_knight"
+    },
+    "devils": {
+      "name": "Devil Host",
+      "mc": "\u00a74",
+      "units": [
+        "bc:dark_disciple",
+        "bc:dark_disciple",
+        "bc:imp"
+      ],
+      "leader": "bc:dark_disciple"
+    },
+    "raiders": {
+      "name": "Sea Raiders",
+      "mc": "\u00a7c",
+      "units": [
+        "bc:sea_raider"
+      ],
+      "leader": "bc:raider_captain"
+    },
+    "navy": {
+      "name": "Tidewatch Navy",
+      "mc": "\u00a79",
+      "units": [
+        "bc:tidewatch_sentinel"
+      ],
+      "leader": "bc:tidewatch_commodore"
+    },
+    "constructs": {
+      "name": "Ancient Constructs",
+      "mc": "\u00a77",
+      "units": [
+        "bc:construct"
+      ],
+      "leader": "bc:construct"
+    }
+  }
 };
