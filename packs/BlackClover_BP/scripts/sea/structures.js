@@ -16,6 +16,8 @@ const LOOT = {
     ['minecraft:heart_of_the_sea', 1, 1, 0.12], ['fruit', 1, 1, 0.35], ['bc:leviathan_lure', 1, 1, 0.06], ['bc:treasure_map', 1, 1, 0.3]],
   dungeon: [['bc:ancient_page', 1, 3, 0.9], ['bc:mana_crystal', 2, 5, 0.8], ['minecraft:gold_ingot', 3, 7, 0.7], ['minecraft:diamond', 1, 2, 0.35],
     ['robe', 1, 1, 0.15], ['bc:clover_charm', 1, 1, 0.04], ['bc:treasure_map', 1, 1, 0.2]],
+  camp: [['bc:mana_crystal', 2, 4, 0.9], ['bc:mana_cookie', 2, 5, 0.7], ['minecraft:bread', 3, 6, 0.8], ['bc:knight_contract', 1, 1, 0.25],
+    ['bc:ancient_page', 1, 1, 0.3], ['amulet', 1, 1, 0.08], ['robe', 1, 1, 0.1], ['bc:companion_whistle', 1, 1, 0.15]],
   treasure: [['bc:doubloon', 30, 60, 1], ['minecraft:gold_ingot', 4, 9, 0.9], ['minecraft:diamond', 1, 4, 0.6], ['minecraft:emerald', 2, 6, 0.6],
     ['fruit', 1, 1, 0.2], ['bc:ancient_page', 1, 2, 0.4]],
 };
@@ -79,6 +81,7 @@ export function lootItems(table) {
     const n = Math.floor(rand(lo, hi + 1));
     if (id === 'fruit') out.push(new ItemStack(`bc:fruit_${pick(DATA.fruitOrder)}`, 1));
     else if (id === 'robe') out.push(new ItemStack(`bc:${pick(ROBE_IDS)}`, 1));
+    else if (id === 'amulet') out.push(new ItemStack(`bc:${pick(Object.keys(DATA.amulets))}`, 1));
     else out.push(new ItemStack(id, Math.max(1, n)));
   }
   return out;
@@ -93,7 +96,7 @@ export function fill(block, table) {
 /**
  * Build a blueprint. Runs as a background job so big structures never lag the game.
  * @param {import('@minecraft/server').Dimension} dim
- * @param {'outpost'|'wreck'|'dungeon'} kind
+ * @param {'outpost'|'wreck'|'dungeon'|'camp'} kind
  * @param {{x:number,y:number,z:number}} anchor
  * @param {{bountyFor?: string, captainName?: string, captainFruit?: string}} [opts]
  */

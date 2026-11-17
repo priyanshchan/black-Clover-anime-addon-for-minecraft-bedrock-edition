@@ -16,6 +16,7 @@ const KEYS = { attr: 'bc:attr', level: 'bc:level', xp: 'bc:xp', mana: 'bc:mana',
  * @property {number} anti      anti-magic gauge 0..100
  * @property {number} lastCast  tick of the last cast (HUD stays visible after)
  * @property {Map<string, number>} cd  spell id -> tick when ready
+ * @property {number} [noRegen]  tick until which mana does not regenerate (broom flight)
  * @property {boolean} dirty
  */
 
@@ -82,6 +83,17 @@ export function robe(p) {
 }
 
 // ----------------------------------------------------------------------------------- stats
+/** The amulet held in the off hand, or ''. */
+export function amuletOf(p) {
+  try {
+    const id = p.getComponent('minecraft:equippable')?.getEquipment(EquipmentSlot.Offhand)?.typeId ?? '';
+    const key = id.startsWith('bc:') ? id.slice(3) : '';
+    return key.startsWith('amulet_') ? key : '';
+  } catch {
+    return '';
+  }
+}
+
 function rankBonus(p) {
   const st = p.getDynamicProperty('bc:stars');
   const n = typeof st === 'number' ? st : 0;
@@ -94,13 +106,14 @@ function rankBonus(p) {
 
 export function maxMana(p, s = state(p)) {
   const r = robe(p);
-  return 100 + (s.level - 1) * 12 + (r === 'golden_dawn_robe' ? 40 : 0) + (r === 'blue_rose_robe' ? 15 : 0) + rankBonus(p);
+  return 100 + (s.level - 1) * 12 + (r === 'golden_dawn_robe' ? 40 : 0) + (r === 'blue_rose_robe' ? 15 : 0) + rankBonus(p) + (amuletOf(p) === 'amulet_mana' ? 30 : 0);
 }
 
 export function regenPerSecond(p, s = state(p)) {
   let r = 3 + s.level * 0.3;
   const rb = robe(p);
   if (rb === 'black_bull_robe') r *= 1.25;
+  if (amuletOf(p) === 'amulet_mana') r *= 1.2;
   if (rb === 'aqua_deer_robe') {
     const v = p.getVelocity();
     if (Math.abs(v.x) + Math.abs(v.z) > 0.05) r *= 1.3;
@@ -123,6 +136,7 @@ export function spellPower(p, s = state(p)) {
   if (r === 'crimson_lion_robe' && s.attr === 'flame') m *= 1.15;
   if (r === 'silver_eagle_robe' && s.mana > maxMana(p, s) * 0.75) m *= 1.2;
   if (r === 'purple_orca_robe' && (s.attr === 'water' || s.attr === 'ice')) m *= 1.15;
+  if (amuletOf(p) === 'amulet_power') m *= 1.12;
   return m;
 }
 

@@ -1,5 +1,6 @@
 // Random world events: every few minutes something happens near a player - meteor showers, devil gates,
-// pirate landings, faction skirmishes, a travelling merchant, sky treasure, a crimson night, or a giant boss.
+// pirate landings, faction skirmishes, a travelling merchant, sky treasure, a crimson night, a Rogue Mage ambush,
+// or a giant boss (the Witch Sisters and the Bone Dragon walk at night).
 // Toggle them at a War Table, or trigger one with:  /scriptevent bc:event <name>
 import { ItemStack, Player, system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
@@ -14,6 +15,7 @@ import { POWERS, RIVAL, onOffensive, powerMul } from './worldsim.js';
 import { summonBoss } from './bosses.js';
 import { boltFrom } from './engine.js';
 import { setupKnight } from './knights.js';
+import { setupRogue } from './rogues.js';
 import { spawnMerchant } from './merchant.js';
 import { joinParty } from './companions.js';
 import { addMana } from '../core/data.js';
@@ -327,6 +329,52 @@ export const EVENTS = {
       summonBoss('bc:fallen_captain', p.dimension, at);
     },
   },
+  rogue_ambush: {
+    w: 6,
+    f: 'rogues',
+    run(p) {
+      const at = spotNear(p, rand(14, 20));
+      if (!at) return false;
+      const n = 3 + Math.floor(Math.random() * 2);
+      // sometimes a knight patrol was already on their trail
+      const patrol = Math.random() < 0.35;
+      announce(p, '§5§lROGUE MAGES', patrol ? '§7A knight patrol is hunting them - join the fight' : '§7Outlaw mages are lying in wait',
+        `§5☠ Rogue Mages ambush you${patrol ? ' - and a Magic Knight patrol arrives to help!' : '!'}`);
+      for (let i = 0; i < n; i++) {
+        const e = safe(() => p.dimension.spawnEntity('bc:rogue_mage', V.add(at, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) })));
+        if (e) setupRogue(e, { level: 2 + Math.floor(Math.random() * 5) + (i === 0 ? 3 : 0) });
+      }
+      if (patrol) {
+        const back = V.add(p.location, V.mul(V.flat(V.sub(p.location, at)), 8));
+        for (let i = 0; i < 2; i++) {
+          const k = safe(() => p.dimension.spawnEntity('bc:magic_knight', V.add(back, { x: rand(-2, 2), y: 0.5, z: rand(-2, 2) })));
+          if (k) setupKnight(k, { level: 3 + Math.floor(Math.random() * 4) });
+        }
+      }
+    },
+  },
+  witch_sisters: {
+    w: 2,
+    ok: () => night(),
+    run(p) {
+      const at = spotNear(p, rand(20, 26));
+      if (!at) return false;
+      announce(p, '§b§lTWIN MOONS', '§7Frost and fire ride the night wind', '§b☾ §6☽ §7Two witches laugh somewhere in the dark... §bThe Witch Sisters§7 are coming.');
+      repeat(6, 10, () => particle(p.dimension, 'bc:fog_cloud', V.add(p.location, { x: rand(-4, 4), y: 1, z: rand(-4, 4) }), { scale: 0.6 }));
+      timer(40, () => summonBoss('twins', p.dimension, at));
+    },
+  },
+  bone_dragon: {
+    w: 2,
+    ok: (p) => night() && p.location.y > 55,
+    run(p) {
+      const at = spotNear(p, rand(26, 32));
+      if (!at) return false;
+      announce(p, '§f§lBONES IN THE SKY', '§7Something vast blots out the stars', '§f☠ Bones rattle in the sky... §fthe Bone Dragon§7 has woken.');
+      sound(p.dimension, 'mob.enderdragon.growl', p.location, 1, 0.5);
+      timer(40, () => summonBoss('bc:bone_dragon', p.dimension, at));
+    },
+  },
   colossus: {
     w: 3,
     ok: (p) => !night() && p.location.y > 55,
@@ -395,7 +443,7 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
 export function runEvent(p, name) {
   const pool = name ? [[name, EVENTS[name]]] : Object.entries(EVENTS).filter(([, e]) => !e.ok || e.ok(p));
   if (!pool.length || !pool[0][1]) return false;
-  const weight = (e) => e.w * (e.f ? powerMul(e.f) : 1);
+  const weight = (e) => e.w * (e.f && POWERS.includes(e.f) ? powerMul(e.f) : 1);
   let r = Math.random() * pool.reduce((s, [, e]) => s + weight(e), 0);
   let chosen = pool[0];
   for (const entry of pool) {

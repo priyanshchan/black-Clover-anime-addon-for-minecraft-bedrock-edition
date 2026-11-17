@@ -9,6 +9,7 @@ import { countCoins } from '../sea/bounty.js';
 import { rankTitle, stars } from '../core/ranks.js';
 import { notoriety, notorietyTitle } from '../sea/navy.js';
 import { kingdomPage } from '../living/worldsim.js';
+import { missionSummary } from '../living/missions.js';
 
 const G = DATA.glyphs;
 
@@ -54,6 +55,10 @@ export async function openHandbook(p) {
   actions.push(() => warPage(p));
   form.button('§lCompanions\n§r§8Your party, bonds and orders');
   actions.push(() => companionPage(p));
+  form.button('§lMissions\n§r§8Today\'s missions and the Mission Board');
+  actions.push(() => missionPage(p));
+  form.button('§lBrooms & amulets\n§r§8Flight, off-hand charms, camps');
+  actions.push(() => gearPage(p));
   form.button('§lState of the Kingdom\n§r§8Faction power and world news');
   actions.push(() => kingdomPage(p));
   form.button('§lHow to play\n§r§8Altar, mana, robes, the Devil');
@@ -87,7 +92,7 @@ async function spellPicker(p) {
 }
 
 async function attributeList(p) {
-  const form = new ActionFormData().title('Attributes').body('§7Each grimoire holds four spells. The fourth is unlocked at level 10.');
+  const form = new ActionFormData().title('Attributes').body('§7Each grimoire holds four spells (levels 1, 3, 6 and 10), and every grimoire but Anti-Magic awakens a fifth at level 15.');
   for (const k of DATA.order) {
     const a = DATA.attributes[k];
     form.button(`${a.glyph} ${a.mc}§l${a.name}§r\n§8${{ 3: 'Three', 4: 'Four', 5: 'Five' }[a.leaves]}-leaf grimoire`);
@@ -107,7 +112,7 @@ async function guide(p) {
   const body = [
     '§l§dGrimoire Altar§r\n§7Craft one (or use the one you received on your first day). Interact with it to receive your grimoire. Lost it? The altar returns it.',
     '§l§bMana§r\n§7Spells cost mana, which regenerates over time. Mana Crystals restore it instantly (craft: amethyst + lapis + glowstone).',
-    '§l§eLevels§r\n§7Casting and defeating monsters grants magic XP. New spells unlock at levels 3, 6 and 10. Spell power grows every level.',
+    '§l§eLevels§r\n§7Casting and defeating monsters grants magic XP. New spells unlock at levels 3, 6 and 10, and your grimoire §dawakens§7 a fifth spell at level 15. Spell power grows every level.',
     '§l§0Anti-Magic§r\n§7Five-leaf grimoires hold demon swords instead of spells. Sword hits fill the gauge; at 100% unleash Black Form. Sneak with a sword to cut down incoming spells.',
     '§l§6Robes§r\n§7Black Bull: faster mana, stronger when near death. Golden Dawn: +40 mana, +10% power. Crimson Lion: cheaper and stronger flame spells.',
     '§l§4The Devil§r\n§7Dark Disciples roam at night. A Devil Summoning Contract (crying obsidian, mana crystals, book) calls the Devil itself. Its heart crafts a Wishing Clover Charm, which lets you seek a new grimoire.',
@@ -202,8 +207,10 @@ async function livingPage(p) {
     '§l§4The Fallen Captain§r\n§7Use a §4Seal of the Fallen Captain§7 (crying obsidian, devil hearts, knight contracts, a diamond) or meet it on a dark night. It duels with a blade and three grimoires, blinks behind you, parries blows and dodges spells.',
     '§l§6The Stone Colossus§r\n§7A §6Colossus Core§7 (mossy cobblestone, ancient pages, a diamond block) wakes a walking mountain that slams, hurls boulders and splits the earth.',
     '§l§3The Phantom Galleon§r\n§7Ring a §3Phantom Galleon Bell§7 (phantom membranes, doubloons, a bell). A ghost ship sails the sky, fires broadsides and drops its drowned crew.',
+    '§l§bThe Witch Sisters§r\n§7Raise a §bTwin Moon Charm§7 (packed ice, magma blocks, mana crystals, an amethyst block) or meet them on a dark night. The Frost Witch and the Ember Witch blink away from melee and weave §fTwin Spells§7 - an ice prison, then falling fire. Kill one and the other goes berserk: §bAbsolute Winter§7 or §6Inferno Requiem§7.',
+    '§l§fThe Bone Dragon§r\n§7Plant a §fBone Totem§7 (bone blocks, a wither skeleton skull, a mana crystal) or look up on a dark night. It circles overhead, breathes withering bone-fire, dives, sweeps its tail, calls skeletons, and ends with §fDeath\'s Wingbeat§7.',
     '§l§9The Storm Kraken§r\n§7Throw a §9Storm Kraken Lure§7 (Leviathan scales, lightning rods, a heart of the sea) into deep water. Lightning, whirlpools and tentacle slams.',
-    '§l§eWorld events§r\n§7Every few minutes something happens near a player: mana meteor showers (catch the crystals), Devil Gates (break them!), pirate landings, faction skirmishes, Magic Knight patrols, the Travelling Merchant, sky treasure, a Crimson Night, or a giant boss rising. Toggle events at a War Table.',
+    '§l§eWorld events§r\n§7Every few minutes something happens near a player: mana meteor showers (catch the crystals), Devil Gates (break them!), pirate landings, faction skirmishes, Rogue Mage ambushes, Magic Knight patrols, the Travelling Merchant, sky treasure, a Crimson Night, or a giant boss rising. Toggle events at a War Table.',
   ].join('\n\n');
   await new MessageFormData().title('Bosses & world events').body(body).button1('Back').button2('Close').show(p).then((r) => {
     if (r.selection === 0) return openHandbook(p);
@@ -217,10 +224,38 @@ async function warPage(p) {
     '§l§bYour own knights§r\n§7Talk to a knight to see its profile. Recruit wild knights with a §aKnight Contract§7 or doubloons (up to 4). Talk to your knights to order them to follow, hold a position, guard you or hunt freely.',
     '§l§6The War Table§r\n§7Craft one (map, iron sword, feather, planks, sticks) and use it: pick two or three armies - ' + Object.values(DATA.factions).map((f) => `${f.mc}${f.name}§7`).join(', ') + ' - their tactics and size, or stage a knight duel, and bet doubloons on the winner. Watch with the cinematic camera.',
     '§l§eSkirmish Horn§r\n§7Blow it (gold and a bone) and two random armies clash in front of you.',
-    '§l§7Factions in the wild§r\n§7Knights fight devils and pirates; the Tidewatch hunt pirates and devils; pirates and devils fight knights and the navy.',
+    '§l§7Factions in the wild§r\n§7Knights fight devils and pirates; the Tidewatch hunt pirates and devils; pirates and devils fight knights and the navy. §5Rogue Mages§7 - outlaws with real grimoires and levels 2-8 - prowl at night and attack players and knights alike.',
   ].join('\n\n');
   await new MessageFormData().title('Knights & the War Table').body(body).button1('Back').button2('Close').show(p).then((r) => {
     if (r.selection === 0) return openHandbook(p);
+    return undefined;
+  });
+}
+
+async function missionPage(p) {
+  const r = DATA.missionRewards;
+  const body = [
+    '§l§6Today\'s missions§r\n' + missionSummary(p),
+    '§l§6How missions work§r\n§7Each in-game day brings three missions: an easy one, a harder one and a wild card. Progress counts anywhere - kills, bosses, Devil Gates, spells and fruit powers, magic XP, your companions\' victories. Delivery missions take the items from your pack at the board.',
+    `§l§6The Mission Board§r\n§7Craft one (oak planks, paper, green dye, sticks) or find one in a §aMagic Knight camp§7. Use it to claim rewards and swap a mission (free once a day). Rewards: §e${r[1].stars} star, ${r[1].coins} doubloons§7 / §e${r[2].stars} stars, ${r[2].coins}§7 / §e${r[3].stars} stars, ${r[3].coins}§7 plus magic XP. Finish all three for a bonus.`,
+  ].join('\n\n');
+  await new MessageFormData().title('Missions').body(body).button1('Back').button2('Close').show(p).then((res) => {
+    if (res.selection === 0) return openHandbook(p);
+    return undefined;
+  });
+}
+
+async function gearPage(p) {
+  const brooms = Object.values(DATA.brooms).map((b) => `${b.name}§7: top speed ${Math.round(b.speed * 20)} m/s, ${b.mana} mana/s`).join('\n');
+  const amulets = Object.values(DATA.amulets).map((a) => `${a.name}§7: ${a.perk}`).join('\n');
+  const body = [
+    '§l§6Magic Brooms§r\n' + brooms + '\n§7Use a broom to mount it. Look where you want to go and hold forward (look up to climb), hold back to brake, let go to hover, sneak to step off - the broom returns to your pack. Flying drains mana; when you run dry it only glides. Without a grimoire a broom can only glide, and Anti-Magic smothers it entirely.',
+    '§l§dAmulets§r\n' + amulets + '\n§7Hold an amulet in your §foff hand§7. Craft them from gold nuggets, string, a mana crystal and a focus (lapis block, emerald, redstone block, iron block or golden apple), buy a Mystery Amulet from the merchant, or find one in camp chests.',
+    '§l§aMagic Knight camps§r\n§7Tents around a campfire on open grassland, with knights on watch, a supply chest and a Mission Board.',
+    '§l§5Awakening§r\n§7At magic level 15 every grimoire (except Anti-Magic) awakens a fifth spell - its strongest. Knights and companions learn theirs at level 15 too.',
+  ].join('\n\n');
+  await new MessageFormData().title('Brooms & amulets').body(body).button1('Back').button2('Close').show(p).then((res) => {
+    if (res.selection === 0) return openHandbook(p);
     return undefined;
   });
 }

@@ -1,0 +1,30 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:amulet_power",
+      "menu_category": {
+        "category": "equipment"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_amulet_power"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§cBattle Charm"
+      },
+      "minecraft:max_stack_size": {
+        "value": 1
+      },
+      "minecraft:allow_off_hand": {
+        "value": true
+      },
+      "minecraft:glint": {
+        "value": true
+      }
+    }
+  }
+}

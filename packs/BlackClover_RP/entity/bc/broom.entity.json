@@ -1,0 +1,29 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:broom",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "t0": "textures/entity/bc/broom/broom",
+        "t1": "textures/entity/bc/broom/swift_broom"
+      },
+      "geometry": {
+        "default": "geometry.bc.broom"
+      },
+      "animations": {
+        "fly": "animation.bc.broom.fly"
+      },
+      "scripts": {
+        "animate": [
+          "fly"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.broom"
+      ]
+    }
+  }
+}

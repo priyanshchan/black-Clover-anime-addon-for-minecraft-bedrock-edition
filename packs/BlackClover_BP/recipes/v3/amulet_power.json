@@ -1,0 +1,37 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:amulet_power"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "GSG",
+      "GMG",
+      " X "
+    ],
+    "key": {
+      "G": {
+        "item": "minecraft:gold_nugget"
+      },
+      "S": {
+        "item": "minecraft:string"
+      },
+      "M": {
+        "item": "bc:mana_crystal"
+      },
+      "X": {
+        "item": "minecraft:redstone_block"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:amulet_power",
+      "count": 1
+    }
+  }
+}

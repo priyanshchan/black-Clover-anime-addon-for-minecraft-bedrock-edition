@@ -1,0 +1,51 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:rogue_mage",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "v0": "textures/entity/bc/rogue/crimson",
+        "v1": "textures/entity/bc/rogue/forest",
+        "v2": "textures/entity/bc/rogue/ash",
+        "v3": "textures/entity/bc/rogue/violet"
+      },
+      "geometry": {
+        "default": "geometry.bc.rogue_mage"
+      },
+      "animations": {
+        "idle": "animation.bc.magic_knight.idle",
+        "walk": "animation.bc.magic_knight.walk",
+        "look_at_target": "animation.bc.magic_knight.look_at_target",
+        "cast": "animation.bc.magic_knight.cast",
+        "attack": "animation.bc.magic_knight.attack",
+        "cast_raise": "animation.bc.magic_knight.cast_raise",
+        "channel": "animation.bc.magic_knight.channel",
+        "slam": "animation.bc.magic_knight.slam",
+        "dodge": "animation.bc.magic_knight.dodge",
+        "flinch": "animation.bc.magic_knight.flinch",
+        "salute": "animation.bc.magic_knight.salute",
+        "cheer": "animation.bc.magic_knight.cheer",
+        "sit": "animation.bc.magic_knight.sit"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.rogue_mage"
+      ],
+      "spawn_egg": {
+        "base_color": "#2e080c",
+        "overlay_color": "#4a3624"
+      }
+    }
+  }
+}

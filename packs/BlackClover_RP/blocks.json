@@ -12,5 +12,8 @@
   },
   "bc:war_table": {
     "sound": "wood"
+  },
+  "bc:mission_board": {
+    "sound": "wood"
   }
 }

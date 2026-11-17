@@ -293,6 +293,25 @@ export const DATA = {
         "cooldown": 20.0,
         "level": 10,
         "desc": "Erupt into the sky with a devastating wind burst."
+      },
+      {
+        "id": "gale_emperor",
+        "name": "Gale Emperor",
+        "mana": 110,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "A colossal cyclone drags every foe in and hurls them skyward.",
+        "spec": {
+          "t": "vortex",
+          "d": 18,
+          "r": 10,
+          "dur": 3,
+          "fx": "wind",
+          "kb": [
+            0.5,
+            1.6
+          ]
+        }
       }
     ],
     "flame": [
@@ -327,6 +346,24 @@ export const DATA = {
         "cooldown": 22.0,
         "level": 10,
         "desc": "An expanding ring of solar fire around you."
+      },
+      {
+        "id": "crown_of_suns",
+        "name": "Crown of Suns",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "A crown of suns rains fire around your aim.",
+        "spec": {
+          "t": "meteor",
+          "d": 16,
+          "n": 8,
+          "r": 7,
+          "aoe": 3.5,
+          "fire": 6,
+          "size": 2,
+          "fx": "flame"
+        }
       }
     ],
     "water": [
@@ -361,6 +398,25 @@ export const DATA = {
         "cooldown": 22.0,
         "level": 10,
         "desc": "Traps all nearby enemies in crushing water bubbles."
+      },
+      {
+        "id": "ocean_sovereign",
+        "name": "Ocean Sovereign",
+        "mana": 110,
+        "cooldown": 36.0,
+        "level": 15,
+        "desc": "A tidal wave crashes out in every direction.",
+        "spec": {
+          "t": "wave",
+          "d": 16,
+          "len": 16,
+          "dirs": 12,
+          "fx": "water",
+          "kb": [
+            1.8,
+            0.8
+          ]
+        }
       }
     ],
     "lightning": [
@@ -395,6 +451,27 @@ export const DATA = {
         "cooldown": 24.0,
         "level": 10,
         "desc": "Call down a storm of judgment bolts on all foes."
+      },
+      {
+        "id": "thousand_bolts",
+        "name": "Thousand Bolts",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "Lightning strikes every foe in sight, three times over.",
+        "spec": {
+          "t": "repeat",
+          "n": 3,
+          "every": 10,
+          "fx": "lightning",
+          "spec": {
+            "t": "strikes",
+            "d": 10,
+            "n": 6,
+            "r": 14,
+            "fx": "lightning"
+          }
+        }
       }
     ],
     "light": [
@@ -429,6 +506,21 @@ export const DATA = {
         "cooldown": 25.0,
         "level": 10,
         "desc": "A rain of light swords over the battlefield."
+      },
+      {
+        "id": "judgment_day",
+        "name": "Judgment Day",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "A pillar of judgment for every foe near your aim.",
+        "spec": {
+          "t": "strikes",
+          "d": 15,
+          "n": 10,
+          "r": 14,
+          "fx": "light"
+        }
       }
     ],
     "dark": [
@@ -463,6 +555,28 @@ export const DATA = {
         "cooldown": 26.0,
         "level": 10,
         "desc": "A slash that cuts through space itself."
+      },
+      {
+        "id": "void_eclipse",
+        "name": "Void Eclipse",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "An eclipse swallows everything around your aim.",
+        "spec": {
+          "t": "vortex",
+          "d": 22,
+          "r": 9,
+          "dur": 4,
+          "fx": "dark",
+          "eff": [
+            [
+              "blindness",
+              3,
+              0
+            ]
+          ]
+        }
       }
     ],
     "ice": [
@@ -497,6 +611,21 @@ export const DATA = {
         "cooldown": 24.0,
         "level": 10,
         "desc": "A blizzard that freezes everything around you."
+      },
+      {
+        "id": "eternal_winter",
+        "name": "Eternal Winter",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "Freeze every foe around you solid, then shatter them.",
+        "spec": {
+          "t": "timestop",
+          "d": 16,
+          "r": 11,
+          "dur": 4,
+          "fx": "ice"
+        }
       }
     ],
     "anti": [
@@ -565,6 +694,21 @@ export const DATA = {
         "cooldown": 22.0,
         "level": 10,
         "desc": "Portals surround your target and fire from every side."
+      },
+      {
+        "id": "dimension_collapse",
+        "name": "Dimension Collapse",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "Space folds in on your aim and tears apart.",
+        "spec": {
+          "t": "vortex",
+          "d": 24,
+          "r": 8,
+          "dur": 2,
+          "fx": "spatial"
+        }
       }
     ],
     "earth": [
@@ -599,6 +743,25 @@ export const DATA = {
         "cooldown": 24.0,
         "level": 10,
         "desc": "Rings of shattering earth roll out from you."
+      },
+      {
+        "id": "world_splitter",
+        "name": "World Splitter",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "The earth splits open in twelve directions.",
+        "spec": {
+          "t": "wave",
+          "d": 18,
+          "len": 18,
+          "dirs": 12,
+          "fx": "earth",
+          "kb": [
+            0.3,
+            1.2
+          ]
+        }
       }
     ],
     "steel": [
@@ -633,6 +796,23 @@ export const DATA = {
         "cooldown": 24.0,
         "level": 10,
         "desc": "A whirlwind of orbiting blades shreds everything near you."
+      },
+      {
+        "id": "iron_tempest_grand",
+        "name": "Iron Tempest",
+        "mana": 110,
+        "cooldown": 36.0,
+        "level": 15,
+        "desc": "Three storms of steel blades burst out from you.",
+        "spec": {
+          "t": "radial",
+          "d": 9,
+          "n": 24,
+          "rings": 3,
+          "shape": 2,
+          "speed": 1.8,
+          "fx": "steel"
+        }
       }
     ],
     "mirror": [
@@ -667,6 +847,21 @@ export const DATA = {
         "cooldown": 25.0,
         "level": 10,
         "desc": "Mirror panes surround your aim and burn it from every angle."
+      },
+      {
+        "id": "hall_of_mirrors",
+        "name": "Hall of Mirrors",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "Mirrors catch every foe near your aim and burn them with light.",
+        "spec": {
+          "t": "strikes",
+          "d": 13,
+          "n": 8,
+          "r": 12,
+          "fx": "mirror"
+        }
       }
     ],
     "sand": [
@@ -759,6 +954,34 @@ export const DATA = {
             ]
           ]
         }
+      },
+      {
+        "id": "endless_desert",
+        "name": "Endless Desert",
+        "mana": 110,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "A desert storm that blinds and buries everything around you.",
+        "spec": {
+          "t": "zone",
+          "at": "self",
+          "d": 5,
+          "r": 11,
+          "dur": 8,
+          "fx": "sand",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ],
+            [
+              "slowness",
+              2,
+              2
+            ]
+          ]
+        }
       }
     ],
     "bubble": [
@@ -845,6 +1068,22 @@ export const DATA = {
             0.6
           ]
         }
+      },
+      {
+        "id": "bubble_cataclysm",
+        "name": "Bubble Cataclysm",
+        "mana": 110,
+        "cooldown": 36.0,
+        "level": 15,
+        "desc": "A sky full of bubbles bursts over your aim.",
+        "spec": {
+          "t": "rain",
+          "d": 7,
+          "n": 24,
+          "r": 7,
+          "every": 2,
+          "fx": "bubble"
+        }
       }
     ],
     "plant": [
@@ -924,6 +1163,31 @@ export const DATA = {
               2
             ]
           ]
+        }
+      },
+      {
+        "id": "world_tree",
+        "name": "World Tree",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "A giant tree heals your allies and crushes your foes.",
+        "spec": {
+          "t": "heal",
+          "heal": 12,
+          "r": 10,
+          "regen": 8,
+          "fx": "leaf",
+          "then": {
+            "t": "nova",
+            "d": 16,
+            "r": 10,
+            "kb": [
+              0.6,
+              1.2
+            ],
+            "fx": "leaf"
+          }
         }
       }
     ],
@@ -1028,6 +1292,33 @@ export const DATA = {
             ]
           ]
         }
+      },
+      {
+        "id": "venom_kingdom",
+        "name": "Venom Kingdom",
+        "mana": 110,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "A kingdom of poison spreads over your aim.",
+        "spec": {
+          "t": "zone",
+          "d": 3,
+          "r": 9,
+          "dur": 8,
+          "fx": "poison",
+          "eff": [
+            [
+              "poison",
+              3,
+              2
+            ],
+            [
+              "wither",
+              2,
+              0
+            ]
+          ]
+        }
       }
     ],
     "blood": [
@@ -1111,6 +1402,22 @@ export const DATA = {
           "ls": 0.3,
           "hp": 8
         }
+      },
+      {
+        "id": "crimson_feast",
+        "name": "Crimson Feast",
+        "mana": 90,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "Feast on the life of every foe around you. Costs 10 health.",
+        "spec": {
+          "t": "nova",
+          "d": 20,
+          "r": 10,
+          "ls": 0.5,
+          "hp": 10,
+          "fx": "blood"
+        }
       }
     ],
     "star": [
@@ -1186,6 +1493,23 @@ export const DATA = {
               0
             ]
           ]
+        }
+      },
+      {
+        "id": "starfall",
+        "name": "Starfall",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "A shower of comets falls around your aim.",
+        "spec": {
+          "t": "meteor",
+          "d": 18,
+          "n": 7,
+          "r": 8,
+          "aoe": 4,
+          "size": 2,
+          "fx": "star"
         }
       }
     ],
@@ -1282,6 +1606,37 @@ export const DATA = {
             2.5,
             0.8
           ]
+        }
+      },
+      {
+        "id": "requiem",
+        "name": "Requiem",
+        "mana": 110,
+        "cooldown": 36.0,
+        "level": 15,
+        "desc": "Three crashing chords stun everything around you.",
+        "spec": {
+          "t": "repeat",
+          "n": 3,
+          "every": 8,
+          "fx": "sound",
+          "spec": {
+            "t": "nova",
+            "d": 9,
+            "r": 9,
+            "kb": [
+              1.4,
+              0.4
+            ],
+            "fx": "sound",
+            "eff": [
+              [
+                "nausea",
+                4,
+                0
+              ]
+            ]
+          }
         }
       }
     ],
@@ -1395,6 +1750,37 @@ export const DATA = {
             ]
           ]
         }
+      },
+      {
+        "id": "phantom_realm",
+        "name": "Phantom Realm",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "Vanish, and let phantom blades strike every foe near your aim.",
+        "spec": {
+          "t": "buff",
+          "fx": "mist",
+          "self": [
+            [
+              "invisibility",
+              6,
+              0
+            ],
+            [
+              "speed",
+              6,
+              1
+            ]
+          ],
+          "then": {
+            "t": "strikes",
+            "d": 11,
+            "n": 8,
+            "r": 12,
+            "fx": "mist"
+          }
+        }
       }
     ],
     "crystal": [
@@ -1465,6 +1851,25 @@ export const DATA = {
           "speed": 1.4,
           "fx": "crystal"
         }
+      },
+      {
+        "id": "crystal_cathedral",
+        "name": "Crystal Cathedral",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "Crystal spires erupt in ten directions.",
+        "spec": {
+          "t": "wave",
+          "d": 17,
+          "len": 16,
+          "dirs": 10,
+          "fx": "crystal",
+          "kb": [
+            0.2,
+            1.0
+          ]
+        }
       }
     ],
     "bone": [
@@ -1533,6 +1938,22 @@ export const DATA = {
             0.2,
             0.8
           ]
+        }
+      },
+      {
+        "id": "ossuary_gate",
+        "name": "Ossuary Gate",
+        "mana": 110,
+        "cooldown": 45.0,
+        "level": 15,
+        "desc": "Four bone warriors rise to fight for you.",
+        "spec": {
+          "t": "summon",
+          "id": "bc:construct",
+          "variant": 2,
+          "n": 4,
+          "life": 40,
+          "fx": "bone"
         }
       }
     ],
@@ -1608,6 +2029,27 @@ export const DATA = {
           "aoe": 3,
           "fire": 6,
           "size": 1,
+          "fx": "magma"
+        }
+      },
+      {
+        "id": "volcanic_wrath",
+        "name": "Volcanic Wrath",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "Lava erupts all around your aim.",
+        "spec": {
+          "t": "rain",
+          "d": 12,
+          "n": 18,
+          "r": 9,
+          "every": 2,
+          "fire": 6,
+          "kb": [
+            0,
+            1.2
+          ],
           "fx": "magma"
         }
       }
@@ -1691,6 +2133,21 @@ export const DATA = {
           "d": 10,
           "r": 12,
           "dur": 5,
+          "fx": "time"
+        }
+      },
+      {
+        "id": "end_of_time",
+        "name": "End of Time",
+        "mana": 130,
+        "cooldown": 45.0,
+        "level": 15,
+        "desc": "Stop time for six seconds; every frozen foe takes the blows at once.",
+        "spec": {
+          "t": "timestop",
+          "d": 30,
+          "r": 14,
+          "dur": 6,
           "fx": "time"
         }
       }
@@ -1795,6 +2252,51 @@ export const DATA = {
             ]
           }
         }
+      },
+      {
+        "id": "cloud_kingdom",
+        "name": "Cloud Kingdom",
+        "mana": 110,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "Clouds shield your allies and smother your foes.",
+        "spec": {
+          "t": "buff",
+          "allies": 10,
+          "fx": "cotton",
+          "self": [
+            [
+              "resistance",
+              8,
+              2
+            ],
+            [
+              "regeneration",
+              8,
+              0
+            ]
+          ],
+          "then": {
+            "t": "zone",
+            "at": "self",
+            "d": 0,
+            "r": 10,
+            "dur": 8,
+            "fx": "cotton",
+            "eff": [
+              [
+                "slowness",
+                2,
+                3
+              ],
+              [
+                "weakness",
+                2,
+                1
+              ]
+            ]
+          }
+        }
       }
     ],
     "paper": [
@@ -1861,6 +2363,27 @@ export const DATA = {
           "shape": 2,
           "speed": 1.8,
           "fx": "paper"
+        }
+      },
+      {
+        "id": "origami_army",
+        "name": "Origami Army",
+        "mana": 110,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "A storm of paper cranes strikes again and again.",
+        "spec": {
+          "t": "repeat",
+          "n": 3,
+          "every": 10,
+          "fx": "paper",
+          "spec": {
+            "t": "strikes",
+            "d": 9,
+            "n": 6,
+            "r": 12,
+            "fx": "paper"
+          }
         }
       }
     ],
@@ -1978,6 +2501,38 @@ export const DATA = {
             ]
           ]
         }
+      },
+      {
+        "id": "smoke_kingdom",
+        "name": "Smoke Kingdom",
+        "mana": 110,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "A choking kingdom of smoke over your aim.",
+        "spec": {
+          "t": "zone",
+          "d": 3,
+          "r": 10,
+          "dur": 8,
+          "fx": "smoke",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ],
+            [
+              "nausea",
+              3,
+              0
+            ],
+            [
+              "weakness",
+              2,
+              1
+            ]
+          ]
+        }
       }
     ],
     "glass": [
@@ -2042,6 +2597,22 @@ export const DATA = {
           "n": 16,
           "r": 6,
           "every": 2,
+          "fx": "glass"
+        }
+      },
+      {
+        "id": "shattered_sky",
+        "name": "Shattered Sky",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "The sky shatters into falling glass.",
+        "spec": {
+          "t": "rain",
+          "d": 7,
+          "n": 30,
+          "r": 9,
+          "every": 1,
           "fx": "glass"
         }
       }
@@ -2123,6 +2694,45 @@ export const DATA = {
           "aoe": 6,
           "size": 3,
           "fx": "gold"
+        }
+      },
+      {
+        "id": "golden_age",
+        "name": "Golden Age",
+        "mana": 125,
+        "cooldown": 42.0,
+        "level": 15,
+        "desc": "Golden armour for your allies, and a rain of gold on your foes.",
+        "spec": {
+          "t": "buff",
+          "allies": 10,
+          "fx": "gold",
+          "self": [
+            [
+              "resistance",
+              10,
+              1
+            ],
+            [
+              "absorption",
+              10,
+              3
+            ],
+            [
+              "strength",
+              10,
+              1
+            ]
+          ],
+          "then": {
+            "t": "meteor",
+            "d": 18,
+            "n": 4,
+            "r": 6,
+            "aoe": 4,
+            "size": 2,
+            "fx": "gold"
+          }
         }
       }
     ],
@@ -2222,6 +2832,38 @@ export const DATA = {
             "fx": "beast"
           }
         }
+      },
+      {
+        "id": "beast_king",
+        "name": "Beast King",
+        "mana": 110,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "Six savage strikes and the strength of a beast king.",
+        "spec": {
+          "t": "repeat",
+          "n": 6,
+          "every": 5,
+          "fx": "beast",
+          "self": [
+            [
+              "strength",
+              10,
+              2
+            ]
+          ],
+          "spec": {
+            "t": "nova",
+            "at": "front",
+            "d": 9,
+            "r": 3.5,
+            "kb": [
+              0.6,
+              0.2
+            ],
+            "fx": "beast"
+          }
+        }
       }
     ],
     "spirit": [
@@ -2287,6 +2929,29 @@ export const DATA = {
           "r": 12,
           "ls": 0.2,
           "fx": "spirit"
+        }
+      },
+      {
+        "id": "spirit_host",
+        "name": "Spirit Host",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "Spirits heal your allies, then drain every foe near your aim.",
+        "spec": {
+          "t": "heal",
+          "heal": 10,
+          "r": 10,
+          "regen": 8,
+          "fx": "spirit",
+          "then": {
+            "t": "strikes",
+            "d": 10,
+            "n": 8,
+            "r": 12,
+            "ls": 0.3,
+            "fx": "spirit"
+          }
         }
       }
     ],
@@ -2368,6 +3033,28 @@ export const DATA = {
           "kb": [
             0.2,
             0.9
+          ]
+        }
+      },
+      {
+        "id": "runic_apocalypse",
+        "name": "Runic Apocalypse",
+        "mana": 125,
+        "cooldown": 42.0,
+        "level": 15,
+        "desc": "A vast rune circle seals and shatters every foe inside.",
+        "spec": {
+          "t": "prison",
+          "d": 24,
+          "r": 9,
+          "dur": 5,
+          "fx": "rune",
+          "eff": [
+            [
+              "weakness",
+              6,
+              3
+            ]
           ]
         }
       }
@@ -4579,6 +5266,18 @@ export const DATA = {
       "count": 6,
       "price": 40,
       "label": "Mana Cookies x6"
+    },
+    {
+      "item": "bc:broom",
+      "count": 1,
+      "price": 120,
+      "label": "Magic Broom"
+    },
+    {
+      "item": "random_amulet",
+      "count": 1,
+      "price": 220,
+      "label": "Mystery Amulet"
     }
   ],
   "factions": {
@@ -4626,6 +5325,14 @@ export const DATA = {
         "bc:construct"
       ],
       "leader": "bc:construct"
+    },
+    "rogues": {
+      "name": "Rogue Mages",
+      "mc": "\u00a75",
+      "units": [
+        "bc:rogue_mage"
+      ],
+      "leader": "bc:rogue_mage"
     }
   },
   "enemyKits": {
@@ -4780,6 +5487,179 @@ export const DATA = {
           "fx": "spirit"
         }
       ]
+    }
+  },
+  "missions": [
+    {
+      "id": "m_disciples",
+      "kind": "kill",
+      "target": "bc:dark_disciple",
+      "count": 8,
+      "title": "Rout the Dark Disciples",
+      "tier": 1
+    },
+    {
+      "id": "m_imps",
+      "kind": "kill",
+      "target": "bc:imp",
+      "count": 10,
+      "title": "Clear out the Imps",
+      "tier": 1
+    },
+    {
+      "id": "m_hounds",
+      "kind": "kill",
+      "target": "bc:hellhound",
+      "count": 4,
+      "title": "Hunt down Hellhounds",
+      "tier": 2
+    },
+    {
+      "id": "m_raiders",
+      "kind": "kill",
+      "target": "bc_pirate",
+      "count": 8,
+      "title": "Drive off the Sea Raiders",
+      "tier": 1
+    },
+    {
+      "id": "m_wraiths",
+      "kind": "kill",
+      "target": "bc:mana_wraith",
+      "count": 4,
+      "title": "Banish Mana Wraiths",
+      "tier": 2
+    },
+    {
+      "id": "m_rogues",
+      "kind": "kill",
+      "target": "bc:rogue_mage",
+      "count": 5,
+      "title": "Bring Rogue Mages to justice",
+      "tier": 2
+    },
+    {
+      "id": "m_monsters",
+      "kind": "kill",
+      "target": "monster",
+      "count": 30,
+      "title": "Patrol: defeat 30 monsters",
+      "tier": 1
+    },
+    {
+      "id": "m_boss",
+      "kind": "boss",
+      "target": "boss",
+      "count": 1,
+      "title": "Defeat a great foe (any boss)",
+      "tier": 3
+    },
+    {
+      "id": "m_gate",
+      "kind": "gate",
+      "target": "bc:devil_gate",
+      "count": 1,
+      "title": "Seal a Devil Gate",
+      "tier": 2
+    },
+    {
+      "id": "m_cast",
+      "kind": "cast",
+      "target": "",
+      "count": 40,
+      "title": "Training: cast 40 spells or fruit powers",
+      "tier": 1
+    },
+    {
+      "id": "m_xp",
+      "kind": "xp",
+      "target": "",
+      "count": 600,
+      "title": "Training: earn 600 magic XP",
+      "tier": 2
+    },
+    {
+      "id": "m_crystals",
+      "kind": "deliver",
+      "target": "bc:mana_crystal",
+      "count": 12,
+      "title": "Deliver 12 Mana Crystals",
+      "tier": 1
+    },
+    {
+      "id": "m_pages",
+      "kind": "deliver",
+      "target": "bc:ancient_page",
+      "count": 3,
+      "title": "Recover 3 Ancient Grimoire Pages",
+      "tier": 2
+    },
+    {
+      "id": "m_bones",
+      "kind": "deliver",
+      "target": "minecraft:bone",
+      "count": 24,
+      "title": "Deliver 24 bones for the healers",
+      "tier": 1
+    },
+    {
+      "id": "m_squad",
+      "kind": "companion",
+      "target": "",
+      "count": 10,
+      "title": "Lead your companions to 10 victories",
+      "tier": 2
+    }
+  ],
+  "missionRewards": {
+    "1": {
+      "stars": 1,
+      "coins": 30,
+      "xp": 120
+    },
+    "2": {
+      "stars": 2,
+      "coins": 70,
+      "xp": 250
+    },
+    "3": {
+      "stars": 3,
+      "coins": 150,
+      "xp": 500
+    }
+  },
+  "amulets": {
+    "amulet_mana": {
+      "name": "\u00a7bMana Heart",
+      "perk": "+30 max mana and 20% faster mana regeneration"
+    },
+    "amulet_swift": {
+      "name": "\u00a7aSwift Sigil",
+      "perk": "Spell cooldowns 12% shorter"
+    },
+    "amulet_power": {
+      "name": "\u00a7cBattle Charm",
+      "perk": "+12% spell power"
+    },
+    "amulet_guard": {
+      "name": "\u00a7eGuardian Ward",
+      "perk": "Resistance II while below 40% health"
+    },
+    "amulet_vigor": {
+      "name": "\u00a7dVigor Band",
+      "perk": "Two extra hearts and faster healing"
+    }
+  },
+  "brooms": {
+    "broom": {
+      "name": "\u00a76Magic Broom",
+      "speed": 0.55,
+      "mana": 1.5
+    },
+    "swift_broom": {
+      "name": "\u00a7bSwift Broom",
+      "speed": 0.85,
+      "mana": 2.5
     }
   },
   "companion": {

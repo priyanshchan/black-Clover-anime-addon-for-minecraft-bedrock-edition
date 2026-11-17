@@ -617,3 +617,84 @@ MERCHANT += [('bc:companion_whistle', 1, 80, 'Companion Whistle'), ('bc:mana_coo
 FACTIONS['devils']['units'] += ['bc:hellhound']
 FACTIONS['raiders']['units'] += ['bc:raider_gunner']
 FACTIONS['navy']['units'] += ['bc:tidewatch_marksman']
+
+# ======================================================================================
+# v0.3.0: awakened spells, missions, amulets, brooms, the Rogue Mages
+# ======================================================================================
+# Each grimoire (except Anti-Magic) awakens a fifth spell at magic level 15.
+AWAKENED = {
+    'wind': _s('gale_emperor', 'Gale Emperor', 110, 38.0, 15, 'A colossal cyclone drags every foe in and hurls them skyward.', t='vortex', d=18, r=10, dur=3, fx='wind', kb=[0.5, 1.6]),
+    'flame': _s('crown_of_suns', 'Crown of Suns', 115, 38.0, 15, 'A crown of suns rains fire around your aim.', t='meteor', d=16, n=8, r=7, aoe=3.5, fire=6, size=2, fx='flame'),
+    'water': _s('ocean_sovereign', 'Ocean Sovereign', 110, 36.0, 15, 'A tidal wave crashes out in every direction.', t='wave', d=16, len=16, dirs=12, fx='water', kb=[1.8, 0.8]),
+    'lightning': _s('thousand_bolts', 'Thousand Bolts', 115, 38.0, 15, 'Lightning strikes every foe in sight, three times over.', t='repeat', n=3, every=10, fx='lightning', spec=dict(t='strikes', d=10, n=6, r=14, fx='lightning')),
+    'light': _s('judgment_day', 'Judgment Day', 120, 40.0, 15, 'A pillar of judgment for every foe near your aim.', t='strikes', d=15, n=10, r=14, fx='light'),
+    'dark': _s('void_eclipse', 'Void Eclipse', 120, 40.0, 15, 'An eclipse swallows everything around your aim.', t='vortex', d=22, r=9, dur=4, fx='dark', eff=[['blindness', 3, 0]]),
+    'ice': _s('eternal_winter', 'Eternal Winter', 120, 40.0, 15, 'Freeze every foe around you solid, then shatter them.', t='timestop', d=16, r=11, dur=4, fx='ice'),
+    'spatial': _s('dimension_collapse', 'Dimension Collapse', 115, 38.0, 15, 'Space folds in on your aim and tears apart.', t='vortex', d=24, r=8, dur=2, fx='spatial'),
+    'earth': _s('world_splitter', 'World Splitter', 115, 38.0, 15, 'The earth splits open in twelve directions.', t='wave', d=18, len=18, dirs=12, fx='earth', kb=[0.3, 1.2]),
+    'steel': _s('iron_tempest_grand', 'Iron Tempest', 110, 36.0, 15, 'Three storms of steel blades burst out from you.', t='radial', d=9, n=24, rings=3, shape=2, speed=1.8, fx='steel'),
+    'mirror': _s('hall_of_mirrors', 'Hall of Mirrors', 115, 38.0, 15, 'Mirrors catch every foe near your aim and burn them with light.', t='strikes', d=13, n=8, r=12, fx='mirror'),
+    'sand': _s('endless_desert', 'Endless Desert', 110, 38.0, 15, 'A desert storm that blinds and buries everything around you.', t='zone', at='self', d=5, r=11, dur=8, fx='sand', eff=[['blindness', 2, 0], ['slowness', 2, 2]]),
+    'bubble': _s('bubble_cataclysm', 'Bubble Cataclysm', 110, 36.0, 15, 'A sky full of bubbles bursts over your aim.', t='rain', d=7, n=24, r=7, every=2, fx='bubble'),
+    'plant': _s('world_tree', 'World Tree', 120, 40.0, 15, 'A giant tree heals your allies and crushes your foes.', t='heal', heal=12, r=10, regen=8, fx='leaf', then=dict(t='nova', d=16, r=10, kb=[0.6, 1.2], fx='leaf')),
+    'poison': _s('venom_kingdom', 'Venom Kingdom', 110, 38.0, 15, 'A kingdom of poison spreads over your aim.', t='zone', d=3, r=9, dur=8, fx='poison', eff=[['poison', 3, 2], ['wither', 2, 0]]),
+    'blood': _s('crimson_feast', 'Crimson Feast', 90, 38.0, 15, 'Feast on the life of every foe around you. Costs 10 health.', t='nova', d=20, r=10, ls=0.5, hp=10, fx='blood'),
+    'star': _s('starfall', 'Starfall', 120, 40.0, 15, 'A shower of comets falls around your aim.', t='meteor', d=18, n=7, r=8, aoe=4, size=2, fx='star'),
+    'sound': _s('requiem', 'Requiem', 110, 36.0, 15, 'Three crashing chords stun everything around you.', t='repeat', n=3, every=8, fx='sound', spec=dict(t='nova', d=9, r=9, kb=[1.4, 0.4], fx='sound', eff=[['nausea', 4, 0]])),
+    'mist': _s('phantom_realm', 'Phantom Realm', 115, 38.0, 15, 'Vanish, and let phantom blades strike every foe near your aim.', t='buff', fx='mist', self=[['invisibility', 6, 0], ['speed', 6, 1]],
+               then=dict(t='strikes', d=11, n=8, r=12, fx='mist')),
+    'crystal': _s('crystal_cathedral', 'Crystal Cathedral', 115, 38.0, 15, 'Crystal spires erupt in ten directions.', t='wave', d=17, len=16, dirs=10, fx='crystal', kb=[0.2, 1.0]),
+    'bone': _s('ossuary_gate', 'Ossuary Gate', 110, 45.0, 15, 'Four bone warriors rise to fight for you.', t='summon', id='bc:construct', variant=2, n=4, life=40, fx='bone'),
+    'magma': _s('volcanic_wrath', 'Volcanic Wrath', 120, 40.0, 15, 'Lava erupts all around your aim.', t='rain', d=12, n=18, r=9, every=2, fire=6, kb=[0, 1.2], fx='magma'),
+    'time': _s('end_of_time', 'End of Time', 130, 45.0, 15, 'Stop time for six seconds; every frozen foe takes the blows at once.', t='timestop', d=30, r=14, dur=6, fx='time'),
+    'cotton': _s('cloud_kingdom', 'Cloud Kingdom', 110, 40.0, 15, 'Clouds shield your allies and smother your foes.', t='buff', allies=10, fx='cotton', self=[['resistance', 8, 2], ['regeneration', 8, 0]],
+                 then=dict(t='zone', at='self', d=0, r=10, dur=8, fx='cotton', eff=[['slowness', 2, 3], ['weakness', 2, 1]])),
+    'paper': _s('origami_army', 'Origami Army', 110, 38.0, 15, 'A storm of paper cranes strikes again and again.', t='repeat', n=3, every=10, fx='paper', spec=dict(t='strikes', d=9, n=6, r=12, fx='paper')),
+    'smoke': _s('smoke_kingdom', 'Smoke Kingdom', 110, 38.0, 15, 'A choking kingdom of smoke over your aim.', t='zone', d=3, r=10, dur=8, fx='smoke', eff=[['blindness', 2, 0], ['nausea', 3, 0], ['weakness', 2, 1]]),
+    'glass': _s('shattered_sky', 'Shattered Sky', 115, 38.0, 15, 'The sky shatters into falling glass.', t='rain', d=7, n=30, r=9, every=1, fx='glass'),
+    'gold': _s('golden_age', 'Golden Age', 125, 42.0, 15, 'Golden armour for your allies, and a rain of gold on your foes.', t='buff', allies=10, fx='gold', self=[['resistance', 10, 1], ['absorption', 10, 3], ['strength', 10, 1]],
+               then=dict(t='meteor', d=18, n=4, r=6, aoe=4, size=2, fx='gold')),
+    'beast': _s('beast_king', 'Beast King', 110, 38.0, 15, 'Six savage strikes and the strength of a beast king.', t='repeat', n=6, every=5, fx='beast', self=[['strength', 10, 2]],
+                spec=dict(t='nova', at='front', d=9, r=3.5, kb=[0.6, 0.2], fx='beast')),
+    'spirit': _s('spirit_host', 'Spirit Host', 120, 40.0, 15, 'Spirits heal your allies, then drain every foe near your aim.', t='heal', heal=10, r=10, regen=8, fx='spirit',
+                 then=dict(t='strikes', d=10, n=8, r=12, ls=0.3, fx='spirit')),
+    'rune': _s('runic_apocalypse', 'Runic Apocalypse', 125, 42.0, 15, 'A vast rune circle seals and shatters every foe inside.', t='prison', d=24, r=9, dur=5, fx='rune', eff=[['weakness', 6, 3]]),
+}
+for _a, _sp in AWAKENED.items():
+    SPELLS[_a].append(_sp)
+
+# Magic Knight missions (Mission Board): id, kind, target, count, title, tier
+#   kinds: kill (entity id or family), boss, gate, cast, xp, deliver (item), companion (kills by your companions), rescue
+MISSIONS = [
+    ('m_disciples', 'kill', 'bc:dark_disciple', 8, 'Rout the Dark Disciples', 1),
+    ('m_imps', 'kill', 'bc:imp', 10, 'Clear out the Imps', 1),
+    ('m_hounds', 'kill', 'bc:hellhound', 4, 'Hunt down Hellhounds', 2),
+    ('m_raiders', 'kill', 'bc_pirate', 8, 'Drive off the Sea Raiders', 1),
+    ('m_wraiths', 'kill', 'bc:mana_wraith', 4, 'Banish Mana Wraiths', 2),
+    ('m_rogues', 'kill', 'bc:rogue_mage', 5, 'Bring Rogue Mages to justice', 2),
+    ('m_monsters', 'kill', 'monster', 30, 'Patrol: defeat 30 monsters', 1),
+    ('m_boss', 'boss', 'boss', 1, 'Defeat a great foe (any boss)', 3),
+    ('m_gate', 'gate', 'bc:devil_gate', 1, 'Seal a Devil Gate', 2),
+    ('m_cast', 'cast', '', 40, 'Training: cast 40 spells or fruit powers', 1),
+    ('m_xp', 'xp', '', 600, 'Training: earn 600 magic XP', 2),
+    ('m_crystals', 'deliver', 'bc:mana_crystal', 12, 'Deliver 12 Mana Crystals', 1),
+    ('m_pages', 'deliver', 'bc:ancient_page', 3, 'Recover 3 Ancient Grimoire Pages', 2),
+    ('m_bones', 'deliver', 'minecraft:bone', 24, 'Deliver 24 bones for the healers', 1),
+    ('m_squad', 'companion', '', 10, 'Lead your companions to 10 victories', 2),
+]
+MISSION_REWARDS = {1: dict(stars=1, coins=30, xp=120), 2: dict(stars=2, coins=70, xp=250), 3: dict(stars=3, coins=150, xp=500)}
+
+# Amulets: hold one in your off hand
+AMULETS = {
+    'amulet_mana': ('§bMana Heart', '+30 max mana and 20% faster mana regeneration'),
+    'amulet_swift': ('§aSwift Sigil', 'Spell cooldowns 12% shorter'),
+    'amulet_power': ('§cBattle Charm', '+12% spell power'),
+    'amulet_guard': ('§eGuardian Ward', 'Resistance II while below 40% health'),
+    'amulet_vigor': ('§dVigor Band', 'Two extra hearts and faster healing'),
+}
+
+# Brooms: tier -> (name, top speed blocks/tick, mana per second)
+BROOMS = {'broom': ('§6Magic Broom', 0.55, 1.5), 'swift_broom': ('§bSwift Broom', 0.85, 2.5)}
+
+FACTIONS['rogues'] = dict(name='Rogue Mages', mc='§5', units=['bc:rogue_mage'], leader='bc:rogue_mage')
+MERCHANT += [('bc:broom', 1, 120, 'Magic Broom'), ('random_amulet', 1, 220, 'Mystery Amulet')]

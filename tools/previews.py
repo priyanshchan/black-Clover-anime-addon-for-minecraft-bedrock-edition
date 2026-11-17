@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Render README preview images from the real addon models (dev tool).
 
-    python3 tools/previews.py
+    python3 tools/previews.py              # every sheet
+    python3 tools/previews.py v3_sheet     # just one
 """
 from __future__ import annotations
 
@@ -264,17 +265,6 @@ def icons_strip():
     img.convert('RGB').save(os.path.join(OUT, 'icons.png'), optimize=True)
 
 
-if __name__ == '__main__':
-    hero()
-    spells_sheet()
-    gear_sheet()
-    mobs_sheet()
-    robes_sheet()
-    hud_mock()
-    icons_strip()
-    print('previews written to docs/images')
-
-
 def seas_sheet():
     from bc.models import sea as seam
     entries = []
@@ -509,3 +499,43 @@ def v2_sheet():
     for i, a in enumerate(ims):
         img.alpha_composite(tex.to_image(a).resize((64, 64), Image.NEAREST), (16 + i * 76, 16))
     img.convert('RGB').save(os.path.join(OUT, 'items020.png'), optimize=True)
+
+
+def v3_sheet():
+    """v0.3.0: brooms, the Mission Board, Rogue Mages, the Witch Sisters, the Bone Dragon and the new items."""
+    from bc.models import v3, wave4
+    entries = []
+    ka = wave4.knight_animations()
+    pose = {}
+    render.pose_from_anim(ka['animation.bc.magic_knight.idle'], 0.3, pose=pose)
+    for t, label in (('broom', 'Magic Broom'), ('swift_broom', 'Swift Broom')):
+        entries.append((label, model(v3.broom_geo(t)), {}, 45, 25, 1.2))
+    entries.append(('Mission Board', model(v3.mission_board_geo()), {}, 20, 10, 1.3))
+    for v, _ in v3.ROGUE_COLORS[:2]:
+        entries.append((f'Rogue Mage ({v})', model(v3.rogue_geo(v)), pose, 30, 10, 1.5))
+    for k, label in (('frost_witch', 'The Frost Witch'), ('ember_witch', 'The Ember Witch')):
+        wp = {}
+        render.pose_from_anim(v3.witch_animations(k)[f'animation.bc.{k}.cast'], 0.4, pose=wp)
+        entries.append((label, model(v3.witch_geo(k)), wp, 30, 10, 1.4))
+    da = v3.bone_dragon_animations()
+    dp = {}
+    render.pose_from_anim(da['animation.bc.bone_dragon.fly'], 0.3, pose=dp)
+    entries.append(('The Bone Dragon', model(v3.bone_dragon_geo()), dp, 35, 20, 1.2))
+    dp = {}
+    render.pose_from_anim(da['animation.bc.bone_dragon.breath'], 0.8, pose=dp)
+    entries.append(('Bone Dragon: breath', model(v3.bone_dragon_geo()), dp, 100, 15, 1.2))
+    grid(entries, 5, 280, 'v030.png', 'v0.3.0: brooms, Rogue Mages, the Witch Sisters & the Bone Dragon')
+    ims = list(v3.v3_icons().values())
+    img = background(len(ims) * 76 + 20, 96, '22222c', '101016', ring=False)
+    for i, a in enumerate(ims):
+        img.alpha_composite(tex.to_image(a).resize((64, 64), Image.NEAREST), (16 + i * 76, 16))
+    img.convert('RGB').save(os.path.join(OUT, 'items030.png'), optimize=True)
+
+
+if __name__ == '__main__':
+    names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet']
+    for n in names:
+        print('rendering', n)
+        globals()[n]()
+    print('previews written to docs/images')

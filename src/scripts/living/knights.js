@@ -79,9 +79,10 @@ world.afterEvents.entityLoad.subscribe((ev) => safe(() => track(ev.entity)));
  * Level 1: two spells, level 3: three, level 6: the grimoire's ultimate.
  */
 export function kitFor(attr, level = 1) {
-  if (DATA.npcKits[attr]) return DATA.npcKits[attr];
+  const awakened = DATA.spells[attr]?.find((sp) => sp.level >= 15)?.spec;
+  if (DATA.npcKits[attr]) return level >= 15 && awakened ? [...DATA.npcKits[attr], awakened] : DATA.npcKits[attr];
   const specs = DATA.spells[attr]?.map((sp) => sp.spec).filter(Boolean) ?? [];
-  const n = level >= 6 ? 4 : level >= 3 ? 3 : 2;
+  const n = level >= 15 ? 5 : level >= 6 ? 4 : level >= 3 ? 3 : 2;
   const kit = specs.slice(0, n).filter((s) => s.t !== 'wall');
   return kit.length ? kit : DATA.npcKits.wind;
 }
@@ -115,7 +116,7 @@ export function giveKnightXp(e, amount) {
   for (const fn of levelHooks) safe(() => fn(e));
   const owner = world.getEntity(/** @type {string} */ (safe(() => e.getDynamicProperty('bc:owner')) ?? ''));
   if (owner instanceof Player) {
-    const extra = lv === 3 ? ' and learned a third spell' : lv === 6 ? ' and mastered their grimoire' : '';
+    const extra = lv === 3 ? ' and learned a third spell' : lv === 6 ? ' and mastered their grimoire' : lv === 15 ? ' - their grimoire has AWAKENED' : '';
     safe(() => owner.sendMessage(`§b${knightName(e)}§f is now a §e${RANK[lv]}§f knight (level ${lv})${extra}!`));
   }
 }

@@ -47,7 +47,7 @@ async function openShop(p, merchant) {
     safe(() => p.sendMessage(`§7"Come back with §6${o.price}§7 doubloons, friend."`));
     return;
   }
-  const id = o.item === 'random_fruit' ? `bc:fruit_${pick(DATA.fruitOrder)}` : o.item;
+  const id = o.item === 'random_fruit' ? `bc:fruit_${pick(DATA.fruitOrder)}` : o.item === 'random_amulet' ? `bc:${pick(Object.keys(DATA.amulets))}` : o.item;
   give(p, new ItemStack(id, o.count));
   sound(p.dimension, 'bc.coins', p.location, 1, 1);
   if (merchant) particle(p.dimension, 'bc:burst_spark', merchant.location, { scale: 0.6 });

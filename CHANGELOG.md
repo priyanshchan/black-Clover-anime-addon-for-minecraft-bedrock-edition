@@ -1,5 +1,52 @@
 # Changelog
 
+## v0.3.0 – Early Access (2026-11-17)
+
+A big content drop: take to the sky on **magic brooms**, earn rewards with **daily missions**, wear **amulets**, awaken a **fifth spell** in every grimoire, and face **Rogue Mages**, the **Witch Sisters** and the **Bone Dragon**.
+
+> v0.2.0 was never published as a release, so this build also contains all of v0.2.0: the saved **companion party** with smart AI, smarter enemies and bosses (threat, three phases, desperation moves), the Fallen Captain, 8 more grimoires and 8 more Abyss Fruits. See the v0.2.0 section of [CHANGELOG.md](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/blob/ccr-62b3f23b-74ycbu/CHANGELOG.md) for the full list.
+
+### Download
+* **`BlackClover_GrimoireAwakening_v0.3.0.mcaddon`** – open it and Minecraft imports both packs (it replaces v0.1.0 / v0.2.0; your grimoire, levels and party are kept).
+* `BlackClover_BP_v0.3.0.mcpack` / `BlackClover_RP_v0.3.0.mcpack` – the packs separately.
+
+### New: magic brooms
+* **Magic Broom** (stick, hay block, mana crystal) and **Swift Broom** (feathers, a diamond, a Magic Broom). Use one to mount it.
+* **Look** to steer, **hold forward** to fly (look up to climb, down to dive), **hold back** to brake, let go to **hover**, **sneak** to step off – the broom flies back into your pack and you float down gently.
+* Flying costs mana (1.5 / 2.5 per second, 40% while hovering) and your mana does not regenerate in the air. Run dry and the broom glides down until 15% of your mana is back.
+* Without a grimoire a broom can only glide; Anti-Magic smothers it entirely. A small HUD shows speed, mana and altitude.
+
+### New: daily missions
+* **Three missions every in-game day** – an easy one, a harder one and a wild card – from 15 kinds: hunt Dark Disciples, Imps, Hellhounds, raiders, Mana Wraiths or Rogue Mages, patrol against monsters, defeat any boss, seal a Devil Gate, cast 40 spells, earn 600 XP, deliver crystals, pages or bones, or lead your companions to 10 victories.
+* Progress counts anywhere (your companions' kills count too); everyone near a boss or a sealed gate gets credit.
+* Claim rewards at the new **Mission Board** block (oak planks, paper, green dye, sticks): 1-3 stars, 30-150 doubloons and 120-500 magic XP; all three done gives 4 Mana Crystals. Swap an unstarted mission (free once a day). The Handbook shows today's missions.
+
+### New: amulets
+* Hold one in your **off hand**: **Mana Heart** (+30 max mana, +20% regen), **Swift Sigil** (cooldowns −12%), **Battle Charm** (+12% spell power), **Guardian Ward** (Resistance II below 40% health), **Vigor Band** (two extra hearts, faster healing).
+* Craft them (gold nuggets, string, a mana crystal and a focus), buy a **Mystery Amulet** from the merchant, or find them in camps and boss loot.
+
+### New: awakened spells
+* At **magic level 15** every grimoire except Anti-Magic awakens a **fifth, strongest spell** – 31 in total (159 spells overall): Gale Emperor, Crown of Suns, Ocean Sovereign, Thousand Bolts and more.
+* Magic Knights and companions learn their awakened spell at level 15 too.
+
+### New foes
+* **Rogue Mages** – outlaw mages with a real grimoire (any attribute) and a level from 2 to 8. They spawn at night in plains, forests, taiga and savanna, fight with the same tactical brain and spell kits as knights, hunt players, knights and the Tidewatch, and form a **Rogue Mages** army at the War Table.
+* **The Witch Sisters** (twin boss, 450 HP each) – the Frost Witch and the Ember Witch fly, blink away from melee and weave **Twin Spells** (an ice prison, then falling fire on the same spot). Kill one and the other screams, gains strength and speed and unleashes her desperation move: **Absolute Winter** or **Inferno Requiem**. Summon them with a **Twin Moon Charm**.
+* **The Bone Dragon** (1100 HP) – circles overhead, breathes withering bone-fire, blows you away with its wings, rains bones, dives onto a warning circle, sweeps its tail and raises skeletons. Desperation: **Death's Wingbeat**. Summon it with a **Bone Totem**.
+
+### World
+* **Magic Knight camps** appear on open grassland: tents and bedrolls around a campfire, a Mission Board, a supply chest and three knights on watch.
+* New events: **Rogue ambush** (sometimes with a knight patrol coming to help), **Witch Sisters** (night) and **Bone Dragon** (night).
+* The Travelling Merchant sells **Magic Brooms** and **Mystery Amulets**.
+
+### Animations & models
+* New 3D models: two brooms, the Mission Board, Rogue Mages (four robe colours), the Frost and Ember Witches, the Bone Dragon.
+* Witches: float, cast, staff sweep, roar. Bone Dragon: wingbeat flight, breath, dive, tail sweep, roar. Brooms bob and sway in flight.
+
+### Known issues
+* Camps only appear on fairly flat grass or dirt, so they are rarer in hilly biomes.
+* Balance is still a first pass: please report anything too strong or too weak.
+
 ## v0.2.0 – Early Access (2026-11-17)
 
 A big content update with a full **companion system**, smarter **enemies** and **bosses**, and many new **animations**.

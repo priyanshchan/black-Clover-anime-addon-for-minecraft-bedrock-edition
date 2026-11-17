@@ -16,9 +16,9 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from bc import out  # noqa: E402
-from bc.data import (ALTAR_WEIGHTS, ATTR_ORDER, ATTRIBUTES, BOND, COMPANION_HP, COMPANION_XP, ENEMY_KITS, FACTIONS, FRUIT_ORDER,  # noqa: E402
-                     FRUITS, KNIGHT_ROBES, MERCHANT, NOTORIETY, NPC_KITS, PARTY_MAX, RANKS, ROBE_PERKS, ROBES, SHOP, SPELLS, SWORDS,
-                     WILL_MAX_LEVEL)
+from bc.data import (ALTAR_WEIGHTS, AMULETS, ATTR_ORDER, ATTRIBUTES, AWAKENED, BOND, BROOMS, COMPANION_HP, COMPANION_XP,  # noqa: E402
+                     ENEMY_KITS, FACTIONS, FRUIT_ORDER, FRUITS, KNIGHT_ROBES, MERCHANT, MISSION_REWARDS, MISSIONS, NOTORIETY, NPC_KITS,
+                     PARTY_MAX, RANKS, ROBE_PERKS, ROBES, SHOP, SPELLS, SWORDS, WILL_MAX_LEVEL)
 from bc.packgen import VERSION  # noqa: E402
 
 ROOT = out.ROOT
@@ -231,7 +231,9 @@ def write(name, title, body):
 def page_magic():
     total = sum(ALTAR_WEIGHTS.values())
     o = ('Every player can hold **one grimoire**. The Grimoire Altar picks its attribute at random (odds below). '
-         'Each grimoire has four spells, unlocked at magic levels **1, 3, 6 and 10**. Spell power grows 5% per level (max level 20).\n\n'
+         'Each grimoire has four spells, unlocked at magic levels **1, 3, 6 and 10** - and at level **15** every grimoire except Anti-Magic **awakens** '
+         f'a fifth, strongest spell ({len(AWAKENED)} awakened spells; knights and companions learn theirs at level 15 too). '
+         'Spell power grows 5% per level (max level 20).\n\n'
          '**Casting:** hold your grimoire and **Use** to cast the selected spell, **Sneak + Use** to flip to the next unlocked spell '
          '(or choose one in the Handbook). Spells cost mana and have cooldowns; the HUD shows both. Creative players may use any grimoire, '
          'with every spell unlocked and free.\n\n')
@@ -346,6 +348,7 @@ ORIGIN = {
     'bc:tidewatch_marksman': 'bounty-hunter squads; battles',
     'bc:raider_gunner': 'battles (Sea Raiders army)',
     'bc:hellhound': 'the Fallen Captain, wounded-knight events, battles (Devil Host)',
+    'bc:rogue_mage': 'rogue ambushes, battles (Rogue Mages army)',
 }
 
 
@@ -375,6 +378,9 @@ def natural(r):
 
 BOSSES = [
     ('bc:fallen_captain', 'Seal of the Fallen Captain (or the "fallen_captain" night event)', 'A duelist. **Three-hit sword combos** up close (9 dmg each), **blink strikes** behind you (13 dmg), and spells from **three grimoires** - one per phase, the last is always Time. **Parries** 30% of melee blows (no damage, 6 dmg counter), **side-steps** spells. Below 50% calls Hellhounds. Desperation: **Final Form** (strength, speed) and a **time stop**.'),
+    ('bc:frost_witch', 'Twin Moon Charm (both sisters) or the "witch_sisters" night event', 'One of the **Witch Sisters**. Flies. **Ice shards** (3, slowness), **ice prisons**, a telegraphed **frost nova** up close (slowness), and from phase 2 a **hail storm**. **Blinks away** from anyone in melee. With her sister alive she weaves **Twin Spells**: her ice prison, then the Ember Witch\'s falling fire on the same spot. Desperation: **Absolute Winter** - a freezing field, prisons on up to six foes, then a 24-shard hail.'),
+    ('bc:ember_witch', 'Twin Moon Charm (both sisters) or the "witch_sisters" night event', 'The other **Witch Sister**. Flies. **Fire shards** (3, burning), **burning ground** where you stand, a telegraphed **six-way flame wave**, and from phase 2 **fire meteors**. Blinks away from melee and joins the **Twin Spells**. Desperation: **Inferno Requiem** - a 12-meteor storm, then a twelve-way wave of fire. **When one sister dies, the other screams, gains strength and speed and goes straight to her desperation move.**'),
+    ('bc:bone_dragon', 'Bone Totem (or the "bone_dragon" night event)', 'Circles ~9 blocks above its prey. **Bone-fire breath** (2-3 beams, wither), a telegraphed **wing gust** that blows everyone away, **bone rain**, a **dive** onto a warning circle (16 / 20 dmg), a **tail sweep** up close, and from phase 2 it calls **skeletons** (wither skeletons in phase 3). Desperation: **Death\'s Wingbeat** - it rises, a 12-block circle appears, then a crushing, withering blast and more skeletons.'),
     ('bc:devil', 'Devil Summoning Contract', 'Hovers and circles you; claws at close range; **dark lightning** under every player (12 dmg, darkness), a **darkness roar** (knockback, weakness), **orb barrages**, summons Dark Disciples. Below 50%: faster, stronger, resistant.'),
     ('bc:leviathan', 'Leviathan Lure (face deep water)', '**Water volleys** (5, then 7 orbs, 7 dmg), a **slam** under you (11 / 15 dmg, also hurts ships), and below 50% a **roar** (mining fatigue, slowness) that calls the Drowned.'),
     ('bc:dungeon_golem', 'guards ancient dungeons', '**Ground slam** within 4.8 blocks (12 / 16 dmg), **thrown boulders** at range (10 dmg). Below 50% it calls Imps and attacks faster.'),
@@ -400,7 +406,7 @@ def page_mobs():
     for ident in sorted(ENTITIES):
         e = ENTITIES[ident]
         fams = e['components'].get('minecraft:type_family', {}).get('family', [])
-        if ident in skip or 'bc_spell' in fams or 'bc_ship' in fams or ident in ('bc:warp_gate', 'bc:devil_gate'):
+        if ident in skip or 'bc_spell' in fams or 'bc_ship' in fams or 'bc_broom' in fams or ident in ('bc:warp_gate', 'bc:devil_gate'):
             continue
         hp, atk, speed, fam, loot = stats(ident)
         rows.append([f'**{entity_name(ident)}**<br>`{ident}`', hp, atk, fam, spawning(ident), drops(loot)])
@@ -410,14 +416,19 @@ def page_mobs():
         ['Clover Kingdom', 'Magic Knights, Ancient Constructs, the Travelling Merchant', 'all monsters (players only after being attacked)'],
         ['Devil Host', 'Devils, the Archdevil, Dark Disciples, Imps, Devil Gates', 'players, Magic Knights, the Tidewatch'],
         ['Sea Raiders', 'Sea Raiders, Raider Captains, Phantom Raiders, the Phantom Galleon', 'players, Magic Knights, the Tidewatch'],
-        ['Tidewatch Navy', 'Sentinels, Commodores', 'players with a bounty, pirates, devils, Dark Disciples'],
+        ['Tidewatch Navy', 'Sentinels, Commodores, Marksmen', 'players with a bounty, pirates, devils, Dark Disciples, Rogue Mages'],
+        ['Rogue Mages', 'Rogue Mages (outlaws with real grimoires, levels 2-8)', 'players, Magic Knights, the Tidewatch'],
+        ['The Witch Sisters', 'the Frost Witch and the Ember Witch', 'players, Magic Knights, the Tidewatch'],
+        ['The restless dead', 'the Bone Dragon and the skeletons it calls', 'players, Magic Knights, the Tidewatch'],
     ])
     o += ('Members of a side never hurt each other with magic. In War Table battles the armies only fight each other (and anyone who attacks them).\n\n'
           '## Structures\n\n'
           '* **Pirate outposts** - islands with palms, a tent, a dock, a campfire, a loot chest and a Bounty Board; appear out of sight while you sail over deep water.\n'
           '* **Sunken wrecks** - two treasure chests (fruits, doubloons, maps) guarded by the Drowned.\n'
           '* **Ancient dungeons** - form underground near explorers: a ruined entrance, a stairway, a corridor of **flame traps**, a pillared hall with a working Grimoire Altar, '
-          'a treasure vault (ancient pages, squad robes, mana crystals, diamonds, treasure maps) and the Dungeon Guardian.\n')
+          'a treasure vault (ancient pages, squad robes, mana crystals, diamonds, treasure maps) and the Dungeon Guardian.\n'
+          '* **Magic Knight camps** - appear on open grassland near explorers: three tents with bedrolls around a campfire, benches, a lantern post, '
+          'a **Mission Board**, a supply chest (mana crystals, cookies, bread, sometimes a contract, ancient page, amulet, robe or whistle) and three knights on watch.\n')
     return write('mobs-and-bosses.md', 'Mobs, NPCs & bosses', o)
 
 
@@ -455,6 +466,10 @@ ITEM_USE = {
     'bc:companion_whistle': 'command your companions (sneak: attack what you look at / regroup)', 'bc:mana_cookie': 'eat: +30 mana; a favourite gift for companions (+40 bond)',
     'bc:fallen_seal': 'summons the Fallen Captain',
     'bc:bounty_board': 'daily wanted captains and a shop',
+    'bc:broom': 'mount it and fly on your mana (see [Progression](progression.md#magic-brooms))', 'bc:swift_broom': 'a faster broom that drinks more mana',
+    'bc:twin_moon_charm': 'summons the Witch Sisters', 'bc:bone_totem': 'summons the Bone Dragon',
+    'bc:mission_board': 'daily missions: claim rewards, deliver items, swap a mission',
+    **{f'bc:{k}': f'amulet (hold in off hand): {v[1]}' for k, v in AMULETS.items()},
 }
 
 
@@ -489,11 +504,12 @@ def page_progression():
     o = '## Magic level\n\n'
     o += ('* Levels 1-20. Level *n* → *n*+1 needs **30 + 22·n** magic XP.\n'
           '* XP: casting (2 + mana/10), monsters (6), Dark Disciples (16), the Devil (260), ancient pages (60), sealing a Devil Gate (120), bosses (400 killer / 200 helpers), crimson-night devils (+25).\n'
-          '* **Max mana** = 100 + 12 per level above 1, +40 Golden Dawn, +15 Blue Rose, +5 per Magic Knight rank.\n'
-          '* **Mana regeneration** = 3 + 0.3 per level per second (Black Bull ×1.25, Aqua Deer ×1.3 while moving).\n'
+          '* **Max mana** = 100 + 12 per level above 1, +40 Golden Dawn, +15 Blue Rose, +5 per Magic Knight rank, +30 Mana Heart amulet.\n'
+          '* **Mana regeneration** = 3 + 0.3 per level per second (Black Bull ×1.25, Aqua Deer ×1.3 while moving, Mana Heart ×1.2). It pauses while you fly a broom.\n'
+          '* **Level 15** awakens your grimoire\'s fifth spell (except Anti-Magic).\n'
           '* **Spell power** = +5% per level above 1, with robe bonuses.\n\n')
     o += '## Magic Knight ranks (stars)\n\n'
-    o += 'Stars come from great deeds: Devil +5, Leviathan +5, Dungeon Guardian +3, Tidewatch Commodore +2, Raider Captain +1, every 5 magic levels +1, sealing a Devil Gate +1, the wave-4 bosses +6 to +8 (half for helpers). Each rank adds +5 max mana.\n\n'
+    o += 'Stars come from great deeds: Devil +5, Leviathan +5, Dungeon Guardian +3, Tidewatch Commodore +2, Raider Captain +1, every 5 magic levels +1, sealing a Devil Gate +1, the giant bosses +5 to +9 (half for helpers), missions +1 to +3. Each rank adds +5 max mana.\n\n'
     o += table(['Stars', 'Rank'], [[s, t] for s, t in RANKS])
     o += '## Squad robes\n\nAll robes are chest armour (6 armour points), enchantable and repairable with mana crystals. The first three are craftable; the rest come from dungeon chests.\n\n'
     o += table(['Robe', 'Perk'], [[ROBES[k]['name'], ROBE_PERKS[k]] for k in ROBES])
@@ -501,6 +517,22 @@ def page_progression():
     o += ('Defeating captains, devils, the Leviathan, Tidewatch officers or other ships raises the **bounty on your head**. Each new tier gives you a Wanted Poster of yourself, '
           'and the Tidewatch sends squads to hunt you - Sentinels, and at higher bounties Commodores who sidestep blows and call down cannon bombardments.\n\n')
     o += table(['Bounty', 'Title'], [[b, t] for b, t in NOTORIETY])
+    o += '## Daily missions\n\n'
+    o += ('Every in-game day each player is dealt **three missions**: an easy one, a harder one and a wild card. Progress counts anywhere - kills '
+          '(yours, and your companions\' for kill missions), bosses and Devil Gates (everyone nearby gets credit), spells and fruit powers cast, magic XP earned. '
+          '**Delivery** missions take the items from your pack at the board. Turn missions in at a **Mission Board** (craft one or find one in a Magic Knight camp); '
+          'the board also swaps an unstarted mission (free once a day, then 25 doubloons). Finish all three for a bonus of 4 Mana Crystals.\n\n')
+    kinds = {'kill': 'defeat', 'boss': 'defeat any boss', 'gate': 'seal', 'cast': 'cast spells or fruit powers', 'xp': 'earn magic XP',
+             'deliver': 'deliver at the board', 'companion': 'companion victories'}
+    o += table(['Mission', 'Kind', 'Target', 'Count', 'Tier'], [[f'**{t}**', kinds[k], f'`{tg}`' if tg else '–', c, '★' * tr] for _, k, tg, c, t, tr in MISSIONS])
+    o += table(['Tier', 'Stars', 'Doubloons', 'Magic XP'], [['★' * k, v['stars'], v['coins'], v['xp']] for k, v in MISSION_REWARDS.items()])
+    o += '## Amulets\n\nHold one in your **off hand**. Craft them (gold nuggets, string, a mana crystal and a focus), buy a Mystery Amulet from the merchant, or find one in camp chests.\n\n'
+    o += table(['Amulet', 'Id', 'Effect'], [[strip(n), f'`bc:{k}`', perk] for k, (n, perk) in AMULETS.items()])
+    o += '## Magic brooms\n\n'
+    o += ('Use a broom to mount it. **Look** where you want to go and **hold forward** to fly (look up to climb, down to dive), **hold back** to brake, '
+          'let go to **hover**, **sneak** to step off - the broom flies back into your pack, and you float down gently. Flying drinks mana and your mana does not regenerate '
+          'while you fly; run dry and the broom glides down until 15% of your mana is back. Without a grimoire a broom can only glide; Anti-Magic smothers it entirely.\n\n')
+    o += table(['Broom', 'Top speed', 'Mana per second (hovering: 40%)'], [[strip(n), f'{sp * 20:.0f} blocks/s', m] for n, sp, m in BROOMS.values()])
     o += '## Knight levels\n\nSee [AI & simulation](ai-and-simulation.md#knights-levels-and-orders).\n'
     return write('progression.md', 'Progression', o)
 
@@ -550,7 +582,7 @@ def page_ai():
         ['**Threat**', 'every boss remembers how much damage each attacker dealt (knights and companions fighting in melee count 60% extra, so they can tank) and turns on the biggest threat, only switching when someone out-does its current target by 10%. You are told when it turns on you.'],
         ['**Phases**', 'below 50% health it enrages (roar, Strength, Resistance, new attacks, 25% faster); below 25% it uses its **desperation** move once and attacks faster again'],
         ['**Telegraphs**', 'slams, stomps and waves show a warning circle about a second before they land'],
-        ['**Movement**', 'the Archdevil blinks away when two or more foes crowd it; the Colossus stomps them back; the Kraken submerges and resurfaces by its prey; the Galleon keeps station above you; the Fallen Captain blinks behind you and side-steps spells'],
+        ['**Movement**', 'the Archdevil blinks away when two or more foes crowd it; the Colossus stomps them back; the Kraken submerges and resurfaces by its prey; the Galleon keeps station above you; the Fallen Captain blinks behind you and side-steps spells; the Witch Sisters blink away from melee; the Bone Dragon circles overhead and dives'],
         ['**Enrage timer**', 'after six minutes of fighting any boss becomes furious: Strength III, Speed II, 40% stronger spells and 30% faster attacks'],
     ])
     o += 'See [Mobs & bosses](mobs-and-bosses.md#bosses) for every boss\'s attacks.\n\n'
@@ -692,7 +724,10 @@ def page_events():
         ['Wounded knight (`wounded_knight`)', 5, 'any time', 'A badly hurt Magic Knight is surrounded by Dark Disciples or a Hellhound 14-20 blocks away. Kill the attackers while the knight lives and it joins your party with 150 bond.'],
         ['Mana storm (`mana_storm`)', 5, 'any time', 'For 45 s everyone in the Overworld regains 4 mana per second and wild lightning strikes monsters near players (8 dmg).'],
         ['Bounty hunters (`bounty_hunters`)', 4, 'your bounty is 300+', 'Two Tidewatch Marksmen and two Sentinels (plus a Commodore at 1500+) ambush you.'],
+        ['Rogue ambush (`rogue_ambush`)', 6, 'any time', '3-4 Rogue Mages (one of them stronger) attack from 14-20 blocks away; 35% of the time two Magic Knights who were hunting them arrive behind you.'],
         ['Fallen Captain (`fallen_captain`)', 2, 'night', 'The Fallen Captain appears 20-26 blocks away.'],
+        ['Witch Sisters (`witch_sisters`)', 2, 'night', 'Fog rolls in; after 2 s the Frost Witch and the Ember Witch arrive 20-26 blocks away.'],
+        ['Bone Dragon (`bone_dragon`)', 2, 'night, above y 55', 'The Bone Dragon wakes 26-32 blocks away.'],
         ['Colossus (`colossus`)', 3, 'day, above y 55', 'A Stone Colossus rises 26-32 blocks away.'],
         ['Phantom Galleon (`phantom_galleon`)', 3, 'night', 'A ghostly fog rolls in; after 2 s the Phantom Galleon appears.'],
         ['Kraken (`kraken`)', 3, 'deep water within 20 blocks', 'The Storm Kraken rises from the water.'],
@@ -722,7 +757,8 @@ def page_commands():
         o += f'/summon {ident}\n'
     o += '```\n\n## Script events\n\n```\n/scriptevent bc:event                 (a random event)\n'
     for n in ('meteor_shower', 'devil_gate', 'pirate_landing', 'skirmish', 'knight_tournament', 'knight_patrol', 'merchant', 'sky_treasure', 'crimson_night',
-              'wounded_knight', 'mana_storm', 'bounty_hunters', 'fallen_captain', 'colossus', 'phantom_galleon', 'kraken'):
+              'wounded_knight', 'mana_storm', 'bounty_hunters', 'rogue_ambush', 'fallen_captain', 'witch_sisters', 'bone_dragon', 'colossus',
+              'phantom_galleon', 'kraken'):
         o += f'/scriptevent bc:event {n}\n'
     o += '```\n\nCreative players can also use any grimoire with every spell unlocked and infinite mana, and start events from a War Table.\n'
     return write('commands.md', 'Commands', o)
@@ -740,7 +776,7 @@ def page_getting_started():
 1. On your first spawn you get a **Grimoire Altar** and the **Magic Knight's Handbook**.
 2. Place the altar and **interact** with it. After a short ceremony a grimoire chooses you - one of {len(ATTR_ORDER)} attributes ([odds](magic.md#attributes-and-altar-odds)).
 3. Hold the grimoire: **Use** casts, **Sneak + Use** flips to the next spell. The HUD shows the spell, its cooldown, your mana and level.
-4. Cast, fight monsters and read ancient pages to level up. New spells at levels 3, 6 and 10. Craft **Mana Crystals** (amethyst + lapis + glowstone) to refill mana.
+4. Cast, fight monsters and read ancient pages to level up. New spells at levels 3, 6 and 10, and your grimoire awakens a fifth spell at 15. Craft **Mana Crystals** (amethyst + lapis + glowstone) to refill mana.
 5. Lost your grimoire? Any altar gives it back. Want another? A **Wishing Clover Charm** (from the Devil's heart) lets you roll again.
 6. Open the **Handbook** any time: your stats, the spell picker, every attribute, fruits and Will, the seas, ranks and robes, bosses and events, knights and the War Table, and the State of the Kingdom.
 
@@ -749,8 +785,10 @@ def page_getting_started():
 * **Get a fruit:** beat a Raider Captain, loot a sunken wreck, or buy one. → [Abyss Fruits](fruits.md)
 * **Sail:** craft a Sailing Ship (wool, planks, iron) and find pirate outposts. Take bounties at a Bounty Board for doubloons.
 * **Build a party:** recruit Magic Knights and command them with a Companion Whistle. → [Companions](companions.md)
+* **Take missions:** craft a Mission Board (or find a Magic Knight camp) for three daily missions with star rewards. → [Missions](progression.md#daily-missions)
+* **Fly:** craft a Magic Broom (stick, hay, a mana crystal) and ride the sky on your mana. → [Brooms](progression.md#magic-brooms)
 * **Build a War Table** (map, iron sword, feather, planks, sticks) and stage battles. → [Battles](ai-and-simulation.md#battles-battlejs)
-* **Fight bosses:** the Devil, the Leviathan, the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken. → [Bosses](mobs-and-bosses.md#bosses)
+* **Fight bosses:** the Devil, the Leviathan, the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken, the Fallen Captain, the Witch Sisters, the Bone Dragon. → [Bosses](mobs-and-bosses.md#bosses)
 * **Watch the world:** events happen every few minutes; the factions rise and fall. → [World events](world-events.md)
 '''
     return write('getting-started.md', 'Getting started', o)
@@ -867,12 +905,13 @@ def page_home():
 
 | | |
 |---|---|
-| Grimoires | {len(ATTR_ORDER)} attributes, {n_spells} spells, the five-leaf Anti-Magic grimoire with 3 demon swords and Black Form |
+| Grimoires | {len(ATTR_ORDER)} attributes, {n_spells} spells ({len(AWAKENED)} awakened at level 15), the five-leaf Anti-Magic grimoire with 3 demon swords and Black Form |
 | Abyss Fruits | {len(FRUITS)} fruits, {n_ab} abilities, 9 beast forms, the Will system |
-| Creatures | {len([e for e in ENTITIES.values() if 'bc_spell' not in e['components'].get('minecraft:type_family', {}).get('family', [])])} creatures, NPCs and bosses, including 8 bosses |
+| Creatures | {len([e for e in ENTITIES.values() if 'bc_spell' not in e['components'].get('minecraft:type_family', {}).get('family', [])])} creatures, NPCs and bosses, including {len(BOSSES)} bosses |
 | Companions | a saved party of up to {PARTY_MAX} knights with levels to 20, bonds, orders, formations and a smart support AI |
 | Items | {len(ITEMS)} items and blocks, {len(RECIPES)} recipes |
 | AI & simulation | a tactical brain for spellcasters, battles with tactics, morale and leaders, a world where four factions rise and fall |
+| Adventure | daily missions and the Mission Board, magic brooms, amulets, Magic Knight camps |
 | World | random events, ships, outposts, wrecks, dungeons, the Bounty Board, a travelling merchant, the War Table |
 
 ## Pages
@@ -887,7 +926,7 @@ def page_home():
 | [World events](world-events.md) | every event, its odds, conditions and rewards |
 | [Mobs & bosses](mobs-and-bosses.md) | every creature: health, attack, spawning, drops; all bosses and their attacks; factions; structures |
 | [Items & recipes](items-and-recipes.md) | every recipe as a grid, every item id, both shops |
-| [Progression](progression.md) | magic levels and mana formulas, ranks and stars, robes, bounties |
+| [Progression](progression.md) | magic levels and mana formulas, ranks and stars, robes, bounties, daily missions, amulets, brooms |
 | [Commands](commands.md) | every `/give`, `/summon` and `/scriptevent` |
 | [FAQ](faq.md) | install problems, multiplayer, turning events off, known issues |
 | [Development](development.md) | building from source, the code map, adding spells, releasing |

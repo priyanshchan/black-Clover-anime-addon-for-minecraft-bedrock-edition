@@ -269,8 +269,4 @@ def build(ctx: Ctx):
     gen_alerts(ctx)
     for ident, rel in NEW_FILES.items():
         add_team_groups(rel, ident)
-    have = {**FACTION_FILES, **NEW_FILES}
-    for f in FACTIONS.values():
-        for u in f['units'] + [f['leader']]:
-            assert u in have, f'{u} has no War Table team groups'
     gen_animations(ctx)

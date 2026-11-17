@@ -11,6 +11,8 @@ import { SPELLS } from './spells.js';
 import { SPELLS2 } from './spells2.js';
 import { zoneBonus } from './techniques.js';
 import { castSpec } from '../living/engine.js';
+import { emit } from '../core/bus.js';
+import { amuletOf } from '../core/data.js';
 
 const IMPL = { ...SPELLS, ...SPELLS2, ...ANTI_SPELLS };
 
@@ -63,7 +65,7 @@ export function useGrimoire(p, item) {
   if (!impl) return;
   if (!creative) s.mana -= cost;
   const zone = zoneBonus(p);
-  const cdMul = (robe(p) === 'green_mantis_robe' ? 0.85 : 1) * zone.cd;
+  const cdMul = (robe(p) === 'green_mantis_robe' ? 0.85 : 1) * zone.cd * (amuletOf(p) === 'amulet_swift' ? 0.88 : 1);
   s.cd.set(sp.id, t + Math.round(sp.cooldown * 20 * cdMul));
   if (!creative && cost > 0 && robe(p) === 'coral_peacock_robe' && Math.random() < 0.2) {
     s.mana += cost;
@@ -80,8 +82,9 @@ export function useGrimoire(p, item) {
   if (ok === false) {
     if (!creative) s.mana += cost;
     s.cd.delete(sp.id);
-  } else if (!creative && s.attr === attr) {
-    addXp(p, 2 + Math.round(cost / 10));
+  } else {
+    if (!creative && s.attr === attr) addXp(p, 2 + Math.round(cost / 10));
+    emit('cast', p, sp.id);
   }
   showHud(p);
 }
@@ -108,7 +111,7 @@ function cycle(p, spells, level, attr) {
 system.runInterval(() => {
   for (const p of world.getAllPlayers()) {
     const s = state(p);
-    if (!s.attr || s.attr === 'anti') continue;
+    if (!s.attr || s.attr === 'anti' || (s.noRegen ?? 0) > system.currentTick) continue;
     const mx = maxMana(p, s);
     if (s.mana < mx) addMana(p, (regenPerSecond(p, s) * zoneBonus(p).regen) / 5);
     else if (s.mana > mx) s.mana = mx;

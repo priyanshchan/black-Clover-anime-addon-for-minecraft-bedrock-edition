@@ -1,4 +1,5 @@
-// Giant bosses: the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken and the Fallen Captain.
+// Giant bosses: the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken, the Fallen Captain,
+// the Witch Sisters (the Frost Witch and the Ember Witch) and the Bone Dragon.
 //
 // One framework drives them all:
 // * THREAT: every boss remembers who hurt it most (players, knights, companions) and turns on the biggest threat -
@@ -6,7 +7,9 @@
 // * PHASES: below 50% health it enrages, below 25% it unleashes a once-only DESPERATION move.
 // * TELEGRAPHS: big blows show a warning circle first - get out of it.
 // * MOVEMENT: the Archdevil blinks away when surrounded, the Kraken dives and resurfaces elsewhere, the Colossus
-//   stomps foes away, the Galleon keeps station above you and rams in its last phase, the Captain blinks behind you.
+//   stomps foes away, the Galleon keeps station above you and rams in its last phase, the Captain blinks behind you,
+//   the Witches blink away from melee, the Bone Dragon circles above and dives.
+// * TWINS: the Witch Sisters weave Twin Spells together; when one falls, the other goes straight to her desperation move.
 // * ENRAGE TIMER: after six minutes any boss grows stronger and faster.
 import { Player, WeatherType, system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
@@ -14,6 +17,7 @@ import { center, effect, hurt, knock, launch, ownerOf, targetsAround } from '../
 import { anim, particle, rgb, shakeArea, shockwave, sound, title } from '../core/fx.js';
 import { addXp } from '../core/progress.js';
 import { addStars } from '../core/ranks.js';
+import { emit } from '../core/bus.js';
 import { V, alive, isCreative, pick, rand, repeat, safe, timer } from '../core/util.js';
 import { castSpec } from './engine.js';
 import { face, kitFor } from './knights.js';
@@ -91,9 +95,50 @@ const DEF = {
     ],
   },
 };
+DEF['bc:frost_witch'] = {
+  name: '§bThe Frost Witch', src: 'a:ice', every: [30, 50], range: 40, stars: 5, desperation: 'absolute_winter', roar: 'animation.bc.frost_witch.roar',
+  intro: ['§b§lTHE WITCH SISTERS', '§7Frost and Ember, twin daughters of the long night'],
+  rage: ['§b§lThe Frost Witch grows cold', '§7Her breath freezes the air'],
+  last: ['§b§lABSOLUTE WINTER', '§7The world turns to ice'],
+  attacks: [
+    { w: 3, spec: { t: 'bolt', d: 8, n: 3, spread: 18, shape: 1, speed: 2.2, fx: 'ice', eff: [['slowness', 3, 1]] }, anim: 'animation.bc.frost_witch.cast' },
+    { w: 2, spec: { t: 'prison', d: 8, r: 3, dur: 3, fx: 'ice' }, anim: 'animation.bc.frost_witch.cast' },
+    { w: 2, max: 7, tele: 14, spec: { t: 'nova', d: 11, r: 6, kb: [1.6, 0.6], fx: 'ice', eff: [['slowness', 4, 2]] }, anim: 'animation.bc.frost_witch.sweep' },
+    { w: 2, phase: 2, spec: { t: 'rain', d: 8, n: 12, r: 6, every: 3, fx: 'ice' }, anim: 'animation.bc.frost_witch.cast' },
+    { w: 3, fn: 'twin', anim: 'animation.bc.frost_witch.cast' },
+  ],
+};
+DEF['bc:ember_witch'] = {
+  name: '§6The Ember Witch', src: 'a:flame', every: [30, 50], range: 40, stars: 5, desperation: 'inferno_requiem', roar: 'animation.bc.ember_witch.roar',
+  intro: ['§6§lTHE WITCH SISTERS', '§7Frost and Ember, twin daughters of the long night'],
+  rage: ['§6§lThe Ember Witch blazes', '§7Her hair becomes fire'],
+  last: ['§6§lINFERNO REQUIEM', '§7The sky rains fire'],
+  attacks: [
+    { w: 3, spec: { t: 'bolt', d: 9, n: 3, spread: 22, shape: 2, speed: 2.0, fire: 4, fx: 'flame' }, anim: 'animation.bc.ember_witch.cast' },
+    { w: 2, spec: { t: 'zone', d: 3, r: 4, dur: 4, fire: 3, fx: 'flame', at: 'aim' }, anim: 'animation.bc.ember_witch.cast' },
+    { w: 2, max: 9, tele: 14, spec: { t: 'wave', d: 11, len: 12, dirs: 6, fire: 4, fx: 'flame', kb: [1.2, 0.5] }, anim: 'animation.bc.ember_witch.sweep' },
+    { w: 2, phase: 2, spec: { t: 'meteor', d: 12, n: 4, r: 6, aoe: 3, fire: 5, size: 1, fx: 'flame' }, anim: 'animation.bc.ember_witch.cast' },
+    { w: 3, fn: 'twin', anim: 'animation.bc.ember_witch.cast' },
+  ],
+};
+DEF['bc:bone_dragon'] = {
+  name: '§fThe Bone Dragon', src: 'a:bone', every: [30, 48], range: 52, stars: 8, desperation: 'deaths_wingbeat', roar: 'animation.bc.bone_dragon.roar',
+  intro: ['§f§lTHE BONE DRAGON', '§7Death itself takes wing'],
+  rage: ['§f§lThe Bone Dragon howls', '§7Green fire burns in its empty eyes'],
+  last: ["§f§lDEATH'S WINGBEAT", '§7Every wingbeat is a grave'],
+  attacks: [
+    { w: 4, min: 4, fn: 'breath', anim: 'animation.bc.bone_dragon.breath' },
+    { w: 2, max: 10, tele: 14, spec: { t: 'nova', d: 10, r: 8, kb: [2.4, 1.0], fx: 'wind' }, src: 'a:wind', anim: 'animation.bc.bone_dragon.roar' },
+    { w: 3, spec: { t: 'rain', d: 9, n: 14, r: 7, every: 3, fx: 'bone' } },
+    { w: 2, min: 8, fn: 'dive', anim: 'animation.bc.bone_dragon.dive' },
+    { w: 3, max: 7, fn: 'tail', anim: 'animation.bc.bone_dragon.tail' },
+    { w: 1, phase: 2, fn: 'bones', anim: 'animation.bc.bone_dragon.roar' },
+  ],
+};
+const WITCHES = { 'bc:frost_witch': 'bc:ember_witch', 'bc:ember_witch': 'bc:frost_witch' };
 const CAPTAIN_ATTRS = ['flame', 'lightning', 'dark', 'ice', 'blood', 'glass', 'rune', 'spirit', 'star', 'gold', 'smoke', 'magma'];
 
-/** @type {Map<string, {next: number, phase: number, start: number, enraged: boolean, threat: Map<string, number>, target: string, moveAt: number, attrs?: string[], parryAt?: number, dodgeAt?: number}>} */
+/** @type {Map<string, {next: number, phase: number, start: number, enraged: boolean, threat: Map<string, number>, target: string, moveAt: number, attrs?: string[], parryAt?: number, dodgeAt?: number, sister?: string}>} */
 const bosses = new Map();
 
 function track(e) {
@@ -290,6 +335,86 @@ const MOVES = {
     const spec = pick(kit.filter((s) => !['wall', 'heal', 'rewind', 'summon'].includes(s.t)));
     if (spec) castSpec(e, spec, `a:${attr}`, st.phase > 2 ? 1.5 : 1.25, target);
   },
+  twin(e, target, st) {
+    const sis = sisterOf(e, st);
+    if (!sis) {
+      // alone: a plain but furious volley
+      castSpec(e, { t: 'bolt', d: 10, n: 5, spread: 30, shape: 1, speed: 2.3, fx: e.typeId === 'bc:frost_witch' ? 'ice' : 'flame' }, DEF[e.typeId].src, 1.2, target);
+      return;
+    }
+    const frost = e.typeId === 'bc:frost_witch' ? e : sis;
+    const ember = e.typeId === 'bc:ember_witch' ? e : sis;
+    for (const p of e.dimension.getPlayers({ location: e.location, maxDistance: 48 })) safe(() => p.onScreenDisplay.setActionBar('§b§lTWIN SPELL §r§7- §bfrost§7 then §6fire§7. Move!'));
+    anim(frost, 'animation.bc.frost_witch.cast');
+    castSpec(frost, { t: 'prison', d: 8, r: 4, dur: 2.5, fx: 'ice' }, 'a:ice', 1.1, target);
+    telegraph(e, target.location, 4.5, 30);
+    timer(30, () => {
+      if (!alive(ember) || !alive(target)) return;
+      anim(ember, 'animation.bc.ember_witch.cast');
+      castSpec(ember, { t: 'meteor', d: 16, n: 3, r: 2, aoe: 4, fire: 6, size: 2, fx: 'flame' }, 'a:flame', 1.25, target);
+    });
+  },
+  breath(e, target, st) {
+    face(e, target);
+    sound(e.dimension, 'mob.enderdragon.growl', e.location, 2, 0.6);
+    const n = st.phase > 1 ? 3 : 2;
+    for (let i = 0; i < n; i++) {
+      timer(8 + i * 10, () => {
+        if (!alive(e) || !alive(target)) return;
+        castSpec(e, { t: 'beam', d: 8, range: 26, width: 1.6, fx: 'bone', eff: [['wither', 4, 1]] }, 'a:bone', st.phase > 1 ? 1.25 : 1, target);
+      });
+    }
+  },
+  dive(e, target, st) {
+    if (!alive(target)) return;
+    const spot = { ...target.location };
+    telegraph(e, spot, 4, 24);
+    sound(e.dimension, 'mob.enderdragon.flap', e.location, 2, 0.7);
+    timer(24, () => {
+      if (!alive(e)) return;
+      const from = { ...e.location };
+      const dir = V.norm(V.sub(spot, from));
+      const steps = Math.max(4, Math.min(14, Math.round(V.dist(spot, from) / 2)));
+      repeat(steps, 1, (i) => {
+        if (!alive(e)) return false;
+        safe(() => e.teleport(V.add(from, V.mul(dir, ((i + 1) / steps) * V.dist(spot, from))), { facingLocation: spot }));
+      }, () => {
+        if (!alive(e)) return;
+        shockwave(e.dimension, spot, 'bone', 5);
+        particle(e.dimension, 'bc:rock_debris', spot, { scale: 1.6 });
+        shakeArea(e.dimension, spot, 24, 0.7, 0.7);
+        sound(e.dimension, 'bc.golem.slam', spot, 2, 0.7);
+        for (const v of targetsAround(e.dimension, spot, 5, e)) {
+          hurt(v, st.phase > 1 ? 20 : 16, e);
+          knock(v, V.sub(v.location, spot), 1.6, 0.9);
+        }
+        safe(() => e.applyImpulse({ x: 0, y: 1.2, z: 0 }));
+      });
+    });
+  },
+  tail(e, target, st) {
+    timer(8, () => {
+      if (!alive(e)) return;
+      sound(e.dimension, 'mob.enderdragon.flap', e.location, 2, 0.5);
+      particle(e.dimension, 'bc:slash_fx', V.add(e.location, { x: 0, y: 1.5, z: 0 }), { scale: 3, color: rgb('e8e0c8') });
+      for (const v of targetsAround(e.dimension, e.location, 7, e)) {
+        hurt(v, st.phase > 1 ? 15 : 12, e);
+        knock(v, V.sub(v.location, e.location), 2.2, 0.5);
+      }
+    });
+  },
+  bones(e, target, st) {
+    const count = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 40, families: ['skeleton'] }).length) ?? 0;
+    if (count >= 6) return;
+    sound(e.dimension, 'mob.skeleton.say', e.location, 2, 0.6);
+    for (let i = 0; i < (st.phase > 2 ? 4 : 3); i++) {
+      const at = V.add(target.location, { x: rand(-6, 6), y: 0.5, z: rand(-6, 6) });
+      const top = safe(() => e.dimension.getTopmostBlock({ x: at.x, z: at.z }));
+      if (top && Math.abs(top.location.y + 1 - at.y) < 6) at.y = top.location.y + 1;
+      particle(e.dimension, 'bc:magic_circle_dark', at, { size: 2, life: 1, color: rgb('e8e0c8') });
+      timer(15, () => safe(() => e.dimension.spawnEntity(st.phase > 2 && i === 0 ? 'minecraft:wither_skeleton' : 'minecraft:skeleton', at)));
+    }
+  },
   hounds(e, target, st) {
     sound(e.dimension, 'bc.howl', e.location, 2, 0.6);
     for (let i = 0; i < 2; i++) {
@@ -351,12 +476,77 @@ const DESPERATION = {
     castSpec(e, { t: 'vortex', d: 20, r: 12, dur: 5, fx: 'water' }, 'a:water', 1.2, target);
     timer(30, () => alive(e) && castSpec(e, { t: 'strikes', d: 12, n: 8, r: 14, fx: 'lightning' }, 'a:lightning', 1.2, target));
   },
+  absolute_winter(e, target) {
+    castSpec(e, { t: 'zone', d: 4, r: 10, dur: 6, fx: 'ice', eff: [['slowness', 3, 3]] }, 'a:ice', 1.3, target);
+    for (const v of targetsAround(e.dimension, e.location, 22, e).slice(0, 6)) {
+      timer(10, () => alive(v) && castSpec(e, { t: 'prison', d: 10, r: 2.5, dur: 3, fx: 'ice' }, 'a:ice', 1.2, v));
+    }
+    timer(50, () => alive(e) && castSpec(e, { t: 'rain', d: 10, n: 24, r: 10, every: 2, fx: 'ice' }, 'a:ice', 1.3, target));
+  },
+  inferno_requiem(e, target) {
+    castSpec(e, { t: 'meteor', d: 16, n: 12, r: 10, aoe: 3.5, fire: 8, size: 2, fx: 'flame' }, 'a:flame', 1.3, target);
+    timer(40, () => alive(e) && castSpec(e, { t: 'wave', d: 14, len: 16, dirs: 12, fire: 6, fx: 'flame', kb: [1.4, 0.6] }, 'a:flame', 1.3, target));
+  },
+  deaths_wingbeat(e, target) {
+    if (!alive(target)) return;
+    const spot = { ...target.location };
+    safe(() => e.applyImpulse({ x: 0, y: 2.0, z: 0 }));
+    telegraph(e, spot, 12, 40);
+    for (const p of e.dimension.getPlayers({ location: spot, maxDistance: 48 })) safe(() => p.onScreenDisplay.setActionBar('§f§lThe Bone Dragon rises - get out of the circle!'));
+    timer(40, () => {
+      if (!alive(e)) return;
+      shockwave(e.dimension, spot, 'bone', 12);
+      shakeArea(e.dimension, spot, 40, 1, 1.2);
+      sound(e.dimension, 'mob.enderdragon.growl', spot, 3, 0.4);
+      for (const v of targetsAround(e.dimension, spot, 12, e)) {
+        hurt(v, 22, e);
+        effect(v, 'wither', 6, 1);
+        knock(v, V.sub(v.location, spot), 2.6, 1.2);
+      }
+      MOVES.bones(e, target, { phase: 3 });
+    });
+  },
   final_form(e, target) {
     effect(e, 'strength', 600, 1, false);
     effect(e, 'speed', 600, 1, false);
     castSpec(e, { t: 'timestop', d: 12, r: 14, dur: 4 }, 'a:time', 1.3, target);
   },
 };
+
+// ------------------------------------------------------------------------------- the Witch Sisters
+/** The other witch of the pair (linked once, then remembered). */
+function sisterOf(e, st) {
+  if (!WITCHES[e.typeId]) return undefined;
+  let sis = st.sister ? world.getEntity(st.sister) : undefined;
+  if (sis && alive(sis)) return sis;
+  sis = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 48, type: WITCHES[e.typeId], closest: 1 }))?.[0];
+  if (sis) {
+    st.sister = sis.id;
+    const other = bosses.get(sis.id);
+    if (other) other.sister = e.id;
+  }
+  return sis;
+}
+
+world.afterEvents.entityDie.subscribe((ev) => safe(() => {
+  const dead = ev.deadEntity;
+  if (!WITCHES[dead.typeId]) return;
+  const st = bosses.get(dead.id);
+  const sis = st?.sister ? world.getEntity(st.sister) : undefined;
+  if (!sis || !alive(sis)) return;
+  const sst = bosses.get(sis.id);
+  if (!sst) return;
+  const def = DEF[sis.typeId];
+  announce(sis, `${def.name}§c screams for her sister`, '§7Grief becomes power');
+  anim(sis, def.roar);
+  effect(sis, 'strength', 9999, 1, false);
+  effect(sis, 'speed', 9999, 0, false);
+  if (sst.phase < 3) {
+    sst.phase = 3;
+    timer(30, () => alive(sis) && safe(() => DESPERATION[def.desperation](sis, bossTarget(sis, sst, def))));
+    sst.next = system.currentTick + 90;
+  }
+}, 'witchGrief'));
 
 // ------------------------------------------------------------------------------- the Fallen Captain: parry & dodge
 world.afterEvents.entityHurt.subscribe((ev) => safe(() => {
@@ -422,10 +612,23 @@ system.runInterval(() => {
         const d = V.sub(want, e.location);
         if (V.len(d) > 3) safe(() => e.applyImpulse(V.mul(V.norm(d), 0.12)));
       }
+      if (e.typeId === 'bc:bone_dragon' && target) {
+        // circle above the prey
+        const ang = (t / 120) % (Math.PI * 2);
+        const want = V.add(target.location, { x: Math.cos(ang) * 12, y: 9, z: Math.sin(ang) * 12 });
+        const d = V.sub(want, e.location);
+        if (V.len(d) > 3) safe(() => e.applyImpulse(V.mul(V.norm(d), 0.1)));
+      }
       if (e.typeId === 'bc:fallen_captain') captainDodge(e, st, t);
       if (target && t > st.moveAt) {
         const crowd = targetsAround(e.dimension, e.location, 5, e).length;
-        if (e.typeId === 'bc:archdevil' && crowd >= 2) {
+        if (WITCHES[e.typeId] && crowd >= 1) {
+          st.moveAt = t + 200;
+          particle(e.dimension, 'bc:burst_dark', center(e), { scale: 1.2, color: rgb(COLORS[e.typeId]) });
+          sound(e.dimension, 'bc.portal', e.location, 1, 1.4);
+          const a = Math.random() * Math.PI * 2;
+          safe(() => e.teleport(V.add(target.location, { x: Math.cos(a) * 9, y: 3, z: Math.sin(a) * 9 })));
+        } else if (e.typeId === 'bc:archdevil' && crowd >= 2) {
           st.moveAt = t + 300;
           anim(e, 'animation.bc.archdevil.blink');
           particle(e.dimension, 'bc:burst_dark', center(e), { scale: 2, color: rgb('2a0010') });
@@ -516,6 +719,7 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
     title(p, '§6§lBOSS DEFEATED', `${def.name}§7 has fallen`, 70);
     const mine = p === killer || p === killerOwner;
     addXp(p, mine ? 400 : 200);
+    emit('boss', p, e.typeId);
     safe(() => addStars(p, mine ? def.stars : Math.ceil(def.stars / 2), `${def.name.replace(/§./g, '')} defeated`));
   }
   if (e.typeId === 'bc:storm_kraken') safe(() => dim.setWeather(WeatherType.Clear, 6000));
@@ -523,10 +727,19 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
 }, 'bossDie'));
 
 // ------------------------------------------------------------------------------- summoning
-const COLORS = { 'bc:archdevil': 'd01a34', 'bc:stone_colossus': 'ff8a2a', 'bc:phantom_galleon': '96ffdc', 'bc:storm_kraken': '9ae8ff', 'bc:fallen_captain': 'b0101a' };
+const COLORS = { 'bc:archdevil': 'd01a34', 'bc:stone_colossus': 'ff8a2a', 'bc:phantom_galleon': '96ffdc', 'bc:storm_kraken': '9ae8ff', 'bc:fallen_captain': 'b0101a',
+  'bc:frost_witch': '9ae8ff', 'bc:ember_witch': 'ff7a2a', 'bc:bone_dragon': 'e8e0c8' };
+const FLYERS = { 'bc:phantom_galleon': 10, 'bc:bone_dragon': 7, 'bc:frost_witch': 2, 'bc:ember_witch': 2 };
 
 /** Raise a boss in front of a location with a short ceremony. */
-export function summonBoss(type, dim, loc, players = []) {
+export function summonBoss(type, dim, loc, players = [], opts = {}) {
+  if (type === 'twins') {
+    // the Witch Sisters arrive together, side by side
+    const side = { x: 3, y: 0, z: 0 };
+    summonBoss('bc:frost_witch', dim, V.sub(loc, side), players);
+    summonBoss('bc:ember_witch', dim, V.add(loc, side), players, { quiet: true });
+    return;
+  }
   const def = DEF[type];
   if (!def) return;
   const color = COLORS[type];
@@ -540,14 +753,15 @@ export function summonBoss(type, dim, loc, players = []) {
     } else if (type === 'bc:phantom_galleon') particle(dim, 'bc:fog_cloud', loc, { scale: 0.6 });
     else particle(dim, 'bc:pillar', loc, { color: rgb(color), scale: 1.5 });
   }, () => {
-    const at = type === 'bc:phantom_galleon' ? V.add(loc, { x: 0, y: 10, z: 0 }) : loc;
+    const at = V.add(loc, { x: 0, y: FLYERS[type] ?? 0, z: 0 });
     const e = safe(() => dim.spawnEntity(type, at));
     if (!e) return;
     track(e);
     shockwave(dim, loc, 'flame', 8);
     if (def.roar) anim(e, def.roar);
-    sound(dim, type === 'bc:storm_kraken' ? 'bc.leviathan.roar' : type === 'bc:stone_colossus' ? 'bc.golem.slam' : 'bc.devil.roar', loc, 3, 0.5);
-    for (const p of dim.getPlayers({ location: loc, maxDistance: 64 })) title(p, def.intro[0], def.intro[1], 60);
+    const roar = { 'bc:storm_kraken': 'bc.leviathan.roar', 'bc:stone_colossus': 'bc.golem.slam', 'bc:bone_dragon': 'mob.enderdragon.growl', 'bc:frost_witch': 'bc.ice.form', 'bc:ember_witch': 'bc.chord' };
+    sound(dim, roar[type] ?? 'bc.devil.roar', loc, 3, 0.5);
+    if (!opts.quiet) for (const p of dim.getPlayers({ location: loc, maxDistance: 64 })) title(p, def.intro[0], def.intro[1], 60);
     if (type === 'bc:archdevil' || type === 'bc:fallen_captain') for (const p of players) effect(p, 'darkness', 4, 0, false);
   });
 }
@@ -573,6 +787,8 @@ const ITEMS = {
   'bc:galleon_bell': 'bc:phantom_galleon',
   'bc:kraken_lure': 'bc:storm_kraken',
   'bc:fallen_seal': 'bc:fallen_captain',
+  'bc:twin_moon_charm': 'twins',
+  'bc:bone_totem': 'bc:bone_dragon',
 };
 
 /** @returns {boolean} true when the item was a boss summon */
@@ -588,7 +804,7 @@ export function useBossItem(p, id) {
     }
   } else {
     const dir = V.flat(p.getViewDirection());
-    loc = V.add(p.location, V.mul(dir, type === 'bc:stone_colossus' ? 12 : 9));
+    loc = V.add(p.location, V.mul(dir, type === 'bc:stone_colossus' || type === 'bc:bone_dragon' ? 12 : 9));
     loc.y = p.location.y;
   }
   if (!isCreative(p)) {
@@ -601,7 +817,8 @@ export function useBossItem(p, id) {
       } else inv.setItem(p.selectedSlotIndex, undefined);
     }
   }
-  safe(() => p.sendMessage(`§7Something answers the call... ${DEF[type].name}§7 is coming.`));
+  const who = type === 'twins' ? '§bThe Witch §6Sisters§7 are' : `${DEF[type].name}§7 is`;
+  safe(() => p.sendMessage(`§7Something answers the call... ${who} coming.`));
   summonBoss(type, p.dimension, loc, [p]);
   return true;
 }

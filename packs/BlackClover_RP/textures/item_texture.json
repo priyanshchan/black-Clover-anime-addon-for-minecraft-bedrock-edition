@@ -2,6 +2,21 @@
   "resource_pack_name": "black_clover",
   "texture_name": "atlas.items",
   "texture_data": {
+    "bc_amulet_guard": {
+      "textures": "textures/items/bc/amulet_guard"
+    },
+    "bc_amulet_mana": {
+      "textures": "textures/items/bc/amulet_mana"
+    },
+    "bc_amulet_power": {
+      "textures": "textures/items/bc/amulet_power"
+    },
+    "bc_amulet_swift": {
+      "textures": "textures/items/bc/amulet_swift"
+    },
+    "bc_amulet_vigor": {
+      "textures": "textures/items/bc/amulet_vigor"
+    },
     "bc_ancient_page": {
       "textures": "textures/items/bc/ancient_page"
     },
@@ -16,6 +31,12 @@
     },
     "bc_blue_rose_robe": {
       "textures": "textures/items/bc/blue_rose_robe"
+    },
+    "bc_bone_totem": {
+      "textures": "textures/items/bc/bone_totem"
+    },
+    "bc_broom": {
+      "textures": "textures/items/bc/broom"
     },
     "bc_cannonball": {
       "textures": "textures/items/bc/cannonball"
@@ -389,8 +410,14 @@
     "bc_skirmish_horn": {
       "textures": "textures/items/bc/skirmish_horn"
     },
+    "bc_swift_broom": {
+      "textures": "textures/items/bc/swift_broom"
+    },
     "bc_treasure_map": {
       "textures": "textures/items/bc/treasure_map"
+    },
+    "bc_twin_moon_charm": {
+      "textures": "textures/items/bc/twin_moon_charm"
     },
     "bc_wanted_poster": {
       "textures": "textures/items/bc/wanted_poster"

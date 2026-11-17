@@ -1,5 +1,5 @@
 // The tactical AI brain for spell-casting NPCs: Magic Knights and companions, Raider Captains, and the spellcasting
-// enemies (Dark Disciples, Imps, Sea Raiders, Raider Gunners, Tidewatch Marksmen, Hellhounds, Mana Wraiths).
+// enemies (Dark Disciples, Imps, Sea Raiders, Raider Gunners, Tidewatch Marksmen, Hellhounds, Mana Wraiths, Rogue Mages).
 //
 // Every NPC has a combat ROLE (striker, controller, brawler, support) worked out from the spells it knows,
 // and two TRAITS: skill (aim, dodging, reaction) and courage (when it retreats). Each "think" it:
@@ -21,7 +21,9 @@ import { castSpec, friends } from './engine.js';
 import { kitFor, knightAttr, knightLevel, onKnightLevel, setRoleProvider } from './knights.js';
 
 const KITTED = Object.keys(DATA.enemyKits);
-const MANAGED = new Set(['bc:magic_knight', 'bc:raider_captain', ...KITTED]);
+const MANAGED = new Set(['bc:magic_knight', 'bc:raider_captain', 'bc:rogue_mage', ...KITTED]);
+/** mages who cast from a grimoire (knights, companions and Rogue Mages) */
+const MAGES = new Set(['bc:magic_knight', 'bc:rogue_mage']);
 const ROLES = ['striker', 'controller', 'brawler', 'support'];
 /** default cooldowns (ticks) by template, for kits that do not come from a grimoire */
 const CD = { bolt: 40, beam: 80, wave: 120, zone: 160, nova: 120, rain: 140, meteor: 220, buff: 300, heal: 200, prison: 160, summon: 600,
@@ -82,7 +84,7 @@ function roleOf(specs) {
 function actionsOf(e) {
   /** @type {Action[]} */
   const out = [];
-  if (e.typeId === 'bc:magic_knight') {
+  if (MAGES.has(e.typeId)) {
     const attr = knightAttr(e);
     const lvl = knightLevel(e);
     const pw = 0.8 + lvl * 0.05;
@@ -118,7 +120,7 @@ function brainOf(e) {
   const enemy = !!DATA.enemyKits[e.typeId];
   b = {
     role: beast || PACK.has(e.typeId) ? 'brawler' : roleOf(acts.map((a) => a.spec)),
-    skill: Math.min(1, trait(e, 'bc:skill', enemy ? 0.3 : 0.4, enemy ? 0.8 : 0.95) + (e.typeId === 'bc:magic_knight' ? knightLevel(e) * 0.02 : 0)),
+    skill: Math.min(1, trait(e, 'bc:skill', enemy ? 0.3 : 0.4, enemy ? 0.8 : 0.95) + (MAGES.has(e.typeId) ? knightLevel(e) * 0.02 : 0)),
     courage: trait(e, 'bc:courage', 0.15, 1.0),
     next: system.currentTick + Math.floor(rand(0, 10)), castAt: system.currentTick + 30, dodgeAt: 0, cds: new Map(),
     target: '', retreatUntil: 0, buffUntil: 0, lastHitBy: '', lastHitAt: 0, aimUntil: 0, orbit: Math.random() < 0.5 ? 1 : -1,
@@ -160,7 +162,7 @@ world.afterEvents.entityHurt.subscribe((ev) => {
     b.lastHitBy = src.id;
     b.lastHitAt = system.currentTick;
   }
-  if (ev.hurtEntity.typeId === 'bc:magic_knight' && Math.random() < 0.35) anim(ev.hurtEntity, 'animation.bc.magic_knight.flinch');
+  if (MAGES.has(ev.hurtEntity.typeId) && Math.random() < 0.35) anim(ev.hurtEntity, 'animation.bc.magic_knight.flinch');
 });
 
 // ------------------------------------------------------------------------------- senses
@@ -201,7 +203,7 @@ function tryDodge(e, b, t) {
     let side = V.flat({ x: -dir.z, y: 0, z: dir.x });
     if (Math.random() < 0.5) side = V.mul(side, -1);
     safe(() => e.applyImpulse({ x: side.x * 0.6, y: 0.2, z: side.z * 0.6 }));
-    if (e.typeId === 'bc:magic_knight') anim(e, 'animation.bc.magic_knight.dodge');
+    if (MAGES.has(e.typeId)) anim(e, 'animation.bc.magic_knight.dodge');
     particle(e.dimension, 'bc:dust_burst', e.location, { color: rgb('c8c8c8'), scale: 0.4 });
     b.dodgeAt = t + Math.round(60 - b.skill * 30);
     return;
@@ -271,7 +273,7 @@ function lead(e, target, a, skill) {
 
 function castAnim(e, a) {
   const kind = a.spec?.t === 'repeat' ? a.spec?.spec?.t : a.spec?.t;
-  if (e.typeId === 'bc:magic_knight') anim(e, `animation.bc.magic_knight.${KNIGHT_ANIM[kind] ?? 'cast'}`);
+  if (MAGES.has(e.typeId)) anim(e, `animation.bc.magic_knight.${KNIGHT_ANIM[kind] ?? 'cast'}`);
   else if (e.typeId === 'bc:sea_raider' || (e.typeId === 'bc:raider_gunner' && a.spec?.grav)) anim(e, `animation.bc.${e.typeId.slice(3)}.${e.typeId === 'bc:sea_raider' ? 'attack' : 'throw'}`);
   else if (TYPE_ANIM[e.typeId]) anim(e, TYPE_ANIM[e.typeId]);
 }

@@ -1,6 +1,6 @@
 # Black Clover: Grimoire Awakening
 
-> **Early Access – v0.2.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
+> **Early Access – v0.3.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
 **An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 24 magic attributes, draw anti-magic demon swords, wear Magic Knight squad robes and fight Dark Disciples and a full Devil boss.
 
@@ -14,7 +14,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 
 ## Features
 
-* **32 grimoires, 128 spells** – Wind, Flame, Water, Lightning, Ice, Earth, Steel, Sand, Bubble, Plant, Poison, Blood, Sound, Mist, Crystal, Bone, Magma, Cotton, Paper, Smoke, Glass, Beast, the rarer Light, Dark, Spatial, Mirror, Star, Time, Gold, Spirit and Rune (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
+* **32 grimoires, 159 spells** (each awakens a fifth spell at level 15) – Wind, Flame, Water, Lightning, Ice, Earth, Steel, Sand, Bubble, Plant, Poison, Blood, Sound, Mist, Crystal, Bone, Magma, Cotton, Paper, Smoke, Glass, Beast, the rarer Light, Dark, Spatial, Mirror, Star, Time, Gold, Spirit and Rune (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
 * **3D held grimoires** – your grimoire floats open beside your shoulder with flipping pages, glowing rune text and a spinning magic sigil (first-person view included).
 * **3D anti-magic swords** – Demon-Slayer, Demon-Dweller and Demon-Destroyer, each with its own ability, spell-cutting and an Anti-Magic gauge that powers **Black Form**.
 * **3D spell entities with animations** – wind crescents, fireballs, a roaring flame lion, a serpentine water dragon, a spinning tornado, thunder spears, swords of light, dark crescents, a black hole, ice spears and ice prisons.
@@ -26,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v0.3.0 – sky, missions & new foes:** magic **brooms** you fly on your own mana, **daily missions** and the Mission Board, five **amulets** for your off hand, **31 awakened spells** at level 15, **Rogue Mages** (outlaws with real grimoires) and rogue ambushes, the **Witch Sisters** twin boss and the **Bone Dragon**, and **Magic Knight camps**.
 * **v0.2.0 – companions & smarter foes:** a saved party of up to 4 knight companions (levels to 20, bonds, orders, stances, formations, gifts, robes, Union Magic) with a smart support AI; tactical enemies (gunners, marksmen, pack-hunting Hellhounds, Mana Wraiths); bosses with threat tables, three phases, telegraphs and desperation moves; the Fallen Captain; 8 more grimoires and 8 more fruits (Lion, Shark, Phoenix and Spider forms); many new animations.
 * **v0.1.0 – AI & simulation:** a tactical brain for spellcasting NPCs (spell choice by situation, aim leading, dodging, focus fire, healing allies, retreating), battle tactics, formations, morale and routs, leaders, three-army battles and knight duels with a live scoreboard, kill feed, battle reports and a cinematic camera, and a world simulation where the four factions gain and lose power, fight off screen and launch offensives.
 * **Wave 4 – a living world:** a data-driven spell engine, 12 more grimoires and 12 more Abyss Fruits (Bear, Tiger and Wyvern beast forms), four giant bosses (Archdevil, Stone Colossus, Phantom Galleon, Storm Kraken), random world events, roaming Magic Knight NPCs, factions that fight each other, a travelling merchant, and the **War Table** battle simulator.
@@ -340,6 +341,23 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 
 ---
 
+## v0.3.0: brooms, missions & new foes
+
+![v0.3.0](docs/images/v030.png)
+
+![Brooms, amulets and summoning items](docs/images/items030.png)
+
+* **Magic brooms** - craft a Magic Broom (stick, hay block, mana crystal) or a Swift Broom and **fly on your mana**: look to steer, hold forward to fly, back to brake, let go to hover, sneak to step off (the broom returns to your pack). Your mana does not regenerate in the air; run dry and you glide down. → [Brooms](docs/progression.md#magic-brooms)
+* **Daily missions** - three missions a day (kills, bosses, Devil Gates, spells, XP, deliveries, companion victories) turned in at a **Mission Board** for stars, doubloons and XP. → [Missions](docs/progression.md#daily-missions)
+* **Amulets** - Mana Heart, Swift Sigil, Battle Charm, Guardian Ward and Vigor Band, held in the off hand. → [Amulets](docs/progression.md#amulets)
+* **Awakened spells** - every grimoire except Anti-Magic awakens a fifth, strongest spell at magic level 15 (Gale Emperor, Crown of Suns, Ocean Sovereign, Thousand Bolts…); knights and companions awaken too. → [Magic](docs/magic.md)
+* **Rogue Mages** - outlaw mages with a real grimoire and levels 2-8 who fight with the tactical brain; they prowl at night, ambush travellers and form a War Table army. → [Mobs](docs/mobs-and-bosses.md)
+* **The Witch Sisters** - a twin boss: the Frost Witch and the Ember Witch blink away from melee and weave **Twin Spells**; kill one and the other goes berserk. Summon them with a **Twin Moon Charm**. → [Bosses](docs/mobs-and-bosses.md#bosses)
+* **The Bone Dragon** - circles overhead, breathes withering bone-fire, dives, sweeps its tail, raises skeletons and ends with Death's Wingbeat. Summon it with a **Bone Totem**. → [Bosses](docs/mobs-and-bosses.md#bosses)
+* **Magic Knight camps**, three new world events (rogue ambush, Witch Sisters, Bone Dragon) and more merchant wares. → [Changelog](CHANGELOG.md)
+
+---
+
 ## v0.2.0: companions, smarter enemies & bosses
 
 ![v0.2.0](docs/images/v020.png)
@@ -571,7 +589,7 @@ python3 tools/docs.py         # regenerates the reference pages in docs/
 
 The scripts are type-checked against the official `@minecraft/server` 2.0.0 typings (`tsc --checkJs`).
 
-**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.2.0`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
+**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.3.0`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
 
 **Tuning held items:** third/first-person poses live in `grimoire_animations()` and `sword_animations()` in `tools/bc/models/items.py`. First-person poses are solved from a target screen position by `tools/bc/fpsolve.py`, so moving an item on screen means changing one target point.
 

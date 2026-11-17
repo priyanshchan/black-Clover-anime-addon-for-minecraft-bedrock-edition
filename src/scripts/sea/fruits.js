@@ -11,6 +11,7 @@ import { V, alive, isCreative, rand, repeat, safe, timer } from '../core/util.js
 import { registerHandler } from '../magic/projectiles.js';
 import { addWill, sea } from './state.js';
 import { castSpec } from '../living/engine.js';
+import { emit } from '../core/bus.js';
 
 const F = DATA.fruits;
 export const FRUIT_IDS = DATA.fruitOrder;
@@ -469,7 +470,10 @@ export function usePower(p, item) {
   anim(p, s.ability === 2 ? 'animation.bc.player.cast_raise' : 'animation.bc.player.cast_forward');
   const ok = castAbility(p, fid, ab.id);
   if (ok === false) s.cd.delete(ab.id);
-  else addWill(p, 0);
+  else {
+    addWill(p, 0);
+    emit('cast', p, ab.id);
+  }
 }
 
 // ------------------------------------------------------------------------------- passives & the sea's curse

@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from bc import audio, fx, icons, out, packgen  # noqa: E402
 from bc import structures  # noqa: E402
 from bc.data import (ALTAR_WEIGHTS, ATTR_ORDER, ATTRIBUTES, BOND, CAPTAIN_FIRST, CAPTAIN_LAST, COMPANION_HP, COMPANION_LINES,  # noqa: E402
-                     COMPANION_XP, ENEMY_KITS, FACTIONS, FRUIT_ORDER, FRUITS, PARTY_MAX,
+                     COMPANION_XP, ENEMY_KITS, FACTIONS, FRUIT_ORDER, FRUITS, PARTY_MAX, MISSIONS, MISSION_REWARDS, AMULETS, BROOMS,
                      KNIGHT_FIRST, KNIGHT_LAST, KNIGHT_ROBES, MERCHANT, NOTORIETY, NPC_KITS, RANKS, ROBE_PERKS, ROBES, SHOP, SPELLS,
                      SWORDS, WILL_MAX_LEVEL)
 from bc.models import wave4  # noqa: E402
@@ -80,6 +80,10 @@ def gen_script_data():
         'merchant': [dict(item=i, count=c, price=p, label=lbl) for i, c, p, lbl in MERCHANT],
         'factions': FACTIONS,
         'enemyKits': ENEMY_KITS,
+        'missions': [dict(id=i, kind=k, target=t, count=c, title=n, tier=tr) for i, k, t, c, n, tr in MISSIONS],
+        'missionRewards': MISSION_REWARDS,
+        'amulets': {k: dict(name=n, perk=d) for k, (n, d) in AMULETS.items()},
+        'brooms': {k: dict(name=n, speed=sp, mana=m) for k, (n, sp, m) in BROOMS.items()},
         'companion': {'xp': COMPANION_XP, 'hp': COMPANION_HP, 'bond': [dict(at=a, name=n, perk=k) for a, n, k in BOND],
                       'partyMax': PARTY_MAX, 'lines': COMPANION_LINES},
     }
