@@ -1,10 +1,13 @@
-# Publishes a GitHub release with the .mcaddon / .mcpack downloads whenever a version tag (v*) is pushed.
-# Release notes are the matching section of CHANGELOG.md. 0.x versions are marked as pre-releases (early access).
+# Publishes a GitHub release with the .mcaddon / .mcpack downloads for a version tag (v*).
+# Works both when a tag is pushed and when a release is published on the website: in that case it just
+# attaches the files. Release notes are the matching section of CHANGELOG.md. 0.x versions are pre-releases.
 name: Release
 
 on:
   push:
     tags: ['v*']
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -20,7 +23,7 @@ jobs:
 
       - name: Name the downloads
         run: |
-          V="${GITHUB_REF_NAME}"
+          V="${{ github.event.release.tag_name || github.ref_name }}"
           mkdir -p out
           cp dist/BlackClover_GrimoireAwakening.mcaddon "out/BlackClover_GrimoireAwakening_${V}.mcaddon"
           cp dist/BlackClover_BP.mcpack "out/BlackClover_BP_${V}.mcpack"
@@ -31,7 +34,16 @@ jobs:
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name || github.ref_name }}
         run: |
           PRE=""
-          case "$GITHUB_REF_NAME" in v0.*|*-*) PRE="--prerelease" ;; esac
-          gh release create "$GITHUB_REF_NAME" out/* --title "Black Clover: Grimoire Awakening ${GITHUB_REF_NAME}" --notes-file notes.md $PRE
+          case "$TAG" in v0.*|*-*) PRE="--prerelease" ;; esac
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" out/* --clobber
+            # a release made on the website with an empty description gets the changelog and the right labels
+            if [ -z "$(gh release view "$TAG" --json body -q .body)" ]; then
+              gh release edit "$TAG" --notes-file notes.md --title "Black Clover: Grimoire Awakening ${TAG}" $PRE
+            fi
+          else
+            gh release create "$TAG" out/* --title "Black Clover: Grimoire Awakening ${TAG}" --notes-file notes.md $PRE
+          fi
