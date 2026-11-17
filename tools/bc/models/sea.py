@@ -598,6 +598,19 @@ def power_geo(fid):
             r = math.radians(a)
             g.box('aura', (hx + math.cos(r) * 3, y, hz + math.sin(r) * 3), (3.2, 0.3, 2.0), leaf, rotation=[0, -a, 20], pivot=(hx + math.cos(r) * 2.4, y, hz + math.sin(r) * 2.4))
         g.box('aura', (hx, 11.0, hz - 0.5), (2.4, 2.4, 2.4), tex.Energy(tex.ramp('c84a7a', 'f07aa8', 'ffc8dc', 'ffffff'), alpha=140), rotation=[45, 45, 0], pivot=(hx, 11, hz - 0.5))
+    elif fid == 'frost':
+        ice = tex.Crystal(P['ice'], alpha=215)
+        g.cube('aura', (-8.6, 11.2, -2.6), (5.2, 4.5, 5.2), ice)
+        for k in range(6):
+            a = math.radians(k * 60)
+            g.box('orbit', (hx + math.cos(a) * 3.0, 13 + (k % 2) * 2, hz + math.sin(a) * 3.0), (1.2, 4.5, 1.2), ice,
+                  rotation=[math.sin(a) * 30, 0, math.cos(a) * 30], pivot=(hx + math.cos(a) * 3.0, 12, hz + math.sin(a) * 3.0))
+    elif fid == 'barrier':
+        pane = tex.Energy(tex.ramp('a08a30', 'd8c060', 'f0e6a0', 'fffbe8'), alpha=140)
+        for k in range(6):
+            a = math.radians(k * 60)
+            cx, cz = hx + math.cos(a) * 4.0, hz + math.sin(a) * 4.0
+            g.box('orbit', (cx, 14, cz), (2.6, 3.4, 0.3), pane, rotation=[0, -k * 60 + 90, 0], pivot=(cx, 14, cz))
     else:  # quicksilver
         silver = tex.Metal(tex.ramp('5d6370', '858c9a', 'aab1be', 'cfd5df', 'f1f4f8', 'ffffff'), sheen=0.6)
         g.cube('aura', (-8.5, 11.2, -2.5), (5.0, 7, 5.0), silver)

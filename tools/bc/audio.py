@@ -339,7 +339,67 @@ def s_lev_roar():
     return norm(reverb(x * env(len(t), 0.3, 0.4, 0.8, 0.8, d) + bubbles, 0.45))
 
 
+def s_pistol():
+    d = 0.9
+    t = t_(d)
+    crack = highpass(noise(len(t), 81), 900) * np.exp(-t * 40) * 1.6
+    body = lowpass(noise(len(t), 82), 1200 * np.exp(-t * 8) + 150) * np.exp(-t * 7) * 1.2 + osc(90 * np.exp(-t * 5), d) * np.exp(-t * 12)
+    return norm(reverb(np.tanh((crack + body) * 2), 0.3))
+
+
+def s_howl():
+    d = 2.2
+    t = t_(d)
+    f = 380 + 160 * np.sin(np.pi * np.clip(t / 1.6, 0, 1)) - 120 * np.clip((t - 1.4) / 0.8, 0, 1)
+    v = 1 + 0.02 * np.sin(2 * np.pi * 6 * t)
+    x = osc(f * v, d) * 0.7 + osc(f * 2 * v, d) * 0.2 + bandpass(noise(len(t), 83), 600, 2400) * 0.12
+    return norm(reverb(x * env(len(t), 0.25, 0.3, 0.8, 0.6, d), 0.5))
+
+
+def s_portal():
+    d = 1.3
+    t = t_(d)
+    sweep = osc(200 + 900 * (t / d) ** 2, d, 'triangle') * 0.4
+    swirl = bandpass(noise(len(t), 84), 300 + 2000 * (t / d), 800 + 4000 * (t / d)) * 0.8
+    x = (sweep + swirl) * np.sin(np.pi * t / d) * (0.7 + 0.3 * np.sin(2 * np.pi * 14 * t))
+    return norm(reverb(x, 0.45))
+
+
+def s_mirror():
+    d = 1.2
+    t = t_(d)
+    x = sum(osc(f, d) * np.exp(-t * dec) * a for f, a, dec in ((2093, 0.3, 4), (2637, 0.25, 5), (3136, 0.2, 6), (4186, 0.15, 7)))
+    x += highpass(noise(len(t), 85), 5000) * np.exp(-t * 30) * 0.4
+    return norm(reverb(x, 0.4))
+
+
+def s_fanfare():
+    d = 1.8
+    x = np.zeros(int(round(SR * d)))
+    for k, (f, st, ln) in enumerate(((392, 0.0, 0.18), (523.3, 0.18, 0.18), (659.3, 0.36, 0.18), (784, 0.54, 1.1))):
+        i = int(SR * st)
+        n = int(SR * ln)
+        tt = np.arange(n) / SR
+        tone = (osc(f, n / SR, 'saw')[:n] * 0.4 + osc(f * 2, n / SR)[:n] * 0.2) * np.minimum(1, tt * 40) * np.exp(-tt * (1.5 if k == 3 else 6))
+        x[i:i + n] += lowpass(tone, 2500)
+    return norm(reverb(x, 0.35))
+
+
+def s_slam():
+    d = 1.2
+    t = t_(d)
+    thud = osc(45 * np.exp(-t * 3) + 25, d) * np.exp(-t * 4) * 1.4
+    rubble = lowpass(noise(len(t), 86), 1500 * np.exp(-t * 4) + 120) * np.exp(-t * 3) * 1.2
+    return norm(np.tanh((thud + rubble) * 1.6))
+
+
 SOUNDS = {
+    'bc.pistol': (s_pistol, 'player', 1.0),
+    'bc.howl': (s_howl, 'player', 1.0),
+    'bc.portal': (s_portal, 'neutral', 1.0),
+    'bc.mirror': (s_mirror, 'neutral', 1.0),
+    'bc.fanfare': (s_fanfare, 'player', 0.9),
+    'bc.golem.slam': (s_slam, 'hostile', 1.0),
     'bc.cannon': (s_cannon, 'neutral', 1.0),
     'bc.ship.bell': (s_bell, 'neutral', 0.9),
     'bc.fruit.eat': (s_eat, 'player', 1.0),

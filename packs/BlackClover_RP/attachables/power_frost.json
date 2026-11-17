@@ -1,0 +1,28 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "bc:power_frost",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/power_frost"
+      },
+      "geometry": {
+        "default": "geometry.bc.power_frost"
+      },
+      "animations": {
+        "aura": "animation.bc.power.aura"
+      },
+      "scripts": {
+        "animate": [
+          "aura"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.attachable"
+      ]
+    }
+  }
+}

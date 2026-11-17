@@ -1,0 +1,39 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:dungeon_golem",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/dungeon_golem"
+      },
+      "geometry": {
+        "default": "geometry.bc.dungeon_golem"
+      },
+      "animations": {
+        "idle": "animation.bc.dungeon_golem.idle",
+        "walk": "animation.bc.dungeon_golem.walk",
+        "look": "animation.bc.dungeon_golem.look_at_target"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ],
+        "scale": "1.45"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#202028",
+        "overlay_color": "#5ad8ff"
+      }
+    }
+  }
+}

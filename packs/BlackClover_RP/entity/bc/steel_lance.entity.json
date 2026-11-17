@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:steel_lance",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/steel_lance"
+      },
+      "geometry": {
+        "default": "geometry.bc.steel_lance"
+      },
+      "animations": {
+        "fly": "animation.bc.steel_lance.fly",
+        "trail": "animation.bc.spell.trail"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "trail": "bc:trail_light"
+      }
+    }
+  }
+}

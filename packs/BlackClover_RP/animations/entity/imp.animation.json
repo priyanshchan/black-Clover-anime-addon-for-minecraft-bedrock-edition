@@ -1,0 +1,64 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.imp.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "position": [
+            0,
+            "math.sin(q.life_time * 180.0) * 1.0",
+            0
+          ]
+        },
+        "rightWing": {
+          "rotation": [
+            0,
+            "-20.0 + math.sin(q.life_time * 1200.0) * 40.0",
+            0
+          ]
+        },
+        "leftWing": {
+          "rotation": [
+            0,
+            "20.0 - math.sin(q.life_time * 1200.0) * 40.0",
+            0
+          ]
+        },
+        "tail": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 200.0) * 25.0",
+            0
+          ]
+        },
+        "rightArm": {
+          "rotation": [
+            "-30.0 + math.sin(q.life_time * 180.0) * 10.0",
+            0,
+            0
+          ]
+        },
+        "leftArm": {
+          "rotation": [
+            "-30.0 - math.sin(q.life_time * 180.0) * 10.0",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.imp.look_at_target": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": [
+            "q.target_x_rotation",
+            "q.target_y_rotation",
+            0
+          ]
+        }
+      }
+    }
+  }
+}

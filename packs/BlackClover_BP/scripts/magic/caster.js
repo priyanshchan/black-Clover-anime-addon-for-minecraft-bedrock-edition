@@ -8,8 +8,10 @@ import { addXp } from '../core/progress.js';
 import { isCreative, safe } from '../core/util.js';
 import { ANTI_SPELLS } from './antimagic.js';
 import { SPELLS } from './spells.js';
+import { SPELLS2 } from './spells2.js';
+import { zoneBonus } from './techniques.js';
 
-const IMPL = { ...SPELLS, ...ANTI_SPELLS };
+const IMPL = { ...SPELLS, ...SPELLS2, ...ANTI_SPELLS };
 
 /** @param {import('@minecraft/server').Player} p @param {import('@minecraft/server').ItemStack} item */
 export function useGrimoire(p, item) {
@@ -59,10 +61,16 @@ export function useGrimoire(p, item) {
   const impl = IMPL[sp.id];
   if (!impl) return;
   if (!creative) s.mana -= cost;
-  s.cd.set(sp.id, t + Math.round(sp.cooldown * 20));
+  const zone = zoneBonus(p);
+  const cdMul = (robe(p) === 'green_mantis_robe' ? 0.85 : 1) * zone.cd;
+  s.cd.set(sp.id, t + Math.round(sp.cooldown * 20 * cdMul));
+  if (!creative && cost > 0 && robe(p) === 'coral_peacock_robe' && Math.random() < 0.2) {
+    s.mana += cost;
+    safe(() => p.onScreenDisplay.setActionBar('§dCoral Peacock: §7mana refunded!'));
+  }
   s.lastCast = t;
   s.dirty = true;
-  const ctx = { p, dim: p.dimension, attr, pw: creative ? 1 + 19 * 0.05 : spellPower(p, s) };
+  const ctx = { p, dim: p.dimension, attr, pw: (creative ? 1 + 19 * 0.05 : spellPower(p, s)) * zone.pw };
   if (attr !== 'anti') {
     castCircle(p, attr, sp.level >= 10 ? 2.6 : sp.level >= 6 ? 2.0 : 1.5);
     sound(p.dimension, 'bc.cast', p.location, 0.7, 0.9 + Math.random() * 0.2);
@@ -101,7 +109,7 @@ system.runInterval(() => {
     const s = state(p);
     if (!s.attr || s.attr === 'anti') continue;
     const mx = maxMana(p, s);
-    if (s.mana < mx) addMana(p, regenPerSecond(p, s) / 5);
+    if (s.mana < mx) addMana(p, (regenPerSecond(p, s) * zoneBonus(p).regen) / 5);
     else if (s.mana > mx) s.mana = mx;
   }
 }, 4);

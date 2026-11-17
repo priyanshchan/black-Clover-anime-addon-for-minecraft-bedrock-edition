@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:lead_shot",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/lead_shot"
+      },
+      "geometry": {
+        "default": "geometry.bc.lead_shot"
+      },
+      "animations": {
+        "fly": "animation.bc.lead_shot.fly",
+        "trail": "animation.bc.spell.trail"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "trail": "bc:trail_dust"
+      }
+    }
+  }
+}

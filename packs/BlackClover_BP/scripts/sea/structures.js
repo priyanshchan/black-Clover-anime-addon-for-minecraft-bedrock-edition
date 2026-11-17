@@ -13,8 +13,13 @@ const LOOT = {
   outpost: [['bc:doubloon', 6, 14, 1], ['bc:cannonball', 2, 6, 0.8], ['minecraft:gunpowder', 2, 5, 0.6], ['minecraft:cooked_cod', 2, 5, 0.7],
     ['bc:mana_crystal', 1, 3, 0.6], ['bc:ship_kit', 1, 1, 0.08], ['fruit', 1, 1, 0.1]],
   wreck: [['bc:doubloon', 15, 30, 1], ['minecraft:gold_ingot', 2, 5, 0.8], ['minecraft:emerald', 1, 3, 0.6], ['bc:mana_crystal', 2, 4, 0.7],
-    ['minecraft:heart_of_the_sea', 1, 1, 0.12], ['fruit', 1, 1, 0.35], ['bc:leviathan_lure', 1, 1, 0.06]],
+    ['minecraft:heart_of_the_sea', 1, 1, 0.12], ['fruit', 1, 1, 0.35], ['bc:leviathan_lure', 1, 1, 0.06], ['bc:treasure_map', 1, 1, 0.3]],
+  dungeon: [['bc:ancient_page', 1, 3, 0.9], ['bc:mana_crystal', 2, 5, 0.8], ['minecraft:gold_ingot', 3, 7, 0.7], ['minecraft:diamond', 1, 2, 0.35],
+    ['robe', 1, 1, 0.15], ['bc:clover_charm', 1, 1, 0.04], ['bc:treasure_map', 1, 1, 0.2]],
+  treasure: [['bc:doubloon', 30, 60, 1], ['minecraft:gold_ingot', 4, 9, 0.9], ['minecraft:diamond', 1, 4, 0.6], ['minecraft:emerald', 2, 6, 0.6],
+    ['fruit', 1, 1, 0.2], ['bc:ancient_page', 1, 2, 0.4]],
 };
+const ROBE_IDS = Object.keys(DATA.robes);
 
 function perm(name, states) {
   try {
@@ -73,12 +78,13 @@ export function lootItems(table) {
     if (Math.random() > chance) continue;
     const n = Math.floor(rand(lo, hi + 1));
     if (id === 'fruit') out.push(new ItemStack(`bc:fruit_${pick(DATA.fruitOrder)}`, 1));
+    else if (id === 'robe') out.push(new ItemStack(`bc:${pick(ROBE_IDS)}`, 1));
     else out.push(new ItemStack(id, Math.max(1, n)));
   }
   return out;
 }
 
-function fill(block, table) {
+export function fill(block, table) {
   const inv = block.getComponent('minecraft:inventory')?.container;
   if (!inv) return;
   for (const it of lootItems(table)) inv.setItem(Math.floor(Math.random() * inv.size), it);
@@ -87,7 +93,7 @@ function fill(block, table) {
 /**
  * Build a blueprint. Runs as a background job so big structures never lag the game.
  * @param {import('@minecraft/server').Dimension} dim
- * @param {'outpost'|'wreck'} kind
+ * @param {'outpost'|'wreck'|'dungeon'} kind
  * @param {{x:number,y:number,z:number}} anchor
  * @param {{bountyFor?: string, captainName?: string, captainFruit?: string}} [opts]
  */
@@ -145,6 +151,17 @@ export function build(dim, kind, anchor, opts = {}) {
     }
   }
   remember(ax, az);
+  if (bp.traps?.length) {
+    const v = world.getDynamicProperty('bc:traps');
+    let traps = [];
+    try {
+      traps = typeof v === 'string' ? JSON.parse(v) : [];
+    } catch {
+      traps = [];
+    }
+    for (const t of bp.traps) traps.push([ax + Number(t[0]), ay + Number(t[1]), az + Number(t[2]), dim.id]);
+    world.setDynamicProperty('bc:traps', JSON.stringify(traps.slice(-150)));
+  }
   system.runJob(job());
 }
 

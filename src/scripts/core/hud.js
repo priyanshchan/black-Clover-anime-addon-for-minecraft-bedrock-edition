@@ -5,6 +5,7 @@ import { maxMana, spellsOf, state } from './data.js';
 import { isCreative, now, safe } from './util.js';
 import { sea } from '../sea/state.js';
 import { bountyHud } from '../sea/bounty.js';
+import { mapHud } from '../grand/treasure.js';
 
 const G = DATA.glyphs;
 const PIPS = 12;
@@ -100,7 +101,10 @@ system.runInterval(() => {
     const kind = heldKind(p);
     const s = state(p);
     if (kind || t - s.lastCast < 60 || t - sea(p).lastUse < 60) showHud(p);
-    else if (t % 8 === 0) {
+    else if (heldId(p) === 'bc:treasure_map') {
+      const m = safe(() => mapHud(p));
+      if (m) safe(() => p.onScreenDisplay.setActionBar(m));
+    } else if (t % 8 === 0) {
       const b = safe(() => bountyHud(p));
       if (b) safe(() => p.onScreenDisplay.setActionBar(b));
     }

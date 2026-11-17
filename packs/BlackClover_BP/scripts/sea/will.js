@@ -102,7 +102,8 @@ system.runInterval(() => {
   for (const p of world.getAllPlayers()) {
     const s = sea(p);
     if (s.will < 100) addWill(p, 1);
-    if (s.willLv >= 8 && s.will >= 100 && p.isSneaking) {
+    const heldId = safe(() => p.getComponent('minecraft:inventory')?.container?.getItem(p.selectedSlotIndex)?.typeId) ?? '';
+    if (s.willLv >= 8 && s.will >= 100 && p.isSneaking && !heldId.startsWith('bc:grimoire_')) {
       const jump = safe(() => p.inputInfo.getButtonState(InputButton.Jump));
       if (jump === ButtonState.Pressed) safe(() => sovereign(p), 'sovereign');
     }

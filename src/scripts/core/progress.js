@@ -2,6 +2,7 @@
 import { DATA } from '../generated/data.js';
 import { MAX_LEVEL, maxMana, spellsOf, state, xpToNext } from './data.js';
 import { particle, sound, title } from './fx.js';
+import { addStars } from './ranks.js';
 import { safe } from './util.js';
 
 export function addXp(player, amount) {
@@ -13,6 +14,7 @@ export function addXp(player, amount) {
     s.xp -= xpToNext(s.level);
     s.level++;
     levelUp(player, s.level);
+    if (s.level % 5 === 0) addStars(player, 1, `reached level ${s.level}`);
   }
 }
 

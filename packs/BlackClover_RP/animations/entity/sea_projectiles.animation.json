@@ -76,6 +76,49 @@
           ]
         }
       }
+    },
+    "animation.bc.steel_lance.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            "q.life_time * 600.0"
+          ]
+        }
+      }
+    },
+    "animation.bc.harpoon_bolt.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.lead_shot.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            "q.life_time * 400.0",
+            "q.life_time * 250.0",
+            0
+          ]
+        }
+      }
     }
   }
 }

@@ -328,3 +328,54 @@ def fruits_strip():
         d.text((i * 220 + 14, 228), {'ember': 'Ember Body', 'stone': 'Stone Body', 'gravity': 'Gravity Grip', 'shadow': 'Shadow Grasp',
                                      'bloom': 'Bloom Touch', 'quicksilver': 'Quicksilver Arm'}[fid], font=font(18), fill=(225, 225, 225, 255))
     out.convert('RGB').save(os.path.join(OUT, 'powers.png'), optimize=True)
+
+
+def wave3_sheet():
+    from bc.models import grand
+    entries = []
+    for k, label in (('earth_golem', 'Earth Golem (Earth magic)'), ('dungeon_golem', 'Dungeon Guardian')):
+        pose = {}
+        render.pose_from_anim(grand.golem_animations(k)[f'animation.bc.{k}.idle'], 0.3, pose=pose)
+        entries.append((label, model(grand.golem_geo(k)), pose, 30, 10, 1.4))
+    pose = {}
+    for a in grand.imp_animations().values():
+        render.pose_from_anim(a, 0.2, pose=pose)
+    entries.append(('Imp', model(grand.imp_geo()), pose, 30, 10, 1.5))
+    for k, label in (('tidewatch_sentinel', 'Tidewatch Sentinel'), ('tidewatch_commodore', 'Tidewatch Commodore')):
+        pose = {}
+        render.pose_from_anim(grand.navy_animations(k)[f'animation.bc.{k}.idle'], 0.3, pose=pose)
+        entries.append((label, model(grand.navy_geo(k)), pose, 30, 10, 1.5))
+    g, _, a = grand.warp_gate()
+    pose = {}
+    render.pose_from_anim(a['animation.bc.warp_gate.spin'], 1.0, pose=pose)
+    entries.append(('Warp Gate (Spatial magic)', model(g), pose, 20, 10, 1.4))
+    pose = {}
+    render.pose_from_anim(mobs.disciple_animations()['animation.bc.dark_disciple.idle'], 0.3, pose=pose)
+    entries.append(('Mirror Image (Mirror magic)', model(mobs.disciple_geo('mirror')), pose, 30, 10, 1.5))
+    for k, label in (('cutlass', 'Cutlass'), ('flintlock', 'Flintlock Pistol'), ('harpoon', 'Grappling Harpoon')):
+        entries.append((label, model(grand.weapon_geo(k)), {'weapon': {'rotation': [0, 0, -35]}}, 90, 5, 1.2))
+    grid(entries, 5, 300, 'wave3.png', 'Magic, monsters, the Tidewatch & pirate arms')
+    # beast forms on a player
+    out_img = background(900, 330, '1a1410', '0a0806', ring=False)
+    d = ImageDraw.Draw(out_img)
+    d.text((20, 14), 'Beast fruits: Wolf Form & Hawk Form', font=font(26), fill=(235, 235, 235, 255))
+    p = ref_player()
+    for i, (fid, yaw) in enumerate((('wolf', 25), ('wolf', 160), ('hawk', 25), ('hawk', 160))):
+        g, anim = grand.beast_geo(fid)
+        pose = {}
+        for a in anim.values():
+            render.pose_from_anim(a, 0.2, pose=pose)
+        sc = render.Scene(225, 280, ss=2)
+        sc.add(p, pose)
+        sc.add(model(g), pose)
+        sc.render(render.orbit_eye((0, 18, 0), 66, yaw, 10), (0, 18, 0), fov=40)
+        out_img.alpha_composite(sc.image(), (i * 225, 50))
+    out_img.convert('RGB').save(os.path.join(OUT, 'beasts.png'), optimize=True)
+    # new grimoires and robes
+    from bc.data import ATTR_ORDER, ROBES
+    ims = [items.grimoire_icon(a) for a in ATTR_ORDER[8:]] + [items.robe_icon(r) for r in list(ROBES)[3:]] + \
+          [icons.fruit_icon(f) for f in ('frost', 'barrier', 'wolf', 'hawk')] + list(grand.wave3_icons().values())
+    img = background(len(ims) * 76 + 20, 96, '22222c', '101016', ring=False)
+    for i, a in enumerate(ims):
+        img.alpha_composite(tex.to_image(a).resize((64, 64), Image.NEAREST), (16 + i * 76, 16))
+    img.convert('RGB').save(os.path.join(OUT, 'wave3_items.png'), optimize=True)

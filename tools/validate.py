@@ -118,7 +118,7 @@ for p in list(walk(os.path.join(BP, 'recipes'), '.json')) + list(walk(os.path.jo
 VANILLA_SOUNDS = {'mob.blaze.shoot', 'mob.blaze.breathe', 'mob.ghast.fireball', 'bucket.empty_water', 'random.splash', 'ambient.weather.thunder',
                   'beacon.activate', 'mob.wither.shoot', 'mob.wither.spawn', 'mob.endermen.portal', 'mob.warden.sonic_boom', 'random.glass',
                   'random.explode', 'random.orb', 'random.anvil_land', 'mob.evocation_illager.cast_spell', 'mob.evocation_illager.prepare_summon',
-                  'mob.ravager.bite'}
+                  'mob.ravager.bite', 'random.click', 'item.trident.throw', 'random.burp'}
 js = ''
 for p in walk(os.path.join(BP, 'scripts'), '.js'):
     js += open(p, encoding='utf-8').read()
@@ -129,7 +129,8 @@ for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
              'bc:black_form', 'bc:expire', 'bc:altar_logic', 'bc:grimoire_', 'bc:demon_',
              # Abyssal Seas: dynamic-property keys, id prefixes and custom component names
              'bc:sealed', 'bc:fruit', 'bc:fruit_', 'bc:fruit_ab', 'bc:will', 'bc:will_xp', 'bc:will_lv', 'bc:owner', 'bc:power_',
-             'bc:bounty_logic', 'bc:bounty', 'bc:fortress_until', 'bc:sea_structs'):
+             'bc:bounty_logic', 'bc:bounty', 'bc:fortress_until', 'bc:sea_structs',
+             'bc:stars', 'bc:notoriety', 'bc:traps', 'bc:bulwark_until', 'bc:reflect_until', 'bc:tx', 'bc:tz'):
         continue
     errors.append(f'script references unknown id {m}')
 for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):

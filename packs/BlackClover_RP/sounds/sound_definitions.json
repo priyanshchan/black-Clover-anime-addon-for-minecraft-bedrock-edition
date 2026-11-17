@@ -1,6 +1,78 @@
 {
   "format_version": "1.20.20",
   "sound_definitions": {
+    "bc.pistol": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/pistol",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.howl": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/howl",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.portal": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/portal",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.mirror": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/mirror",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.fanfare": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/fanfare",
+          "volume": 0.9,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.golem.slam": {
+      "category": "hostile",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/golem_slam",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
     "bc.cannon": {
       "category": "neutral",
       "min_distance": 1.0,

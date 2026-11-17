@@ -60,9 +60,16 @@ def _belt(a, ctx):
 
 def disciple_geo(variant='disciple'):
     shade = variant == 'shade'
-    ident = 'geometry.bc.shade_soldier' if shade else 'geometry.bc.dark_disciple'
+    ident = {'shade': 'geometry.bc.shade_soldier', 'mirror': 'geometry.bc.mirror_clone'}.get(variant, 'geometry.bc.dark_disciple')
     g = Geo(ident, res=2, atlas_width=128, visible=(2, 3, (0, 1.2, 0)))
-    if shade:
+    if variant == 'mirror':
+        # living mirror glass: silver-blue, glinting (alpha < 255 = glow)
+        glass = tex.ramp('34405f', '58668e', '8a9ac4', 'c8d8ff', 'eef4ff')
+        robe = tex.Metal(glass, sheen=0.7, alpha=225)
+        robe_dark = tex.Metal(glass[:4], sheen=0.5, alpha=230)
+        skin = tex.Metal(glass[1:], sheen=0.6, alpha=220)
+        mask = tex.Painted(tex.Metal(glass[2:], sheen=0.8), {'north': _mask})
+    elif shade:
         # living shadow: near-black body with a faint violet glow (alpha < 255 = emissive)
         robe = tex.Cloth(tex.ramp('050309', '0b0614', '120a20', '1a0f2e'), folds=0.3, alpha=235)
         robe_dark = tex.Cloth(tex.ramp('020104', '06030b', '0b0614', '120a20'), folds=0.25, alpha=235)

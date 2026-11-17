@@ -12,6 +12,7 @@ import './world/altar.js';
 import { useMisc } from './world/items.js';
 import './world/mobs.js';
 import { onSeaMelee, useSeaItem } from './sea/index.js';
+import { useGrandItem } from './grand/index.js';
 import { forgetSea, saveSea } from './sea/state.js';
 
 const lastUse = new Map();
@@ -24,6 +25,7 @@ world.afterEvents.itemUse.subscribe((ev) => {
   if ((lastUse.get(p.id) ?? -10) >= t - 2) return; // debounce double events
   lastUse.set(p.id, t);
   const id = item.typeId;
+  if (safe(() => useGrandItem(p, item), 'grand')) return;
   if (safe(() => useSeaItem(p, item), 'sea')) return;
   if (id.startsWith('bc:grimoire_')) safe(() => useGrimoire(p, item), 'grimoire');
   else if (id.startsWith('bc:demon_') && id.endsWith('_sword')) safe(() => useSword(p, id), 'sword');

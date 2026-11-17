@@ -45,7 +45,7 @@ export function fruitOf(e) {
  */
 
 /** @returns {FCtx} */
-function ctxFor(c, fid, target) {
+export function ctxFor(c, fid, target) {
   const head = c.getHeadLocation();
   if (c instanceof Player) {
     const t = aimEntity(c, 32);
@@ -57,19 +57,19 @@ function ctxFor(c, fid, target) {
   return { c, dim: c.dimension, fid, dir: V.norm(V.sub(aim, head)), aim, target, pw: 0.8 };
 }
 
-function from(x, dist = 1.1, down = 0.25) {
+export function from(x, dist = 1.1, down = 0.25) {
   const h = x.c.getHeadLocation();
   return { x: h.x + x.dir.x * dist, y: h.y + x.dir.y * dist - down, z: h.z + x.dir.z * dist };
 }
 
-function dash(c, dir, strength, lift = 0.2) {
+export function dash(c, dir, strength, lift = 0.2) {
   const f = V.flat(dir);
   if (c instanceof Player) knock(c, f, strength, lift);
   else safe(() => c.applyImpulse({ x: f.x * strength * 0.45, y: lift, z: f.z * strength * 0.45 }));
 }
 
 /** Friendly entities of the caster (for heals). */
-function allies(c, loc, r) {
+export function allies(c, loc, r) {
   return safe(() => c.dimension.getEntities({ location: loc, maxDistance: r }).filter((e) => {
     if (e.id === c.id) return true;
     if (c instanceof Player) {
@@ -81,7 +81,7 @@ function allies(c, loc, r) {
   })) ?? [];
 }
 
-function explode(dim, loc, owner, radius, dmg, fire) {
+export function explode(dim, loc, owner, radius, dmg, fire) {
   burst(dim, loc, 'flame', radius / 2.5);
   particle(dim, 'bc:flame_burst', loc, { scale: radius / 2.5 });
   particle(dim, 'bc:smoke_burst', loc, { scale: radius / 3 });

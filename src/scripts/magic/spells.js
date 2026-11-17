@@ -7,6 +7,7 @@ import {
 } from '../core/combat.js';
 import { COLORS, anim, arc, beam, burst, groundCircle, particle, rgb, shake, shakeArea, shockwave, sound } from '../core/fx.js';
 import { V, alive, rand, repeat, safe, timer } from '../core/util.js';
+import { robe } from '../core/data.js';
 import { trackTornado, trackBlackHole, trackPrison } from './summons.js';
 
 /**
@@ -160,7 +161,8 @@ export const SPELLS = {
     });
     for (const a of allies) {
       const hp = a.getComponent('minecraft:health');
-      if (hp) safe(() => hp.setCurrentValue(Math.min(hp.effectiveMax, hp.currentValue + 8 * c.pw)));
+      const rose = robe(c.p) === 'blue_rose_robe' ? 1.3 : 1;
+      if (hp) safe(() => hp.setCurrentValue(Math.min(hp.effectiveMax, hp.currentValue + 8 * c.pw * rose)));
       effect(a, 'regeneration', 6, 1);
       safe(() => a.extinguishFire(true));
       particle(c.dim, 'bc:heal', center(a));

@@ -12,7 +12,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 
 ## Features
 
-* **8 grimoires, 32 spells** – Wind, Flame, Water, Lightning, Ice, the rarer Light and Dark (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
+* **12 grimoires, 48 spells** – Wind, Flame, Water, Lightning, Ice, Earth, Steel, the rarer Light, Dark, Spatial and Mirror (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
 * **3D held grimoires** – your grimoire floats open beside your shoulder with flipping pages, glowing rune text and a spinning magic sigil (first-person view included).
 * **3D anti-magic swords** – Demon-Slayer, Demon-Dweller and Demon-Destroyer, each with its own ability, spell-cutting and an Anti-Magic gauge that powers **Black Form**.
 * **3D spell entities with animations** – wind crescents, fireballs, a roaring flame lion, a serpentine water dragon, a spinning tornado, thunder spears, swords of light, dark crescents, a black hole, ice spears and ice prisons.
@@ -24,6 +24,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **Wave 3:** Spatial, Earth, Steel and Mirror magic, all nine squad robes, Magic Knight ranks, Mana Skin and Mana Zone, ancient dungeons with traps and a Guardian, Imps, four more Abyss Fruits (including Wolf and Hawk beast forms), a bounty on your head and the Tidewatch navy, treasure maps, cutlass, flintlock and grappling harpoon.
 * **Expansion – The Abyssal Seas:** 6 Abyss Fruits with 18 abilities, the Will system, steerable sailing ships with cannons, Sea Raiders and fruit-wielding Raider Captains, generated outposts and shipwrecks, a Bounty Board with a doubloon shop, and the Abyssal Leviathan boss.
 
 | Spells | Grimoires & swords |
@@ -49,7 +50,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 
 1. On your first spawn you receive a **Grimoire Altar** and the **Magic Knight's Handbook**.
 2. Place the altar and **interact** with it. After a short ceremony a grimoire chooses you
-   (weights: 14% each for Wind / Flame / Water / Lightning / Ice, 11% each for Light / Dark, 8% for Anti-Magic).
+   (12 attributes; see Wave 3 below for the odds).
 3. Hold your grimoire:
    * **Use** (right-click / tap & hold) – cast the selected spell.
    * **Sneak + Use** – flip to the next unlocked spell (or pick one in the Handbook).
@@ -218,6 +219,99 @@ Use a **Leviathan Lure** (heart of the sea, prismarine crystals, 2 mana crystals
 /give @s bc:leviathan_lure
 /summon bc:raider_captain
 /summon bc:leviathan
+```
+
+---
+
+## Wave 3: more from both worlds
+
+![Wave 3](docs/images/wave3.png)
+
+![Beast forms](docs/images/beasts.png)
+
+![New items](docs/images/wave3_items.png)
+
+### Four new magic attributes (16 spells)
+
+| Attribute | Spell | Lv | Mana | Cooldown | Effect |
+|---|---|---|---|---|---|
+| **Spatial** (Four-leaf) | Warp Gate | 1 | 30 | 6s | Open linked gates at your feet and where you look. |
+|  | Space Cleave | 3 | 22 | 3s | A slash through space itself - walls cannot stop it. |
+|  | Pocket Dimension | 6 | 40 | 10s | Fling every enemy near your aim high into the sky. |
+|  | Gate Barrage | 10 | 80 | 22s | Portals surround your target and fire from every side. |
+| **Earth** (Three-leaf) | Stone Bullets | 1 | 12 | 0.9s | Three hardened stone bullets. |
+|  | Mud Mire | 3 | 26 | 7s | Turn the ground near your aim into sucking mud. |
+|  | Earth Golem | 6 | 50 | 30s | Raise a stone golem that fights at your side. |
+|  | Continental Quake | 10 | 85 | 24s | Rings of shattering earth roll out from you. |
+| **Steel** (Three-leaf) | Steel Lances | 1 | 14 | 1s | Three steel lances that pierce one enemy each. |
+|  | Iron Bulwark | 3 | 28 | 14s | Steel skin: huge resistance and attackers are cut. |
+|  | Blade Rain | 6 | 40 | 9s | Steel blades rain down on your aim. |
+|  | Steel Maelstrom | 10 | 80 | 24s | A whirlwind of orbiting blades shreds everything near you. |
+| **Mirror** (Four-leaf) | Mirror Shot | 1 | 16 | 1.4s | A light beam that bounces to a second enemy. |
+|  | Mirror Image | 3 | 36 | 20s | Two mirror doubles fight for you. |
+|  | Reflection Barrier | 6 | 30 | 12s | For a while, incoming spells and arrows are reflected. |
+|  | Kaleidoscope | 10 | 85 | 25s | Mirror panes surround your aim and burn it from every angle. |
+
+The Grimoire Altar now picks from all 12 attributes (Wind/Flame/Water/Lightning/Ice 11% each, Earth 10%, Steel 9%, Light/Dark 8%, Spatial/Mirror 6%, Anti-Magic 6%).
+
+### All nine squad robes
+
+| Robe | Perk |
+|---|---|
+| Black Bull Robe | +25% mana regen, +25% spell power below 40% health |
+| Golden Dawn Robe | +40 max mana, +10% spell power |
+| Crimson Lion Robe | Flame spells cost 15% less and hit 15% harder |
+| Silver Eagle Robe | +20% spell power while your mana is above 75% |
+| Blue Rose Robe | Healing and shield spells are 30% stronger; +15 max mana |
+| Green Mantis Robe | Spell cooldowns are 15% shorter |
+| Coral Peacock Robe | Every cast has a 20% chance to refund its mana |
+| Purple Orca Robe | Water breathing, and Water/Ice spells hit 15% harder |
+| Aqua Deer Robe | Swiftness while out of combat, and +30% mana regen while moving |
+
+New robes are found in dungeon chests (and the original three are still craftable).
+
+### Magic Knight ranks & techniques
+
+* **Stars** for great deeds: Devil +5, Leviathan +5, dungeon Guardian +3, Tidewatch Commodore +2, Raider Captain +1, every 5 levels +1. Each rank adds +5 max mana.
+* Ranks: Junior Magic Knight (0★) → Intermediate Magic Knight (3★) → Senior Magic Knight (8★) → First Class Senior Magic Knight (15★) → Vice-Captain (25★) → Magic Knight Captain (40★) → Wizard King Candidate (60★).
+* **Mana Skin** (level 12): a coat of mana soaks a quarter of every hit, paid for with mana.
+* **Mana Zone** (level 15): hold your grimoire and press **Sneak + Jump**: for 20 s, inside a 12-block zone your spells recharge twice as fast, hit 20% harder and mana regenerates twice as fast.
+
+### Ancient dungeons
+
+While you explore, buried **magic dungeons** form out of sight: a ruined entrance, a stairway, a corridor with **flame traps**, a pillared hall with a working Grimoire Altar, a treasure vault and the **Dungeon Guardian** (220 HP: ground slams, thrown boulders, calls Imps when enraged). Chests hold **Ancient Grimoire Pages** (+60 magic XP each), squad robes, mana crystals, gold, diamonds and treasure maps. **Imps**, small winged devils, also roam at night.
+
+### Four new Abyss Fruits
+
+| Fruit | Passive | Abilities |
+|---|---|---|
+| **Frost Fruit** | Immune to freezing; the sea freezes under your feet. | **Frost Lance** (1.6s) – Hurl a lance of ice that slows its target.<br>**Glacial Path** (6s) – Freeze a path ahead, encasing enemies in it.<br>**Ice Age** (20s) – Freeze everything around you solid. |
+| **Barrier Fruit** | Standing still hardens the air around you (damage resistance). | **Barrier Wall** (8s) – A wall of hardened air blocks the way.<br>**Barrier Dome** (16s) – A dome that shields allies and stops projectiles.<br>**Barrier Crash** (5s) – Shove a barrier forward, crushing enemies. |
+| **Wolf Fruit** (beast) | Beast form: speed, keen night sight and sharp claws. | **Pounce** (3s) – Leap onto the enemy you are looking at.<br>**Howl** (18s) – A howl that strengthens you and cows nearby enemies.<br>**Rending Frenzy** (10s) – A flurry of claw strikes in front of you. |
+| **Hawk Fruit** (beast) | Beast form: glide by holding Jump while falling; no fall damage. | **Sky Ascent** (6s) – Beat your wings and soar straight up.<br>**Talon Dive** (5s) – Dive onto your aim with crushing talons.<br>**Feather Storm** (2.4s) – A fan of razor feathers. |
+
+Beast fruits show their form (wolf ears, tail and claws, or hawk wings) while you hold the power.
+
+### Your bounty & the Tidewatch
+
+Defeating captains, devils, the Leviathan, Tidewatch officers or other ships raises the **bounty on your head**. Thresholds: Small-time Pirate (300), Notorious Pirate (1500), Sea Tyrant (5000), Scourge of the Seas (12000). Each new tier gives you a **Wanted Poster** of yourself, and the **Tidewatch**, an original naval order, sends squads to hunt you: Sentinels with sabres and, at higher bounties, **Commodores** who sidestep blows and call down cannon bombardments.
+
+### Treasure maps, pirate arms & food
+
+* **Treasure Map** (wreck/dungeon chests, Bounty Board shop): use it to reveal its spot, follow the HUD arrow, then use it on the X to dig up a chest.
+* **Cutlass** (` I / I / GS`): a fast sword; use it for a spinning slash.
+* **Flintlock Pistol** (` III / FPG / P`): fires **Lead Shot** (iron nugget + gunpowder → 6).
+* **Grappling Harpoon** (`  I / S / T  `): spear an enemy and drag it in, or hit a wall to pull yourself over.
+* **Hearty Roast** (cooked beef + cooked porkchop + bread → 2): a big meal with regeneration and absorption.
+
+```
+/give @s bc:grimoire_spatial     (spatial earth steel mirror)
+/give @s bc:fruit_wolf           (frost barrier wolf hawk)
+/give @s bc:flintlock
+/give @s bc:lead_shot 32
+/give @s bc:treasure_map
+/summon bc:dungeon_golem
+/summon bc:tidewatch_commodore
 ```
 
 ---

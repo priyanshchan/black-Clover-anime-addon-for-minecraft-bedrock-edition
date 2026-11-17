@@ -82,13 +82,29 @@ export function robe(p) {
 }
 
 // ----------------------------------------------------------------------------------- stats
+function rankBonus(p) {
+  const st = p.getDynamicProperty('bc:stars');
+  const n = typeof st === 'number' ? st : 0;
+  let idx = 0;
+  DATA.ranks.forEach((r, i) => {
+    if (n >= r.stars) idx = i;
+  });
+  return idx * 5;
+}
+
 export function maxMana(p, s = state(p)) {
-  return 100 + (s.level - 1) * 12 + (robe(p) === 'golden_dawn_robe' ? 40 : 0);
+  const r = robe(p);
+  return 100 + (s.level - 1) * 12 + (r === 'golden_dawn_robe' ? 40 : 0) + (r === 'blue_rose_robe' ? 15 : 0) + rankBonus(p);
 }
 
 export function regenPerSecond(p, s = state(p)) {
   let r = 3 + s.level * 0.3;
-  if (robe(p) === 'black_bull_robe') r *= 1.25;
+  const rb = robe(p);
+  if (rb === 'black_bull_robe') r *= 1.25;
+  if (rb === 'aqua_deer_robe') {
+    const v = p.getVelocity();
+    if (Math.abs(v.x) + Math.abs(v.z) > 0.05) r *= 1.3;
+  }
   return r;
 }
 
@@ -105,6 +121,8 @@ export function spellPower(p, s = state(p)) {
     if (hp && hp.currentValue < hp.effectiveMax * 0.4) m *= 1.25;
   }
   if (r === 'crimson_lion_robe' && s.attr === 'flame') m *= 1.15;
+  if (r === 'silver_eagle_robe' && s.mana > maxMana(p, s) * 0.75) m *= 1.2;
+  if (r === 'purple_orca_robe' && (s.attr === 'water' || s.attr === 'ice')) m *= 1.15;
   return m;
 }
 

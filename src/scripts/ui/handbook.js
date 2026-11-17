@@ -6,6 +6,8 @@ import { sound } from '../core/fx.js';
 import { isCreative, safe } from '../core/util.js';
 import { sea, willToNext } from '../sea/state.js';
 import { countCoins } from '../sea/bounty.js';
+import { rankTitle, stars } from '../core/ranks.js';
+import { notoriety, notorietyTitle } from '../sea/navy.js';
 
 const G = DATA.glyphs;
 
@@ -43,6 +45,8 @@ export async function openHandbook(p) {
   actions.push(() => fruitPage(p));
   form.button('§lThe Abyssal Seas\n§r§8Ships, bounties, the Leviathan');
   actions.push(() => seaGuide(p));
+  form.button('§lRank, robes & renown\n§r§8Stars, squad robes, your bounty');
+  actions.push(() => rankPage(p));
   form.button('§lHow to play\n§r§8Altar, mana, robes, the Devil');
   actions.push(() => guide(p));
   sound(p.dimension, 'bc.grimoire.flip', p.location, 0.8, 1);
@@ -137,6 +141,23 @@ async function fruitPage(p) {
   const res = await form.show(p);
   if (res.canceled || res.selection === undefined) return;
   await acts[res.selection]?.();
+}
+
+async function rankPage(p) {
+  const s = state(p);
+  let body = `§6${G.star} ${rankTitle(p)}§7 - ${stars(p)} stars\n`;
+  const next = DATA.ranks.find((r) => r.stars > stars(p));
+  body += next ? `§7Next: §f${next.title} §7at ${next.stars} stars\n` : '§7You have reached the highest rank.\n';
+  body += '§8Stars: Devil +5, Leviathan +5, dungeon Guardian +3, Commodore +2, captain +1, every 5 levels +1. Each rank adds +5 max mana.\n\n';
+  body += `§c${G.coin} Bounty on your head: §e${notoriety(p)} §7(${notorietyTitle(p)})\n\n`;
+  body += '§lSquad robes§r\n';
+  for (const [id, name] of Object.entries(DATA.robes)) body += `§6${name}§7: ${DATA.robePerks[id] ?? ''}\n`;
+  body += '\n§lTechniques§r\n§7Lv 12 Mana Skin: a coat of mana soaks a quarter of every hit (costs mana).\n§7Lv 15 Mana Zone: hold your grimoire, Sneak + Jump.';
+  if (s.level < 12) body += '\n§8(locked)';
+  await new MessageFormData().title('Rank, robes & renown').body(body).button1('Back').button2('Close').show(p).then((r) => {
+    if (r.selection === 0) return openHandbook(p);
+    return undefined;
+  });
 }
 
 async function seaGuide(p) {

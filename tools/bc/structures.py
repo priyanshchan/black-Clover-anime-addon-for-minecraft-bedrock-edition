@@ -22,6 +22,7 @@ class BP:
         self.columns = []
         self.chests = []
         self.spawns = []
+        self.traps = []
 
     def pal(self, name, states=None):
         key = (name, json.dumps(states or {}, sort_keys=True))
@@ -48,7 +49,7 @@ class BP:
         cols = []
         for c in self.columns:
             cols += list(c)
-        return {'palette': self.palette, 'blocks': flat, 'columns': cols, 'chests': self.chests, 'spawns': self.spawns}
+        return {'palette': self.palette, 'blocks': flat, 'columns': cols, 'chests': self.chests, 'spawns': self.spawns, 'traps': self.traps}
 
 
 LEAVES = ('minecraft:jungle_leaves', {'persistent_bit': True})
@@ -173,7 +174,95 @@ def wreck():
     return b
 
 
+def dungeon():
+    """Ancient magic dungeon. Anchor = the surface block above the entrance."""
+    b = BP()
+    random.seed(11)
+
+    def brick():
+        r = random.random()
+        return 'minecraft:mossy_stone_bricks' if r < 0.22 else ('minecraft:cracked_stone_bricks' if r < 0.38 else 'minecraft:stone_bricks')
+
+    def shell(x0, x1, y0, y1, z0, z1):
+        for x in range(x0, x1 + 1):
+            for y in range(y0, y1 + 1):
+                for z in range(z0, z1 + 1):
+                    if x in (x0, x1) or y in (y0, y1) or z in (z0, z1):
+                        b.put(x, y, z, brick())
+
+    def carve(x0, x1, y0, y1, z0, z1):
+        for x in range(x0, x1 + 1):
+            for y in range(y0, y1 + 1):
+                for z in range(z0, z1 + 1):
+                    b.put(x, y, z, 'minecraft:air')
+
+    floor = -13
+    # ---------------- shells
+    for i in range(13):                                    # stairway down along +z
+        z = i - 1
+        top = -i + 4
+        for x in range(-2, 3):
+            b.put(x, -i - 1, z, brick())
+            if top <= 0:
+                b.put(x, top, z, brick())
+        for y in range(-i - 1, min(top, 1)):
+            b.put(-2, y, z, brick())
+            b.put(2, y, z, brick())
+    shell(-3, 3, floor, floor + 5, 12, 31)                   # trap corridor
+    shell(-8, 8, floor, floor + 7, 31, 46)                   # guardian hall
+    shell(8, 15, floor, floor + 5, 35, 43)                   # treasure vault
+    # ---------------- carve interiors
+    for i in range(13):
+        carve(-1, 1, -i, -i + 3, i - 1, i - 1)
+    carve(-2, 2, floor + 1, floor + 4, 12, 31)
+    carve(-7, 7, floor + 1, floor + 6, 32, 45)
+    carve(9, 14, floor + 1, floor + 4, 36, 42)
+    carve(8, 8, floor + 1, floor + 3, 38, 39)                # vault doorway
+    carve(-1, 1, floor + 1, floor + 4, 31, 31)               # hall doorway
+    # ---------------- details
+    for x, z in ((-4, 35), (4, 35), (-4, 41), (4, 41)):
+        for y in range(floor + 1, floor + 7):
+            b.put(x, y, z, 'minecraft:chiseled_stone_bricks' if y in (floor + 1, floor + 6) else 'minecraft:stone_bricks')
+    for x, z in ((-5, 38), (5, 38), (0, 34), (0, 43)):
+        b.put(x, floor + 7, z, 'minecraft:sea_lantern')
+    for z in (15, 20, 25, 30):
+        b.put(0, floor + 5, z, 'minecraft:sea_lantern')
+    for z in (14, 19, 24, 29):
+        for x in (-2, 2):
+            if random.random() < 0.5:
+                b.put(x, floor + 4, z, 'minecraft:web')
+    b.put(0, floor + 1, 44, 'bc:grimoire_altar', {'minecraft:cardinal_direction': 'north'})
+    for x in (-3, 3):
+        b.put(x, floor + 1, 45, 'minecraft:chest', {'minecraft:cardinal_direction': 'north'})
+        b.chests.append([x, floor + 1, 45, 'dungeon'])
+    for z in (37, 41):
+        b.put(14, floor + 1, z, 'minecraft:chest', {'minecraft:cardinal_direction': 'west'})
+        b.chests.append([14, floor + 1, z, 'dungeon'])
+    b.put(11, floor + 1, 39, 'minecraft:gold_block')
+    for x, z in ((-6, 33), (6, 33), (-6, 44), (6, 44), (9, 36), (13, 42)):
+        b.put(x, floor + 1, z, 'minecraft:soul_lantern', {'hanging': False})
+    # ruined entrance above ground
+    for x in range(-3, 4):
+        for z in range(-3, 4):
+            if x in (-3, 3) or z in (-3, 3):
+                h = random.randint(1, 4)
+                for y in range(1, h + 1):
+                    if not (z == -3 and abs(x) <= 1):
+                        b.put(x, y, z, brick())
+    for y in (1, 2, 3, 4):
+        b.put(-2, y, -3, 'minecraft:chiseled_stone_bricks')
+        b.put(2, y, -3, 'minecraft:chiseled_stone_bricks')
+    for x in (-2, -1, 0, 1, 2):
+        b.put(x, 5, -3, 'minecraft:stone_brick_slab', {'minecraft:vertical_half': 'bottom'})
+    carve(-1, 1, 1, 3, -2, 2)
+    # traps (flame jets) and residents
+    b.traps += [[0, floor + 1, 16], [0, floor + 1, 21], [0, floor + 1, 26]]
+    b.spawns += [[0, floor + 1, 18, 'minecraft:skeleton'], [1, floor + 1, 24, 'minecraft:skeleton'],
+                 [0, floor + 1, 38, 'bc:dungeon_golem'], [-5, floor + 4, 40, 'bc:imp'], [5, floor + 4, 40, 'bc:imp']]
+    return b
+
+
 def export_js():
-    data = {'outpost': outpost().export(), 'wreck': wreck().export()}
+    data = {'outpost': outpost().export(), 'wreck': wreck().export(), 'dungeon': dungeon().export()}
     return ('// AUTO-GENERATED by tools/build.py (tools/bc/structures.py) - do not edit by hand.\n'
             f'export const STRUCTURES = {json.dumps(data, separators=(",", ":"))};\n')

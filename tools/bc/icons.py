@@ -137,6 +137,20 @@ def _attr_glyph(attr):
                 dx, dy = math.cos(ang) * 7 * s, math.sin(ang) * 7 * s
                 d.line([(8 * s - dx, 8 * s - dy), (8 * s + dx, 8 * s + dy)], fill=c, width=int(1.8 * s))
             d.ellipse([6 * s, 6 * s, 10 * s, 10 * s], fill=(240, 252, 255, 255))
+        elif attr == 'spatial':
+            d.ellipse([2 * s, 2 * s, 14 * s, 14 * s], outline=c, width=int(2 * s))
+            d.ellipse([5.5 * s, 5.5 * s, 10.5 * s, 10.5 * s], fill=(255, 220, 255, 255))
+        elif attr == 'earth':
+            d.polygon([(1 * s, 14 * s), (6 * s, 4 * s), (9 * s, 9 * s), (11 * s, 6 * s), (15 * s, 14 * s)], fill=c)
+            d.polygon([(6 * s, 4 * s), (7.5 * s, 7 * s), (4.5 * s, 7 * s)], fill=(240, 230, 210, 255))
+        elif attr == 'steel':
+            d.polygon([(8 * s, 0.5 * s), (10 * s, 3 * s), (9.2 * s, 11 * s), (6.8 * s, 11 * s), (6 * s, 3 * s)], fill=c)
+            d.rectangle([3.5 * s, 11 * s, 12.5 * s, 12.5 * s], fill=(200, 160, 60, 255))
+            d.rectangle([7 * s, 12.5 * s, 9 * s, 15.5 * s], fill=(110, 80, 50, 255))
+        elif attr == 'mirror':
+            d.polygon([(8 * s, 1 * s), (14 * s, 8 * s), (8 * s, 15 * s), (2 * s, 8 * s)], fill=c)
+            d.line([(5 * s, 6 * s), (8 * s, 3 * s)], fill=(255, 255, 255, 255), width=int(1.4 * s))
+            d.line([(6 * s, 9 * s), (10 * s, 5 * s)], fill=(255, 255, 255, 255), width=int(1.2 * s))
         else:  # anti-magic: black five-leaf devil clover on red
             d.ellipse([0.5 * s, 0.5 * s, 15.5 * s, 15.5 * s], fill=(150, 20, 26, 255))
             tex.clover_shape(d, 8 * s, 8.5 * s, 6.2 * s, 5, (5, 5, 5, 255), stem=False, devil=True)
@@ -183,7 +197,7 @@ def glyph_page():
         r, c = divmod(idx, 16)
         page[r * 16:(r + 1) * 16, c * 16:(c + 1) * 16] = cell
     for i, attr in enumerate(ATTR_ORDER):
-        put(i, _attr_glyph(attr))
+        put(i, _attr_glyph(attr))  # 0x00 - 0x0F
     mana = (rgb('3ca8ff'), rgb('c8ecff'), rgb('16243a'), rgb('0a0f18'))
     anti = (rgb('d0202a'), rgb('ff7a7a'), rgb('1a0a0c'), rgb('050505'))
     put(0x10, _cap('left', rgb('c9d4e6')))
@@ -294,6 +308,32 @@ def fruit_icon(fid, S=32):
                 cx, cy = 16 + math.cos(a) * 6, 10 + math.sin(a) * 4
                 d.ellipse([P_(cx - 3, cy - 3), P_(cx + 3, cy + 3)], fill=(240, 120, 170, 255))
             d.ellipse([P_(14, 7), P_(18, 11)], fill=(255, 220, 90, 255))
+        elif fid == 'frost':
+            d.polygon([P_(16, 4), P_(25, 14), P_(22, 27), P_(10, 27), P_(7, 14)], fill=(150, 220, 250, 255))
+            d.polygon([P_(16, 7), P_(21, 14), P_(16, 25), P_(11, 14)], fill=(230, 250, 255, 255))
+            for x0, y0, x1, y1 in ((16, 8, 16, 24), (10, 16, 22, 16)):
+                d.line([P_(x0, y0), P_(x1, y1)], fill=(80, 170, 220, 255), width=int(0.9 * s))
+            d.polygon([P_(16, 5), P_(14, 2), P_(18, 2)], fill=(90, 140, 160, 255))
+        elif fid == 'barrier':
+            d.rounded_rectangle([P_(7, 8), P_(25, 27)], radius=5 * s, fill=(240, 220, 120, 255))
+            d.rounded_rectangle([P_(10, 11), P_(22, 24)], radius=3 * s, outline=(255, 250, 220, 255), width=int(1.3 * s))
+            d.line([P_(16, 11), P_(16, 24)], fill=(200, 170, 70, 255), width=int(s))
+            d.polygon([P_(16, 8), P_(14, 3), P_(19, 4)], fill=(110, 140, 60, 255))
+        elif fid == 'wolf':
+            d.ellipse([P_(7, 9), P_(25, 28)], fill=(150, 140, 125, 255))
+            d.polygon([P_(9, 12), P_(10, 4), P_(14, 10)], fill=(150, 140, 125, 255))
+            d.polygon([P_(23, 12), P_(22, 4), P_(18, 10)], fill=(150, 140, 125, 255))
+            for k in range(3):
+                d.line([P_(11 + k * 4, 15), P_(13 + k * 4, 24)], fill=(80, 70, 60, 255), width=int(1.1 * s))
+            d.ellipse([P_(12, 13), P_(15, 16)], fill=(255, 210, 80, 255))
+            d.ellipse([P_(18, 13), P_(21, 16)], fill=(255, 210, 80, 255))
+        elif fid == 'hawk':
+            d.ellipse([P_(9, 9), P_(23, 28)], fill=(200, 140, 70, 255))
+            for k in range(4):
+                d.polygon([P_(9 - k, 14 + k * 3), P_(2, 11 + k * 3), P_(9, 17 + k * 3)], fill=(150, 100, 50, 255))
+                d.polygon([P_(23 + k, 14 + k * 3), P_(30, 11 + k * 3), P_(23, 17 + k * 3)], fill=(150, 100, 50, 255))
+            d.polygon([P_(16, 15), P_(19, 18), P_(16, 22), P_(13, 18)], fill=(250, 220, 120, 255))
+            d.polygon([P_(16, 9), P_(15, 4), P_(18, 5)], fill=(90, 120, 50, 255))
         else:  # quicksilver
             d.ellipse([P_(8, 12), P_(24, 28)], fill=(170, 180, 196, 255))
             d.polygon([P_(16, 3), P_(23.5, 17), P_(8.5, 17)], fill=(170, 180, 196, 255))
@@ -391,7 +431,7 @@ def sea_glyphs(page):
         img = tex.to_image(fruit_icon(fid)).resize((16, 16), Image.LANCZOS)
         cell = tex.from_image(img)
         cell[..., 3] = np.where(cell[..., 3] > 100, 255, 0)
-        put(0x30 + i, cell)
+        put(0x50 + i, cell)
     will = tex.draw_layer(16, 16, lambda d, s: (d.polygon([(8 * s, 1 * s), (12 * s, 7 * s), (10 * s, 15 * s), (6 * s, 15 * s), (4 * s, 7 * s)], fill=(120, 60, 200, 255)),
                                                 d.polygon([(8 * s, 5 * s), (10 * s, 9 * s), (8 * s, 13 * s), (6 * s, 9 * s)], fill=(235, 220, 255, 255))), 4)
     put(0x36, _finish(will, '120820'))

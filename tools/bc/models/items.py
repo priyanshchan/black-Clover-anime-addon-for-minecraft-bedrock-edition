@@ -461,6 +461,36 @@ def _emblem(kind, color):
                                (cx + math.cos(ang) * r * 1.15, cy + math.sin(ang) * r * 1.15),
                                (cx + math.cos(ang + 0.14) * r * 0.55, cy + math.sin(ang + 0.14) * r * 0.55)], fill=col)
                 d.ellipse([cx - r * 0.55, cy - r * 0.55, cx + r * 0.55, cy + r * 0.55], fill=col)
+            elif kind == 'eagle':
+                d.polygon([(cx, cy - r * 0.2), (cx - r * 1.2, cy - r * 0.7), (cx - r * 0.9, cy + r * 0.1), (cx - r * 0.3, cy + r * 0.2),
+                           (cx, cy + r), (cx + r * 0.3, cy + r * 0.2), (cx + r * 0.9, cy + r * 0.1), (cx + r * 1.2, cy - r * 0.7)], fill=col)
+                d.ellipse([cx - r * 0.25, cy - r * 0.55, cx + r * 0.25, cy - r * 0.05], fill=col)
+            elif kind == 'rose':
+                for k in range(5):
+                    a = k * 2 * math.pi / 5 - math.pi / 2
+                    d.ellipse([cx + math.cos(a) * r * 0.45 - r * 0.4, cy + math.sin(a) * r * 0.45 - r * 0.4,
+                               cx + math.cos(a) * r * 0.45 + r * 0.4, cy + math.sin(a) * r * 0.45 + r * 0.4], fill=col)
+                d.ellipse([cx - r * 0.25, cy - r * 0.25, cx + r * 0.25, cy + r * 0.25], fill=(20, 30, 70, 255))
+            elif kind == 'mantis':
+                d.ellipse([cx - r * 0.2, cy - r * 0.9, cx + r * 0.2, cy + r * 0.9], fill=col)
+                d.polygon([(cx - r * 0.3, cy - r * 0.6), (cx - r * 1.1, cy - r * 0.2), (cx - r * 0.9, cy - r * 0.95)], fill=col)
+                d.polygon([(cx + r * 0.3, cy - r * 0.6), (cx + r * 1.1, cy - r * 0.2), (cx + r * 0.9, cy - r * 0.95)], fill=col)
+            elif kind == 'peacock':
+                for k in range(7):
+                    a = math.pi + k * math.pi / 6
+                    d.ellipse([cx + math.cos(a) * r * 0.85 - r * 0.25, cy + math.sin(a) * r * 0.85 - r * 0.25 + r * 0.3,
+                               cx + math.cos(a) * r * 0.85 + r * 0.25, cy + math.sin(a) * r * 0.85 + r * 0.25 + r * 0.3], fill=col)
+                d.ellipse([cx - r * 0.2, cy - r * 0.2, cx + r * 0.2, cy + r * 0.9], fill=col)
+            elif kind == 'orca':
+                d.ellipse([cx - r, cy - r * 0.35, cx + r * 0.9, cy + r * 0.45], fill=col)
+                d.polygon([(cx - r * 0.1, cy - r * 0.3), (cx + r * 0.1, cy - r * 1.0), (cx + r * 0.35, cy - r * 0.3)], fill=col)
+                d.polygon([(cx + r * 0.8, cy), (cx + r * 1.3, cy - r * 0.5), (cx + r * 1.3, cy + r * 0.5)], fill=col)
+            elif kind == 'deer':
+                d.ellipse([cx - r * 0.35, cy - r * 0.2, cx + r * 0.35, cy + r * 0.8], fill=col)
+                for sx in (-1, 1):
+                    d.line([(cx + sx * r * 0.2, cy - r * 0.1), (cx + sx * r * 0.6, cy - r * 0.9)], fill=col, width=int(max(1, r * 0.14)))
+                    d.line([(cx + sx * r * 0.45, cy - r * 0.6), (cx + sx * r * 0.95, cy - r * 0.75)], fill=col, width=int(max(1, r * 0.12)))
+                    d.line([(cx + sx * r * 0.55, cy - r * 0.8), (cx + sx * r * 0.5, cy - r * 1.15)], fill=col, width=int(max(1, r * 0.12)))
             else:  # lion
                 for k in range(10):
                     ang = k * math.pi / 5

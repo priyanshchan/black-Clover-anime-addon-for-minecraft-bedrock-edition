@@ -1,0 +1,110 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.cutlass.third_person": {
+      "loop": true,
+      "bones": {
+        "weapon": {
+          "position": [
+            -6.0,
+            12.6,
+            -1.2
+          ],
+          "rotation": [
+            80.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    "animation.bc.cutlass.first_person": {
+      "loop": true,
+      "bones": {
+        "weapon": {
+          "position": [
+            -6.36,
+            10.43,
+            -1.2
+          ],
+          "rotation": [
+            129.19,
+            -6.6,
+            12.44
+          ],
+          "scale": 0.95
+        }
+      }
+    },
+    "animation.bc.flintlock.third_person": {
+      "loop": true,
+      "bones": {
+        "weapon": {
+          "position": [
+            -6.0,
+            12.4,
+            -1.0
+          ],
+          "rotation": [
+            90.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    "animation.bc.flintlock.first_person": {
+      "loop": true,
+      "bones": {
+        "weapon": {
+          "position": [
+            -6.24,
+            12.0,
+            0.7
+          ],
+          "rotation": [
+            163.78,
+            14.76,
+            -35.49
+          ],
+          "scale": 1.0
+        }
+      }
+    },
+    "animation.bc.harpoon.third_person": {
+      "loop": true,
+      "bones": {
+        "weapon": {
+          "position": [
+            -6.0,
+            13.0,
+            -1.0
+          ],
+          "rotation": [
+            75.0,
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    "animation.bc.harpoon.first_person": {
+      "loop": true,
+      "bones": {
+        "weapon": {
+          "position": [
+            -6.16,
+            11.39,
+            0.19
+          ],
+          "rotation": [
+            139.96,
+            -8.59,
+            -0.33
+          ],
+          "scale": 0.8
+        }
+      }
+    }
+  }
+}

@@ -56,6 +56,34 @@ export const DATA = {
       "leaves": 5,
       "mc": "\u00a78",
       "glyph": "\ue707"
+    },
+    "spatial": {
+      "name": "Spatial",
+      "color": "e08aff",
+      "leaves": 4,
+      "mc": "\u00a7d",
+      "glyph": "\ue708"
+    },
+    "earth": {
+      "name": "Earth",
+      "color": "c49a5a",
+      "leaves": 3,
+      "mc": "\u00a76",
+      "glyph": "\ue709"
+    },
+    "steel": {
+      "name": "Steel",
+      "color": "b8c4d0",
+      "leaves": 3,
+      "mc": "\u00a77",
+      "glyph": "\ue70a"
+    },
+    "mirror": {
+      "name": "Mirror",
+      "color": "c8d8ff",
+      "leaves": 4,
+      "mc": "\u00a79",
+      "glyph": "\ue70b"
     }
   },
   "order": [
@@ -66,7 +94,11 @@ export const DATA = {
     "light",
     "dark",
     "ice",
-    "anti"
+    "anti",
+    "spatial",
+    "earth",
+    "steel",
+    "mirror"
   ],
   "spells": {
     "wind": [
@@ -340,6 +372,142 @@ export const DATA = {
         "level": 10,
         "desc": "Unleash the devil within. Requires a full Anti-Magic gauge."
       }
+    ],
+    "spatial": [
+      {
+        "id": "warp_gate",
+        "name": "Warp Gate",
+        "mana": 30,
+        "cooldown": 6.0,
+        "level": 1,
+        "desc": "Open linked gates at your feet and where you look."
+      },
+      {
+        "id": "space_cleave",
+        "name": "Space Cleave",
+        "mana": 22,
+        "cooldown": 3.0,
+        "level": 3,
+        "desc": "A slash through space itself - walls cannot stop it."
+      },
+      {
+        "id": "pocket_dimension",
+        "name": "Pocket Dimension",
+        "mana": 40,
+        "cooldown": 10.0,
+        "level": 6,
+        "desc": "Fling every enemy near your aim high into the sky."
+      },
+      {
+        "id": "gate_barrage",
+        "name": "Gate Barrage",
+        "mana": 80,
+        "cooldown": 22.0,
+        "level": 10,
+        "desc": "Portals surround your target and fire from every side."
+      }
+    ],
+    "earth": [
+      {
+        "id": "stone_bullets",
+        "name": "Stone Bullets",
+        "mana": 12,
+        "cooldown": 0.9,
+        "level": 1,
+        "desc": "Three hardened stone bullets."
+      },
+      {
+        "id": "mud_mire",
+        "name": "Mud Mire",
+        "mana": 26,
+        "cooldown": 7.0,
+        "level": 3,
+        "desc": "Turn the ground near your aim into sucking mud."
+      },
+      {
+        "id": "earth_golem",
+        "name": "Earth Golem",
+        "mana": 50,
+        "cooldown": 30.0,
+        "level": 6,
+        "desc": "Raise a stone golem that fights at your side."
+      },
+      {
+        "id": "continental_quake",
+        "name": "Continental Quake",
+        "mana": 85,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "Rings of shattering earth roll out from you."
+      }
+    ],
+    "steel": [
+      {
+        "id": "steel_lances",
+        "name": "Steel Lances",
+        "mana": 14,
+        "cooldown": 1.0,
+        "level": 1,
+        "desc": "Three steel lances that pierce one enemy each."
+      },
+      {
+        "id": "iron_bulwark",
+        "name": "Iron Bulwark",
+        "mana": 28,
+        "cooldown": 14.0,
+        "level": 3,
+        "desc": "Steel skin: huge resistance and attackers are cut."
+      },
+      {
+        "id": "blade_rain",
+        "name": "Blade Rain",
+        "mana": 40,
+        "cooldown": 9.0,
+        "level": 6,
+        "desc": "Steel blades rain down on your aim."
+      },
+      {
+        "id": "steel_maelstrom",
+        "name": "Steel Maelstrom",
+        "mana": 80,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "A whirlwind of orbiting blades shreds everything near you."
+      }
+    ],
+    "mirror": [
+      {
+        "id": "mirror_shot",
+        "name": "Mirror Shot",
+        "mana": 16,
+        "cooldown": 1.4,
+        "level": 1,
+        "desc": "A light beam that bounces to a second enemy."
+      },
+      {
+        "id": "mirror_image",
+        "name": "Mirror Image",
+        "mana": 36,
+        "cooldown": 20.0,
+        "level": 3,
+        "desc": "Two mirror doubles fight for you."
+      },
+      {
+        "id": "reflection_barrier",
+        "name": "Reflection Barrier",
+        "mana": 30,
+        "cooldown": 12.0,
+        "level": 6,
+        "desc": "For a while, incoming spells and arrows are reflected."
+      },
+      {
+        "id": "kaleidoscope",
+        "name": "Kaleidoscope",
+        "mana": 85,
+        "cooldown": 25.0,
+        "level": 10,
+        "desc": "Mirror panes surround your aim and burn it from every angle."
+      }
     ]
   },
   "swords": {
@@ -350,7 +518,13 @@ export const DATA = {
   "robes": {
     "black_bull_robe": "Black Bull Robe",
     "golden_dawn_robe": "Golden Dawn Robe",
-    "crimson_lion_robe": "Crimson Lion Robe"
+    "crimson_lion_robe": "Crimson Lion Robe",
+    "silver_eagle_robe": "Silver Eagle Robe",
+    "blue_rose_robe": "Blue Rose Robe",
+    "green_mantis_robe": "Green Mantis Robe",
+    "coral_peacock_robe": "Coral Peacock Robe",
+    "purple_orca_robe": "Purple Orca Robe",
+    "aqua_deer_robe": "Aqua Deer Robe"
   },
   "glyphs": {
     "capL": "\ue710",
@@ -387,7 +561,8 @@ export const DATA = {
       "mc": "\u00a76",
       "power": "Ember Body",
       "passive": "Immune to fire. Your punches set foes ablaze.",
-      "glyph": "\ue730",
+      "glyph": "\ue750",
+      "beast": false,
       "abilities": [
         {
           "id": "ember_fist",
@@ -415,7 +590,8 @@ export const DATA = {
       "mc": "\u00a77",
       "power": "Stone Body",
       "passive": "Hardened skin: you take less damage and shrug off knockback.",
-      "glyph": "\ue731",
+      "glyph": "\ue751",
+      "beast": false,
       "abilities": [
         {
           "id": "boulder_fist",
@@ -443,7 +619,8 @@ export const DATA = {
       "mc": "\u00a7d",
       "power": "Gravity Grip",
       "passive": "You never take fall damage.",
-      "glyph": "\ue732",
+      "glyph": "\ue752",
+      "beast": false,
       "abilities": [
         {
           "id": "gravity_crush",
@@ -471,7 +648,8 @@ export const DATA = {
       "mc": "\u00a78",
       "power": "Shadow Grasp",
       "passive": "Night vision, and you vanish while sneaking in the dark.",
-      "glyph": "\ue733",
+      "glyph": "\ue753",
+      "beast": false,
       "abilities": [
         {
           "id": "shadow_bind",
@@ -499,7 +677,8 @@ export const DATA = {
       "mc": "\u00a7a",
       "power": "Bloom Touch",
       "passive": "You slowly regenerate while standing on grass or leaves.",
-      "glyph": "\ue734",
+      "glyph": "\ue754",
+      "beast": false,
       "abilities": [
         {
           "id": "thorn_lash",
@@ -527,7 +706,8 @@ export const DATA = {
       "mc": "\u00a7f",
       "power": "Quicksilver Arm",
       "passive": "Liquid-metal body: arrows and blades glance off you more often.",
-      "glyph": "\ue735",
+      "glyph": "\ue755",
+      "beast": false,
       "abilities": [
         {
           "id": "mercury_blades",
@@ -548,6 +728,122 @@ export const DATA = {
           "desc": "A storm of spinning blades surrounds you."
         }
       ]
+    },
+    "frost": {
+      "name": "Frost Fruit",
+      "color": "a8e8ff",
+      "mc": "\u00a7b",
+      "power": "Frost Body",
+      "passive": "Immune to freezing; the sea freezes under your feet.",
+      "glyph": "\ue756",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "frost_lance",
+          "name": "Frost Lance",
+          "cooldown": 1.6,
+          "desc": "Hurl a lance of ice that slows its target."
+        },
+        {
+          "id": "glacial_path",
+          "name": "Glacial Path",
+          "cooldown": 6.0,
+          "desc": "Freeze a path ahead, encasing enemies in it."
+        },
+        {
+          "id": "ice_age",
+          "name": "Ice Age",
+          "cooldown": 20.0,
+          "desc": "Freeze everything around you solid."
+        }
+      ]
+    },
+    "barrier": {
+      "name": "Barrier Fruit",
+      "color": "f0e6a0",
+      "mc": "\u00a7e",
+      "power": "Barrier Palm",
+      "passive": "Standing still hardens the air around you (damage resistance).",
+      "glyph": "\ue757",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "barrier_wall",
+          "name": "Barrier Wall",
+          "cooldown": 8.0,
+          "desc": "A wall of hardened air blocks the way."
+        },
+        {
+          "id": "barrier_dome",
+          "name": "Barrier Dome",
+          "cooldown": 16.0,
+          "desc": "A dome that shields allies and stops projectiles."
+        },
+        {
+          "id": "barrier_crash",
+          "name": "Barrier Crash",
+          "cooldown": 5.0,
+          "desc": "Shove a barrier forward, crushing enemies."
+        }
+      ]
+    },
+    "wolf": {
+      "name": "Wolf Fruit",
+      "color": "a89c8c",
+      "mc": "\u00a77",
+      "power": "Wolf Form",
+      "passive": "Beast form: speed, keen night sight and sharp claws.",
+      "glyph": "\ue758",
+      "beast": true,
+      "abilities": [
+        {
+          "id": "pounce",
+          "name": "Pounce",
+          "cooldown": 3.0,
+          "desc": "Leap onto the enemy you are looking at."
+        },
+        {
+          "id": "howl",
+          "name": "Howl",
+          "cooldown": 18.0,
+          "desc": "A howl that strengthens you and cows nearby enemies."
+        },
+        {
+          "id": "rending_frenzy",
+          "name": "Rending Frenzy",
+          "cooldown": 10.0,
+          "desc": "A flurry of claw strikes in front of you."
+        }
+      ]
+    },
+    "hawk": {
+      "name": "Hawk Fruit",
+      "color": "d49a52",
+      "mc": "\u00a76",
+      "power": "Hawk Form",
+      "passive": "Beast form: glide by holding Jump while falling; no fall damage.",
+      "glyph": "\ue759",
+      "beast": true,
+      "abilities": [
+        {
+          "id": "sky_ascent",
+          "name": "Sky Ascent",
+          "cooldown": 6.0,
+          "desc": "Beat your wings and soar straight up."
+        },
+        {
+          "id": "talon_dive",
+          "name": "Talon Dive",
+          "cooldown": 5.0,
+          "desc": "Dive onto your aim with crushing talons."
+        },
+        {
+          "id": "feather_storm",
+          "name": "Feather Storm",
+          "cooldown": 2.4,
+          "desc": "A fan of razor feathers."
+        }
+      ]
     }
   },
   "fruitOrder": [
@@ -556,7 +852,11 @@ export const DATA = {
     "gravity",
     "shadow",
     "bloom",
-    "quicksilver"
+    "quicksilver",
+    "frost",
+    "barrier",
+    "wolf",
+    "hawk"
   ],
   "willMax": 10,
   "captainFirst": [
@@ -617,6 +917,83 @@ export const DATA = {
       "count": 1,
       "price": 400,
       "label": "Mystery Abyss Fruit"
+    },
+    {
+      "item": "bc:treasure_map",
+      "count": 1,
+      "price": 45,
+      "label": "Treasure Map"
+    },
+    {
+      "item": "bc:lead_shot",
+      "count": 12,
+      "price": 10,
+      "label": "Lead Shot x12"
+    },
+    {
+      "item": "bc:hearty_roast",
+      "count": 2,
+      "price": 12,
+      "label": "Hearty Roast x2"
+    }
+  ],
+  "robePerks": {
+    "black_bull_robe": "+25% mana regen, +25% spell power below 40% health",
+    "golden_dawn_robe": "+40 max mana, +10% spell power",
+    "crimson_lion_robe": "Flame spells cost 15% less and hit 15% harder",
+    "silver_eagle_robe": "+20% spell power while your mana is above 75%",
+    "blue_rose_robe": "Healing and shield spells are 30% stronger; +15 max mana",
+    "green_mantis_robe": "Spell cooldowns are 15% shorter",
+    "coral_peacock_robe": "Every cast has a 20% chance to refund its mana",
+    "purple_orca_robe": "Water breathing, and Water/Ice spells hit 15% harder",
+    "aqua_deer_robe": "Swiftness while out of combat, and +30% mana regen while moving"
+  },
+  "ranks": [
+    {
+      "stars": 0,
+      "title": "Junior Magic Knight"
+    },
+    {
+      "stars": 3,
+      "title": "Intermediate Magic Knight"
+    },
+    {
+      "stars": 8,
+      "title": "Senior Magic Knight"
+    },
+    {
+      "stars": 15,
+      "title": "First Class Senior Magic Knight"
+    },
+    {
+      "stars": 25,
+      "title": "Vice-Captain"
+    },
+    {
+      "stars": 40,
+      "title": "Magic Knight Captain"
+    },
+    {
+      "stars": 60,
+      "title": "Wizard King Candidate"
+    }
+  ],
+  "notoriety": [
+    {
+      "bounty": 300,
+      "title": "Small-time Pirate"
+    },
+    {
+      "bounty": 1500,
+      "title": "Notorious Pirate"
+    },
+    {
+      "bounty": 5000,
+      "title": "Sea Tyrant"
+    },
+    {
+      "bounty": 12000,
+      "title": "Scourge of the Seas"
     }
   ]
 };

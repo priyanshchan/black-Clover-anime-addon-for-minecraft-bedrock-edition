@@ -17,6 +17,7 @@ def _tex_item(ctx, key, arr):
 
 def gen_items(ctx: Ctx):
     ic = icons.sea_icons()
+    beast_anims = {}
     usable = {'minecraft:use_modifiers': {'use_duration': 0.6, 'movement_modifier': 1.0}}
     # ---------------------------------------------------------------- fruits (eaten)
     for fid, f in FRUITS.items():
@@ -36,7 +37,14 @@ def gen_items(ctx: Ctx):
             'minecraft:tags': {'tags': ['bc:abyss_power']},
             **usable,
         }))
-        g = sea.power_geo(fid)
+        if f.get('beast'):
+            from .models import grand
+            g, beast_anim = grand.beast_geo(fid)
+            beast_anims.update(beast_anim)
+            anim_id = f'animation.bc.power.beast_{fid}'
+        else:
+            g = sea.power_geo(fid)
+            anim_id = 'animation.bc.power.aura'
         g.write(out.path(RP, f'models/entity/bc/power_{fid}.geo.json'), out.path(RP, f'textures/entity/bc/power_{fid}.png'))
         write_json(RP, f'attachables/power_{fid}.json', {
             'format_version': '1.10.0',
@@ -45,12 +53,12 @@ def gen_items(ctx: Ctx):
                 'materials': {'default': 'entity_emissive_alpha'},
                 'textures': {'default': f'textures/entity/bc/power_{fid}'},
                 'geometry': {'default': f'geometry.bc.power_{fid}'},
-                'animations': {'aura': 'animation.bc.power.aura'},
+                'animations': {'aura': anim_id},
                 'scripts': {'animate': ['aura']},
                 'render_controllers': ['controller.render.bc.attachable'],
             }},
         })
-    ctx.animations['attachables/powers.animation.json'] = sea.power_animations()
+    ctx.animations['attachables/powers.animation.json'] = {**sea.power_animations(), **beast_anims}
     # ---------------------------------------------------------------- sea gear
     specs = {
         'ship_kit': ('§6Sailing Ship', {'minecraft:max_stack_size': {'value': 1}, **usable}),

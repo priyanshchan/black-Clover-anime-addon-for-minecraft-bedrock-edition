@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:tidewatch_sentinel",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/tidewatch_sentinel"
+      },
+      "geometry": {
+        "default": "geometry.bc.tidewatch_sentinel"
+      },
+      "animations": {
+        "idle": "animation.bc.tidewatch_sentinel.idle",
+        "walk": "animation.bc.tidewatch_sentinel.walk",
+        "look": "animation.bc.tidewatch_sentinel.look_at_target"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#eceff4",
+        "overlay_color": "#23345f"
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ import { maxMana, save, state } from '../core/data.js';
 import { COLORS, burst, groundCircle, particle, shakeArea, sound, title } from '../core/fx.js';
 import { V, rand, repeat, safe } from '../core/util.js';
 
-const WEIGHTS = { wind: 14, flame: 14, water: 14, lightning: 14, ice: 14, light: 11, dark: 11, anti: 8 };
+const WEIGHTS = { wind: 11, flame: 11, water: 11, lightning: 11, ice: 11, earth: 10, steel: 9, light: 8, dark: 8, spatial: 6, mirror: 6, anti: 6 };
 const ceremonies = new Set();
 
 function roll() {

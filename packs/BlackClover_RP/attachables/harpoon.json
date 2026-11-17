@@ -1,0 +1,36 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "bc:harpoon",
+      "materials": {
+        "default": "entity_alphatest",
+        "enchanted": "entity_alphatest_glint"
+      },
+      "textures": {
+        "default": "textures/entity/bc/harpoon",
+        "enchanted": "textures/misc/enchanted_item_glint"
+      },
+      "geometry": {
+        "default": "geometry.bc.harpoon"
+      },
+      "animations": {
+        "third_person": "animation.bc.harpoon.third_person",
+        "first_person": "animation.bc.harpoon.first_person"
+      },
+      "scripts": {
+        "animate": [
+          {
+            "third_person": "!c.is_first_person"
+          },
+          {
+            "first_person": "c.is_first_person"
+          }
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.attachable"
+      ]
+    }
+  }
+}

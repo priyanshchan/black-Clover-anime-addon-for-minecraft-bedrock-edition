@@ -674,7 +674,8 @@ def build():
     gen_loot(ctx)
     gen_spell_entities(ctx)
     gen_mobs(ctx)
-    from . import seagen  # expansion (imports this module, so loaded lazily)
+    from . import grandgen, seagen  # expansions (import this module, so loaded lazily)
     seagen.build(ctx)
+    grandgen.build(ctx)
     flush(ctx)
     return ctx

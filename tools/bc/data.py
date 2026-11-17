@@ -132,3 +132,105 @@ SHOP = [
     ('bc:leviathan_lure', 1, 150, 'Leviathan Lure'),
     ('random_fruit', 1, 400, 'Mystery Abyss Fruit'),
 ]
+
+# ======================================================================================
+# Wave 3: more magic, squads, fruits, ranks
+# ======================================================================================
+ATTRIBUTES.update({
+    'spatial': dict(name='Spatial', color='e08aff', leaves=4, cover=('1a0a24', '2c1240', '421c5e', '5a287e', '74369c', '9048ba'), trim='gold', mc='§d'),
+    'earth': dict(name='Earth', color='c49a5a', leaves=3, cover=('1e140a', '33230f', '4a3417', '624520', '7a582a', '936c36'), trim='silver', mc='§6'),
+    'steel': dict(name='Steel', color='b8c4d0', leaves=3, cover=('16191e', '22262e', '30353f', '404652', '525a68', '687282'), trim='silver', mc='§7'),
+    'mirror': dict(name='Mirror', color='c8d8ff', leaves=4, cover=('1a2236', '26304a', '34405f', '455276', '58668e', '6e7ea8'), trim='silver', mc='§9'),
+})
+ATTR_ORDER += ['spatial', 'earth', 'steel', 'mirror']
+
+SPELLS.update({
+    'spatial': [
+        ('warp_gate', 'Warp Gate', 30, 6.0, 1, 'Open linked gates at your feet and where you look.'),
+        ('space_cleave', 'Space Cleave', 22, 3.0, 3, 'A slash through space itself - walls cannot stop it.'),
+        ('pocket_dimension', 'Pocket Dimension', 40, 10.0, 6, 'Fling every enemy near your aim high into the sky.'),
+        ('gate_barrage', 'Gate Barrage', 80, 22.0, 10, 'Portals surround your target and fire from every side.'),
+    ],
+    'earth': [
+        ('stone_bullets', 'Stone Bullets', 12, 0.9, 1, 'Three hardened stone bullets.'),
+        ('mud_mire', 'Mud Mire', 26, 7.0, 3, 'Turn the ground near your aim into sucking mud.'),
+        ('earth_golem', 'Earth Golem', 50, 30.0, 6, 'Raise a stone golem that fights at your side.'),
+        ('continental_quake', 'Continental Quake', 85, 24.0, 10, 'Rings of shattering earth roll out from you.'),
+    ],
+    'steel': [
+        ('steel_lances', 'Steel Lances', 14, 1.0, 1, 'Three steel lances that pierce one enemy each.'),
+        ('iron_bulwark', 'Iron Bulwark', 28, 14.0, 3, 'Steel skin: huge resistance and attackers are cut.'),
+        ('blade_rain', 'Blade Rain', 40, 9.0, 6, 'Steel blades rain down on your aim.'),
+        ('steel_maelstrom', 'Steel Maelstrom', 80, 24.0, 10, 'A whirlwind of orbiting blades shreds everything near you.'),
+    ],
+    'mirror': [
+        ('mirror_shot', 'Mirror Shot', 16, 1.4, 1, 'A light beam that bounces to a second enemy.'),
+        ('mirror_image', 'Mirror Image', 36, 20.0, 3, 'Two mirror doubles fight for you.'),
+        ('reflection_barrier', 'Reflection Barrier', 30, 12.0, 6, 'For a while, incoming spells and arrows are reflected.'),
+        ('kaleidoscope', 'Kaleidoscope', 85, 25.0, 10, 'Mirror panes surround your aim and burn it from every angle.'),
+    ],
+})
+
+ROBES.update({
+    'silver_eagle_robe': dict(name='Silver Eagle Robe', cloth='white_cloth', trim='silver', lining='black_cloth', emblem='eagle'),
+    'blue_rose_robe': dict(name='Blue Rose Robe', cloth='navy', trim='silver', lining='white_cloth', emblem='rose'),
+    'green_mantis_robe': dict(name='Green Mantis Robe', cloth='green_cloth', trim='gold', lining='black_cloth', emblem='mantis'),
+    'coral_peacock_robe': dict(name='Coral Peacock Robe', cloth='coral_cloth', trim='gold', lining='white_cloth', emblem='peacock'),
+    'purple_orca_robe': dict(name='Purple Orca Robe', cloth='purple_cloth', trim='silver', lining='black_cloth', emblem='orca'),
+    'aqua_deer_robe': dict(name='Aqua Deer Robe', cloth='aqua_cloth', trim='gold', lining='white_cloth', emblem='deer'),
+})
+
+# perk text shown in the Handbook / README (implemented in scripts)
+ROBE_PERKS = {
+    'black_bull_robe': '+25% mana regen, +25% spell power below 40% health',
+    'golden_dawn_robe': '+40 max mana, +10% spell power',
+    'crimson_lion_robe': 'Flame spells cost 15% less and hit 15% harder',
+    'silver_eagle_robe': '+20% spell power while your mana is above 75%',
+    'blue_rose_robe': 'Healing and shield spells are 30% stronger; +15 max mana',
+    'green_mantis_robe': 'Spell cooldowns are 15% shorter',
+    'coral_peacock_robe': 'Every cast has a 20% chance to refund its mana',
+    'purple_orca_robe': 'Water breathing, and Water/Ice spells hit 15% harder',
+    'aqua_deer_robe': 'Swiftness while out of combat, and +30% mana regen while moving',
+}
+
+FRUITS.update({
+    'frost': dict(name='Frost Fruit', color='a8e8ff', mc='§b', power='Frost Body', beast=False,
+                  passive='Immune to freezing; the sea freezes under your feet.',
+                  abilities=[('frost_lance', 'Frost Lance', 1.6, 'Hurl a lance of ice that slows its target.'),
+                             ('glacial_path', 'Glacial Path', 6.0, 'Freeze a path ahead, encasing enemies in it.'),
+                             ('ice_age', 'Ice Age', 20.0, 'Freeze everything around you solid.')]),
+    'barrier': dict(name='Barrier Fruit', color='f0e6a0', mc='§e', power='Barrier Palm', beast=False,
+                    passive='Standing still hardens the air around you (damage resistance).',
+                    abilities=[('barrier_wall', 'Barrier Wall', 8.0, 'A wall of hardened air blocks the way.'),
+                               ('barrier_dome', 'Barrier Dome', 16.0, 'A dome that shields allies and stops projectiles.'),
+                               ('barrier_crash', 'Barrier Crash', 5.0, 'Shove a barrier forward, crushing enemies.')]),
+    'wolf': dict(name='Wolf Fruit', color='a89c8c', mc='§7', power='Wolf Form', beast=True,
+                 passive='Beast form: speed, keen night sight and sharp claws.',
+                 abilities=[('pounce', 'Pounce', 3.0, 'Leap onto the enemy you are looking at.'),
+                            ('howl', 'Howl', 18.0, 'A howl that strengthens you and cows nearby enemies.'),
+                            ('rending_frenzy', 'Rending Frenzy', 10.0, 'A flurry of claw strikes in front of you.')]),
+    'hawk': dict(name='Hawk Fruit', color='d49a52', mc='§6', power='Hawk Form', beast=True,
+                 passive='Beast form: glide by holding Jump while falling; no fall damage.',
+                 abilities=[('sky_ascent', 'Sky Ascent', 6.0, 'Beat your wings and soar straight up.'),
+                            ('talon_dive', 'Talon Dive', 5.0, 'Dive onto your aim with crushing talons.'),
+                            ('feather_storm', 'Feather Storm', 2.4, 'A fan of razor feathers.')]),
+})
+for _f in FRUITS.values():
+    _f.setdefault('beast', False)
+FRUIT_ORDER += ['frost', 'barrier', 'wolf', 'hawk']
+
+# Magic Knight ranks: (stars needed, title)
+RANKS = [
+    (0, 'Junior Magic Knight'),
+    (3, 'Intermediate Magic Knight'),
+    (8, 'Senior Magic Knight'),
+    (15, 'First Class Senior Magic Knight'),
+    (25, 'Vice-Captain'),
+    (40, 'Magic Knight Captain'),
+    (60, 'Wizard King Candidate'),
+]
+
+# Notoriety thresholds for the naval hunters: (bounty, title)
+NOTORIETY = [(300, 'Small-time Pirate'), (1500, 'Notorious Pirate'), (5000, 'Sea Tyrant'), (12000, 'Scourge of the Seas')]
+
+SHOP += [('bc:treasure_map', 1, 45, 'Treasure Map'), ('bc:lead_shot', 12, 10, 'Lead Shot x12'), ('bc:hearty_roast', 2, 12, 'Hearty Roast x2')]
