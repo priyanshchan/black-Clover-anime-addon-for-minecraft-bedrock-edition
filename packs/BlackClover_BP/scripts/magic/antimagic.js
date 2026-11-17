@@ -5,6 +5,7 @@ import { HOSTILE_PROJECTILES, canHit, center, effect, hurt, knock, launch, muzzl
 import { state } from '../core/data.js';
 import { anim, burst, particle, rgb, shake, shakeArea, shockwave, sound, title } from '../core/fx.js';
 import { V, alive, clamp, isCreative, rand, repeat, safe } from '../core/util.js';
+import { fruitOf, sealFruit } from '../sea/fruits.js';
 
 const SWORD_BY_SPELL = { demon_slayer: 'bc:demon_slayer_sword', demon_dweller: 'bc:demon_dweller_sword', demon_destroyer: 'bc:demon_destroyer_sword' };
 const LORE = {
@@ -194,6 +195,10 @@ export function onSwordHit(p, target, typeId) {
   if (s.attr !== 'anti' && !isCreative(p)) return;
   particle(dim, 'bc:anti_sparks', center(target), { scale: 0.6 });
   if (magical) hurt(target, 6, p);
+  if (fruitOf(target)) {
+    sealFruit(target, 120);
+    hurt(target, 4, p);
+  }
   if (inBlackForm(p)) {
     hurt(target, 5, p);
     particle(dim, 'bc:anti_crackle', center(target), { radius: 0.8 });

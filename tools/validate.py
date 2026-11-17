@@ -126,7 +126,10 @@ for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
     if m in particles or m in bp_ids or m in item_ids or m == 'bc:grimoire_altar':
         continue
     if m in ('bc:attr', 'bc:level', 'bc:xp', 'bc:mana', 'bc:spell', 'bc:anti', 'bc:joined', 'bc:thunder_until', 'bc:shadow_strike',
-             'bc:black_form', 'bc:expire', 'bc:altar_logic', 'bc:grimoire_', 'bc:demon_'):
+             'bc:black_form', 'bc:expire', 'bc:altar_logic', 'bc:grimoire_', 'bc:demon_',
+             # Abyssal Seas: dynamic-property keys, id prefixes and custom component names
+             'bc:sealed', 'bc:fruit', 'bc:fruit_', 'bc:fruit_ab', 'bc:will', 'bc:will_xp', 'bc:will_lv', 'bc:owner', 'bc:power_',
+             'bc:bounty_logic', 'bc:bounty', 'bc:fortress_until', 'bc:sea_structs'):
         continue
     errors.append(f'script references unknown id {m}')
 for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):

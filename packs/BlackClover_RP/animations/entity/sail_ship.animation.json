@@ -1,0 +1,73 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.sail_ship.sail": {
+      "loop": true,
+      "bones": {
+        "hull": {
+          "rotation": [
+            "math.sin(q.life_time * 55.0) * 1.2",
+            0,
+            "math.sin(q.life_time * 70.0) * 1.8"
+          ]
+        },
+        "mast": {
+          "rotation": [
+            "math.sin(q.life_time * 55.0) * 1.2",
+            0,
+            "math.sin(q.life_time * 70.0) * 1.8"
+          ]
+        },
+        "jib": {
+          "rotation": [
+            "math.sin(q.life_time * 55.0) * 1.2",
+            0,
+            "math.sin(q.life_time * 70.0) * 1.8"
+          ]
+        },
+        "sail": {
+          "rotation": [
+            "-math.clamp(q.modified_move_speed * 12.0, 0.0, 10.0) + math.sin(q.life_time * 90.0) * 1.5",
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            1,
+            "1.0 + math.clamp(q.modified_move_speed * 2.5, 0.0, 1.6)"
+          ]
+        },
+        "topsail": {
+          "rotation": [
+            "math.sin(q.life_time * 100.0) * 2.0",
+            0,
+            0
+          ]
+        },
+        "flag": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 320.0) * 14.0",
+            0
+          ]
+        },
+        "wheel": {
+          "rotation": [
+            0,
+            0,
+            "math.sin(q.life_time * 40.0) * 30.0"
+          ]
+        }
+      }
+    },
+    "animation.bc.ship.wake": {
+      "loop": "hold_on_last_frame",
+      "animation_length": 0.05,
+      "particle_effects": {
+        "0.0": {
+          "effect": "wake"
+        }
+      }
+    }
+  }
+}

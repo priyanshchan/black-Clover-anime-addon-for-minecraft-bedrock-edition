@@ -656,7 +656,7 @@ def flush(ctx: Ctx):
         'resource_pack_name': 'black_clover', 'texture_name': 'atlas.terrain', 'padding': 8, 'num_mip_levels': 4,
         'texture_data': {k: {'textures': v} for k, v in sorted(ctx.terrain_textures.items())},
     })
-    write_json(RP, 'blocks.json', {'format_version': [1, 1, 0], f'{NS}:grimoire_altar': {'sound': 'stone'}})
+    write_json(RP, 'blocks.json', {'format_version': [1, 1, 0], f'{NS}:grimoire_altar': {'sound': 'stone'}, f'{NS}:bounty_board': {'sound': 'wood'}})
     gen_render_controllers()
     gen_lang(ctx)
     write_json(BP, 'manifest.json', manifest_bp())
@@ -674,5 +674,7 @@ def build():
     gen_loot(ctx)
     gen_spell_entities(ctx)
     gen_mobs(ctx)
+    from . import seagen  # expansion (imports this module, so loaded lazily)
+    seagen.build(ctx)
     flush(ctx)
     return ctx

@@ -79,3 +79,56 @@ ROBES = {
     'golden_dawn_robe': dict(name='Golden Dawn Robe', cloth='white_cloth', trim='gold', lining='white_cloth', emblem='sun'),
     'crimson_lion_robe': dict(name='Crimson Lion Robe', cloth='red_cloth', trim='gold', lining='black_cloth', emblem='lion'),
 }
+
+# ======================================================================================
+# Abyssal Seas expansion (original crossover content: fruits, Will, the sea)
+# ======================================================================================
+# fruit id -> name, colour, power item name, passive, and abilities (id, name, cooldown s, description)
+FRUITS = {
+    'ember': dict(name='Ember Fruit', color='ff6a1a', mc='§6', power='Ember Body',
+                  passive='Immune to fire. Your punches set foes ablaze.',
+                  abilities=[('ember_fist', 'Ember Fist', 1.6, 'Hurl a fist of fire that bursts on impact.'),
+                             ('blaze_step', 'Blaze Step', 4.0, 'Dash forward, leaving a trail of fire.'),
+                             ('cinder_nova', 'Cinder Nova', 14.0, 'Detonate in a ring of white-hot flame.')]),
+    'stone': dict(name='Stone Fruit', color='a89a86', mc='§7', power='Stone Body',
+                  passive='Hardened skin: you take less damage and shrug off knockback.',
+                  abilities=[('boulder_fist', 'Boulder Fist', 2.0, 'Launch a boulder that shatters on impact.'),
+                             ('earth_spikes', 'Earth Spikes', 5.0, 'Stone spikes erupt in a line ahead of you.'),
+                             ('fortress_skin', 'Fortress Skin', 20.0, 'Turn to granite: huge resistance, slower steps.')]),
+    'gravity': dict(name='Gravity Fruit', color='8a5cff', mc='§d', power='Gravity Grip',
+                    passive='You never take fall damage.',
+                    abilities=[('gravity_crush', 'Gravity Crush', 4.0, 'Slam everything near your aim into the ground.'),
+                               ('repulse', 'Repulse', 6.0, 'Hurl everything around you away.'),
+                               ('falling_star', 'Falling Star', 18.0, 'Pull a burning meteor down onto your aim.')]),
+    'shadow': dict(name='Shadow Fruit', color='3a2a5a', mc='§8', power='Shadow Grasp',
+                   passive='Night vision, and you vanish while sneaking in the dark.',
+                   abilities=[('shadow_bind', 'Shadow Bind', 6.0, 'Shadows pin down every enemy near your aim.'),
+                              ('shade_step', 'Shade Step', 3.0, 'Step through the shadows behind your target.'),
+                              ('umbral_legion', 'Umbral Legion', 30.0, 'Raise three shade soldiers to fight for you.')]),
+    'bloom': dict(name='Bloom Fruit', color='5cc85a', mc='§a', power='Bloom Touch',
+                  passive='You slowly regenerate while standing on grass or leaves.',
+                  abilities=[('thorn_lash', 'Thorn Lash', 1.8, 'A whip of poisoned thorns lashes ahead.'),
+                             ('healing_pollen', 'Healing Pollen', 12.0, 'Pollen heals you and nearby allies.'),
+                             ('rooting_grove', 'Rooting Grove', 18.0, 'Roots seize and crush every enemy around you.')]),
+    'quicksilver': dict(name='Quicksilver Fruit', color='c8d0dc', mc='§f', power='Quicksilver Arm',
+                        passive='Liquid-metal body: arrows and blades glance off you more often.',
+                        abilities=[('mercury_blades', 'Mercury Blades', 2.2, 'Fling a fan of liquid-metal blades.'),
+                                   ('flow_dash', 'Flow Dash', 4.0, 'Pour yourself forward through every enemy.'),
+                                   ('silver_storm', 'Silver Storm', 16.0, 'A storm of spinning blades surrounds you.')]),
+}
+FRUIT_ORDER = ['ember', 'stone', 'gravity', 'shadow', 'bloom', 'quicksilver']
+
+WILL_MAX_LEVEL = 10
+
+# Raider captains get generated names from these parts (original, no real characters)
+CAPTAIN_FIRST = ['Rust', 'Iron', 'Salt', 'Storm', 'Grim', 'Bone', 'Gold', 'Ash', 'Coral', 'Sable', 'Brine', 'Cinder']
+CAPTAIN_LAST = ['fang', 'hook', 'tide', 'eye', 'scale', 'jaw', 'gale', 'brand', 'skull', 'wake', 'reef', 'claw']
+
+# Bounty board shop: item -> (count, price in doubloons, label)
+SHOP = [
+    ('bc:mana_crystal', 4, 20, 'Mana Crystals x4'),
+    ('bc:cannonball', 8, 15, 'Cannonballs x8'),
+    ('bc:ship_kit', 1, 60, 'Sailing Ship Kit'),
+    ('bc:leviathan_lure', 1, 150, 'Leviathan Lure'),
+    ('random_fruit', 1, 400, 'Mystery Abyss Fruit'),
+]

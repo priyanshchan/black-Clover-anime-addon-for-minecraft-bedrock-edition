@@ -3,6 +3,8 @@ import { system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
 import { maxMana, spellsOf, state } from './data.js';
 import { isCreative, now, safe } from './util.js';
+import { sea } from '../sea/state.js';
+import { bountyHud } from '../sea/bounty.js';
 
 const G = DATA.glyphs;
 const PIPS = 12;
@@ -28,11 +30,36 @@ export function heldKind(player) {
   if (!item.typeId) return '';
   if (item.typeId.startsWith('bc:grimoire_')) return 'grimoire';
   if (item.typeId.endsWith('_sword') && item.typeId.startsWith('bc:demon_')) return 'sword';
+  if (item.typeId.startsWith('bc:power_')) return 'power';
   return '';
+}
+
+function willPart(player) {
+  const w = sea(player);
+  if (w.willLv < 1) return '';
+  return `  §5${G.will}${w.willLv} §d${Math.floor(w.will)}§8%`;
+}
+
+function powerText(player) {
+  const w = sea(player);
+  const held = heldId(player);
+  const fid = held.slice('bc:power_'.length);
+  const f = DATA.fruits[fid];
+  if (!f) return '';
+  const ab = f.abilities[w.ability] ?? f.abilities[0];
+  const ready = w.cd.get(ab.id) ?? 0;
+  const t = now();
+  const part = ready > t ? `§7${ab.name} §c${((ready - t) / 20).toFixed(1)}s` : `${f.mc}§l${ab.name}§r`;
+  return `${f.glyph} ${part} §8[${w.ability + 1}/${f.abilities.length}]${willPart(player)}`;
 }
 
 /** Build the HUD text for a player. */
 export function hudText(player) {
+  if (heldKind(player) === 'power') return powerText(player);
+  return magicText(player) + willPart(player);
+}
+
+function magicText(player) {
   const s = state(player);
   let attr = s.attr;
   let level = s.level;
@@ -72,6 +99,10 @@ system.runInterval(() => {
   for (const p of world.getAllPlayers()) {
     const kind = heldKind(p);
     const s = state(p);
-    if (kind || t - s.lastCast < 60) showHud(p);
+    if (kind || t - s.lastCast < 60 || t - sea(p).lastUse < 60) showHud(p);
+    else if (t % 8 === 0) {
+      const b = safe(() => bountyHud(p));
+      if (b) safe(() => p.onScreenDisplay.setActionBar(b));
+    }
   }
 }, 4);

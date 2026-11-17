@@ -273,3 +273,58 @@ if __name__ == '__main__':
     hud_mock()
     icons_strip()
     print('previews written to docs/images')
+
+
+def seas_sheet():
+    from bc.models import sea as seam
+    entries = []
+    ship_pose = {}
+    for a in seam.ship_animations().values():
+        render.pose_from_anim(a, 0.4, env={'q.modified_move_speed': 0.5}, pose=ship_pose)
+    entries.append(('Sailing Ship', model(seam.ship_geo()), ship_pose, 35, 18, 1.15))
+    lp = {}
+    render.pose_from_anim(seam.leviathan_animations()['animation.bc.leviathan.swim'], 0.4, pose=lp)
+    entries.append(('Abyssal Leviathan (boss)', model(seam.leviathan_geo()), lp, 50, 30, 1.25))
+    rp = {}
+    render.pose_from_anim(seam.humanoid_animations('sea_raider')['animation.bc.sea_raider.idle'], 0.3, pose=rp)
+    entries.append(('Sea Raider', model(seam.raider_geo()), rp, 30, 10, 1.5))
+    cp = {}
+    render.pose_from_anim(seam.humanoid_animations('raider_captain')['animation.bc.raider_captain.cast'], 0.3, pose=cp)
+    entries.append(('Raider Captain', model(seam.captain_geo()), cp, 30, 10, 1.5))
+    entries.append(('Bounty Board', model(seam.bounty_board_geo()), {}, 20, 10, 1.4))
+    sp = {}
+    render.pose_from_anim(mobs.disciple_animations()['animation.bc.dark_disciple.idle'], 0.3, pose=sp)
+    entries.append(('Shade Soldier', model(mobs.disciple_geo('shade')), sp, 30, 10, 1.5))
+    grid(entries, 3, 340, 'seas.png', 'The Abyssal Seas')
+
+
+def fruits_strip():
+    ic = icons.sea_icons()
+    keys = [f'fruit_{k}' for k in ('ember', 'stone', 'gravity', 'shadow', 'bloom', 'quicksilver')] + \
+           [f'power_{k}' for k in ('ember', 'stone', 'gravity', 'shadow', 'bloom', 'quicksilver')] + \
+           ['doubloon', 'cannonball', 'ship_kit', 'leviathan_lure', 'leviathan_scale']
+    img = background(len(keys) * 76 + 20, 96, '0b2b3a', '06121a', ring=False)
+    for i, k in enumerate(keys):
+        img.alpha_composite(tex.to_image(ic[k]).resize((64, 64), Image.NEAREST), (16 + i * 76, 16))
+    img.convert('RGB').save(os.path.join(OUT, 'sea_items.png'), optimize=True)
+    # fruit power auras on the arm
+    from bc.models import sea as seam
+    W = 6 * 220
+    out = background(W, 260, '0b2b3a', '06121a', ring=False)
+    d = ImageDraw.Draw(out)
+    for i, fid in enumerate(('ember', 'stone', 'gravity', 'shadow', 'bloom', 'quicksilver')):
+        g = seam.power_geo(fid)
+        m = model(g)
+        pose = {'rightarm': {'rotation': [-70, 0, 0]}}
+        render.pose_from_anim(seam.power_animations()['animation.bc.power.aura'], 0.3, pose=pose)
+        arm = geo.Geo('geometry.ref.arm', res=1, atlas_width=64)
+        arm.skeleton()
+        arm.cube('rightArm', (-8, 12, -2), (4, 12, 4), tex.Material(tex.ramp('8a5a3c', 'a8714c', 'c08a62', 'd6a27a')))
+        sc = render.Scene(220, 220, ss=2)
+        sc.add(model(arm), pose)
+        sc.add(m, pose)
+        sc.render(render.orbit_eye((6, 15, -7), 40, 35, 15), (6, 15, -7), fov=40)
+        out.alpha_composite(sc.image(), (i * 220, 10))
+        d.text((i * 220 + 14, 228), {'ember': 'Ember Body', 'stone': 'Stone Body', 'gravity': 'Gravity Grip', 'shadow': 'Shadow Grasp',
+                                     'bloom': 'Bloom Touch', 'quicksilver': 'Quicksilver Arm'}[fid], font=font(18), fill=(225, 225, 225, 255))
+    out.convert('RGB').save(os.path.join(OUT, 'powers.png'), optimize=True)

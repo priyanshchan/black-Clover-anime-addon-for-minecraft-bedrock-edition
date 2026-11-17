@@ -15,7 +15,7 @@ SR = 32000
 
 
 def t_(dur):
-    return np.arange(int(SR * dur)) / SR
+    return np.arange(int(round(SR * dur))) / SR
 
 
 def env(n, a=0.01, d=0.1, s=0.6, r=0.2, total=None):
@@ -55,7 +55,7 @@ def bandpass(x, lo, hi):
 
 
 def osc(freq, dur, kind='sine', phase=0.0):
-    f = np.broadcast_to(np.asarray(freq, float), (int(SR * dur),))
+    f = np.broadcast_to(np.asarray(freq, float), (int(round(SR * dur)),))
     ph = np.cumsum(f) / SR + phase
     if kind == 'sine':
         return np.sin(2 * np.pi * ph)
@@ -247,7 +247,107 @@ def s_shine():
     return norm(reverb(x, 0.45))
 
 
+def s_cannon():
+    d = 1.4
+    t = t_(d)
+    boom = osc(55 * np.exp(-t * 2.5) + 28, d) * np.exp(-t * 3.5) * 1.2
+    crack = lowpass(noise(len(t), 21), 4000 * np.exp(-t * 12) + 300) * np.exp(-t * 9) * 1.6
+    rumble = lowpass(noise(len(t), 22), 220) * np.exp(-t * 2.0) * 1.5
+    return norm(reverb(np.tanh((boom + crack + rumble) * 1.8), 0.25))
+
+
+def s_bell():
+    d = 2.4
+    t = t_(d)
+    x = sum(osc(440 * r, d) * a * np.exp(-t * dec) for r, a, dec in ((1, 0.5, 1.4), (2.0, 0.3, 2.0), (2.76, 0.22, 2.6), (5.4, 0.12, 4.0), (0.5, 0.25, 1.0)))
+    return norm(reverb(x, 0.35))
+
+
+def s_eat():
+    d = 1.6
+    t = t_(d)
+    crunch = np.zeros_like(t)
+    rng = np.random.default_rng(31)
+    for k in range(5):
+        i = int(SR * (0.05 + k * 0.16))
+        n = int(SR * 0.08)
+        crunch[i:i + n] += bandpass(noise(n, 40 + k), 800, 5000) * np.exp(-np.arange(n) / SR * 40) * 0.9
+    eerie = sum(osc(f * (1 + 0.01 * np.sin(2 * np.pi * 4 * t)), d) for f in (146.8, 207.7, 277.2)) * np.clip((t - 0.8) / 0.4, 0, 1) * np.exp(-np.clip(t - 1.2, 0, None) * 4) * 0.25
+    return norm(reverb(crunch + eerie, 0.3))
+
+
+def s_will():
+    d = 1.3
+    t = t_(d)
+    beat = np.zeros_like(t)
+    for st in (0.0, 0.22):
+        i = int(SR * st)
+        n = len(t) - i
+        tt = np.arange(n) / SR
+        beat[i:] += osc(50 * np.exp(-tt * 6) + 30, n / SR) * np.exp(-tt * 9)
+    whoosh = bandpass(noise(len(t), 41), 150, 300 + 1500 * np.clip((t - 0.3) * 2, 0, 1)) * np.sin(np.pi * np.clip((t - 0.25) / 1.0, 0, 1)) * 1.6
+    return norm(np.tanh((beat * 1.4 + whoosh) * 1.3))
+
+
+def s_rock():
+    d = 0.9
+    t = t_(d)
+    x = lowpass(noise(len(t), 51), 1800 * np.exp(-t * 5) + 150) * np.exp(-t * 5) * 1.5 + osc(70 * np.exp(-t * 3), d) * np.exp(-t * 6)
+    grit = np.zeros_like(t)
+    rng = np.random.default_rng(52)
+    for _ in range(25):
+        i = int(rng.integers(0, len(t) - 600))
+        grit[i:i + 600] += highpass(noise(600, int(i)), 2000) * np.exp(-np.arange(600) / 90) * 0.35
+    return norm(np.tanh((x + grit) * 1.5))
+
+
+def s_gravity():
+    d = 1.4
+    t = t_(d)
+    f = 60 + 40 * np.sin(np.pi * t / d)
+    x = osc(f, d, 'saw') * 0.6 + osc(f * 1.01, d, 'saw') * 0.6
+    x = lowpass(x, 300 + 600 * np.sin(np.pi * t / d)) * np.sin(np.pi * t / d)
+    return norm(reverb(x, 0.3))
+
+
+def s_coins():
+    d = 0.9
+    x = np.zeros(int(SR * d))
+    rng = np.random.default_rng(61)
+    for k in range(7):
+        st = int(SR * rng.uniform(0, 0.4))
+        n = len(x) - st
+        tt = np.arange(n) / SR
+        f = rng.uniform(2500, 4200)
+        x[st:] += (osc(f, n / SR) + osc(f * 1.47, n / SR) * 0.5) * np.exp(-tt * 18) * 0.3
+    return norm(x, 0.7)
+
+
+def s_lev_roar():
+    d = 2.6
+    t = t_(d)
+    f = 38 + 14 * np.sin(np.pi * t / d)
+    x = osc(f, d, 'saw') + osc(f * 1.5, d, 'saw') * 0.6 + bandpass(noise(len(t), 71), 100, 900) * 0.9
+    x = lowpass(np.tanh(x * 2.2), 380 + 500 * np.sin(np.pi * t / d))
+    bubbles = np.zeros_like(t)
+    rng = np.random.default_rng(72)
+    for _ in range(20):
+        i = int(rng.integers(0, len(t) - 2500))
+        tt = np.arange(2500) / SR
+        f0 = rng.uniform(250, 600)
+        bubbles[i:i + 2500] += np.sin(2 * np.pi * (f0 + 1500 * tt) * tt) * np.exp(-tt * 35) * 0.35
+    return norm(reverb(x * env(len(t), 0.3, 0.4, 0.8, 0.8, d) + bubbles, 0.45))
+
+
 SOUNDS = {
+    'bc.cannon': (s_cannon, 'neutral', 1.0),
+    'bc.ship.bell': (s_bell, 'neutral', 0.9),
+    'bc.fruit.eat': (s_eat, 'player', 1.0),
+    'bc.will.pulse': (s_will, 'player', 1.0),
+    'bc.stone.crack': (s_rock, 'neutral', 1.0),
+    'bc.gravity.hum': (s_gravity, 'neutral', 1.0),
+    'bc.coins': (s_coins, 'player', 0.9),
+    'bc.leviathan.roar': (s_lev_roar, 'hostile', 1.0),
     'bc.cast': (s_cast, 'player', 1.0),
     'bc.grimoire.flip': (s_flip, 'player', 0.8),
     'bc.grimoire.awaken': (s_awaken, 'block', 1.0),

@@ -4,6 +4,9 @@
   "padding": 8,
   "num_mip_levels": 4,
   "texture_data": {
+    "bc_bounty_board": {
+      "textures": "textures/blocks/bc/bounty_board"
+    },
     "bc_grimoire_altar": {
       "textures": "textures/blocks/bc/grimoire_altar"
     }

@@ -5,6 +5,9 @@
     "bc_black_bull_robe": {
       "textures": "textures/items/bc/black_bull_robe"
     },
+    "bc_cannonball": {
+      "textures": "textures/items/bc/cannonball"
+    },
     "bc_clover_charm": {
       "textures": "textures/items/bc/clover_charm"
     },
@@ -25,6 +28,27 @@
     },
     "bc_devil_heart": {
       "textures": "textures/items/bc/devil_heart"
+    },
+    "bc_doubloon": {
+      "textures": "textures/items/bc/doubloon"
+    },
+    "bc_fruit_bloom": {
+      "textures": "textures/items/bc/fruit_bloom"
+    },
+    "bc_fruit_ember": {
+      "textures": "textures/items/bc/fruit_ember"
+    },
+    "bc_fruit_gravity": {
+      "textures": "textures/items/bc/fruit_gravity"
+    },
+    "bc_fruit_quicksilver": {
+      "textures": "textures/items/bc/fruit_quicksilver"
+    },
+    "bc_fruit_shadow": {
+      "textures": "textures/items/bc/fruit_shadow"
+    },
+    "bc_fruit_stone": {
+      "textures": "textures/items/bc/fruit_stone"
     },
     "bc_golden_dawn_robe": {
       "textures": "textures/items/bc/golden_dawn_robe"
@@ -56,8 +80,35 @@
     "bc_handbook": {
       "textures": "textures/items/bc/handbook"
     },
+    "bc_leviathan_lure": {
+      "textures": "textures/items/bc/leviathan_lure"
+    },
+    "bc_leviathan_scale": {
+      "textures": "textures/items/bc/leviathan_scale"
+    },
     "bc_mana_crystal": {
       "textures": "textures/items/bc/mana_crystal"
+    },
+    "bc_power_bloom": {
+      "textures": "textures/items/bc/power_bloom"
+    },
+    "bc_power_ember": {
+      "textures": "textures/items/bc/power_ember"
+    },
+    "bc_power_gravity": {
+      "textures": "textures/items/bc/power_gravity"
+    },
+    "bc_power_quicksilver": {
+      "textures": "textures/items/bc/power_quicksilver"
+    },
+    "bc_power_shadow": {
+      "textures": "textures/items/bc/power_shadow"
+    },
+    "bc_power_stone": {
+      "textures": "textures/items/bc/power_stone"
+    },
+    "bc_ship_kit": {
+      "textures": "textures/items/bc/ship_kit"
     }
   }
 }

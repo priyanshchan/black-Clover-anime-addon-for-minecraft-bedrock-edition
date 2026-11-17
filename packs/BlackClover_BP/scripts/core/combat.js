@@ -28,6 +28,10 @@ export function canHit(attacker, target) {
     return true;
   }
   if (!target.getComponent('minecraft:health')) return false;
+  // crews don't hurt each other
+  if (attacker && safe(() => attacker.matches({ families: ['bc_pirate'] })) && safe(() => target.matches({ families: ['bc_pirate'] }))) return false;
+  if (attacker instanceof Player && target.typeId === 'bc:shade_soldier' && target.getDynamicProperty('bc:owner') === attacker.id) return false;
+  if (target.typeId === 'bc:sail_ship') return false;
   // never hurt the caster's own pets
   const tame = target.getComponent('minecraft:tameable');
   if (tame && attacker && tame.tamedToPlayerId === attacker.id) return false;

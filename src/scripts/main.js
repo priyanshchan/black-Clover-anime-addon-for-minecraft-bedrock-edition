@@ -11,6 +11,8 @@ import { onMeleeHit } from './magic/spells.js';
 import './world/altar.js';
 import { useMisc } from './world/items.js';
 import './world/mobs.js';
+import { onSeaMelee, useSeaItem } from './sea/index.js';
+import { forgetSea, saveSea } from './sea/state.js';
 
 const lastUse = new Map();
 
@@ -22,6 +24,7 @@ world.afterEvents.itemUse.subscribe((ev) => {
   if ((lastUse.get(p.id) ?? -10) >= t - 2) return; // debounce double events
   lastUse.set(p.id, t);
   const id = item.typeId;
+  if (safe(() => useSeaItem(p, item), 'sea')) return;
   if (id.startsWith('bc:grimoire_')) safe(() => useGrimoire(p, item), 'grimoire');
   else if (id.startsWith('bc:demon_') && id.endsWith('_sword')) safe(() => useSword(p, id), 'sword');
   else safe(() => useMisc(p, id), 'item');
@@ -34,6 +37,7 @@ world.afterEvents.entityHitEntity.subscribe((ev) => {
     const held = p.getComponent('minecraft:inventory')?.container?.getItem(p.selectedSlotIndex)?.typeId ?? '';
     if (held.startsWith('bc:demon_') && held.endsWith('_sword')) onSwordHit(p, ev.hitEntity, held);
     onMeleeHit(p, ev.hitEntity);
+    onSeaMelee(p, ev.hitEntity);
   }, 'melee');
 });
 
@@ -41,7 +45,11 @@ world.beforeEvents.playerLeave.subscribe((ev) => {
   const p = ev.player;
   const id = p.id;
   safe(() => save(p), 'leave-save');
-  system.run(() => forget(id));
+  safe(() => saveSea(p), 'leave-save-sea');
+  system.run(() => {
+    forget(id);
+    forgetSea(id);
+  });
 });
 
 world.afterEvents.worldLoad.subscribe(() => {

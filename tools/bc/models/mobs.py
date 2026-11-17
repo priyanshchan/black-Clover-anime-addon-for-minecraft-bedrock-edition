@@ -58,12 +58,21 @@ def _belt(a, ctx):
     return a
 
 
-def disciple_geo():
-    g = Geo('geometry.bc.dark_disciple', res=2, atlas_width=128, visible=(2, 3, (0, 1.2, 0)))
-    robe = tex.Cloth(P['purple_cloth'], folds=0.22)
-    robe_dark = tex.Cloth(tex.ramp('07040b', '0f0818', '170c24', '211232', '2c1842'), folds=0.2)
-    skin = tex.Material(tex.ramp('5b5560', '75707c', '8f8a96', 'a7a3ae'), noise=0.08)
-    mask = tex.Painted(tex.Material(P['bone'], noise=0.06, edge=0.8), {'north': _mask})
+def disciple_geo(variant='disciple'):
+    shade = variant == 'shade'
+    ident = 'geometry.bc.shade_soldier' if shade else 'geometry.bc.dark_disciple'
+    g = Geo(ident, res=2, atlas_width=128, visible=(2, 3, (0, 1.2, 0)))
+    if shade:
+        # living shadow: near-black body with a faint violet glow (alpha < 255 = emissive)
+        robe = tex.Cloth(tex.ramp('050309', '0b0614', '120a20', '1a0f2e'), folds=0.3, alpha=235)
+        robe_dark = tex.Cloth(tex.ramp('020104', '06030b', '0b0614', '120a20'), folds=0.25, alpha=235)
+        skin = tex.Material(tex.ramp('0b0614', '160c28', '22123c'), noise=0.2, alpha=235)
+        mask = tex.Painted(tex.Material(tex.ramp('050309', '0b0614', '120a20'), noise=0.1), {'north': _mask})
+    else:
+        robe = tex.Cloth(P['purple_cloth'], folds=0.22)
+        robe_dark = tex.Cloth(tex.ramp('07040b', '0f0818', '170c24', '211232', '2c1842'), folds=0.2)
+        skin = tex.Material(tex.ramp('5b5560', '75707c', '8f8a96', 'a7a3ae'), noise=0.08)
+        mask = tex.Painted(tex.Material(P['bone'], noise=0.06, edge=0.8), {'north': _mask})
 
     g.bone('root', pivot=(0, 0, 0))
     g.bone('waist', 'root', (0, 12, 0))

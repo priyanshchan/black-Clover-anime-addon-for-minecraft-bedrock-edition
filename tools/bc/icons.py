@@ -244,3 +244,167 @@ def pack_icon(render_img: Image.Image | None = None):
     if render_img is not None:
         img.alpha_composite(render_img.resize((S, S), Image.LANCZOS))
     return img
+
+
+# ======================================================================================
+# Abyssal Seas icons
+# ======================================================================================
+def _finish(a, outline='0a0a0f'):
+    a[..., 3] = np.where(a[..., 3] > 110, 255, 0)
+    tex.outline(a, rgb(outline))
+    return a
+
+
+def fruit_icon(fid, S=32):
+    s4 = 4
+
+    def fn(d, s):
+        def P_(x, y):
+            return (x * s, y * s)
+        if fid == 'ember':
+            d.polygon([P_(16, 6), P_(22, 13), P_(23, 21), P_(19, 27), P_(13, 27), P_(9, 21), P_(10, 13)], fill=(220, 70, 20, 255))
+            d.polygon([P_(16, 10), P_(19, 16), P_(18, 23), P_(16, 25), P_(14, 23), P_(13, 16)], fill=(255, 150, 40, 255))
+            for x0, y0, x1, y1 in ((16, 9, 14, 24), (16, 9, 19, 23), (12, 15, 11, 22), (20, 15, 21, 22)):
+                d.line([P_(x0, y0), P_(x1, y1)], fill=(255, 235, 140, 255), width=int(0.9 * s))
+            d.polygon([P_(16, 7), P_(13, 3), P_(18, 2), P_(19, 5)], fill=(60, 120, 40, 255))
+        elif fid == 'stone':
+            d.ellipse([P_(6, 8), P_(26, 28)], fill=(110, 102, 92, 255))
+            for (x, y, r) in ((11, 14, 4), (19, 12, 4), (21, 21, 4.5), (12, 22, 4), (16, 17, 3)):
+                d.ellipse([P_(x - r, y - r), P_(x + r, y + r)], fill=(150, 140, 126, 255), outline=(70, 64, 58, 255), width=int(0.8 * s))
+            d.line([P_(16, 9), P_(14, 15), P_(17, 19), P_(15, 26)], fill=(255, 170, 60, 255), width=int(0.9 * s))
+            d.polygon([P_(16, 8), P_(14, 3), P_(19, 4)], fill=(80, 110, 50, 255))
+        elif fid == 'gravity':
+            d.ellipse([P_(8, 8), P_(24, 24)], fill=(60, 30, 120, 255))
+            d.ellipse([P_(10, 10), P_(17, 17)], fill=(140, 100, 255, 255))
+            d.arc([P_(3, 12), P_(29, 21)], 160, 380, fill=(200, 180, 255, 255), width=int(1.2 * s))
+            for x, y in ((6, 6), (26, 8), (25, 26), (5, 25)):
+                d.ellipse([P_(x - 0.8, y - 0.8), P_(x + 0.8, y + 0.8)], fill=(255, 255, 255, 255))
+            d.polygon([P_(16, 8), P_(15, 4), P_(19, 5)], fill=(90, 70, 140, 255))
+        elif fid == 'shadow':
+            for k in range(4):
+                d.polygon([P_(9 + k * 4, 12), P_(8 + k * 4, 3 + (k % 2) * 2), P_(11 + k * 4, 11)], fill=(30, 20, 50, 255))
+            d.ellipse([P_(7, 9), P_(25, 28)], fill=(18, 12, 30, 255))
+            d.ellipse([P_(11, 16), P_(21, 21)], fill=(170, 90, 255, 255))
+            d.ellipse([P_(14.5, 16.5), P_(17.5, 20.5)], fill=(20, 0, 30, 255))
+        elif fid == 'bloom':
+            d.ellipse([P_(8, 11), P_(24, 28)], fill=(70, 170, 70, 255))
+            d.ellipse([P_(11, 14), P_(17, 20)], fill=(140, 220, 120, 255))
+            for k in range(5):
+                a = math.radians(-90 + (k - 2) * 32)
+                cx, cy = 16 + math.cos(a) * 6, 10 + math.sin(a) * 4
+                d.ellipse([P_(cx - 3, cy - 3), P_(cx + 3, cy + 3)], fill=(240, 120, 170, 255))
+            d.ellipse([P_(14, 7), P_(18, 11)], fill=(255, 220, 90, 255))
+        else:  # quicksilver
+            d.ellipse([P_(8, 12), P_(24, 28)], fill=(170, 180, 196, 255))
+            d.polygon([P_(16, 3), P_(23.5, 17), P_(8.5, 17)], fill=(170, 180, 196, 255))
+            d.ellipse([P_(11, 15), P_(16, 21)], fill=(250, 252, 255, 255))
+            d.arc([P_(10, 16), P_(22, 27)], 20, 120, fill=(90, 98, 112, 255), width=int(1.2 * s))
+    a = tex.draw_layer(S, S, fn, s4)
+    return _finish(a)
+
+
+def power_icon(fid, color_hex, S=32):
+    col = tuple(int(color_hex[i:i + 2], 16) for i in (0, 2, 4))
+
+    def fn(d, s):
+        d.ellipse([2 * s, 2 * s, 30 * s, 30 * s], fill=(16, 14, 22, 255), outline=col + (255,), width=int(2.2 * s))
+        # clenched fist
+        d.rounded_rectangle([10 * s, 11 * s, 22 * s, 22 * s], radius=3 * s, fill=(220, 180, 140, 255))
+        for k in range(4):
+            d.ellipse([(10 + k * 3) * s, 9 * s, (13 + k * 3) * s, 13 * s], fill=(235, 196, 156, 255))
+        d.rectangle([12 * s, 21 * s, 20 * s, 26 * s], fill=(200, 160, 120, 255))
+        d.line([(10 * s, 16 * s), (15 * s, 17 * s)], fill=(160, 120, 90, 255), width=int(s))
+    a = tex.draw_layer(S, S, fn, 4)
+    a = _finish(a)
+    g = a.copy()
+    g[..., :3] = np.array(col)
+    g = tex.glow(g, 2.0, 0.7)
+    tex.alpha_over(g, a)
+    return g
+
+
+def coin_icon(S=32):
+    def fn(d, s):
+        d.ellipse([4 * s, 4 * s, 28 * s, 28 * s], fill=(200, 140, 30, 255))
+        d.ellipse([6 * s, 6 * s, 26 * s, 26 * s], fill=(240, 194, 74, 255))
+        d.line([(16 * s, 10 * s), (16 * s, 22 * s)], fill=(150, 100, 20, 255), width=int(1.4 * s))
+        d.arc([10 * s, 15 * s, 22 * s, 24 * s], 20, 160, fill=(150, 100, 20, 255), width=int(1.4 * s))
+        tex.clover_shape(d, 16 * s, 11.5 * s, 3.4 * s, 4, (120, 80, 14, 255), stem=False)
+        d.arc([7 * s, 7 * s, 25 * s, 25 * s], 200, 260, fill=(255, 246, 207, 255), width=int(1.4 * s))
+    return _finish(tex.draw_layer(S, S, fn, 4), '3a2400')
+
+
+def cannonball_icon(S=32):
+    def fn(d, s):
+        d.ellipse([6 * s, 6 * s, 26 * s, 26 * s], fill=(34, 36, 42, 255))
+        d.ellipse([9 * s, 9 * s, 15 * s, 15 * s], fill=(110, 116, 128, 255))
+        d.ellipse([10 * s, 10 * s, 13 * s, 13 * s], fill=(200, 205, 215, 255))
+    return _finish(tex.draw_layer(S, S, fn, 4))
+
+
+def ship_kit_icon(S=32):
+    def fn(d, s):
+        d.polygon([(3 * s, 20 * s), (29 * s, 20 * s), (25 * s, 27 * s), (7 * s, 27 * s)], fill=(92, 60, 34, 255))
+        d.rectangle([3 * s, 20 * s, 29 * s, 21.5 * s], fill=(211, 154, 44, 255))
+        d.rectangle([15 * s, 3 * s, 16.6 * s, 20 * s], fill=(70, 46, 26, 255))
+        d.polygon([(8 * s, 6 * s), (24 * s, 6 * s), (23 * s, 17 * s), (9 * s, 17 * s)], fill=(236, 238, 242, 255))
+        tex.clover_shape(d, 16 * s, 11 * s, 3 * s, 4, (30, 110, 52, 255), stem=False)
+        d.polygon([(17 * s, 2 * s), (22 * s, 3.5 * s), (17 * s, 5 * s)], fill=(20, 20, 24, 255))
+    return _finish(tex.draw_layer(S, S, fn, 4))
+
+
+def lure_icon(S=32):
+    def fn(d, s):
+        d.polygon([(6 * s, 22 * s), (12 * s, 8 * s), (24 * s, 6 * s), (27 * s, 16 * s), (18 * s, 27 * s)], fill=(236, 200, 186, 255))
+        for k in range(4):
+            d.arc([(9 + k * 2) * s, (9 + k * 2) * s, (25 - k * 2) * s, (25 - k * 2) * s], 200 + k * 20, 330, fill=(190, 120, 120, 255), width=int(1.2 * s))
+        d.ellipse([16 * s, 13 * s, 21 * s, 18 * s], fill=(120, 255, 232, 255))
+    a = tex.draw_layer(S, S, fn, 4)
+    return _finish(a, '3a1a1a')
+
+
+def scale_icon(S=32):
+    def fn(d, s):
+        d.polygon([(16 * s, 3 * s), (26 * s, 14 * s), (22 * s, 27 * s), (10 * s, 27 * s), (6 * s, 14 * s)], fill=(24, 88, 107, 255))
+        d.polygon([(16 * s, 6 * s), (22 * s, 14 * s), (19 * s, 24 * s), (16 * s, 25 * s)], fill=(53, 146, 163, 255))
+        d.line([(16 * s, 5 * s), (16 * s, 26 * s)], fill=(140, 220, 225, 255), width=int(s))
+    return _finish(tex.draw_layer(S, S, fn, 4), '04141c')
+
+
+def sea_icons():
+    from .data import FRUITS
+    out = {f'fruit_{k}': fruit_icon(k) for k in FRUITS}
+    out.update({f'power_{k}': power_icon(k, v['color']) for k, v in FRUITS.items()})
+    out.update({'doubloon': coin_icon(), 'cannonball': cannonball_icon(), 'ship_kit': ship_kit_icon(),
+                'leviathan_lure': lure_icon(), 'leviathan_scale': scale_icon()})
+    return out
+
+
+def sea_glyphs(page):
+    """Add fruit, Will, coin and compass-arrow glyphs to the HUD font page."""
+    from .data import FRUIT_ORDER
+
+    def put(idx, cell):
+        r, c = divmod(idx, 16)
+        page[r * 16:(r + 1) * 16, c * 16:(c + 1) * 16] = cell
+    for i, fid in enumerate(FRUIT_ORDER):
+        img = tex.to_image(fruit_icon(fid)).resize((16, 16), Image.LANCZOS)
+        cell = tex.from_image(img)
+        cell[..., 3] = np.where(cell[..., 3] > 100, 255, 0)
+        put(0x30 + i, cell)
+    will = tex.draw_layer(16, 16, lambda d, s: (d.polygon([(8 * s, 1 * s), (12 * s, 7 * s), (10 * s, 15 * s), (6 * s, 15 * s), (4 * s, 7 * s)], fill=(120, 60, 200, 255)),
+                                                d.polygon([(8 * s, 5 * s), (10 * s, 9 * s), (8 * s, 13 * s), (6 * s, 9 * s)], fill=(235, 220, 255, 255))), 4)
+    put(0x36, _finish(will, '120820'))
+    put(0x37, tex.from_image(tex.to_image(coin_icon()).resize((16, 16), Image.LANCZOS)))
+    for k in range(8):
+        ang = k * 45
+
+        def arrow(d, s, ang=ang):
+            r = math.radians(ang - 90)
+            cx, cy = 8 * s, 8 * s
+            tip = (cx + math.cos(r) * 6.5 * s, cy + math.sin(r) * 6.5 * s)
+            left = (cx + math.cos(r + 2.5) * 5.5 * s, cy + math.sin(r + 2.5) * 5.5 * s)
+            right = (cx + math.cos(r - 2.5) * 5.5 * s, cy + math.sin(r - 2.5) * 5.5 * s)
+            d.polygon([tip, left, (cx, cy), right], fill=(255, 210, 70, 255))
+        put(0x40 + k, _finish(tex.draw_layer(16, 16, arrow, 4), '3a2400'))
+    return page

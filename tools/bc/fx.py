@@ -497,7 +497,62 @@ def particles():
     return out
 
 
+def sea_particles():
+    out = []
+    TRAILS_SEA = {
+        'dust': ('smoke', 'particles_blend', {'0.0': '#A0857A6A', '1.0': '#00403A30'}, 0.45, 40, 0.6, {'flip': True}),
+    }
+    for name, spec in TRAILS_SEA.items():
+        out.append(trail_particle(name, spec))
+
+    def oneshot(ident, texture, material, n, speed, life, size, tint, gravity=0.0, drag=2.0, spin=0, radius=0.3, collide=False, flip=None):
+        c = {
+            'minecraft:emitter_initialization': {'creation_expression': 'v.sc = v.scale ?? 1.0;'},
+            **once(n),
+            'minecraft:emitter_shape_sphere': {'radius': f'{radius} * v.sc', 'direction': 'outwards'},
+            'minecraft:particle_lifetime_expression': {'max_lifetime': f'{life} * (0.6 + v.particle_random_1 * 0.8)'},
+            'minecraft:particle_initial_speed': f'({speed}) * v.sc * (0.5 + v.particle_random_2)',
+            'minecraft:particle_motion_dynamic': {'linear_acceleration': [0, gravity, 0], 'linear_drag_coefficient': drag},
+            'minecraft:particle_appearance_billboard': billboard(texture, [f'{size} * (1.0 - v.particle_age / v.particle_lifetime * 0.5)'] * 2, flip=flip),
+            'minecraft:particle_appearance_tinting': tint,
+        }
+        if spin:
+            c['minecraft:particle_initial_spin'] = {'rotation': 'math.random(0,360)', 'rotation_rate': spin}
+        if collide:
+            c['minecraft:particle_motion_collision'] = {'collision_radius': 0.1, 'coefficient_of_restitution': 0.3, 'collision_drag': 4}
+            c['minecraft:particle_appearance_lighting'] = {}
+        return P(ident, texture, material, c)
+
+    out.append(oneshot('bc:rock_debris', 'shard', 'particles_alpha', 26, 7, 1.4, 0.32,
+                       gradient({'0.0': '#FF7E766A', '1.0': '#FF3D3933'}), gravity=-18, drag=0.6, spin=360, collide=True))
+    out.append(oneshot('bc:leaf_burst', 'clover', 'particles_alpha', 22, 4, 2.0, 0.3, {'color': [1, 1, 1, 1]}, gravity=-1.2, drag=1.6, spin=200, radius=0.8))
+    out.append(oneshot('bc:shard_burst', 'shard', 'particles_add', 24, 9, 0.8, 0.3, color_var(FADE_OUT), gravity=-10, drag=1.0, spin=500))
+    out.append(oneshot('bc:will_spark', 'spark', 'particles_add', 18, 6, 0.4, 0.45,
+                       gradient({'0.0': '#FFE8D8FF', '0.4': '#FF8A46FF', '1.0': '#00240F3A'}), spin=600))
+    out.append(P('bc:ship_wake', 'bubble', 'particles_alpha', {
+        **steady(14, 40),
+        'minecraft:emitter_local_space': {'position': False, 'rotation': False},
+        'minecraft:emitter_shape_box': {'offset': [0, 0.35, 0], 'half_dimensions': [1.4, 0.05, 1.8], 'surface_only': True, 'direction': 'outwards'},
+        'minecraft:particle_lifetime_expression': {'max_lifetime': 1.4},
+        'minecraft:particle_initial_speed': 0.4,
+        'minecraft:particle_motion_dynamic': {'linear_drag_coefficient': 2},
+        'minecraft:particle_appearance_billboard': billboard('bubble', ['0.3 + v.particle_age * 0.2'] * 2, 'emitter_transform_xz'),
+        'minecraft:particle_appearance_tinting': {'color': [0.92, 0.97, 1.0, FADE_OUT]},
+    }))
+    out.append(P('bc:leviathan_bubbles', 'bubble', 'particles_add', {
+        **steady(20, 60),
+        'minecraft:emitter_local_space': {'position': False, 'rotation': False},
+        'minecraft:emitter_shape_box': {'offset': [0, 1.5, 0], 'half_dimensions': [1.5, 1.0, 3.0], 'direction': [0, 1, 0]},
+        'minecraft:particle_lifetime_expression': {'max_lifetime': 1.6},
+        'minecraft:particle_initial_speed': 1.2,
+        'minecraft:particle_motion_dynamic': {'linear_acceleration': [0, 1.5, 0], 'linear_drag_coefficient': 1.5},
+        'minecraft:particle_appearance_billboard': billboard('bubble', [0.22, 0.22]),
+        'minecraft:particle_appearance_tinting': {'color': [0.6, 1.0, 0.95, FADE_OUT]},
+    }))
+    return out
+
+
 def build():
     gen_textures()
-    for ident, data in particles():
+    for ident, data in particles() + sea_particles():
         write_json(RP, f"particles/bc/{ident.split(':')[1]}.particle.json", data)

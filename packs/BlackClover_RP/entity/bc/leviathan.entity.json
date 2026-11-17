@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:leviathan",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/leviathan"
+      },
+      "geometry": {
+        "default": "geometry.bc.leviathan"
+      },
+      "animations": {
+        "swim": "animation.bc.leviathan.swim",
+        "aura": "animation.bc.mob.aura"
+      },
+      "scripts": {
+        "animate": [
+          "swim",
+          "aura"
+        ],
+        "scale": "1.3"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:leviathan_bubbles"
+      },
+      "spawn_egg": {
+        "base_color": "#0b2b3a",
+        "overlay_color": "#7affe8"
+      }
+    }
+  }
+}

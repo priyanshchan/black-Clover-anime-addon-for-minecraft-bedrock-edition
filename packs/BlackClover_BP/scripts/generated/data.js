@@ -366,6 +366,257 @@ export const DATA = {
     "clover5": "\ue71a",
     "star": "\ue720",
     "hourglass": "\ue721",
-    "lock": "\ue722"
-  }
+    "lock": "\ue722",
+    "will": "\ue736",
+    "coin": "\ue737",
+    "arrows": [
+      "\ue740",
+      "\ue741",
+      "\ue742",
+      "\ue743",
+      "\ue744",
+      "\ue745",
+      "\ue746",
+      "\ue747"
+    ]
+  },
+  "fruits": {
+    "ember": {
+      "name": "Ember Fruit",
+      "color": "ff6a1a",
+      "mc": "\u00a76",
+      "power": "Ember Body",
+      "passive": "Immune to fire. Your punches set foes ablaze.",
+      "glyph": "\ue730",
+      "abilities": [
+        {
+          "id": "ember_fist",
+          "name": "Ember Fist",
+          "cooldown": 1.6,
+          "desc": "Hurl a fist of fire that bursts on impact."
+        },
+        {
+          "id": "blaze_step",
+          "name": "Blaze Step",
+          "cooldown": 4.0,
+          "desc": "Dash forward, leaving a trail of fire."
+        },
+        {
+          "id": "cinder_nova",
+          "name": "Cinder Nova",
+          "cooldown": 14.0,
+          "desc": "Detonate in a ring of white-hot flame."
+        }
+      ]
+    },
+    "stone": {
+      "name": "Stone Fruit",
+      "color": "a89a86",
+      "mc": "\u00a77",
+      "power": "Stone Body",
+      "passive": "Hardened skin: you take less damage and shrug off knockback.",
+      "glyph": "\ue731",
+      "abilities": [
+        {
+          "id": "boulder_fist",
+          "name": "Boulder Fist",
+          "cooldown": 2.0,
+          "desc": "Launch a boulder that shatters on impact."
+        },
+        {
+          "id": "earth_spikes",
+          "name": "Earth Spikes",
+          "cooldown": 5.0,
+          "desc": "Stone spikes erupt in a line ahead of you."
+        },
+        {
+          "id": "fortress_skin",
+          "name": "Fortress Skin",
+          "cooldown": 20.0,
+          "desc": "Turn to granite: huge resistance, slower steps."
+        }
+      ]
+    },
+    "gravity": {
+      "name": "Gravity Fruit",
+      "color": "8a5cff",
+      "mc": "\u00a7d",
+      "power": "Gravity Grip",
+      "passive": "You never take fall damage.",
+      "glyph": "\ue732",
+      "abilities": [
+        {
+          "id": "gravity_crush",
+          "name": "Gravity Crush",
+          "cooldown": 4.0,
+          "desc": "Slam everything near your aim into the ground."
+        },
+        {
+          "id": "repulse",
+          "name": "Repulse",
+          "cooldown": 6.0,
+          "desc": "Hurl everything around you away."
+        },
+        {
+          "id": "falling_star",
+          "name": "Falling Star",
+          "cooldown": 18.0,
+          "desc": "Pull a burning meteor down onto your aim."
+        }
+      ]
+    },
+    "shadow": {
+      "name": "Shadow Fruit",
+      "color": "3a2a5a",
+      "mc": "\u00a78",
+      "power": "Shadow Grasp",
+      "passive": "Night vision, and you vanish while sneaking in the dark.",
+      "glyph": "\ue733",
+      "abilities": [
+        {
+          "id": "shadow_bind",
+          "name": "Shadow Bind",
+          "cooldown": 6.0,
+          "desc": "Shadows pin down every enemy near your aim."
+        },
+        {
+          "id": "shade_step",
+          "name": "Shade Step",
+          "cooldown": 3.0,
+          "desc": "Step through the shadows behind your target."
+        },
+        {
+          "id": "umbral_legion",
+          "name": "Umbral Legion",
+          "cooldown": 30.0,
+          "desc": "Raise three shade soldiers to fight for you."
+        }
+      ]
+    },
+    "bloom": {
+      "name": "Bloom Fruit",
+      "color": "5cc85a",
+      "mc": "\u00a7a",
+      "power": "Bloom Touch",
+      "passive": "You slowly regenerate while standing on grass or leaves.",
+      "glyph": "\ue734",
+      "abilities": [
+        {
+          "id": "thorn_lash",
+          "name": "Thorn Lash",
+          "cooldown": 1.8,
+          "desc": "A whip of poisoned thorns lashes ahead."
+        },
+        {
+          "id": "healing_pollen",
+          "name": "Healing Pollen",
+          "cooldown": 12.0,
+          "desc": "Pollen heals you and nearby allies."
+        },
+        {
+          "id": "rooting_grove",
+          "name": "Rooting Grove",
+          "cooldown": 18.0,
+          "desc": "Roots seize and crush every enemy around you."
+        }
+      ]
+    },
+    "quicksilver": {
+      "name": "Quicksilver Fruit",
+      "color": "c8d0dc",
+      "mc": "\u00a7f",
+      "power": "Quicksilver Arm",
+      "passive": "Liquid-metal body: arrows and blades glance off you more often.",
+      "glyph": "\ue735",
+      "abilities": [
+        {
+          "id": "mercury_blades",
+          "name": "Mercury Blades",
+          "cooldown": 2.2,
+          "desc": "Fling a fan of liquid-metal blades."
+        },
+        {
+          "id": "flow_dash",
+          "name": "Flow Dash",
+          "cooldown": 4.0,
+          "desc": "Pour yourself forward through every enemy."
+        },
+        {
+          "id": "silver_storm",
+          "name": "Silver Storm",
+          "cooldown": 16.0,
+          "desc": "A storm of spinning blades surrounds you."
+        }
+      ]
+    }
+  },
+  "fruitOrder": [
+    "ember",
+    "stone",
+    "gravity",
+    "shadow",
+    "bloom",
+    "quicksilver"
+  ],
+  "willMax": 10,
+  "captainFirst": [
+    "Rust",
+    "Iron",
+    "Salt",
+    "Storm",
+    "Grim",
+    "Bone",
+    "Gold",
+    "Ash",
+    "Coral",
+    "Sable",
+    "Brine",
+    "Cinder"
+  ],
+  "captainLast": [
+    "fang",
+    "hook",
+    "tide",
+    "eye",
+    "scale",
+    "jaw",
+    "gale",
+    "brand",
+    "skull",
+    "wake",
+    "reef",
+    "claw"
+  ],
+  "shop": [
+    {
+      "item": "bc:mana_crystal",
+      "count": 4,
+      "price": 20,
+      "label": "Mana Crystals x4"
+    },
+    {
+      "item": "bc:cannonball",
+      "count": 8,
+      "price": 15,
+      "label": "Cannonballs x8"
+    },
+    {
+      "item": "bc:ship_kit",
+      "count": 1,
+      "price": 60,
+      "label": "Sailing Ship Kit"
+    },
+    {
+      "item": "bc:leviathan_lure",
+      "count": 1,
+      "price": 150,
+      "label": "Leviathan Lure"
+    },
+    {
+      "item": "random_fruit",
+      "count": 1,
+      "price": 400,
+      "label": "Mystery Abyss Fruit"
+    }
+  ]
 };

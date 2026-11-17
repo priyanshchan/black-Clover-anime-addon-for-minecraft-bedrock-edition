@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:cannonball",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/cannonball"
+      },
+      "geometry": {
+        "default": "geometry.bc.cannonball"
+      },
+      "animations": {
+        "fly": "animation.bc.cannonball.fly",
+        "trail": "animation.bc.spell.trail"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "trail": "bc:trail_dust"
+      }
+    }
+  }
+}

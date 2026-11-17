@@ -137,6 +137,7 @@ const HANDLERS = {
       hurt(t, m.damage * (t.matches({ families: ['bc_magic'] }) ? 1.5 : 1), o, 'entityAttack');
       // anti-magic strips magical buffs
       for (const ef of safe(() => t.getEffects()) ?? []) safe(() => t.removeEffect(ef.typeId));
+      safe(() => t.setDynamicProperty('bc:sealed', system.currentTick + 100)); // anti-magic seals Abyss Fruit powers
       knock(t, m.vel, 1.2, 0.3);
       particle(t.dimension, 'bc:slash_fx', loc, { size: 3 });
     },
@@ -161,6 +162,12 @@ const HANDLERS = {
 };
 
 const PIERCING = new Set(['bc:water_dragon', 'bc:dark_crescent', 'bc:anti_magic_slash']);
+
+/** Let other modules (the sea expansion) add projectile behaviour. */
+export function registerHandler(typeId, handler, piercing = false) {
+  HANDLERS[typeId] = handler;
+  if (piercing) PIERCING.add(typeId);
+}
 const DEFAULT_META = { 'bc:dark_bolt': 0, 'bc:devil_orb': 0 };
 
 function metaFor(proj, typeId) {

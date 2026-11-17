@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:metal_blade",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/metal_blade"
+      },
+      "geometry": {
+        "default": "geometry.bc.metal_blade"
+      },
+      "animations": {
+        "fly": "animation.bc.metal_blade.fly",
+        "trail": "animation.bc.spell.trail"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "trail": "bc:trail_light"
+      }
+    }
+  }
+}

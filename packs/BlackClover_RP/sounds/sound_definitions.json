@@ -1,6 +1,102 @@
 {
   "format_version": "1.20.20",
   "sound_definitions": {
+    "bc.cannon": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/cannon",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.ship.bell": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/ship_bell",
+          "volume": 0.9,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.fruit.eat": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/fruit_eat",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.will.pulse": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/will_pulse",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.stone.crack": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/stone_crack",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.gravity.hum": {
+      "category": "neutral",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/gravity_hum",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.coins": {
+      "category": "player",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/coins",
+          "volume": 0.9,
+          "load_on_low_memory": true
+        }
+      ]
+    },
+    "bc.leviathan.roar": {
+      "category": "hostile",
+      "min_distance": 1.0,
+      "max_distance": 32.0,
+      "sounds": [
+        {
+          "name": "sounds/bc/leviathan_roar",
+          "volume": 1.0,
+          "load_on_low_memory": true
+        }
+      ]
+    },
     "bc.cast": {
       "category": "player",
       "min_distance": 1.0,

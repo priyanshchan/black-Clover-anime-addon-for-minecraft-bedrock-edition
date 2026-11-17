@@ -1,0 +1,110 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "bc:sail_ship",
+      "is_spawnable": false,
+      "is_summonable": true
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "bc_ship",
+          "inanimate"
+        ]
+      },
+      "minecraft:health": {
+        "value": 120,
+        "max": 120
+      },
+      "minecraft:collision_box": {
+        "width": 2.6,
+        "height": 1.1
+      },
+      "minecraft:physics": {},
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:buoyant": {
+        "base_buoyancy": 1.0,
+        "apply_gravity": false,
+        "can_auto_step_from_liquid": false,
+        "movement_type": "bobbing",
+        "liquid_blocks": [
+          "minecraft:water",
+          "minecraft:flowing_water"
+        ]
+      },
+      "minecraft:rideable": {
+        "seat_count": 4,
+        "crouching_skip_interact": true,
+        "family_types": [
+          "player"
+        ],
+        "interact_text": "action.interact.ride.boat",
+        "pull_in_entities": false,
+        "seats": [
+          {
+            "position": [
+              0.0,
+              1.15,
+              -0.7
+            ]
+          },
+          {
+            "position": [
+              0.0,
+              0.8,
+              0.5
+            ]
+          },
+          {
+            "position": [
+              -0.35,
+              0.8,
+              1.2
+            ]
+          },
+          {
+            "position": [
+              0.35,
+              0.8,
+              -0.1
+            ]
+          }
+        ]
+      },
+      "minecraft:knockback_resistance": {
+        "value": 1.0
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "fall",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "drowning",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "suffocation",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "lightning",
+            "deals_damage": "no"
+          }
+        ]
+      },
+      "minecraft:nameable": {},
+      "minecraft:persistent": {},
+      "minecraft:loot": {
+        "table": "loot_tables/entities/bc_ship.json"
+      },
+      "minecraft:conditional_bandwidth_optimization": {}
+    },
+    "events": {}
+  }
+}

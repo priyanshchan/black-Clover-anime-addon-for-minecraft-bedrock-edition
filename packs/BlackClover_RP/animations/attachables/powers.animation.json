@@ -1,0 +1,20 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.power.aura": {
+      "loop": true,
+      "bones": {
+        "orbit": {
+          "rotation": [
+            0,
+            "q.life_time * 120.0",
+            0
+          ]
+        },
+        "aura": {
+          "scale": "1.0 + math.sin(q.life_time * 300.0) * 0.04"
+        }
+      }
+    }
+  }
+}

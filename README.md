@@ -16,14 +16,15 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **3D held grimoires** – your grimoire floats open beside your shoulder with flipping pages, glowing rune text and a spinning magic sigil (first-person view included).
 * **3D anti-magic swords** – Demon-Slayer, Demon-Dweller and Demon-Destroyer, each with its own ability, spell-cutting and an Anti-Magic gauge that powers **Black Form**.
 * **3D spell entities with animations** – wind crescents, fireballs, a roaring flame lion, a serpentine water dragon, a spinning tornado, thunder spears, swords of light, dark crescents, a black hole, ice spears and ice prisons.
-* **47 custom particle effects** – magic circles that face your cast direction, ground circles, element trails, shockwaves, lightning strikes, black anti-magic crackle, clover leaves, snowstorms and more.
-* **15 custom sound effects** synthesised for the addon (cast shimmer, page flips, anti-magic slashes, Black Form roar, level-up chime, Devil roar…).
+* **54 custom particle effects** – magic circles that face your cast direction, ground circles, element trails, shockwaves, lightning strikes, black anti-magic crackle, clover leaves, snowstorms and more.
+* **23 custom sound effects** synthesised for the addon (cast shimmer, page flips, anti-magic slashes, Black Form roar, level-up chime, Devil roar…).
 * **Mana, levels and progression** – mana bar HUD made from custom font glyphs, magic XP, 20 levels, new spells at levels 3 / 6 / 10.
 * **The Grimoire Altar** – a 3D block with a ceremony that chooses your attribute.
 * **Magic Knight robes** – Black Bull, Golden Dawn and Crimson Lion capes (3D, animated cape) with set perks.
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **Expansion – The Abyssal Seas:** 6 Abyss Fruits with 18 abilities, the Will system, steerable sailing ships with cannons, Sea Raiders and fruit-wielding Raider Captains, generated outposts and shipwrecks, a Bounty Board with a doubloon shop, and the Abyssal Leviathan boss.
 
 | Spells | Grimoires & swords |
 |---|---|
@@ -146,6 +147,81 @@ Players in **creative mode** can use any grimoire with every spell unlocked and 
 
 ---
 
+## Expansion: The Abyssal Seas
+
+A Black Clover-meets-pirate-adventure expansion with **all-original** content: Abyss Fruits, Will, sailing ships, raiders, bounties and a sea boss. It works alongside grimoires: a mage can also eat a fruit.
+
+![Seas](docs/images/seas.png)
+
+![Fruit powers](docs/images/powers.png)
+
+![Items](docs/images/sea_items.png)
+
+### Abyss Fruits
+
+Eat a fruit (hold Use) to gain its power permanently, plus a bound power item that shows an aura on your casting arm. **You can only ever hold one fruit**: eating a second one hurts you badly. Fruit users are drained in deep water (powers off, slowed, slowly sinking), and **anti-magic seals fruit powers** for a few seconds (demon-sword hits, Black Meteorite slashes). Your fruit power returns to you after death.
+
+| Fruit | Passive | Abilities (Use = cast, Sneak + Use = switch) |
+|---|---|---|
+| **Ember Fruit** | Immune to fire. Your punches set foes ablaze. | **Ember Fist** (1.6s) – Hurl a fist of fire that bursts on impact.<br>**Blaze Step** (4s) – Dash forward, leaving a trail of fire.<br>**Cinder Nova** (14s) – Detonate in a ring of white-hot flame. |
+| **Stone Fruit** | Hardened skin: you take less damage and shrug off knockback. | **Boulder Fist** (2s) – Launch a boulder that shatters on impact.<br>**Earth Spikes** (5s) – Stone spikes erupt in a line ahead of you.<br>**Fortress Skin** (20s) – Turn to granite: huge resistance, slower steps. |
+| **Gravity Fruit** | You never take fall damage. | **Gravity Crush** (4s) – Slam everything near your aim into the ground.<br>**Repulse** (6s) – Hurl everything around you away.<br>**Falling Star** (18s) – Pull a burning meteor down onto your aim. |
+| **Shadow Fruit** | Night vision, and you vanish while sneaking in the dark. | **Shadow Bind** (6s) – Shadows pin down every enemy near your aim.<br>**Shade Step** (3s) – Step through the shadows behind your target.<br>**Umbral Legion** (30s) – Raise three shade soldiers to fight for you. |
+| **Bloom Fruit** | You slowly regenerate while standing on grass or leaves. | **Thorn Lash** (1.8s) – A whip of poisoned thorns lashes ahead.<br>**Healing Pollen** (12s) – Pollen heals you and nearby allies.<br>**Rooting Grove** (18s) – Roots seize and crush every enemy around you. |
+| **Quicksilver Fruit** | Liquid-metal body: arrows and blades glance off you more often. | **Mercury Blades** (2.2s) – Fling a fan of liquid-metal blades.<br>**Flow Dash** (4s) – Pour yourself forward through every enemy.<br>**Silver Storm** (16s) – A storm of spinning blades surrounds you. |
+
+Fruits come from Raider Captains (35% drop), sunken-wreck chests, the Leviathan (guaranteed) and the Bounty Board shop.
+
+### Will
+
+Everyone has Will, an original fighting-spirit stat trained by fighting (melee hits, taking hits, kills, bounties, Leviathan Scales). Will levels go to 10; the gauge refills over time.
+
+| Will level | Unlock |
+|---|---|
+| 1 | **Iron Will** – melee hits spend Will for bonus damage |
+| 3 | **Keen Will** – a chance to sidestep blows and arrows (the damage is undone) |
+| 8 | **Sovereign Will** – **Sneak + Jump** at full Will: a pulse that floors weak enemies and staggers the rest |
+
+### Ships
+
+* **Sailing Ship** – craft ` W / PIP / PPP ` (white wool, oak planks, iron ingot) and use it on water. Up to 4 people aboard; the first is the captain.
+* **Steering:** look where you want to sail and hold forward; hold back to brake. The sails fill out as you speed up.
+* **Cannons:** use **Cannonballs** (iron ingot + gunpowder → 4) while aboard to fire. Cannonballs damage mobs and other ships.
+
+### Raiders, outposts & wrecks
+
+While you sail over deep water, **pirate outpost islands** (palms, tent, dock, campfire, loot chest, a Bounty Board) and **sunken wrecks** (two treasure chests, Drowned) appear out of sight. **Sea Raiders** also spawn on beaches at night. **Raider Captains** have generated names and each wields an Abyss Fruit, using its abilities against you.
+
+### Bounty Board
+
+Craft one (` PPP / XXX / S S `: planks, paper, sticks) or find one at an outpost. It offers three wanted captains a day; accept one and an arrow on your HUD points to their hideout. Defeat the captain to claim the doubloons. The board also sells:
+
+| Item | Doubloons |
+|---|---|
+| Mana Crystals x4 | 20 |
+| Cannonballs x8 | 15 |
+| Sailing Ship Kit | 60 |
+| Leviathan Lure | 150 |
+| Mystery Abyss Fruit | 400 |
+
+### The Abyssal Leviathan
+
+Use a **Leviathan Lure** (heart of the sea, prismarine crystals, 2 mana crystals) facing deep water. The 600-HP sea serpent bites, fires water volleys, slams the water under you (hurting ships), and in its second phase roars and calls the Drowned. Drops Leviathan Scales (use them for Will XP), doubloons, a heart of the sea and a random Abyss Fruit.
+
+### More commands
+
+```
+/give @s bc:fruit_ember          (ember stone gravity shadow bloom quicksilver)
+/give @s bc:ship_kit
+/give @s bc:cannonball 32
+/give @s bc:bounty_board
+/give @s bc:leviathan_lure
+/summon bc:raider_captain
+/summon bc:leviathan
+```
+
+---
+
 ## Building from source
 
 Everything in `packs/` and `dist/` is generated. Requirements: Python 3.10+, `numpy`, `Pillow`, and `ffmpeg` (for the OGG sounds).
@@ -159,13 +235,14 @@ python3 tools/previews.py     # re-renders the images in docs/images
 | Path | What it is |
 |---|---|
 | `tools/bc/data.py` | attributes, spells, swords, robes (single source of truth, also exported to the scripts) |
-| `tools/bc/models/` | 3D models (grimoires, swords, robes, altar, spells, mobs) and their animations |
+| `tools/bc/models/` | 3D models (grimoires, swords, robes, altar, spells, mobs, ship, raiders, Leviathan, fruit auras) and their animations |
+| `tools/bc/seagen.py`, `structures.py` | Abyssal Seas pack content and the outpost / wreck blueprints |
 | `tools/bc/tex.py` | procedural pixel-art material painter |
 | `tools/bc/geo.py`, `render.py` | Bedrock geometry builder with UV atlas packing, and a software preview renderer |
 | `tools/bc/fx.py` | particle textures and particle effects |
 | `tools/bc/audio.py` | synthesised sound effects |
 | `tools/bc/packgen.py` | items, blocks, entities, recipes, loot, spawn rules, client entities, attachables |
-| `src/scripts/` | gameplay scripts (`@minecraft/server` 2.0.0, JavaScript modules) |
+| `src/scripts/` | gameplay scripts (`@minecraft/server` 2.0.0, JavaScript modules); the expansion lives in `src/scripts/sea/` |
 
 The scripts are type-checked against the official `@minecraft/server` 2.0.0 typings (`tsc --checkJs`).
 
