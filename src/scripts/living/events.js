@@ -9,7 +9,8 @@ import { addXp } from '../core/progress.js';
 import { addStars } from '../core/ranks.js';
 import { V, alive, pick, rand, repeat, safe, timer } from '../core/util.js';
 import { spawnCaptain } from '../sea/captains.js';
-import { startBattle } from './battle.js';
+import { TACTICS, startBattle } from './battle.js';
+import { POWERS, RIVAL, onOffensive, powerMul } from './worldsim.js';
 import { summonBoss } from './bosses.js';
 import { boltFrom } from './engine.js';
 import { setupKnight } from './knights.js';
@@ -64,7 +65,28 @@ function waterNear(p, dist) {
 }
 
 // ------------------------------------------------------------------------------- the events
-/** @type {Record<string, {w: number, ok?: (p: Player) => boolean, run: (p: Player) => boolean | void}>} */
+/** Pick a faction, the stronger ones more often. */
+function weightedFaction(exclude) {
+  const pool = Object.keys(DATA.factions).filter((f) => f !== exclude);
+  const w = pool.map((f) => (POWERS.includes(f) ? powerMul(f) : 0.6));
+  let r = Math.random() * w.reduce((a, b) => a + b, 0);
+  for (let i = 0; i < pool.length; i++) {
+    r -= w[i];
+    if (r <= 0) return pool[i];
+  }
+  return pool[0];
+}
+
+function battleSpot(p, dist = 20) {
+  const dir = V.flat(p.getViewDirection());
+  const c = V.add(p.location, V.mul(dir, dist));
+  const top = safe(() => p.dimension.getTopmostBlock({ x: c.x, z: c.z }));
+  if (!top || top.isLiquid) return undefined;
+  c.y = top.location.y + 1;
+  return { c, dir };
+}
+
+/** @type {Record<string, {w: number, f?: string, ok?: (p: Player) => boolean, run: (p: Player) => boolean | void}>} */
 export const EVENTS = {
   meteor_shower: {
     w: 10,
@@ -84,6 +106,7 @@ export const EVENTS = {
   },
   devil_gate: {
     w: 8,
+    f: 'devils',
     run(p) {
       const at = spotNear(p, rand(18, 26));
       if (!at) return false;
@@ -114,6 +137,7 @@ export const EVENTS = {
   },
   pirate_landing: {
     w: 8,
+    f: 'raiders',
     run(p) {
       const at = spotNear(p, rand(18, 24));
       if (!at) return false;
@@ -126,21 +150,32 @@ export const EVENTS = {
   skirmish: {
     w: 10,
     run(p) {
-      const dir = V.flat(p.getViewDirection());
-      const c = V.add(p.location, V.mul(dir, 20));
-      const top = safe(() => p.dimension.getTopmostBlock({ x: c.x, z: c.z }));
-      if (!top || top.isLiquid) return false;
-      c.y = top.location.y + 1;
-      const ids = Object.keys(DATA.factions);
-      const fa = pick(ids);
-      let fb = pick(ids);
-      while (fb === fa) fb = pick(ids);
+      const spot = battleSpot(p);
+      if (!spot) return false;
+      const fa = weightedFaction();
+      const fb = Math.random() < 0.6 && RIVAL[fa] ? RIVAL[fa] : weightedFaction(fa);
+      const tactics = Object.keys(TACTICS);
       announce(p, '§6§lA SKIRMISH BREAKS OUT', `§7${DATA.factions[fa].name} clash with ${DATA.factions[fb].name}`);
-      startBattle({ dim: p.dimension, center: c, facing: dir, fa, fb, size: 4 + Math.floor(Math.random() * 3), leaders: true, quiet: true });
+      startBattle({ dim: p.dimension, center: spot.c, facing: spot.dir, fa, fb, size: 4 + Math.floor(Math.random() * 3), leaders: true, quiet: true,
+        tactics: { a: pick(tactics), b: pick(tactics) } });
+    },
+  },
+  knight_tournament: {
+    w: 4,
+    ok: () => !night(),
+    run(p) {
+      const spot = battleSpot(p, 14);
+      if (!spot) return false;
+      const attrs = DATA.order.filter((a) => a !== 'anti');
+      const level = 3 + Math.floor(Math.random() * 5);
+      announce(p, '§a§lA KNIGHTS\' TOURNAMENT', '§7Two Magic Knights cross grimoires', '§a♣ Two Magic Knights are holding a duel nearby - come and watch!');
+      startBattle({ dim: p.dimension, center: spot.c, facing: spot.dir, fa: 'knights', fb: 'knights', size: 1, duel: true,
+        roster: { a: [{ type: 'bc:magic_knight', attr: pick(attrs), level }], b: [{ type: 'bc:magic_knight', attr: pick(attrs), level }] } });
     },
   },
   knight_patrol: {
     w: 6,
+    f: 'knights',
     ok: () => !night(),
     run(p) {
       const at = spotNear(p, rand(14, 20));
@@ -187,6 +222,7 @@ export const EVENTS = {
   },
   crimson_night: {
     w: 4,
+    f: 'devils',
     ok: () => night(),
     run(p) {
       announce(p, '§4§lCRIMSON NIGHT', '§7The devils are bold tonight', '§4☾ A crimson moon rises. Devils swarm for the next two minutes - each one slain is worth extra magic XP!');
@@ -238,6 +274,19 @@ export const EVENTS = {
   },
 };
 
+// a dominant faction marches on its rival, near a player
+onOffensive((attacker, defender) => {
+  const players = world.getAllPlayers().filter((p) => p.dimension.id === 'minecraft:overworld');
+  if (!players.length) return false;
+  const p = pick(players);
+  const spot = battleSpot(p, 24);
+  if (!spot) return false;
+  announce(p, `${DATA.factions[attacker].mc}§lAN OFFENSIVE`, `§7The ${DATA.factions[attacker].name} march on the ${DATA.factions[defender].name}`);
+  startBattle({ dim: p.dimension, center: spot.c, facing: spot.dir, fa: attacker, fb: defender, size: 7 + Math.floor(Math.random() * 3), leaders: true, quiet: true,
+    tactics: { a: Math.random() < 0.5 ? 'charge' : 'flank', b: 'hold' } });
+  return true;
+});
+
 // crimson-night devils give extra XP
 world.afterEvents.entityDie.subscribe((ev) => safe(() => {
   if (!ev.deadEntity.hasTag('bc_crimson')) return;
@@ -261,10 +310,11 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
 export function runEvent(p, name) {
   const pool = name ? [[name, EVENTS[name]]] : Object.entries(EVENTS).filter(([, e]) => !e.ok || e.ok(p));
   if (!pool.length || !pool[0][1]) return false;
-  let r = Math.random() * pool.reduce((s, [, e]) => s + e.w, 0);
+  const weight = (e) => e.w * (e.f ? powerMul(e.f) : 1);
+  let r = Math.random() * pool.reduce((s, [, e]) => s + weight(e), 0);
   let chosen = pool[0];
   for (const entry of pool) {
-    r -= entry[1].w;
+    r -= weight(entry[1]);
     if (r <= 0) {
       chosen = entry;
       break;

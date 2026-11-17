@@ -2,7 +2,7 @@
 import { ItemStack, Player, system, world } from '@minecraft/server';
 import { MessageFormData } from '@minecraft/server-ui';
 import { DATA } from '../generated/data.js';
-import { center, hurt, knock, knockFrom, targetsAround } from '../core/combat.js';
+import { center, foeOf, hurt, knock, knockFrom, targetsAround } from '../core/combat.js';
 import { anim, particle, shakeArea, sound, title } from '../core/fx.js';
 import { V, rand, safe, timer } from '../core/util.js';
 
@@ -123,10 +123,7 @@ system.runInterval(() => {
     }
     if (st.next > now) continue;
     safe(() => {
-      const target = e.dimension.getPlayers({ location: e.location, maxDistance: 24 }).find((p) => {
-        const gm = p.getGameMode();
-        return gm !== 'Creative' && gm !== 'Spectator';
-      });
+      const target = foeOf(e, 24);
       if (!target) return;
       st.next = now + 140 + Math.floor(rand(0, 60));
       anim(e, 'animation.bc.tidewatch_commodore.cast');

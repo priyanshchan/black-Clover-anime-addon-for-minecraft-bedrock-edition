@@ -1,5 +1,7 @@
 # Black Clover: Grimoire Awakening
 
+> **Early Access – v0.1.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please open an issue.
+
 **An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 24 magic attributes, draw anti-magic demon swords, wear Magic Knight squad robes and fight Dark Disciples and a full Devil boss.
 
 ![Hero](docs/images/hero.png)
@@ -24,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v0.1.0 – AI & simulation:** a tactical brain for spellcasting NPCs (spell choice by situation, aim leading, dodging, focus fire, healing allies, retreating), battle tactics, formations, morale and routs, leaders, three-army battles and knight duels with a live scoreboard, kill feed, battle reports and a cinematic camera, and a world simulation where the four factions gain and lose power, fight off screen and launch offensives.
 * **Wave 4 – a living world:** a data-driven spell engine, 12 more grimoires and 12 more Abyss Fruits (Bear, Tiger and Wyvern beast forms), four giant bosses (Archdevil, Stone Colossus, Phantom Galleon, Storm Kraken), random world events, roaming Magic Knight NPCs, factions that fight each other, a travelling merchant, and the **War Table** battle simulator.
 * **Wave 3:** Spatial, Earth, Steel and Mirror magic, all nine squad robes, Magic Knight ranks, Mana Skin and Mana Zone, ancient dungeons with traps and a Guardian, Imps, four more Abyss Fruits (including Wolf and Hawk beast forms), a bounty on your head and the Tidewatch navy, treasure maps, cutlass, flintlock and grappling harpoon.
 * **Expansion – The Abyssal Seas:** 6 Abyss Fruits with 18 abilities, the Will system, steerable sailing ships with cannons, Sea Raiders and fruit-wielding Raider Captains, generated outposts and shipwrecks, a Bounty Board with a doubloon shop, and the Abyssal Leviathan boss.
@@ -42,8 +45,8 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 
 ## Install
 
-1. Download **[`dist/BlackClover_GrimoireAwakening.mcaddon`](dist/BlackClover_GrimoireAwakening.mcaddon)** and open it – Minecraft imports both packs.
-   (Separate `.mcpack` files for the behavior and resource packs are in [`dist/`](dist/) too.)
+1. Download **`BlackClover_GrimoireAwakening_v0.1.0.mcaddon`** from the **[Releases page](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases)** and open it – Minecraft imports both packs.
+   (Separate `.mcpack` files for the behavior and resource packs are attached too, and the latest build is always in [`dist/`](dist/).)
 2. Create or edit a world → **Behavior Packs** → activate *Black Clover: Grimoire Awakening* (the resource pack is added automatically).
 3. Requires **Minecraft Bedrock 1.21.90 or newer**. No experimental toggles are needed – the scripts only use the stable `@minecraft/server` 2.0.0 and `@minecraft/server-ui` 2.0.0 APIs.
 
@@ -317,6 +320,46 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 
 ---
 
+## v0.1.0: AI behaviour & simulation
+
+This early-access release is mostly about **how things fight and how the world moves**.
+
+### The tactical brain
+Magic Knights and Raider Captains are driven by one shared brain (`src/scripts/living/ai.js`):
+
+| | |
+|---|---|
+| **Fighting style** | Worked out from the spells it knows: *striker* (bolts, beams), *controller* (prisons, zones, vortices), *brawler* (novas, dashes, dives) or *support* (heals, buffs). |
+| **Traits** | **Skill** (aim, dodging, how fast it reacts) and **courage** (when it falls back). Shown on its profile. |
+| **Spell choice** | Every cast, each known spell is scored for the moment: range to the target, how many enemies are bunched around it, how many are close, hurt allies, its own health, cooldowns. The best one is cast – a little randomly for low-skill NPCs. |
+| **Aiming** | Leads moving targets by their velocity; better skill means less wobble. |
+| **Dodging** | Spells and arrows on a collision course are side-stepped (chance grows with skill). |
+| **Targets** | Prefers the army's **focus target** (the weakest foe near its centre), whoever just hurt it, and enemy leaders; sticks to a target instead of thrashing. |
+| **Positioning** | Spellcasters back away from foes that get within ~4.5 blocks; brawlers dive in; badly hurt cowards fall back toward friends. |
+
+### Battles
+* **Tactics** per army – *Charge*, *Hold the line*, *Flank*, *Skirmish* – and a **formation** with melee in front and mages behind.
+* **Morale** drops with every loss (a lot when the leader falls) and when an army is outnumbered 1.5:1 or worse; below 30 soldiers start to **flee**, above 55 they **rally** to a living leader. An army with nobody left fighting loses.
+* **Leaders** give soldiers within 10 blocks Strength; the army's focus target is re-picked every second.
+* **Three armies** at once (Blue, Red, Gold), **knight duels**, a live **scoreboard** sidebar, a **kill feed**, a **battle report** with an MVP, and a **cinematic camera** (sneak to stop).
+
+### The world simulation
+* Each of the four factions has a **power** from 0 to 100 (start 50). Deaths lower it, real battle wins raise it (War Table games do not count), and every five minutes it drifts back toward the middle while rivals clash off screen.
+* Event odds follow power (a strong Devil Host means more Devil Gates and Crimson Nights). At 80+ a faction launches an **offensive**: a 7–9 a side battle near a player.
+* The **State of the Kingdom** page shows power bars and the last ten news items.
+
+### Leading knights
+* Knights level up (1–10) from kills and learn their third spell at level 3 and their ultimate at level 6.
+* Talk to a knight to see its profile and **recruit** it (a Knight Contract, or 100 + 25 × level doubloons; up to 4).
+* Talk to your own knights to order them to **follow**, **hold this position**, switch between **aggressive** and **defensive** (guard you), or **release** them.
+
+```
+/scriptevent bc:event knight_tournament
+/summon bc:magic_knight
+```
+
+---
+
 ## Wave 4: a living world
 
 ![Wave 4](docs/images/wave4.png)
@@ -435,7 +478,7 @@ Every 4–7 minutes, one of these happens near a random player (toggle at a War 
 * **Magic Knights** spawn in plains, forests, meadows and savannas. Each has a name, one of 23 attributes (shown by the glyph over their head) and one of the nine squad robes. They cast real spells at monsters, pirates and devils – and only fight you if you hit them first.
 * **Knight Contract** (emerald ×4, paper ×4, mana crystal): a Magic Knight joins you, follows you and defends you.
 * **Factions in the wild:** knights fight devils and pirates; the Tidewatch also hunt devils and Dark Disciples; pirates and devils attack knights and the navy.
-* **War Table** (map, iron sword, feather / planks ×3 / sticks): a battle simulator. Pick two armies from **Clover Magic Knights**, **Devil Host**, **Sea Raiders**, **Tidewatch Navy**, **Ancient Constructs**, choose 2–12 soldiers a side, decide whether leaders (captains, commodores) join, and **bet doubloons** – win and you get double. Soldiers only fight the other army.
+* **War Table** (map, iron sword, feather / planks ×3 / sticks): a battle simulator (see v0.1.0 above for tactics, morale, duels and the camera). Pick two or three armies from **Clover Magic Knights**, **Devil Host**, **Sea Raiders**, **Tidewatch Navy**, **Ancient Constructs**, choose 2–12 soldiers a side, decide whether leaders (captains, commodores) join, and **bet doubloons** – win and you get double. Soldiers only fight the other army.
 * **Skirmish Horn** (bone, gold ingot ×2): two random armies clash right in front of you.
 
 ### The Travelling Magic Merchant
@@ -482,7 +525,7 @@ python3 tools/previews.py     # re-renders the images in docs/images
 | `tools/bc/models/` | 3D models (grimoires, swords, robes, altar, spells, mobs, ship, raiders, Leviathan, fruit auras) and their animations |
 | `tools/bc/seagen.py`, `structures.py` | Abyssal Seas pack content and the outpost / wreck blueprints |
 | `tools/bc/grandgen.py`, `wave4gen.py` | wave 3 and wave 4 pack content (bosses, knights, the War Table, faction team groups) |
-| `src/scripts/living/` | wave 4 scripts: the spell engine, knights, battles, bosses, world events, merchant, War Table |
+| `src/scripts/living/` | the spell engine, tactical AI brain (`ai.js`), knights, battle simulation, world simulation (`worldsim.js`), bosses, world events, merchant, War Table |
 | `tools/bc/tex.py` | procedural pixel-art material painter |
 | `tools/bc/geo.py`, `render.py` | Bedrock geometry builder with UV atlas packing, and a software preview renderer |
 | `tools/bc/fx.py` | particle textures and particle effects |
@@ -491,6 +534,8 @@ python3 tools/previews.py     # re-renders the images in docs/images
 | `src/scripts/` | gameplay scripts (`@minecraft/server` 2.0.0, JavaScript modules); the expansion lives in `src/scripts/sea/` |
 
 The scripts are type-checked against the official `@minecraft/server` 2.0.0 typings (`tsc --checkJs`).
+
+**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.2.0`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
 
 **Tuning held items:** third/first-person poses live in `grimoire_animations()` and `sword_animations()` in `tools/bc/models/items.py`. First-person poses are solved from a target screen position by `tools/bc/fpsolve.py`, so moving an item on screen means changing one target point.
 

@@ -202,17 +202,35 @@ def gen_knight(ctx: Ctx):
     groups['bc:hired'] = {
         'minecraft:persistent': {},
         'minecraft:tameable': {'probability': 0.0, 'tame_items': 'minecraft:emerald_block'},
-        'minecraft:behavior.follow_owner': {'priority': 4, 'speed_multiplier': 1.25, 'start_distance': 9, 'stop_distance': 3},
         'minecraft:behavior.owner_hurt_by_target': {'priority': 1},
         'minecraft:behavior.owner_hurt_target': {'priority': 2},
     }
+    groups['bc:follow'] = {'minecraft:behavior.follow_owner': {'priority': 4, 'speed_multiplier': 1.25, 'start_distance': 9, 'stop_distance': 3}}
+    # spellcasters back away from foes that get too close (the script keeps casting): one group per side
+    def keep_distance(fams):
+        flt = {'any_of': [{'test': 'is_family', 'subject': 'other', 'value': f} for f in fams]}
+        return {'minecraft:behavior.avoid_mob_type': {'priority': 2, 'remove_target': False, 'entity_types': [
+            {'filters': flt, 'max_dist': 4.5, 'walk_speed_multiplier': 1.1, 'sprint_speed_multiplier': 1.25}]}}
+    groups['bc:ranged_wild'] = keep_distance(['monster'])
+    for tm in ('a', 'b', 'c'):
+        groups[f'bc:ranged_{tm}'] = keep_distance([f'bc_team_{o}' for o in ('a', 'b', 'c') if o != tm])
+    comps['minecraft:interact'] = {'interactions': [{'on_interact': {'filters': {'test': 'is_family', 'subject': 'other', 'value': 'player'}, 'event': 'bc:noop'},
+                                                     'interact_text': 'action.interact.talk'}]}
     props = {'bc:robe': {'type': 'int', 'range': [0, len(KNIGHT_ROBES) - 1], 'default': 0, 'client_sync': True}}
     events = {
         'minecraft:entity_spawned': {'sequence': [
             {'add': {'component_groups': ['bc:wild']}},
             {'randomize': [{'weight': 1, 'set_property': {'bc:robe': i}} for i in range(len(KNIGHT_ROBES))]},
         ]},
-        'bc:hire': {'remove': {'component_groups': ['bc:wild']}, 'add': {'component_groups': ['bc:hired']}},
+        'bc:hire': {'remove': {'component_groups': ['bc:wild']}, 'add': {'component_groups': ['bc:hired', 'bc:follow']}},
+        'bc:order_follow': {'add': {'component_groups': ['bc:follow']}},
+        'bc:order_hold': {'remove': {'component_groups': ['bc:follow']}},
+        'bc:release': {'remove': {'component_groups': ['bc:hired', 'bc:follow']}, 'add': {'component_groups': ['bc:wild']}},
+        'bc:ranged_wild': {'add': {'component_groups': ['bc:ranged_wild']}},
+        'bc:ranged_a': {'add': {'component_groups': ['bc:ranged_a']}},
+        'bc:ranged_b': {'add': {'component_groups': ['bc:ranged_b']}},
+        'bc:ranged_c': {'add': {'component_groups': ['bc:ranged_c']}},
+        'bc:noop': {},
     }
     ent = _entity('magic_knight', comps, spawnable=True)
     ent['minecraft:entity']['description']['properties'] = props
@@ -252,7 +270,8 @@ def gen_knight(ctx: Ctx):
             }],
         },
     })
-    ctx.lang += [f'entity.{NS}:magic_knight.name=Magic Knight', f'item.spawn_egg.entity.{NS}:magic_knight.name=Magic Knight Spawn Egg']
+    ctx.lang += [f'entity.{NS}:magic_knight.name=Magic Knight', f'item.spawn_egg.entity.{NS}:magic_knight.name=Magic Knight Spawn Egg',
+                 'action.interact.talk=Talk']
     return {'controller.render.bc.magic_knight': {
         'arrays': {'textures': {'Array.robes': [f'Texture.r{i}' for i in range(len(KNIGHT_ROBES))]}},
         'geometry': 'Geometry.default', 'materials': [{'*': 'Material.default'}],
@@ -521,12 +540,13 @@ def gen_factions(ctx: Ctx):
         events = e.setdefault('events', {})
         fam = c['minecraft:type_family']['family']
         prio = (nat or {}).get('priority', 2)
-        for team, enemy in (('a', 'b'), ('b', 'a')):
+        for team in ('a', 'b', 'c'):
+            enemies = [{'test': 'is_family', 'subject': 'other', 'value': f'bc_team_{o}'} for o in ('a', 'b', 'c') if o != team]
             groups[f'bc:team_{team}'] = {
                 'minecraft:type_family': {'family': fam + [f'bc_team_{team}']},
                 'minecraft:behavior.nearest_attackable_target': {
                     'priority': prio, 'must_see': False, 'reselect_targets': True, 'scan_interval': 5,
-                    'entity_types': [{'filters': {'test': 'is_family', 'subject': 'other', 'value': f'bc_team_{enemy}'}, 'max_dist': 48}]},
+                    'entity_types': [{'filters': {'any_of': enemies}, 'max_dist': 48}]},
                 'minecraft:follow_range': {'value': 64, 'max': 64},
                 'minecraft:persistent': {},
             }

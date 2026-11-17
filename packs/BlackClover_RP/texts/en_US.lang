@@ -51,6 +51,7 @@ tile.bc:war_table.name=§6War Table
 entity.bc:mana_bolt.name=Spell
 entity.bc:magic_knight.name=Magic Knight
 item.spawn_egg.entity.bc:magic_knight.name=Magic Knight Spawn Egg
+action.interact.talk=Talk
 entity.bc:magic_merchant.name=§bTravelling Magic Merchant
 item.spawn_egg.entity.bc:magic_merchant.name=Magic Merchant Spawn Egg
 entity.bc:construct.name=Ancient Construct

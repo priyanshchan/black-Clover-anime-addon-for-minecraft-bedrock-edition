@@ -1,0 +1,37 @@
+# Publishes a GitHub release with the .mcaddon / .mcpack downloads whenever a version tag (v*) is pushed.
+# Release notes are the matching section of CHANGELOG.md. 0.x versions are marked as pre-releases (early access).
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the packs
+        run: python3 tools/validate.py
+
+      - name: Name the downloads
+        run: |
+          V="${GITHUB_REF_NAME}"
+          mkdir -p out
+          cp dist/BlackClover_GrimoireAwakening.mcaddon "out/BlackClover_GrimoireAwakening_${V}.mcaddon"
+          cp dist/BlackClover_BP.mcpack "out/BlackClover_BP_${V}.mcpack"
+          cp dist/BlackClover_RP.mcpack "out/BlackClover_RP_${V}.mcpack"
+          awk -v v="## ${V}" 'index($0, "## ") == 1 { p = (index($0, v) == 1) } p' CHANGELOG.md > notes.md
+          test -s notes.md || echo "Black Clover: Grimoire Awakening ${V}" > notes.md
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRE=""
+          case "$GITHUB_REF_NAME" in v0.*|*-*) PRE="--prerelease" ;; esac
+          gh release create "$GITHUB_REF_NAME" out/* --title "Black Clover: Grimoire Awakening ${GITHUB_REF_NAME}" --notes-file notes.md $PRE

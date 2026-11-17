@@ -46,6 +46,56 @@ function angryAt(npc, player) {
   return (grudges.get(npc.id)?.get(player.id) ?? 0) > system.currentTick;
 }
 
+/** What each wild faction hunts (players are hunted by every hostile side, and by peaceful NPCs only after a grudge). */
+const HUNTS = {
+  clover: ['monster'],
+  devil: ['bc_knight', 'bc_navy'],
+  pirate: ['bc_knight', 'bc_navy'],
+  navy: ['bc_pirate', 'bc_devil', 'bc_disciple'],
+};
+export const TEAMS = ['a', 'b', 'c'];
+
+/**
+ * The nearest enemy an NPC should fight: the other armies in a battle, otherwise its faction's foes and players.
+ * @returns {import('@minecraft/server').Entity | undefined}
+ */
+export function foeOf(e, range = 18) {
+  let best;
+  let bd = Infinity;
+  for (const x of foesOf(e, range)) {
+    const d = Math.hypot(x.location.x - e.location.x, x.location.y - e.location.y, x.location.z - e.location.z);
+    if (d < bd) {
+      bd = d;
+      best = x;
+    }
+  }
+  return best;
+}
+
+/** Every enemy of an NPC within range (see foeOf). */
+export function foesOf(e, range = 18) {
+  const tm = teamOf(e);
+  let list = [];
+  safe(() => {
+    if (tm) {
+      for (const other of TEAMS) if (other !== tm) list.push(...e.dimension.getEntities({ location: e.location, maxDistance: range, families: [`bc_team_${other}`] }));
+    } else {
+      const fams = HUNTS[factionOf(e)] ?? ['monster'];
+      for (const f of fams) list.push(...e.dimension.getEntities({ location: e.location, maxDistance: range, families: [f] }));
+      for (const p of e.dimension.getPlayers({ location: e.location, maxDistance: range })) {
+        const gm = p.getGameMode();
+        if (gm !== 'Creative' && gm !== 'Spectator') list.push(p);
+      }
+    }
+  });
+  const seen = new Set();
+  return list.filter((x) => {
+    if (seen.has(x.id)) return false;
+    seen.add(x.id);
+    return canHit(e, x);
+  });
+}
+
 /** May `attacker` hurt `target` with magic? */
 export function canHit(attacker, target) {
   if (!alive(target) || target === attacker) return false;

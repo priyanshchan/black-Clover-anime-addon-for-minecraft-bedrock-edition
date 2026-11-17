@@ -1,9 +1,11 @@
-// Wave 4 entry point: a living world (spell engine, knights, battles, bosses, events, merchant, War Table).
+// Living world entry point: spell engine, tactical AI, knights, battles, world simulation, bosses, events, merchant, War Table.
 import { safe } from '../core/util.js';
 import './engine.js';
 import './passives.js';
 import './knights.js';
 import './battle.js';
+import './ai.js';
+import './worldsim.js';
 import './merchant.js';
 import './events.js';
 import { useBossItem } from './bosses.js';

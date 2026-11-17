@@ -164,6 +164,13 @@
             "bc:team_b"
           ]
         }
+      },
+      "bc:team_c": {
+        "add": {
+          "component_groups": [
+            "bc:team_c"
+          ]
+        }
       }
     },
     "component_groups": {
@@ -185,9 +192,18 @@
           "entity_types": [
             {
               "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "bc_team_b"
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
               },
               "max_dist": 48
             }
@@ -217,9 +233,59 @@
           "entity_types": [
             {
               "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "bc_team_a"
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
+              },
+              "max_dist": 48
+            }
+          ]
+        },
+        "minecraft:follow_range": {
+          "value": 64,
+          "max": 64
+        },
+        "minecraft:persistent": {}
+      },
+      "bc:team_c": {
+        "minecraft:type_family": {
+          "family": [
+            "bc_magic",
+            "bc_disciple",
+            "monster",
+            "mob",
+            "bc_team_c"
+          ]
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "must_see": false,
+          "reselect_targets": true,
+          "scan_interval": 5,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  }
+                ]
               },
               "max_dist": 48
             }

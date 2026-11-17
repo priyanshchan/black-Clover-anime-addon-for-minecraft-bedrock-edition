@@ -145,6 +145,21 @@
             "damage_multiplier": 0.5
           }
         ]
+      },
+      "minecraft:interact": {
+        "interactions": [
+          {
+            "on_interact": {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "player"
+              },
+              "event": "bc:noop"
+            },
+            "interact_text": "action.interact.talk"
+          }
+        ]
       }
     },
     "events": {
@@ -225,10 +240,67 @@
         },
         "add": {
           "component_groups": [
-            "bc:hired"
+            "bc:hired",
+            "bc:follow"
           ]
         }
       },
+      "bc:order_follow": {
+        "add": {
+          "component_groups": [
+            "bc:follow"
+          ]
+        }
+      },
+      "bc:order_hold": {
+        "remove": {
+          "component_groups": [
+            "bc:follow"
+          ]
+        }
+      },
+      "bc:release": {
+        "remove": {
+          "component_groups": [
+            "bc:hired",
+            "bc:follow"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "bc:wild"
+          ]
+        }
+      },
+      "bc:ranged_wild": {
+        "add": {
+          "component_groups": [
+            "bc:ranged_wild"
+          ]
+        }
+      },
+      "bc:ranged_a": {
+        "add": {
+          "component_groups": [
+            "bc:ranged_a"
+          ]
+        }
+      },
+      "bc:ranged_b": {
+        "add": {
+          "component_groups": [
+            "bc:ranged_b"
+          ]
+        }
+      },
+      "bc:ranged_c": {
+        "add": {
+          "component_groups": [
+            "bc:ranged_c"
+          ]
+        }
+      },
+      "bc:noop": {},
       "bc:team_a": {
         "add": {
           "component_groups": [
@@ -252,6 +324,18 @@
             "bc:wild"
           ]
         }
+      },
+      "bc:team_c": {
+        "add": {
+          "component_groups": [
+            "bc:team_c"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "bc:wild"
+          ]
+        }
       }
     },
     "component_groups": {
@@ -266,17 +350,122 @@
           "probability": 0.0,
           "tame_items": "minecraft:emerald_block"
         },
-        "minecraft:behavior.follow_owner": {
-          "priority": 4,
-          "speed_multiplier": 1.25,
-          "start_distance": 9,
-          "stop_distance": 3
-        },
         "minecraft:behavior.owner_hurt_by_target": {
           "priority": 1
         },
         "minecraft:behavior.owner_hurt_target": {
           "priority": 2
+        }
+      },
+      "bc:follow": {
+        "minecraft:behavior.follow_owner": {
+          "priority": 4,
+          "speed_multiplier": 1.25,
+          "start_distance": 9,
+          "stop_distance": 3
+        }
+      },
+      "bc:ranged_wild": {
+        "minecraft:behavior.avoid_mob_type": {
+          "priority": 2,
+          "remove_target": false,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "monster"
+                  }
+                ]
+              },
+              "max_dist": 4.5,
+              "walk_speed_multiplier": 1.1,
+              "sprint_speed_multiplier": 1.25
+            }
+          ]
+        }
+      },
+      "bc:ranged_a": {
+        "minecraft:behavior.avoid_mob_type": {
+          "priority": 2,
+          "remove_target": false,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
+              },
+              "max_dist": 4.5,
+              "walk_speed_multiplier": 1.1,
+              "sprint_speed_multiplier": 1.25
+            }
+          ]
+        }
+      },
+      "bc:ranged_b": {
+        "minecraft:behavior.avoid_mob_type": {
+          "priority": 2,
+          "remove_target": false,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
+              },
+              "max_dist": 4.5,
+              "walk_speed_multiplier": 1.1,
+              "sprint_speed_multiplier": 1.25
+            }
+          ]
+        }
+      },
+      "bc:ranged_c": {
+        "minecraft:behavior.avoid_mob_type": {
+          "priority": 2,
+          "remove_target": false,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  }
+                ]
+              },
+              "max_dist": 4.5,
+              "walk_speed_multiplier": 1.1,
+              "sprint_speed_multiplier": 1.25
+            }
+          ]
         }
       },
       "bc:team_a": {
@@ -295,9 +484,18 @@
           "entity_types": [
             {
               "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "bc_team_b"
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
               },
               "max_dist": 48
             }
@@ -325,9 +523,57 @@
           "entity_types": [
             {
               "filters": {
-                "test": "is_family",
-                "subject": "other",
-                "value": "bc_team_a"
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
+              },
+              "max_dist": 48
+            }
+          ]
+        },
+        "minecraft:follow_range": {
+          "value": 64,
+          "max": 64
+        },
+        "minecraft:persistent": {}
+      },
+      "bc:team_c": {
+        "minecraft:type_family": {
+          "family": [
+            "bc_knight",
+            "mob",
+            "bc_team_c"
+          ]
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 3,
+          "must_see": false,
+          "reselect_targets": true,
+          "scan_interval": 5,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  }
+                ]
               },
               "max_dist": 48
             }

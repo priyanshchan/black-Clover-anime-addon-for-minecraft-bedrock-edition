@@ -8,6 +8,7 @@ import { sea, willToNext } from '../sea/state.js';
 import { countCoins } from '../sea/bounty.js';
 import { rankTitle, stars } from '../core/ranks.js';
 import { notoriety, notorietyTitle } from '../sea/navy.js';
+import { kingdomPage } from '../living/worldsim.js';
 
 const G = DATA.glyphs;
 
@@ -51,6 +52,8 @@ export async function openHandbook(p) {
   actions.push(() => livingPage(p));
   form.button('§lKnights & the War Table\n§r§8Factions, battles, bets');
   actions.push(() => warPage(p));
+  form.button('§lState of the Kingdom\n§r§8Faction power and world news');
+  actions.push(() => kingdomPage(p));
   form.button('§lHow to play\n§r§8Altar, mana, robes, the Devil');
   actions.push(() => guide(p));
   sound(p.dimension, 'bc.grimoire.flip', p.location, 0.8, 1);
@@ -193,9 +196,9 @@ async function livingPage(p) {
 
 async function warPage(p) {
   const body = [
-    '§l§aMagic Knights§r\n§7Named knights of every attribute roam plains and forests. They hunt monsters, pirates and devils with real spells, and only fight you if you strike first.',
-    '§l§bHire a knight§r\n§7A §aKnight Contract§7 (emeralds, paper, a mana crystal) - or the merchant - brings a knight to your side. They follow you and defend you.',
-    '§l§6The War Table§r\n§7Craft one (map, iron sword, feather, planks, sticks) and use it: pick two armies - ' + Object.values(DATA.factions).map((f) => `${f.mc}${f.name}§7`).join(', ') + ' - choose the size, and bet doubloons on the winner.',
+    '§l§aMagic Knights§r\n§7Named knights of every attribute roam plains and forests. They hunt monsters, pirates and devils with real spells, and only fight you if you strike first. Each has a fighting style, skill and courage, and levels up with every kill (more spells at levels 3 and 6).',
+    '§l§bYour own knights§r\n§7Talk to a knight to see its profile. Recruit wild knights with a §aKnight Contract§7 or doubloons (up to 4). Talk to your knights to order them to follow, hold a position, guard you or hunt freely.',
+    '§l§6The War Table§r\n§7Craft one (map, iron sword, feather, planks, sticks) and use it: pick two or three armies - ' + Object.values(DATA.factions).map((f) => `${f.mc}${f.name}§7`).join(', ') + ' - their tactics and size, or stage a knight duel, and bet doubloons on the winner. Watch with the cinematic camera.',
     '§l§eSkirmish Horn§r\n§7Blow it (gold and a bone) and two random armies clash in front of you.',
     '§l§7Factions in the wild§r\n§7Knights fight devils and pirates; the Tidewatch hunt pirates and devils; pirates and devils fight knights and the navy.',
   ].join('\n\n');

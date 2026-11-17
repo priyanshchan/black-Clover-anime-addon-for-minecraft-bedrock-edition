@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "Black Clover: Grimoire Awakening §7(Behavior)",
-    "description": "Grimoires, 32 spells, anti-magic swords, Magic Knight robes, the Grimoire Altar, Dark Disciples and a Devil boss. Unofficial fan addon.",
+    "description": "Early Access v0.1.0 - 24 grimoires, 22 Abyss Fruits, Magic Knights with tactical AI, faction battles, the War Table simulator, giant bosses and world events. Unofficial fan addon.",
     "uuid": "e31c2aa6-e171-5e62-8d60-e4fb08605627",
     "version": [
+      0,
       1,
-      4,
       0
     ],
     "min_engine_version": [
@@ -20,8 +20,8 @@
       "type": "data",
       "uuid": "7a204969-4e4b-52ad-86a4-9560f8777441",
       "version": [
+        0,
         1,
-        4,
         0
       ]
     },
@@ -30,8 +30,8 @@
       "language": "javascript",
       "uuid": "0f990b2f-059e-5390-9de6-781d9993b2f6",
       "version": [
+        0,
         1,
-        4,
         0
       ],
       "entry": "scripts/main.js"
@@ -41,8 +41,8 @@
     {
       "uuid": "fb6916dc-6965-5317-97d9-c2f0276ce444",
       "version": [
+        0,
         1,
-        4,
         0
       ]
     },

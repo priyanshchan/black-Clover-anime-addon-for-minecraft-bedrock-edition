@@ -609,7 +609,7 @@ system.runInterval(() => {
 
 // ------------------------------------------------------------------------------- entry points
 /** @returns {ECtx} */
-export function makeCtx(c, src, pw, target) {
+export function makeCtx(c, src, pw, target, aimAt) {
   const head = c.getHeadLocation();
   let aim;
   if (c instanceof Player) {
@@ -617,7 +617,7 @@ export function makeCtx(c, src, pw, target) {
     aim = target ? center(target) : aimPoint(c, 26).point;
     return { c, dim: c.dimension, src, pw, dir: c.getViewDirection(), aim, target, col: colorOf(src) };
   }
-  aim = target && alive(target) ? center(target) : V.add(head, V.mul(c.getViewDirection(), 10));
+  aim = aimAt ?? (target && alive(target) ? center(target) : V.add(head, V.mul(c.getViewDirection(), 10)));
   return { c, dim: c.dimension, src, pw, dir: V.norm(V.sub(aim, head)), aim, target, col: colorOf(src) };
 }
 
@@ -638,9 +638,10 @@ function run(x, spec) {
  * @param {string} src  tint/colour source ('a:<attribute>' or 'f:<fruit>')
  * @param {number} [pw] damage multiplier
  * @param {any} [target] NPC casters: who to aim at
+ * @param {{aim?: {x:number,y:number,z:number}}} [opts] NPC casters: a precise aim point (leading a moving target)
  * @returns {boolean} false when nothing was cast (refund)
  */
-export function castSpec(caster, spec, src, pw = 1, target) {
+export function castSpec(caster, spec, src, pw = 1, target, opts = {}) {
   if (!alive(caster) || !spec) return false;
   if (spec.hp) {
     const h = caster.getComponent('minecraft:health');
@@ -651,7 +652,7 @@ export function castSpec(caster, spec, src, pw = 1, target) {
     hurt(caster, spec.hp, undefined, 'magic');
     particle(caster.dimension, 'bc:shard_burst', center(caster), { color: rgb('d01a34'), scale: 0.5 });
   }
-  const x = makeCtx(caster, src, pw, target);
+  const x = makeCtx(caster, src, pw, target, opts.aim);
   const ok = safe(() => run(x, spec), `engine:${spec.t}`);
   if (ok === false) return false;
   if (spec.self && spec.t !== 'buff') applyEffects(caster, spec.self);
