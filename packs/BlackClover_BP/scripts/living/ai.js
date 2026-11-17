@@ -1,13 +1,15 @@
-// The tactical AI brain for spell-casting NPCs (Magic Knights and Raider Captains).
+// The tactical AI brain for spell-casting NPCs: Magic Knights and companions, Raider Captains, and the spellcasting
+// enemies (Dark Disciples, Imps, Sea Raiders, Raider Gunners, Tidewatch Marksmen, Hellhounds, Mana Wraiths).
 //
 // Every NPC has a combat ROLE (striker, controller, brawler, support) worked out from the spells it knows,
 // and two TRAITS: skill (aim, dodging, reaction) and courage (when it retreats). Each "think" it:
-//   1. dodges spells and arrows flying at it,
-//   2. picks a target (closest, weakest, its army's focus target, whoever hurt it),
-//   3. retreats to its allies when badly hurt (if it is not brave), or holds a commanded position,
-//   4. scores every spell it knows for the situation (range, clustered enemies, hurt allies, cooldowns)
-//      and casts the best one, leading moving targets.
-// Spellcasters also back away from foes that get too close (a keep-distance behaviour group in their JSON).
+//   1. dodges spells and arrows flying at it (with a dodge animation),
+//   2. picks a target (closest, weakest, its army's or owner's focus, whoever hurt it),
+//   3. retreats to its allies when badly hurt (if it is not brave), holds a commanded position,
+//      or - for pack hunters - circles its prey with the pack before lunging,
+//   4. scores every spell it knows for the situation (range, clustered enemies, hurt allies, its owner's health,
+//      cooldowns) and casts the best one with the matching animation, leading moving targets.
+// Companions get extra information (focus target, stance, owner in danger, robe perks) from companions.js.
 import { Player, system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
 import { center, foesOf, ownerOf, projectiles, teamOf } from '../core/combat.js';
@@ -18,20 +20,38 @@ import { unitInfo } from './battle.js';
 import { castSpec, friends } from './engine.js';
 import { kitFor, knightAttr, knightLevel, onKnightLevel, setRoleProvider } from './knights.js';
 
-const MANAGED = new Set(['bc:magic_knight', 'bc:raider_captain']);
+const KITTED = Object.keys(DATA.enemyKits);
+const MANAGED = new Set(['bc:magic_knight', 'bc:raider_captain', ...KITTED]);
 const ROLES = ['striker', 'controller', 'brawler', 'support'];
 /** default cooldowns (ticks) by template, for kits that do not come from a grimoire */
 const CD = { bolt: 40, beam: 80, wave: 120, zone: 160, nova: 120, rain: 140, meteor: 220, buff: 300, heal: 200, prison: 160, summon: 600,
   wall: 9999, radial: 160, timestop: 500, leap: 100, vortex: 160, strikes: 140, dive: 140, rewind: 300, repeat: 140 };
-const up = { x: 0, y: 1, z: 0 };
+/** casting animation per template (knights / companions) */
+const KNIGHT_ANIM = { beam: 'channel', zone: 'channel', vortex: 'channel', nova: 'slam', dive: 'slam', wave: 'slam',
+  rain: 'cast_raise', meteor: 'cast_raise', strikes: 'cast_raise', buff: 'cast_raise', heal: 'cast_raise', summon: 'cast_raise', timestop: 'cast_raise' };
+/** casting animation per creature */
+const TYPE_ANIM = {
+  'bc:raider_captain': 'animation.bc.raider_captain.cast', 'bc:dark_disciple': 'animation.bc.dark_disciple.cast',
+  'bc:raider_gunner': 'animation.bc.raider_gunner.shoot', 'bc:tidewatch_marksman': 'animation.bc.tidewatch_marksman.shoot',
+  'bc:sea_raider': 'animation.bc.sea_raider.attack', 'bc:hellhound': 'animation.bc.hellhound.bite', 'bc:mana_wraith': 'animation.bc.mana_wraith.cast',
+};
+const AIM_ANIM = { 'bc:raider_gunner': 'animation.bc.raider_gunner.aim', 'bc:tidewatch_marksman': 'animation.bc.tidewatch_marksman.aim' };
+const PACK = new Set(['bc:hellhound']);
 
 /**
- * @typedef {{ id: string, name: string, spec?: Record<string, any>, cd: number, cast: (target: any, aim: any) => any }} Action
+ * @typedef {{ id: string, name: string, spec?: Record<string, any>, cd: number, cast: (target: any, aim: any, pwMul: number) => any }} Action
  * @typedef {{ role: string, skill: number, courage: number, next: number, castAt: number, dodgeAt: number, cds: Map<string, number>,
- *             target: string, retreatUntil: number, buffUntil: number, lastHitBy: string, lastHitAt: number }} Brain
+ *             target: string, retreatUntil: number, buffUntil: number, lastHitBy: string, lastHitAt: number, aimUntil: number, orbit: number }} Brain
+ * @typedef {{ focus?: string, passive?: boolean, ownerLow?: boolean, pwMul?: number, cdMul?: number }} CompanionInfo
  */
 /** @type {Map<string, Brain>} */
 const brains = new Map();
+/** @type {(e: any) => CompanionInfo | undefined} */
+let companionInfo = () => undefined;
+/** companions.js tells the brain about focus targets, stances and robe perks */
+export function setCompanionProvider(fn) {
+  companionInfo = fn;
+}
 
 // ------------------------------------------------------------------------------- traits & roles
 function trait(e, key, lo, hi) {
@@ -70,7 +90,7 @@ function actionsOf(e) {
     kitFor(attr, lvl).forEach((spec, i) => {
       const sp = spells.find((x) => x.spec === spec || JSON.stringify(x.spec) === JSON.stringify(spec));
       out.push({ id: `k${i}`, name: sp?.name ?? spec.t, spec, cd: Math.max(30, Math.round((sp ? sp.cooldown * 20 * 1.5 : CD[spec.t] ?? 100))),
-        cast: (t, aim) => castSpec(e, spec, `a:${attr}`, pw, t, { aim }) });
+        cast: (t, aim, mul) => castSpec(e, spec, `a:${attr}`, pw * mul, t, { aim }) });
     });
   } else if (e.typeId === 'bc:raider_captain') {
     const fruit = safe(() => e.getDynamicProperty('bc:fruit'));
@@ -80,6 +100,12 @@ function actionsOf(e) {
       out.push({ id: ab.id, name: ab.name, spec: ab.spec, cd: Math.max(40, Math.round(ab.cooldown * 20 * 1.6)),
         cast: (t) => castAbility(e, fruit, ab.id, t) });
     }
+  } else if (DATA.enemyKits[e.typeId]) {
+    const k = DATA.enemyKits[e.typeId];
+    k.kit.forEach((spec, i) => {
+      out.push({ id: `e${i}`, name: spec.t, spec, cd: Math.max(40, Math.round((CD[spec.t] ?? 100) * (i === 0 ? 1 : 1.6))),
+        cast: (t, aim, mul) => castSpec(e, spec, k.src, 0.9 * mul, t, { aim }) });
+    });
   }
   return out;
 }
@@ -89,15 +115,16 @@ function brainOf(e) {
   if (b) return b;
   const acts = actionsOf(e);
   const beast = e.typeId === 'bc:raider_captain' && DATA.fruits[/** @type {string} */ (safe(() => e.getDynamicProperty('bc:fruit')) ?? '')]?.beast;
+  const enemy = !!DATA.enemyKits[e.typeId];
   b = {
-    role: beast ? 'brawler' : roleOf(acts.map((a) => a.spec)),
-    skill: Math.min(1, trait(e, 'bc:skill', 0.4, 0.95) + (e.typeId === 'bc:magic_knight' ? knightLevel(e) * 0.02 : 0)),
+    role: beast || PACK.has(e.typeId) ? 'brawler' : roleOf(acts.map((a) => a.spec)),
+    skill: Math.min(1, trait(e, 'bc:skill', enemy ? 0.3 : 0.4, enemy ? 0.8 : 0.95) + (e.typeId === 'bc:magic_knight' ? knightLevel(e) * 0.02 : 0)),
     courage: trait(e, 'bc:courage', 0.15, 1.0),
     next: system.currentTick + Math.floor(rand(0, 10)), castAt: system.currentTick + 30, dodgeAt: 0, cds: new Map(),
-    target: '', retreatUntil: 0, buffUntil: 0, lastHitBy: '', lastHitAt: 0,
+    target: '', retreatUntil: 0, buffUntil: 0, lastHitBy: '', lastHitAt: 0, aimUntil: 0, orbit: Math.random() < 0.5 ? 1 : -1,
   };
   brains.set(e.id, b);
-  // spellcasters keep their distance (behaviour group chosen per side)
+  // knight spellcasters keep their distance (behaviour group chosen per side)
   if (b.role !== 'brawler' && e.typeId === 'bc:magic_knight') safe(() => e.triggerEvent(`bc:ranged_${teamOf(e) || 'wild'}`));
   return b;
 }
@@ -128,9 +155,12 @@ world.afterEvents.entityLoad.subscribe((ev) => safe(() => track(ev.entity)));
 world.afterEvents.entityHurt.subscribe((ev) => {
   const b = brains.get(ev.hurtEntity.id);
   const src = ev.damageSource.damagingEntity;
-  if (!b || !src) return;
-  b.lastHitBy = src.id;
-  b.lastHitAt = system.currentTick;
+  if (!b) return;
+  if (src) {
+    b.lastHitBy = src.id;
+    b.lastHitAt = system.currentTick;
+  }
+  if (ev.hurtEntity.typeId === 'bc:magic_knight' && Math.random() < 0.35) anim(ev.hurtEntity, 'animation.bc.magic_knight.flinch');
 });
 
 // ------------------------------------------------------------------------------- senses
@@ -171,13 +201,14 @@ function tryDodge(e, b, t) {
     let side = V.flat({ x: -dir.z, y: 0, z: dir.x });
     if (Math.random() < 0.5) side = V.mul(side, -1);
     safe(() => e.applyImpulse({ x: side.x * 0.6, y: 0.2, z: side.z * 0.6 }));
+    if (e.typeId === 'bc:magic_knight') anim(e, 'animation.bc.magic_knight.dodge');
     particle(e.dimension, 'bc:dust_burst', e.location, { color: rgb('c8c8c8'), scale: 0.4 });
     b.dodgeAt = t + Math.round(60 - b.skill * 30);
     return;
   }
 }
 
-function pickTarget(e, b, foes, info) {
+function pickTarget(e, b, foes, info, cinfo) {
   const owner = ownerOf(e);
   const ownerEnt = owner ? world.getEntity(owner) : undefined;
   const defensive = ownerEnt && safe(() => e.getDynamicProperty('bc:stance')) === 'defensive';
@@ -188,6 +219,7 @@ function pickTarget(e, b, foes, info) {
     if (defensive && V.dist(f.location, ownerEnt.location) > 10) continue;
     let s = 24 - d + (1 - hpFrac(f)) * 8;
     if (info && f.id === info.focus) s += 10;
+    if (cinfo && f.id === cinfo.focus) s += 14;
     if (f.id === b.target) s += 5;
     if (f.id === b.lastHitBy && system.currentTick - b.lastHitAt < 100) s += 6;
     if (info && f.id === info.enemyLeader) s += 3;
@@ -217,12 +249,12 @@ function score(a, ctx) {
     case 'strikes': return d <= 24 ? 3 * Math.min(s.n ?? 4, cluster + 1) : 0;
     case 'nova': return s.at === 'aim' ? (d <= 22 ? 2 + cluster * 3 : 0) : near((s.r ?? 5) + (s.at === 'front' ? 1 : 0)) * 4;
     case 'timestop': return near(s.r ?? 10) >= 3 ? 16 : 0;
-    case 'heal': case 'rewind': return ally > 0.35 || hp < 0.5 ? 12 + 10 * Math.max(ally, 1 - hp) : 0;
-    case 'buff': return ctx.now > ctx.buffUntil ? (s.allies ? 8 : 6) + (hp < 0.6 ? 2 : 0) : 0;
+    case 'heal': case 'rewind': return ally > 0.35 || hp < 0.5 || ctx.ownerLow ? 12 + 10 * Math.max(ally, 1 - hp) + (ctx.ownerLow ? 10 : 0) : 0;
+    case 'buff': return ctx.now > ctx.buffUntil ? (s.allies ? 8 : 6) + (hp < 0.6 ? 2 : 0) + (ctx.ownerLow && s.allies ? 6 : 0) : 0;
     case 'summon': return ctx.summons < 2 ? 6 : 0;
     case 'leap':
       if (s.mode === 'blink') return role !== 'brawler' && d < 3.5 && hp < 0.7 ? 9 : role === 'brawler' && d > 6 ? 7 : 0;
-      return d >= 2 && d <= 9 ? 6 + cluster : 0;
+      return d >= 2 && d <= (s.dist ?? 9) ? 6 + cluster : 0;
     case 'dive': return d >= 4 && d <= 16 ? 7 + cluster * 2 : 0;
     default: return 0;
   }
@@ -237,7 +269,14 @@ function lead(e, target, a, skill) {
   return { x: c.x + v.x * ticks + rand(-wobble, wobble), y: c.y + rand(-wobble, wobble) * 0.5, z: c.z + v.z * ticks + rand(-wobble, wobble) };
 }
 
-function decide(e, b, target, foes, t) {
+function castAnim(e, a) {
+  const kind = a.spec?.t === 'repeat' ? a.spec?.spec?.t : a.spec?.t;
+  if (e.typeId === 'bc:magic_knight') anim(e, `animation.bc.magic_knight.${KNIGHT_ANIM[kind] ?? 'cast'}`);
+  else if (e.typeId === 'bc:sea_raider' || (e.typeId === 'bc:raider_gunner' && a.spec?.grav)) anim(e, `animation.bc.${e.typeId.slice(3)}.${e.typeId === 'bc:sea_raider' ? 'attack' : 'throw'}`);
+  else if (TYPE_ANIM[e.typeId]) anim(e, TYPE_ANIM[e.typeId]);
+}
+
+function decide(e, b, target, foes, t, cinfo) {
   const acts = actionsOf(e);
   if (!acts.length) return;
   const d = V.dist(target.location, e.location);
@@ -248,7 +287,7 @@ function decide(e, b, target, foes, t) {
   for (const f of friends(e, e.location, 10)) if (f.id !== e.id) ally = Math.max(ally, 1 - hpFrac(f));
   const summons = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 24, type: 'bc:construct' })
     .filter((x) => ownerOf(x) === e.id).length) ?? 0;
-  const ctx = { d, cluster, near, hp: hpFrac(e), ally, role: b.role, now: t, buffUntil: b.buffUntil, summons };
+  const ctx = { d, cluster, near, hp: hpFrac(e), ally, role: b.role, now: t, buffUntil: b.buffUntil, summons, ownerLow: !!cinfo?.ownerLow };
   let best;
   let bs = 2.5;
   for (const a of acts) {
@@ -260,23 +299,31 @@ function decide(e, b, target, foes, t) {
     }
   }
   if (!best) return;
+  // marksmen raise their guns first, then fire
+  if (AIM_ANIM[e.typeId] && best.spec?.t === 'bolt' && !best.spec.grav && b.aimUntil < t) {
+    anim(e, AIM_ANIM[e.typeId]);
+    b.aimUntil = t + 14;
+    b.castAt = t + 10;
+    return;
+  }
   let aim = lead(e, target, best, b.skill);
   if (best.spec?.t === 'leap' && best.spec.mode === 'blink' && b.role !== 'brawler') {
     aim = V.add(e.location, V.mul(V.flat(V.sub(e.location, target.location)), 10)); // blink away
   }
   safe(() => e.setRotation({ x: 0, y: yawOf(V.sub(target.location, e.location)) }));
-  anim(e, e.typeId === 'bc:raider_captain' ? 'animation.bc.raider_captain.cast' : 'animation.bc.magic_knight.cast');
-  const ok = safe(() => best.cast(target, aim), 'ai-cast');
+  castAnim(e, best);
+  const ok = safe(() => best.cast(target, aim, cinfo?.pwMul ?? 1), 'ai-cast');
   if (ok === false) {
     b.castAt = t + 10;
     return;
   }
-  b.cds.set(best.id, t + best.cd);
+  b.cds.set(best.id, t + Math.round(best.cd * (cinfo?.cdMul ?? 1)));
   if (best.spec?.t === 'buff') b.buffUntil = t + 240;
-  b.castAt = t + Math.round(26 + (1 - b.skill) * 40 + rand(0, 14));
+  const enemy = !!DATA.enemyKits[e.typeId];
+  b.castAt = t + Math.round((enemy ? 40 : 26) + (1 - b.skill) * 40 + rand(0, 14));
 }
 
-// ------------------------------------------------------------------------------- movement orders
+// ------------------------------------------------------------------------------- movement
 function holdPosition(e) {
   if (safe(() => e.getDynamicProperty('bc:order')) !== 'hold') return false;
   const a = safe(() => e.getDynamicProperty('bc:anchor'));
@@ -291,12 +338,29 @@ function holdPosition(e) {
   return true;
 }
 
+/** Pack hunters circle their prey together, then lunge in turn. */
+function packCircle(e, b, target) {
+  const pals = safe(() => e.dimension.getEntities({ location: target.location, maxDistance: 8, type: e.typeId })) ?? [];
+  if (pals.length < 2) return;
+  const d = V.dist(e.location, target.location);
+  if (d < 2.5 || d > 9) return;
+  const away = V.flat(V.sub(e.location, target.location));
+  const tangent = { x: -away.z * b.orbit, y: 0, z: away.x * b.orbit };
+  const keep = d < 4 ? 0.12 : d > 6 ? -0.12 : 0;
+  safe(() => e.applyImpulse({ x: tangent.x * 0.22 + away.x * keep, y: 0, z: tangent.z * 0.22 + away.z * keep }));
+}
+
 function think(e, b, t) {
   const info = unitInfo(e.id);
   if (info?.routing) return;
+  const cinfo = companionInfo(e);
   if (b.dodgeAt <= t) tryDodge(e, b, t);
+  if (cinfo?.passive) {
+    holdPosition(e);
+    return;
+  }
   const foes = foesOf(e, 24);
-  const target = pickTarget(e, b, foes, info);
+  const target = pickTarget(e, b, foes, info, cinfo);
   if (!target) {
     holdPosition(e);
     return;
@@ -306,7 +370,7 @@ function think(e, b, t) {
   // cowards fall back to their friends when badly hurt
   if (hp < 0.3 && b.courage < 0.6 && b.retreatUntil < t - 200) {
     b.retreatUntil = t + 60;
-    if (info) particle(e.dimension, 'bc:dust_burst', e.location, { color: rgb('a0a0a0'), scale: 0.5 });
+    particle(e.dimension, 'bc:dust_burst', e.location, { color: rgb('a0a0a0'), scale: 0.5 });
   }
   if (b.retreatUntil > t) {
     const pals = friends(e, e.location, 20).filter((f) => f.id !== e.id);
@@ -316,8 +380,10 @@ function think(e, b, t) {
     safe(() => e.applyImpulse({ x: dir.x * 0.3, y: 0, z: dir.z * 0.3 }));
   } else if (holdPosition(e) && V.dist(target.location, e.location) > 12) {
     return;
+  } else if (PACK.has(e.typeId) && (b.cds.get('e0') ?? 0) > t) {
+    packCircle(e, b, target);
   }
-  if (b.castAt <= t) decide(e, b, target, foes, t);
+  if (b.castAt <= t) decide(e, b, target, foes, t, cinfo);
 }
 
 system.runInterval(() => {
@@ -334,4 +400,4 @@ system.runInterval(() => {
   }
 }, 2);
 
-export { Player, up };
+export { Player };

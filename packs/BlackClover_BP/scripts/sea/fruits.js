@@ -475,6 +475,7 @@ export function usePower(p, item) {
 // ------------------------------------------------------------------------------- passives & the sea's curse
 export function drained(p) {
   if (!p.isInWater) return false;
+  if (sea(p).fruit === 'shark') return false; // the Shark Fruit belongs to the sea
   const h = p.getHeadLocation();
   const b = safe(() => p.dimension.getBlock({ x: Math.floor(h.x), y: Math.floor(h.y), z: Math.floor(h.z) }));
   return !!b && (b.typeId === 'minecraft:water' || b.typeId === 'minecraft:flowing_water');

@@ -1,112 +1,190 @@
-// Giant bosses: the Archdevil, the Stone Colossus, the Phantom Galleon and the Storm Kraken.
-// One framework: each boss has a list of weighted attacks (engine recipes or special moves),
-// a second phase below half health, and a summoning item.
+// Giant bosses: the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken and the Fallen Captain.
+//
+// One framework drives them all:
+// * THREAT: every boss remembers who hurt it most (players, knights, companions) and turns on the biggest threat -
+//   it only switches when someone out-does the current target by 10%. Brawler companions draw extra threat.
+// * PHASES: below 50% health it enrages, below 25% it unleashes a once-only DESPERATION move.
+// * TELEGRAPHS: big blows show a warning circle first - get out of it.
+// * MOVEMENT: the Archdevil blinks away when surrounded, the Kraken dives and resurfaces elsewhere, the Colossus
+//   stomps foes away, the Galleon keeps station above you and rams in its last phase, the Captain blinks behind you.
+// * ENRAGE TIMER: after six minutes any boss grows stronger and faster.
 import { Player, WeatherType, system, world } from '@minecraft/server';
-import { center, effect, hurt, knock, launch, targetsAround } from '../core/combat.js';
+import { DATA } from '../generated/data.js';
+import { center, effect, hurt, knock, launch, ownerOf, targetsAround } from '../core/combat.js';
 import { anim, particle, rgb, shakeArea, shockwave, sound, title } from '../core/fx.js';
 import { addXp } from '../core/progress.js';
 import { addStars } from '../core/ranks.js';
 import { V, alive, isCreative, pick, rand, repeat, safe, timer } from '../core/util.js';
 import { castSpec } from './engine.js';
-import { face } from './knights.js';
+import { face, kitFor } from './knights.js';
 
 /**
- * @typedef {{w: number, min?: number, max?: number, phase?: number, spec?: Record<string, any>, src?: string, anim?: string, fn?: string}} Attack
- * @typedef {{name: string, src: string, every: [number, number], rage: [string, string], intro: [string, string], attacks: Attack[], range: number, stars: number}} BossDef
+ * @typedef {{w: number, min?: number, max?: number, phase?: number, spec?: Record<string, any>, src?: string, anim?: string, fn?: string, tele?: number}} Attack
+ * @typedef {{name: string, src: string, every: [number, number], rage: [string, string], intro: [string, string], last: [string, string],
+ *            attacks: Attack[], range: number, stars: number, desperation: string, roar?: string}} BossDef
  */
 /** @type {Record<string, BossDef>} */
 const DEF = {
   'bc:archdevil': {
-    name: '§4The Archdevil', src: 'a:blood', every: [45, 75], range: 40, stars: 8,
+    name: '§4The Archdevil', src: 'a:blood', every: [45, 75], range: 40, stars: 8, desperation: 'hellgate', roar: 'animation.bc.archdevil.roar',
     intro: ['§4§lTHE ARCHDEVIL', '§7A king of the underworld steps through'],
     rage: ['§4§lThe Archdevil is enraged', '§7Its halo burns crimson'],
+    last: ['§4§lHELLGATE', '§7The Archdevil tears the world open'],
     attacks: [
       { w: 3, max: 22, spec: { t: 'bolt', d: 9, n: 5, spread: 30, shape: 3, speed: 2.2, fx: 'dark' }, src: 'a:dark', anim: 'animation.bc.devil.cast' },
       { w: 3, spec: { t: 'rain', d: 10, n: 10, r: 6, every: 3, fire: 5, fx: 'flame' }, anim: 'animation.bc.devil.cast' },
-      { w: 3, max: 8, spec: { t: 'nova', d: 14, r: 7, kb: [2.2, 0.8], fx: 'blood' }, anim: 'animation.bc.devil.attack' },
+      { w: 3, max: 8, tele: 16, spec: { t: 'nova', d: 14, r: 7, kb: [2.2, 0.8], fx: 'blood' }, anim: 'animation.bc.devil.attack' },
       { w: 2, phase: 2, spec: { t: 'vortex', d: 16, r: 8, dur: 2.5, fx: 'dark' }, src: 'a:dark', anim: 'animation.bc.devil.cast' },
       { w: 2, phase: 2, spec: { t: 'meteor', d: 16, n: 5, r: 8, aoe: 4, fire: 6, size: 2, fx: 'magma' }, src: 'a:magma', anim: 'animation.bc.devil.cast' },
       { w: 1, fn: 'imps', anim: 'animation.bc.devil.cast' },
     ],
   },
   'bc:stone_colossus': {
-    name: '§6The Stone Colossus', src: 'a:earth', every: [40, 70], range: 40, stars: 7,
+    name: '§6The Stone Colossus', src: 'a:earth', every: [40, 70], range: 40, stars: 7, desperation: 'avalanche', roar: 'animation.bc.stone_colossus.roar',
     intro: ['§6§lTHE STONE COLOSSUS', '§7The mountain stands up'],
     rage: ['§6§lThe Colossus cracks open', '§7Molten light pours from its core'],
+    last: ['§6§lAVALANCHE', '§7The sky fills with stone'],
     attacks: [
       { w: 4, max: 7, fn: 'slam', anim: 'animation.bc.stone_colossus.slam' },
-      { w: 3, min: 7, fn: 'boulders', anim: 'animation.bc.stone_colossus.slam' },
-      { w: 2, spec: { t: 'wave', d: 12, len: 16, dirs: 8, fx: 'earth', kb: [0.3, 1.0] }, anim: 'animation.bc.stone_colossus.slam' },
-      { w: 2, phase: 2, spec: { t: 'meteor', d: 14, n: 6, r: 7, aoe: 3.5, fire: 5, size: 2, fx: 'magma' }, src: 'a:magma' },
+      { w: 3, min: 7, fn: 'boulders', anim: 'animation.bc.stone_colossus.throw' },
+      { w: 2, tele: 18, spec: { t: 'wave', d: 12, len: 16, dirs: 8, fx: 'earth', kb: [0.3, 1.0] }, anim: 'animation.bc.stone_colossus.stomp' },
+      { w: 2, phase: 2, spec: { t: 'meteor', d: 14, n: 6, r: 7, aoe: 3.5, fire: 5, size: 2, fx: 'magma' }, src: 'a:magma', anim: 'animation.bc.stone_colossus.throw' },
       { w: 1, phase: 2, spec: { t: 'prison', d: 12, r: 4, dur: 3, fx: 'sand' }, src: 'a:sand' },
     ],
   },
   'bc:phantom_galleon': {
-    name: '§3The Phantom Galleon', src: 'a:crystal', every: [40, 65], range: 48, stars: 6,
+    name: '§3The Phantom Galleon', src: 'a:crystal', every: [40, 65], range: 48, stars: 6, desperation: 'ram',
     intro: ['§3§lTHE PHANTOM GALLEON', '§7A ship of the drowned sails the sky'],
     rage: ['§3§lThe Galleon raises its black sails', '§7The dead crew stirs'],
+    last: ['§3§lGHOST RAM', '§7The Galleon dives straight at you'],
     attacks: [
-      { w: 4, fn: 'broadside' },
+      { w: 4, fn: 'broadside', anim: 'animation.bc.phantom_galleon.broadside' },
       { w: 2, fn: 'crew' },
       { w: 2, spec: { t: 'meteor', d: 10, n: 6, r: 6, aoe: 3, size: 1, fx: 'crystal' } },
       { w: 2, phase: 2, spec: { t: 'strikes', d: 11, n: 5, r: 10, fx: 'mist', eff: [['blindness', 3, 0]] }, src: 'a:mist' },
     ],
   },
   'bc:storm_kraken': {
-    name: '§9The Storm Kraken', src: 'a:lightning', every: [40, 65], range: 44, stars: 7,
+    name: '§9The Storm Kraken', src: 'a:lightning', every: [40, 65], range: 44, stars: 7, desperation: 'maelstrom',
     intro: ['§9§lTHE STORM KRAKEN', '§7The sea itself rises against you'],
     rage: ['§9§lThe Kraken calls the storm', '§7Thunder answers'],
+    last: ['§9§lMAELSTROM', '§7The sea turns into a whirlpool'],
     attacks: [
       { w: 3, spec: { t: 'strikes', d: 12, n: 5, r: 10, fx: 'lightning' }, anim: 'animation.bc.storm_kraken.slam' },
-      { w: 3, max: 14, spec: { t: 'wave', d: 14, len: 14, dirs: 4, fx: 'water', kb: [1.6, 0.9] }, src: 'a:water', anim: 'animation.bc.storm_kraken.slam' },
+      { w: 3, max: 14, tele: 16, spec: { t: 'wave', d: 14, len: 14, dirs: 4, fx: 'water', kb: [1.6, 0.9] }, src: 'a:water', anim: 'animation.bc.storm_kraken.slam' },
       { w: 2, spec: { t: 'vortex', d: 10, r: 7, dur: 3, fx: 'water' }, src: 'a:water' },
       { w: 2, spec: { t: 'prison', d: 8, r: 4, dur: 3, fx: 'bubble', eff: [['levitation', 2, 1]] }, src: 'a:bubble' },
       { w: 2, phase: 2, spec: { t: 'bolt', d: 9, n: 7, spread: 40, shape: 3, speed: 2.4, fx: 'lightning' } },
+      { w: 2, fn: 'submerge' },
+    ],
+  },
+  'bc:fallen_captain': {
+    name: '§4The Fallen Captain', src: 'a:dark', every: [28, 46], range: 36, stars: 9, desperation: 'final_form', roar: 'animation.bc.fallen_captain.roar',
+    intro: ['§4§lTHE FALLEN CAPTAIN', '§7A Magic Knight captain, devoured by a devil'],
+    rage: ['§4§lThe Captain turns another page', '§7A second grimoire opens'],
+    last: ['§4§lFINAL FORM', '§7Time itself bends to the Fallen Captain'],
+    attacks: [
+      { w: 4, max: 4, fn: 'combo', anim: 'animation.bc.fallen_captain.slash' },
+      { w: 3, min: 5, fn: 'blink_strike' },
+      { w: 4, fn: 'grimoire', anim: 'animation.bc.fallen_captain.cast' },
+      { w: 1, phase: 2, fn: 'hounds', anim: 'animation.bc.fallen_captain.cast' },
     ],
   },
 };
+const CAPTAIN_ATTRS = ['flame', 'lightning', 'dark', 'ice', 'blood', 'glass', 'rune', 'spirit', 'star', 'gold', 'smoke', 'magma'];
 
-/** @type {Map<string, {next: number, enraged: boolean}>} */
+/** @type {Map<string, {next: number, phase: number, start: number, enraged: boolean, threat: Map<string, number>, target: string, moveAt: number, attrs?: string[], parryAt?: number, dodgeAt?: number}>} */
 const bosses = new Map();
 
 function track(e) {
   if (!DEF[e.typeId] || bosses.has(e.id)) return;
-  bosses.set(e.id, { next: system.currentTick + 60, enraged: false });
+  const st = { next: system.currentTick + 60, phase: 1, start: 0, enraged: false, threat: new Map(), target: '', moveAt: system.currentTick + 400 };
+  if (e.typeId === 'bc:fallen_captain') {
+    const pool = [...CAPTAIN_ATTRS].sort(() => Math.random() - 0.5);
+    st.attrs = [pool[0], pool[1], 'time'];
+    st.parryAt = 0;
+    st.dodgeAt = 0;
+  }
+  bosses.set(e.id, st);
 }
 world.afterEvents.entitySpawn.subscribe((ev) => safe(() => track(ev.entity)));
 world.afterEvents.entityLoad.subscribe((ev) => safe(() => track(ev.entity)));
 
-function bossTarget(e, range) {
-  let best;
-  let bd = range;
-  for (const p of e.dimension.getPlayers({ location: e.location, maxDistance: range })) {
-    const gm = safe(() => p.getGameMode());
-    if (gm === 'Creative' || gm === 'Spectator') continue;
-    const d = V.dist(p.location, e.location);
-    if (d < bd) {
-      bd = d;
-      best = p;
+// ------------------------------------------------------------------------------- threat
+world.afterEvents.entityHurt.subscribe((ev) => {
+  const st = bosses.get(ev.hurtEntity.id);
+  const src = ev.damageSource.damagingEntity;
+  if (!st || !src) return;
+  if (!st.start) st.start = system.currentTick;
+  let amount = ev.damage;
+  // brawler companions and knights in melee draw extra attention (they "tank")
+  if (src.typeId === 'bc:magic_knight' && V.dist(src.location, ev.hurtEntity.location) < 5) amount *= 1.6;
+  st.threat.set(src.id, (st.threat.get(src.id) ?? 0) + amount);
+});
+
+function valid(e, x, range) {
+  if (!x || !alive(x) || x.dimension.id !== e.dimension.id || V.dist(x.location, e.location) > range) return false;
+  if (x instanceof Player) {
+    const gm = safe(() => x.getGameMode());
+    return gm !== 'Creative' && gm !== 'Spectator';
+  }
+  return true;
+}
+
+function bossTarget(e, st, def) {
+  const cur = world.getEntity(st.target);
+  let best = valid(e, cur, def.range) ? cur : undefined;
+  let bestThreat = best ? (st.threat.get(best.id) ?? 0) : -1;
+  for (const [id, th] of st.threat) {
+    const x = world.getEntity(id);
+    if (!valid(e, x, def.range)) {
+      if (!x) st.threat.delete(id);
+      continue;
+    }
+    if (th > bestThreat * 1.1 + (best ? 0 : -1)) {
+      best = x;
+      bestThreat = th;
     }
   }
-  if (best) return best;
-  const near = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 24, families: ['bc_knight'] })) ?? [];
-  return near[0];
+  if (!best) {
+    let bd = def.range;
+    for (const p of e.dimension.getPlayers({ location: e.location, maxDistance: def.range })) {
+      if (!valid(e, p, def.range)) continue;
+      const d = V.dist(p.location, e.location);
+      if (d < bd) {
+        bd = d;
+        best = p;
+      }
+    }
+    if (!best) best = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 24, families: ['bc_knight'] }))?.[0];
+  }
+  if (best && best.id !== st.target) {
+    st.target = best.id;
+    if (best instanceof Player && st.threat.size > 1) safe(() => best.onScreenDisplay.setActionBar(`${def.name}§c turns on you!`));
+  }
+  return best;
 }
 
 // ------------------------------------------------------------------------------- special moves
-/** @type {Record<string, (e: any, target: any, st: {enraged: boolean}) => void>} */
+function telegraph(e, at, r, ticks) {
+  particle(e.dimension, 'bc:warning_circle', V.add(at, { x: 0, y: 0.1, z: 0 }), { size: r, life: ticks / 20 + 0.2 });
+  sound(e.dimension, 'random.click', at, 1.2, 0.6);
+}
+
+/** @type {Record<string, (e: any, target: any, st: any) => void>} */
 const MOVES = {
   imps(e, target, st) {
     sound(e.dimension, 'bc.devil.roar', e.location, 2, 0.6);
-    const n = st.enraged ? 4 : 3;
+    const n = st.phase > 1 ? 4 : 3;
     for (let i = 0; i < n; i++) {
-      const type = st.enraged && i === 0 ? 'bc:dark_disciple' : 'bc:imp';
+      const type = st.phase > 1 && i === 0 ? 'bc:dark_disciple' : 'bc:imp';
       const at = V.add(e.location, { x: rand(-4, 4), y: 1, z: rand(-4, 4) });
       particle(e.dimension, 'bc:magic_circle_dark', at, { size: 2, life: 1 });
       safe(() => e.dimension.spawnEntity(type, at));
     }
   },
   slam(e, target, st) {
+    telegraph(e, e.location, 7, 9);
     timer(9, () => {
       if (!alive(e)) return;
       const at = e.location;
@@ -115,15 +193,15 @@ const MOVES = {
       particle(e.dimension, 'bc:rock_debris', at, { scale: 2 });
       shakeArea(e.dimension, at, 24, 0.7, 0.8);
       for (const v of targetsAround(e.dimension, at, 7, e)) {
-        hurt(v, st.enraged ? 24 : 18, e);
+        hurt(v, st.phase > 1 ? 24 : 18, e);
         knock(v, V.sub(v.location, at), 1.4, 0.9);
       }
     });
   },
   boulders(e, target, st) {
-    const n = st.enraged ? 3 : 2;
+    const n = st.phase > 1 ? 3 : 2;
     for (let i = 0; i < n; i++) {
-      timer(8 + i * 6, () => {
+      timer(10 + i * 6, () => {
         if (!alive(e) || !alive(target)) return;
         const from = V.add(e.location, { x: 0, y: 8, z: 0 });
         launch(e, 'bc:boulder', from, V.sub(V.add(center(target), { x: rand(-1.5, 1.5), y: 0, z: rand(-1.5, 1.5) }), from), 1.5,
@@ -132,7 +210,7 @@ const MOVES = {
     }
   },
   broadside(e, target, st) {
-    const n = st.enraged ? 8 : 6;
+    const n = st.phase > 1 ? 8 : 6;
     sound(e.dimension, 'bc.ship.bell', e.location, 2, 0.6);
     for (let i = 0; i < n; i++) {
       timer(i * 4, () => {
@@ -147,18 +225,185 @@ const MOVES = {
     }
   },
   crew(e, target, st) {
-    const alive_ = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 48, type: 'bc:phantom_raider' }).length) ?? 0;
-    if (alive_ >= 8) return;
+    const count = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 48, type: 'bc:phantom_raider' }).length) ?? 0;
+    if (count >= 8) return;
     sound(e.dimension, 'bc.portal', target.location, 1.5, 0.5);
-    for (let i = 0; i < (st.enraged ? 4 : 2); i++) {
+    for (let i = 0; i < (st.phase > 1 ? 4 : 2); i++) {
       const at = V.add(target.location, { x: rand(-6, 6), y: 0.5, z: rand(-6, 6) });
       particle(e.dimension, 'bc:fog_cloud', at, { scale: 0.3 });
       safe(() => e.dimension.spawnEntity('bc:phantom_raider', at));
     }
   },
+  submerge(e, target) {
+    // dive under, become untouchable for a moment, and come up somewhere else near the prey
+    anim(e, 'animation.bc.storm_kraken.submerge');
+    effect(e, 'resistance', 2.5, 4, false);
+    particle(e.dimension, 'bc:water_splash', e.location, { scale: 3 });
+    sound(e.dimension, 'random.splash', e.location, 2, 0.5);
+    timer(24, () => {
+      if (!alive(e) || !alive(target)) return;
+      for (let i = 0; i < 8; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const spot = { x: target.location.x + Math.cos(a) * 9, y: target.location.y - 2, z: target.location.z + Math.sin(a) * 9 };
+        const b = safe(() => e.dimension.getBlock({ x: Math.floor(spot.x), y: Math.floor(spot.y), z: Math.floor(spot.z) }));
+        if (b?.typeId !== 'minecraft:water') continue;
+        safe(() => e.teleport(spot));
+        anim(e, 'animation.bc.storm_kraken.emerge');
+        particle(e.dimension, 'bc:water_splash', V.add(spot, { x: 0, y: 2, z: 0 }), { scale: 3 });
+        sound(e.dimension, 'bc.leviathan.roar', spot, 2, 0.8);
+        return;
+      }
+    });
+  },
+  combo(e, target, st) {
+    for (let i = 0; i < 3; i++) {
+      timer(i * 7, () => {
+        if (!alive(e) || !alive(target)) return;
+        anim(e, 'animation.bc.fallen_captain.slash');
+        const dir = V.flat(V.sub(target.location, e.location));
+        safe(() => e.applyImpulse({ x: dir.x * 0.5, y: 0, z: dir.z * 0.5 }));
+        particle(e.dimension, 'bc:slash_fx', V.add(e.location, { x: dir.x * 1.5, y: 1.2, z: dir.z * 1.5 }), { scale: 1 });
+        sound(e.dimension, 'bc.anti.slash', e.location, 1, 0.8 + i * 0.1);
+        for (const v of targetsAround(e.dimension, V.add(e.location, V.mul(dir, 1.6)), 2.4, e)) hurt(v, st.phase > 2 ? 12 : 9, e);
+      });
+    }
+  },
+  blink_strike(e, target, st) {
+    const behind = V.add(target.location, V.mul(V.flat(target.getViewDirection()), -2));
+    particle(e.dimension, 'bc:burst_dark', center(e), { scale: 1, color: rgb('2a0010') });
+    sound(e.dimension, 'bc.portal', e.location, 1, 1.6);
+    safe(() => e.teleport(behind));
+    timer(6, () => {
+      if (!alive(e) || !alive(target)) return;
+      face(e, target);
+      anim(e, 'animation.bc.fallen_captain.slash');
+      particle(e.dimension, 'bc:burst_dark', center(e), { scale: 1, color: rgb('2a0010') });
+      if (V.dist(e.location, target.location) < 3.5) {
+        hurt(target, st.phase > 2 ? 16 : 13, e);
+        knock(target, V.sub(target.location, e.location), 1.2, 0.4);
+      }
+    });
+  },
+  grimoire(e, target, st) {
+    const attr = st.attrs[Math.min(st.phase, 3) - 1];
+    const kit = kitFor(attr, 10);
+    const spec = pick(kit.filter((s) => !['wall', 'heal', 'rewind', 'summon'].includes(s.t)));
+    if (spec) castSpec(e, spec, `a:${attr}`, st.phase > 2 ? 1.5 : 1.25, target);
+  },
+  hounds(e, target, st) {
+    sound(e.dimension, 'bc.howl', e.location, 2, 0.6);
+    for (let i = 0; i < 2; i++) {
+      const at = V.add(e.location, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) });
+      particle(e.dimension, 'bc:magic_circle_dark', at, { size: 2, life: 1 });
+      safe(() => e.dimension.spawnEntity('bc:hellhound', at));
+    }
+  },
 };
 
+/** Once-only moves below 25% health. */
+const DESPERATION = {
+  hellgate(e, target) {
+    for (let i = 0; i < 2; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const at = V.add(e.location, { x: Math.cos(a) * 10, y: 0, z: Math.sin(a) * 10 });
+      safe(() => e.dimension.spawnEntity('bc:devil_gate', at));
+    }
+    castSpec(e, { t: 'meteor', d: 14, n: 10, r: 12, aoe: 3.5, fire: 6, size: 2, fx: 'magma' }, 'a:magma', 1.3, target);
+  },
+  avalanche(e, target) {
+    for (const v of targetsAround(e.dimension, e.location, 30, e).slice(0, 6)) {
+      for (let i = 0; i < 3; i++) {
+        timer(i * 12, () => {
+          if (!alive(v)) return;
+          const spot = V.add(v.location, { x: rand(-2, 2), y: 0, z: rand(-2, 2) });
+          telegraph(e, spot, 2.5, 20);
+          const from = V.add(spot, { x: rand(-3, 3), y: 22, z: rand(-3, 3) });
+          timer(10, () => launch(e, 'bc:boulder', from, V.sub(spot, from), 1.6, { spell: 'avalanche', attr: 'earth', damage: 16, pierce: 0 }));
+        });
+      }
+    }
+    timer(40, () => alive(e) && castSpec(e, { t: 'wave', d: 14, len: 18, dirs: 12, fx: 'earth', kb: [0.3, 1.1] }, 'a:earth', 1.2, target));
+  },
+  ram(e, target) {
+    if (!alive(target)) return;
+    const from = { ...e.location };
+    const to = V.add(target.location, { x: 0, y: 1, z: 0 });
+    const dir = V.norm(V.sub(to, from));
+    for (let s = 0; s < 28; s += 2) telegraph(e, V.add(target.location, V.mul(V.flat(dir), s - 6)), 3, 30);
+    anim(e, 'animation.bc.phantom_galleon.ram');
+    const hit = new Set();
+    timer(30, () => {
+      repeat(16, 2, (i) => {
+        if (!alive(e)) return false;
+        const at = V.add(from, V.mul(dir, (i + 1) * 2.2));
+        safe(() => e.teleport(at));
+        particle(e.dimension, 'bc:fog_cloud', at, { scale: 0.3 });
+        for (const v of targetsAround(e.dimension, at, 3.5, e)) {
+          if (hit.has(v.id)) continue;
+          hit.add(v.id);
+          hurt(v, 18, e);
+          knock(v, dir, 2.0, 0.8);
+        }
+      });
+    });
+  },
+  maelstrom(e, target) {
+    castSpec(e, { t: 'vortex', d: 20, r: 12, dur: 5, fx: 'water' }, 'a:water', 1.2, target);
+    timer(30, () => alive(e) && castSpec(e, { t: 'strikes', d: 12, n: 8, r: 14, fx: 'lightning' }, 'a:lightning', 1.2, target));
+  },
+  final_form(e, target) {
+    effect(e, 'strength', 600, 1, false);
+    effect(e, 'speed', 600, 1, false);
+    castSpec(e, { t: 'timestop', d: 12, r: 14, dur: 4 }, 'a:time', 1.3, target);
+  },
+};
+
+// ------------------------------------------------------------------------------- the Fallen Captain: parry & dodge
+world.afterEvents.entityHurt.subscribe((ev) => safe(() => {
+  const e = ev.hurtEntity;
+  if (e.typeId !== 'bc:fallen_captain') return;
+  const st = bosses.get(e.id);
+  const src = ev.damageSource.damagingEntity;
+  if (!st || !src || ev.damageSource.cause !== 'entityAttack' || V.dist(src.location, e.location) > 4) return;
+  const t = system.currentTick;
+  if ((st.parryAt ?? 0) > t || Math.random() > 0.3) return;
+  st.parryAt = t + 80;
+  const hp = e.getComponent('minecraft:health');
+  if (hp) hp.setCurrentValue(Math.min(hp.effectiveMax, hp.currentValue + ev.damage));
+  anim(e, 'animation.bc.fallen_captain.parry');
+  sound(e.dimension, 'random.anvil_land', e.location, 0.8, 1.8);
+  particle(e.dimension, 'bc:burst_spark', center(e), { color: rgb('ffffff'), scale: 0.8 });
+  hurt(src, 6, e);
+  knock(src, V.sub(src.location, e.location), 1.4, 0.4);
+  if (src instanceof Player) safe(() => src.onScreenDisplay.setActionBar('§cParried!'));
+}, 'parry'));
+
+function captainDodge(e, st, t) {
+  if ((st.dodgeAt ?? 0) > t) return;
+  const near = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 7, families: ['bc_spell'] })) ?? [];
+  for (const p of near) {
+    const v = safe(() => p.getVelocity());
+    if (!v || V.len(v) < 0.3) continue;
+    const to = V.sub(center(e), p.location);
+    if (V.dot(to, v) <= 0) continue;
+    if (Math.random() > 0.6) {
+      st.dodgeAt = t + 20;
+      return;
+    }
+    const side = V.flat({ x: -v.z, y: 0, z: v.x });
+    const dest = V.add(e.location, V.mul(side, Math.random() < 0.5 ? 3 : -3));
+    particle(e.dimension, 'bc:burst_dark', center(e), { scale: 0.6, color: rgb('2a0010') });
+    safe(() => e.teleport(dest));
+    st.dodgeAt = t + 50;
+    return;
+  }
+}
+
 // ------------------------------------------------------------------------------- the loop
+function announce(e, main, sub) {
+  for (const p of e.dimension.getPlayers({ location: e.location, maxDistance: 56 })) title(p, main, sub, 50);
+}
+
 system.runInterval(() => {
   const t = system.currentTick;
   for (const [id, st] of bosses) {
@@ -169,27 +414,65 @@ system.runInterval(() => {
     }
     const def = DEF[e.typeId];
     safe(() => {
-      const target = bossTarget(e, def.range);
-      // the galleon keeps station above its prey
+      const target = bossTarget(e, st, def);
+      // movement
       if (e.typeId === 'bc:phantom_galleon' && target) {
         const want = V.add(target.location, V.mul(V.flat(V.sub(e.location, target.location)), 14));
         want.y = target.location.y + 11;
         const d = V.sub(want, e.location);
         if (V.len(d) > 3) safe(() => e.applyImpulse(V.mul(V.norm(d), 0.12)));
       }
+      if (e.typeId === 'bc:fallen_captain') captainDodge(e, st, t);
+      if (target && t > st.moveAt) {
+        const crowd = targetsAround(e.dimension, e.location, 5, e).length;
+        if (e.typeId === 'bc:archdevil' && crowd >= 2) {
+          st.moveAt = t + 300;
+          anim(e, 'animation.bc.archdevil.blink');
+          particle(e.dimension, 'bc:burst_dark', center(e), { scale: 2, color: rgb('2a0010') });
+          const a = Math.random() * Math.PI * 2;
+          timer(8, () => alive(e) && safe(() => e.teleport(V.add(target.location, { x: Math.cos(a) * 11, y: 4, z: Math.sin(a) * 11 }))));
+        } else if (e.typeId === 'bc:stone_colossus' && crowd >= 2) {
+          st.moveAt = t + 240;
+          anim(e, 'animation.bc.stone_colossus.stomp');
+          telegraph(e, e.location, 6, 10);
+          timer(10, () => {
+            if (!alive(e)) return;
+            shockwave(e.dimension, e.location, 'earth', 6);
+            for (const v of targetsAround(e.dimension, e.location, 6, e)) knock(v, V.sub(v.location, e.location), 2.4, 0.6);
+          });
+        }
+      }
+      // phases
       const hp = e.getComponent('minecraft:health');
-      if (hp && !st.enraged && hp.currentValue < hp.effectiveMax * 0.5) {
-        st.enraged = true;
+      const frac = hp ? hp.currentValue / hp.effectiveMax : 1;
+      if (st.phase === 1 && frac < 0.5) {
+        st.phase = 2;
+        if (def.roar) anim(e, def.roar);
         sound(e.dimension, e.typeId === 'bc:storm_kraken' ? 'ambient.weather.thunder' : 'bc.devil.roar', e.location, 3, 0.5);
         shakeArea(e.dimension, e.location, 40, 0.6, 1.2);
-        for (const p of e.dimension.getPlayers({ location: e.location, maxDistance: 56 })) title(p, def.rage[0], def.rage[1], 50);
+        announce(e, def.rage[0], def.rage[1]);
         effect(e, 'strength', 600, 1, false);
         effect(e, 'resistance', 600, 0, false);
         if (e.typeId === 'bc:storm_kraken') safe(() => e.dimension.setWeather(WeatherType.Thunder, 6000));
+      } else if (st.phase === 2 && frac < 0.25) {
+        st.phase = 3;
+        if (def.roar) anim(e, def.roar);
+        announce(e, def.last[0], def.last[1]);
+        sound(e.dimension, 'bc.gong', e.location, 3, 0.6);
+        shakeArea(e.dimension, e.location, 40, 0.8, 1.4);
+        timer(20, () => alive(e) && safe(() => DESPERATION[def.desperation](e, target ?? bossTarget(e, st, def))));
+        st.next = t + 80;
+      }
+      // the enrage timer
+      if (!st.enraged && st.start && t - st.start > 20 * 360) {
+        st.enraged = true;
+        announce(e, `${def.name}§c grows furious`, '§7You took too long');
+        effect(e, 'strength', 9999, 2, false);
+        effect(e, 'speed', 9999, 1, false);
       }
       if (!target || st.next > t) return;
       const d = V.dist(target.location, e.location);
-      const pool = def.attacks.filter((a) => (a.phase ?? 1) <= (st.enraged ? 2 : 1) && d >= (a.min ?? 0) && d <= (a.max ?? 99));
+      const pool = def.attacks.filter((a) => (a.phase ?? 1) <= st.phase && d >= (a.min ?? 0) && d <= (a.max ?? 99));
       if (!pool.length) return;
       let r = Math.random() * pool.reduce((s, a) => s + a.w, 0);
       let atk = pool[0];
@@ -202,10 +485,18 @@ system.runInterval(() => {
       }
       face(e, target);
       if (atk.anim) anim(e, atk.anim);
-      if (atk.fn) MOVES[atk.fn](e, target, st);
-      else castSpec(e, atk.spec, atk.src ?? def.src, st.enraged ? 1.25 : 1.0, target);
+      const pw = (st.phase > 1 ? 1.25 : 1.0) * (st.phase > 2 ? 1.15 : 1) * (st.enraged ? 1.4 : 1);
+      const go = () => {
+        if (!alive(e)) return;
+        if (atk.fn) MOVES[atk.fn](e, target, st);
+        else castSpec(e, atk.spec, atk.src ?? def.src, pw, target);
+      };
+      if (atk.tele) {
+        telegraph(e, atk.spec?.at === 'aim' ? target.location : e.location, atk.spec?.r ?? 6, atk.tele);
+        timer(atk.tele, go);
+      } else go();
       const [lo, hi] = def.every;
-      st.next = t + Math.round(rand(lo, hi) * (st.enraged ? 0.7 : 1));
+      st.next = t + Math.round(rand(lo, hi) * (st.phase > 1 ? 0.75 : 1) * (st.phase > 2 ? 0.85 : 1) * (st.enraged ? 0.7 : 1));
     }, 'boss');
   }
 }, 10);
@@ -220,23 +511,29 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
   particle(dim, 'bc:clover_leaves', V.add(loc, { x: 0, y: 2, z: 0 }), { scale: 2.5 });
   sound(dim, 'bc.fanfare', loc, 2, 0.9);
   const killer = ev.damageSource.damagingEntity;
+  const killerOwner = killer ? world.getEntity(ownerOf(killer)) : undefined;
   for (const p of dim.getPlayers({ location: loc, maxDistance: 64 })) {
     title(p, '§6§lBOSS DEFEATED', `${def.name}§7 has fallen`, 70);
-    addXp(p, p === killer ? 400 : 200);
-    safe(() => addStars(p, p === killer ? def.stars : Math.ceil(def.stars / 2), `${def.name.replace(/§./g, '')} defeated`));
+    const mine = p === killer || p === killerOwner;
+    addXp(p, mine ? 400 : 200);
+    safe(() => addStars(p, mine ? def.stars : Math.ceil(def.stars / 2), `${def.name.replace(/§./g, '')} defeated`));
   }
   if (e.typeId === 'bc:storm_kraken') safe(() => dim.setWeather(WeatherType.Clear, 6000));
+  bosses.delete(e.id);
 }, 'bossDie'));
 
 // ------------------------------------------------------------------------------- summoning
+const COLORS = { 'bc:archdevil': 'd01a34', 'bc:stone_colossus': 'ff8a2a', 'bc:phantom_galleon': '96ffdc', 'bc:storm_kraken': '9ae8ff', 'bc:fallen_captain': 'b0101a' };
+
 /** Raise a boss in front of a location with a short ceremony. */
 export function summonBoss(type, dim, loc, players = []) {
   const def = DEF[type];
   if (!def) return;
-  const color = { 'bc:archdevil': 'd01a34', 'bc:stone_colossus': 'ff8a2a', 'bc:phantom_galleon': '96ffdc', 'bc:storm_kraken': '9ae8ff' }[type];
+  const color = COLORS[type];
   sound(dim, type === 'bc:phantom_galleon' ? 'bc.ship.bell' : 'bc.gong', loc, 3, 0.6);
   repeat(10, 10, (i) => {
-    particle(dim, type === 'bc:archdevil' ? 'bc:magic_circle_dark' : 'bc:magic_circle_ground', V.add(loc, { x: 0, y: 0.1, z: 0 }), { color: rgb(color), size: 4 + i * 0.6, life: 0.7 });
+    particle(dim, type === 'bc:archdevil' || type === 'bc:fallen_captain' ? 'bc:magic_circle_dark' : 'bc:magic_circle_ground', V.add(loc, { x: 0, y: 0.1, z: 0 }),
+      { color: rgb(color), size: 4 + i * 0.6, life: 0.7 });
     if (type === 'bc:stone_colossus') {
       particle(dim, 'bc:rock_debris', V.add(loc, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) }), { scale: 1.2 });
       shakeArea(dim, loc, 30, 0.4, 0.5);
@@ -248,9 +545,10 @@ export function summonBoss(type, dim, loc, players = []) {
     if (!e) return;
     track(e);
     shockwave(dim, loc, 'flame', 8);
+    if (def.roar) anim(e, def.roar);
     sound(dim, type === 'bc:storm_kraken' ? 'bc.leviathan.roar' : type === 'bc:stone_colossus' ? 'bc.golem.slam' : 'bc.devil.roar', loc, 3, 0.5);
     for (const p of dim.getPlayers({ location: loc, maxDistance: 64 })) title(p, def.intro[0], def.intro[1], 60);
-    if (type === 'bc:archdevil') for (const p of players) effect(p, 'darkness', 4, 0, false);
+    if (type === 'bc:archdevil' || type === 'bc:fallen_captain') for (const p of players) effect(p, 'darkness', 4, 0, false);
   });
 }
 
@@ -274,6 +572,7 @@ const ITEMS = {
   'bc:colossus_core': 'bc:stone_colossus',
   'bc:galleon_bell': 'bc:phantom_galleon',
   'bc:kraken_lure': 'bc:storm_kraken',
+  'bc:fallen_seal': 'bc:fallen_captain',
 };
 
 /** @returns {boolean} true when the item was a boss summon */
@@ -307,4 +606,4 @@ export function useBossItem(p, id) {
   return true;
 }
 
-export { Player, pick };
+export { DATA };

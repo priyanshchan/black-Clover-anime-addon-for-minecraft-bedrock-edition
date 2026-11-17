@@ -221,6 +221,41 @@ def _attr_glyph(attr):
             for k in range(4):
                 ang = k * math.pi / 2
                 d.ellipse([(8 + math.cos(ang) * 5 - 0.7) * s, (8 + math.sin(ang) * 5 - 0.7) * s, (8 + math.cos(ang) * 5 + 0.7) * s, (8 + math.sin(ang) * 5 + 0.7) * s], fill=c)
+        elif attr == 'cotton':
+            for x, y, r in ((5, 9, 3.6), (9, 6, 3.8), (11.5, 10, 3.2), (7.5, 11.5, 3)):
+                d.ellipse([(x - r) * s, (y - r) * s, (x + r) * s, (y + r) * s], fill=c)
+            d.ellipse([6 * s, 5 * s, 8.5 * s, 7.5 * s], fill=(255, 255, 255, 255))
+        elif attr == 'paper':
+            d.polygon([(2 * s, 10 * s), (8 * s, 2 * s), (14 * s, 10 * s), (8 * s, 8 * s)], fill=c)
+            d.polygon([(2 * s, 10 * s), (8 * s, 8 * s), (8 * s, 14 * s)], fill=(200, 190, 160, 255))
+            d.polygon([(14 * s, 10 * s), (8 * s, 8 * s), (8 * s, 14 * s)], fill=(230, 222, 196, 255))
+        elif attr == 'smoke':
+            for k, (x, y, r) in enumerate(((5, 12, 3.5), (9, 9, 3.8), (6, 5.5, 3), (11, 4, 2.4))):
+                d.ellipse([(x - r) * s, (y - r) * s, (x + r) * s, (y + r) * s], fill=tuple(int(v * (0.8 + k * 0.07)) for v in c[:3]) + (255,))
+        elif attr == 'glass':
+            d.rectangle([3 * s, 2 * s, 13 * s, 14 * s], outline=c, width=int(1.6 * s))
+            d.line([(5 * s, 9 * s), (9 * s, 4 * s)], fill=(255, 255, 255, 255), width=int(1.2 * s))
+            d.line([(7 * s, 12 * s), (11 * s, 7 * s)], fill=(255, 255, 255, 255), width=int(1 * s))
+        elif attr == 'gold':
+            d.ellipse([1.5 * s, 1.5 * s, 14.5 * s, 14.5 * s], fill=c)
+            d.ellipse([4 * s, 4 * s, 12 * s, 12 * s], outline=(150, 100, 20, 255), width=int(1.2 * s))
+            d.polygon(_star_pts(8 * s, 8.2 * s, 3 * s, 1.3 * s), fill=(255, 245, 200, 255))
+        elif attr == 'beast':
+            for k in range(3):
+                x = 4 + k * 3.5
+                d.polygon([(x * s, 2 * s), ((x + 2.2) * s, 2 * s), ((x + 0.8) * s, 14 * s)], fill=c)
+            d.polygon([(13 * s, 3 * s), (15 * s, 3 * s), (13.6 * s, 12 * s)], fill=c)
+        elif attr == 'spirit':
+            d.ellipse([3 * s, 5 * s, 13 * s, 14 * s], fill=c)
+            d.polygon([(4 * s, 9 * s), (8 * s, 0.5 * s), (12 * s, 9 * s)], fill=c)
+            d.ellipse([5.5 * s, 8 * s, 7.3 * s, 10 * s], fill=(20, 60, 60, 255))
+            d.ellipse([8.7 * s, 8 * s, 10.5 * s, 10 * s], fill=(20, 60, 60, 255))
+        elif attr == 'rune':
+            d.ellipse([1.5 * s, 1.5 * s, 14.5 * s, 14.5 * s], outline=c, width=int(1.4 * s))
+            d.line([(8 * s, 3 * s), (8 * s, 13 * s)], fill=c, width=int(1.4 * s))
+            d.line([(8 * s, 6 * s), (11.5 * s, 3.5 * s)], fill=c, width=int(1.2 * s))
+            d.line([(8 * s, 9 * s), (4.5 * s, 6.5 * s)], fill=c, width=int(1.2 * s))
+            d.line([(8 * s, 11 * s), (11 * s, 13 * s)], fill=c, width=int(1.2 * s))
         else:  # anti-magic: black five-leaf devil clover on red
             d.ellipse([0.5 * s, 0.5 * s, 15.5 * s, 15.5 * s], fill=(150, 20, 26, 255))
             tex.clover_shape(d, 8 * s, 8.5 * s, 6.2 * s, 5, (5, 5, 5, 255), stem=False, devil=True)
@@ -487,6 +522,48 @@ def fruit_icon(fid, S=32):
                 d.arc([P_(11, 13 + k * 4), P_(21, 19 + k * 4)], 0, 180, fill=(40, 100, 70, 255), width=int(1.0 * s))
             d.polygon([P_(13, 11), P_(12, 5), P_(15, 10)], fill=(220, 210, 180, 255))
             d.polygon([P_(19, 11), P_(20, 5), P_(17, 10)], fill=(220, 210, 180, 255))
+        elif fid == 'spore':
+            d.ellipse([P_(6, 6), P_(26, 18)], fill=(190, 140, 90, 255))
+            for x, y in ((11, 10), (17, 8), (21, 12), (14, 14)):
+                d.ellipse([P_(x - 1.6, y - 1.6), P_(x + 1.6, y + 1.6)], fill=(250, 235, 200, 255))
+            d.rectangle([P_(13, 17), P_(19, 28)], fill=(230, 215, 180, 255))
+        elif fid == 'thread':
+            d.ellipse([P_(7, 8), P_(25, 27)], fill=(225, 225, 235, 255))
+            for k in range(6):
+                d.arc([P_(7, 6 + k * 3), P_(25, 14 + k * 3)], 200, 340, fill=(150, 150, 170, 255), width=int(0.8 * s))
+            d.line([P_(24, 18), P_(30, 30)], fill=(200, 200, 215, 255), width=int(0.8 * s))
+        elif fid == 'slime':
+            d.rounded_rectangle([P_(6, 9), P_(26, 27)], radius=6 * s, fill=(90, 220, 90, 255))
+            d.rounded_rectangle([P_(10, 12), P_(22, 23)], radius=3 * s, fill=(60, 170, 60, 255))
+            d.ellipse([P_(11, 13), P_(14, 16)], fill=(220, 255, 220, 255))
+            d.polygon([P_(16, 9), P_(14, 4), P_(19, 5)], fill=(60, 110, 50, 255))
+        elif fid == 'chain':
+            for k in range(3):
+                y = 6 + k * 7
+                d.ellipse([P_(9 + (k % 2) * 4, y), P_(19 + (k % 2) * 4, y + 9)], outline=(160, 160, 170, 255), width=int(2.4 * s))
+        elif fid == 'lion':
+            for k in range(12):
+                a = math.radians(k * 30)
+                d.ellipse([P_(16 + math.cos(a) * 8 - 4, 17 + math.sin(a) * 8 - 4), P_(16 + math.cos(a) * 8 + 4, 17 + math.sin(a) * 8 + 4)], fill=(200, 110, 30, 255))
+            d.ellipse([P_(9, 10), P_(23, 24)], fill=(240, 180, 70, 255))
+            d.polygon([P_(14, 18), P_(18, 18), P_(16, 21)], fill=(80, 40, 20, 255))
+        elif fid == 'shark':
+            d.ellipse([P_(5, 11), P_(27, 25)], fill=(80, 130, 200, 255))
+            d.polygon([P_(14, 11), P_(19, 3), P_(21, 12)], fill=(60, 110, 180, 255))
+            d.polygon([P_(8, 21), P_(24, 21), P_(22, 24), P_(10, 24)], fill=(240, 240, 250, 255))
+            for k in range(5):
+                d.polygon([P_(10 + k * 3, 21), P_(11.5 + k * 3, 23), P_(13 + k * 3, 21)], fill=(255, 255, 255, 255))
+        elif fid == 'phoenix':
+            d.polygon([P_(16, 2), P_(25, 14), P_(22, 28), P_(10, 28), P_(7, 14)], fill=(255, 120, 40, 255))
+            d.polygon([P_(16, 8), P_(21, 16), P_(18, 26), P_(14, 26), P_(11, 16)], fill=(255, 210, 90, 255))
+            d.polygon([P_(16, 14), P_(18, 20), P_(16, 24), P_(14, 20)], fill=(140, 200, 255, 255))
+        elif fid == 'spider':
+            for k in range(4):
+                for sx in (-1, 1):
+                    d.line([P_(16 + sx * 5, 14 + k * 3), P_(16 + sx * 13, 9 + k * 5)], fill=(60, 30, 60, 255), width=int(1.2 * s))
+            d.ellipse([P_(9, 10), P_(23, 27)], fill=(120, 70, 140, 255))
+            for x in (13, 16, 19):
+                d.ellipse([P_(x - 1, 13), P_(x + 1, 15)], fill=(255, 60, 60, 255))
         else:  # quicksilver
             d.ellipse([P_(8, 12), P_(24, 28)], fill=(170, 180, 196, 255))
             d.polygon([P_(16, 3), P_(23.5, 17), P_(8.5, 17)], fill=(170, 180, 196, 255))

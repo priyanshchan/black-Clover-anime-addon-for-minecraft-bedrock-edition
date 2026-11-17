@@ -6,6 +6,8 @@ import './knights.js';
 import './battle.js';
 import './ai.js';
 import './worldsim.js';
+import './enemies.js';
+import { useWhistle } from './companions.js';
 import './merchant.js';
 import './events.js';
 import { useBossItem } from './bosses.js';
@@ -32,6 +34,8 @@ export function useLivingItem(p, item) {
     if (safe(() => hireKnight(p))) consume(p, id);
   } else if (id === 'bc:skirmish_horn') {
     if (safe(() => blowHorn(p))) consume(p, id);
+  } else if (id === 'bc:companion_whistle') {
+    safe(() => useWhistle(p));
   } else return false;
   return true;
 }

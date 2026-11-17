@@ -1,0 +1,42 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:raider_gunner",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/raider_gunner"
+      },
+      "geometry": {
+        "default": "geometry.bc.raider_gunner"
+      },
+      "animations": {
+        "idle": "animation.bc.raider_gunner.idle",
+        "walk": "animation.bc.raider_gunner.walk",
+        "look_at_target": "animation.bc.raider_gunner.look_at_target",
+        "attack": "animation.bc.raider_gunner.attack",
+        "aim": "animation.bc.raider_gunner.aim",
+        "shoot": "animation.bc.raider_gunner.shoot",
+        "throw": "animation.bc.raider_gunner.throw"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#3e2818",
+        "overlay_color": "#d39a2c"
+      }
+    }
+  }
+}

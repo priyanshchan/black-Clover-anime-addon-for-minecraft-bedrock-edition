@@ -19,7 +19,9 @@
         "halo": "animation.bc.archdevil.halo",
         "aura": "animation.bc.mob.aura",
         "attack": "animation.bc.devil.attack",
-        "cast": "animation.bc.devil.cast"
+        "cast": "animation.bc.devil.cast",
+        "roar": "animation.bc.archdevil.roar",
+        "blink": "animation.bc.archdevil.blink"
       },
       "scripts": {
         "animate": [

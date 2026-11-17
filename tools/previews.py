@@ -455,3 +455,57 @@ def wave4_sheet():
     for i, a in enumerate(ims):
         img.alpha_composite(tex.to_image(a).resize((64, 64), Image.NEAREST), (16 + (i % cols) * 76, 16 + (i // cols) * 76))
     img.convert('RGB').save(os.path.join(OUT, 'wave4_items.png'), optimize=True)
+
+
+def v2_sheet():
+    """v0.2.0: new enemies, the Fallen Captain, companion animations, beast forms, grimoires, fruits and items."""
+    from bc.data import ATTR_ORDER, FRUIT_ORDER, KNIGHT_ROBES
+    from bc.models import grand, v2, wave4
+    entries = []
+    ga = v2.gun_animations('raider_gunner')
+    pose = {}
+    render.pose_from_anim(ga['animation.bc.raider_gunner.aim'], 0.5, pose=pose)
+    entries.append(('Raider Gunner (aiming)', model(v2.gunner_geo()), pose, 35, 10, 1.5))
+    ma = v2.gun_animations('tidewatch_marksman')
+    pose = {}
+    render.pose_from_anim(ma['animation.bc.tidewatch_marksman.aim'], 0.5, pose=pose)
+    entries.append(('Tidewatch Marksman', model(v2.marksman_geo()), pose, 150, 10, 1.5))
+    pose = {}
+    render.pose_from_anim(v2.hellhound_animations()['animation.bc.hellhound.walk'], 0.3, env={'q.modified_move_speed': 1.0, 'q.modified_distance_moved': 2.0}, pose=pose)
+    entries.append(('Hellhound', model(v2.hellhound_geo()), pose, 40, 15, 1.3))
+    pose = {}
+    render.pose_from_anim(v2.wraith_animations()['animation.bc.mana_wraith.cast'], 0.4, pose=pose)
+    entries.append(('Mana Wraith', model(v2.wraith_geo()), pose, 30, 10, 1.4))
+    fa = v2.fallen_captain_animations()
+    pose = {}
+    render.pose_from_anim(fa['animation.bc.fallen_captain.idle'], 0.3, pose=pose)
+    entries.append(('The Fallen Captain (boss)', model(v2.fallen_captain_geo()), pose, 30, 10, 1.5))
+    pose = {}
+    render.pose_from_anim(fa['animation.bc.fallen_captain.slash'], 0.12, pose=pose)
+    entries.append(('Fallen Captain: slash', model(v2.fallen_captain_geo()), pose, 150, 10, 1.5))
+    ke = v2.knight_extra_animations()
+    for i, (nm, label) in enumerate((('cast_raise', 'Companion: cast'), ('channel', 'Companion: channel'), ('salute', 'Companion: salute'), ('sit', 'Companion: resting'))):
+        pose = {}
+        render.pose_from_anim(ke[f'animation.bc.magic_knight.{nm}'], 0.4, pose=pose)
+        entries.append((label, model(wave4.knight_geo(KNIGHT_ROBES[[0, 4, 1, 6][i]], i)), pose, 30, 10, 1.5))
+    grid(entries, 5, 280, 'v020.png', 'v0.2.0: new enemies, the Fallen Captain & companions')
+    out_img = background(1800, 330, '1a1410', '0a0806', ring=False)
+    d = ImageDraw.Draw(out_img)
+    d.text((20, 14), 'Beast fruits: Lion, Shark, Phoenix & Spider forms', font=font(26), fill=(235, 235, 235, 255))
+    p = ref_player()
+    for i, (fid, yaw) in enumerate([(f, y) for f in ('lion', 'shark', 'phoenix', 'spider') for y in (25, 160)]):
+        g, anim = grand.beast_geo(fid)
+        pose = {}
+        for a in anim.values():
+            render.pose_from_anim(a, 0.2, pose=pose)
+        sc = render.Scene(225, 280, ss=2)
+        sc.add(p, pose)
+        sc.add(model(g), pose)
+        sc.render(render.orbit_eye((0, 18, 0), 66, yaw, 10), (0, 18, 0), fov=40)
+        out_img.alpha_composite(sc.image(), (i * 225, 50))
+    out_img.convert('RGB').save(os.path.join(OUT, 'beasts020.png'), optimize=True)
+    ims = [items.grimoire_icon(a) for a in ATTR_ORDER[24:]] + [icons.fruit_icon(f) for f in FRUIT_ORDER[22:]] + list(v2.v2_icons().values())
+    img = background(len(ims) * 76 + 20, 96, '22222c', '101016', ring=False)
+    for i, a in enumerate(ims):
+        img.alpha_composite(tex.to_image(a).resize((64, 64), Image.NEAREST), (16 + i * 76, 16))
+    img.convert('RGB').save(os.path.join(OUT, 'items020.png'), optimize=True)

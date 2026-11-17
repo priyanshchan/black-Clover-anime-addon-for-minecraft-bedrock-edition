@@ -57,6 +57,15 @@ const STYLE = {
   metal: (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: rgb('c8d0dc'), scale: s }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.5 }); },
   time: (d, l, c, s) => { particle(d, 'bc:burst', l, { color: c, scale: s }); particle(d, 'bc:magic_circle_ground', l, { color: c, size: 1.5 * s, life: 0.6 }); },
 };
+STYLE.cotton = (d, l, c, s) => { particle(d, 'bc:dust_burst', l, { color: c, scale: s * 1.2 }); particle(d, 'bc:burst', l, { color: c, scale: s * 0.4 }); };
+STYLE.paper = (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: c, scale: s }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.4 }); };
+STYLE.smoke = (d, l, c, s) => { particle(d, 'bc:smoke_burst', l, { scale: s }); particle(d, 'bc:dust_burst', l, { color: c, scale: s }); };
+STYLE.glass = (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: c, scale: s }); particle(d, 'bc:ice_shatter', l, { scale: s * 0.7 }); };
+STYLE.gold = (d, l, c, s) => { particle(d, 'bc:burst_spark', l, { color: c, scale: s }); particle(d, 'bc:light_burst', l, { scale: s * 0.6 }); };
+STYLE.beast = (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: c, scale: s }); particle(d, 'bc:dust_burst', l, { color: c, scale: s * 0.6 }); };
+STYLE.spirit = (d, l, c, s) => { particle(d, 'bc:burst', l, { color: c, scale: s }); particle(d, 'bc:heal', l, { scale: s * 0.4 }); };
+STYLE.rune = (d, l, c, s) => { particle(d, 'bc:magic_circle_ground', l, { color: c, size: 1.4 * s, life: 0.6 }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.7 }); };
+STYLE.gun = (d, l, c, s) => { particle(d, 'bc:smoke_burst', l, { scale: s * 0.5 }); particle(d, 'bc:burst_spark', l, { color: rgb('ffd08a'), scale: s * 0.6 }); };
 STYLE.steel = STYLE.metal;
 STYLE.spatial = STYLE.time;
 STYLE.mirror = STYLE.crystal;
@@ -69,7 +78,8 @@ const CAST_SOUND = {
   sound: ['bc.chord', 1], mist: ['bc.wind.gust', 0.6], ash: ['bc.wind.gust', 0.5], ink: ['bc.bubble', 0.5], crystal: ['bc.ice.form', 1.3],
   ice: ['bc.ice.form', 1], bone: ['bc.stone.crack', 1.4], magma: ['mob.blaze.shoot', 0.8], flame: ['mob.blaze.shoot', 1], lightning: ['bc.lightning.zap', 1],
   dark: ['bc.portal', 0.7], metal: ['bc.mirror', 0.6], steel: ['bc.mirror', 0.6], time: ['bc.clock', 1], spatial: ['bc.portal', 1], mirror: ['bc.mirror', 1],
-  wind: ['bc.wind.gust', 1],
+  wind: ['bc.wind.gust', 1], cotton: ['bc.wind.gust', 1.4], paper: ['bc.grimoire.flip', 1.2], smoke: ['bc.wind.gust', 0.5], glass: ['random.glass', 1.2],
+  gold: ['bc.coins', 1], beast: ['bc.howl', 1.3], spirit: ['bc.mirror', 0.8], rune: ['bc.portal', 1.3], gun: ['bc.pistol', 1.1],
 };
 
 function fx(x, spec, loc, scale = 1) {
@@ -607,6 +617,13 @@ system.runInterval(() => {
   }
 }, 10);
 
+/** Which player animation goes with each template. */
+const PLAYER_ANIM = {
+  beam: 'cast_channel', zone: 'cast_channel', vortex: 'cast_channel', nova: 'cast_slam', dive: 'cast_slam', wave: 'cast_slam',
+  rain: 'cast_raise', meteor: 'cast_raise', strikes: 'cast_raise', buff: 'cast_raise', heal: 'cast_raise', summon: 'cast_raise',
+  timestop: 'cast_raise', radial: 'cast_sweep', leap: 'cast_sweep',
+};
+
 // ------------------------------------------------------------------------------- entry points
 /** @returns {ECtx} */
 export function makeCtx(c, src, pw, target, aimAt) {
@@ -653,6 +670,11 @@ export function castSpec(caster, spec, src, pw = 1, target, opts = {}) {
     particle(caster.dimension, 'bc:shard_burst', center(caster), { color: rgb('d01a34'), scale: 0.5 });
   }
   const x = makeCtx(caster, src, pw, target, opts.aim);
+  if (caster instanceof Player) {
+    const kind = spec.t === 'repeat' ? spec.spec?.t : spec.t;
+    const a = PLAYER_ANIM[kind] ?? 'cast_forward';
+    safe(() => caster.playAnimation(`animation.bc.player.${a}`, { blendOutTime: 0.15 }));
+  }
   const ok = safe(() => run(x, spec), `engine:${spec.t}`);
   if (ok === false) return false;
   if (spec.self && spec.t !== 'buff') applyEffects(caster, spec.self);

@@ -1,5 +1,50 @@
 # Changelog
 
+## v0.2.0 – Early Access (2026-11-17)
+
+A big content update with a full **companion system**, smarter **enemies** and **bosses**, and many new **animations**.
+
+### Download
+* **`BlackClover_GrimoireAwakening_v0.2.0.mcaddon`** – open it and Minecraft imports both packs (it replaces v0.1.0).
+* `BlackClover_BP_v0.2.0.mcpack` / `BlackClover_RP_v0.2.0.mcpack` – the packs separately.
+
+### New: companions
+* Recruited Magic Knights become a **saved party of up to 4**: name, magic, level, robe and bond stay with your player across sessions, and a fallen companion **returns after 60 seconds**.
+* **Companion Whistle:** open your party, summon or dismiss, rename, give orders, choose a **stance** (aggressive, defensive, passive) and a **formation** (wedge, line, circle), toggle loot gathering. **Sneak + use** at a foe: everyone attacks it; at nothing: regroup.
+* **Smart support AI:** companions attack what you attack, rush whoever hurts you, heal you first when you are low, step out of your line of fire, walk in formation, gather loot, sit when you rest and talk to you.
+* **Levels 1-20** with health tiers (40 → 130), more spells at 3 and 6, extra power above 10.
+* **Bond:** grows with time, victories, level-ups and **gifts** (Mana Cookies and more). Ranks unlock **Mana Link**, **Guardian** and **Union Magic** (a combined ultimate spell).
+* **Robes:** hand a companion a squad robe to dress them and give them its perk.
+* Rescue a **wounded knight** (new event) and it joins you.
+
+### Smarter enemies
+* Dark Disciples, Imps, Sea Raiders, the new **Raider Gunners** and **Tidewatch Marksmen**, **Hellhounds** and **Mana Wraiths** now fight with the tactical brain: spell kits, aim leading, dodging, retreating.
+* Gunners and marksmen aim before they fire and keep their distance; Hellhounds hunt in packs, circling their prey before lunging; hurt one enemy and its kind come running.
+
+### Smarter bosses
+* **Threat tables:** bosses turn on whoever hurts them most (melee knights and companions can tank).
+* **Three phases** with a once-only **desperation** move: Hellgate, Avalanche, Ghost Ram, Maelstrom, Final Form.
+* **Telegraphed** slams and waves, **signature movement** (Archdevil blinks, Kraken submerges, Colossus stomps, Galleon rams) and a six-minute **enrage timer**.
+* New boss: **the Fallen Captain** - a corrupted Magic Knight captain who duels with a blade and three grimoires, blinks behind you, parries and dodges.
+
+### New content
+* **8 grimoires, 32 spells:** Cotton, Paper, Smoke, Glass, Gold, Beast, Spirit, Rune (32 grimoires and 128 spells in total).
+* **8 Abyss Fruits, 24 abilities:** Spore, Thread, Slime, Chain, and the **Lion, Shark, Phoenix and Spider** beast forms (30 fruits and 90 abilities in total; the Shark Fruit is not drained by the sea).
+* **New creatures:** Raider Gunner, Tidewatch Marksman, Hellhound, Mana Wraith (drains your mana), the Fallen Captain.
+* **New items:** Companion Whistle, Mana Cookie (+30 mana), Seal of the Fallen Captain.
+* **New events:** wounded knight, mana storm, bounty hunters, the Fallen Captain.
+
+### Animations
+* Knights and companions: cast animations per kind of spell (raise, channel, slam), dodge, flinch, salute, cheer, sit.
+* Player: channel and slam casting animations for the new spell kinds.
+* Bosses: Colossus throw, stomp and roar; Archdevil roar and blink; Kraken submerge and emerge; Galleon broadside and ram; Fallen Captain slash, cast, parry and roar.
+* Enemies: gunner aim, shoot and throw; Hellhound bite and howl; Mana Wraith float and cast.
+
+### Known issues
+* Balance is still a first pass: please report anything too strong or too weak.
+* Companions fall back to the vanilla follow behaviour on rough terrain; the whistle's regroup fixes stragglers.
+* The Stone Colossus can get stuck on rough terrain; the Phantom Galleon is steered by script and may drift.
+
 ## v0.1.0 – Early Access (2026-11-17)
 
 The first public build of **Black Clover: Grimoire Awakening**, an unofficial fan addon for Minecraft Bedrock (1.21.90+, no experimental toggles).

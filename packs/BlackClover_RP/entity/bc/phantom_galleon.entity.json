@@ -14,7 +14,9 @@
       },
       "animations": {
         "drift": "animation.bc.phantom_galleon.drift",
-        "aura": "animation.bc.mob.aura"
+        "aura": "animation.bc.mob.aura",
+        "broadside": "animation.bc.phantom_galleon.broadside",
+        "ram": "animation.bc.phantom_galleon.ram"
       },
       "scripts": {
         "animate": [

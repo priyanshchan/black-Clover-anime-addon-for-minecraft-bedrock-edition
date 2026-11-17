@@ -20,7 +20,16 @@ system.runInterval(() => {
     if (!fid) continue;
     safe(() => {
       const v = p.getVelocity();
-      if (fid === 'lava' || fid === 'wyvern') effect(p, 'fire_resistance', 2, 0, false);
+      if (fid === 'lava' || fid === 'wyvern' || fid === 'phoenix') effect(p, 'fire_resistance', 2, 0, false);
+      if ((fid === 'thread' || fid === 'slime') && p.isFalling && v.y < -0.5) effect(p, 'slow_falling', 1, 0, false);
+      if (fid === 'lion') effect(p, 'strength', 2, 0, false);
+      if (fid === 'spider' && t % 40 === 0) effect(p, 'night_vision', 12, 0, false);
+      if (fid === 'shark' && p.isInWater) {
+        effect(p, 'water_breathing', 2, 0, false);
+        effect(p, 'conduit_power', 2, 0, false);
+        effect(p, 'speed', 2, 1, false);
+      }
+      if (fid === 'phoenix' && p.isFalling && v.y < -0.4 && p.inputInfo.getButtonState(InputButton.Jump) === ButtonState.Pressed) effect(p, 'slow_falling', 1, 0, false);
       if (fid === 'prism' && t % 40 === 0) effect(p, 'night_vision', 12, 0, false);
       if (fid === 'bounce') {
         effect(p, 'jump_boost', 2, 1, false);
@@ -55,6 +64,9 @@ world.afterEvents.entityHurt.subscribe((ev) => {
     } else if (fid === 'lodestone' && src.cause === 'projectile' && Math.random() < 0.4) {
       heal(p, ev.damage);
       particle(p.dimension, 'bc:shard_burst', p.location, { color: rgb('c8d0dc'), scale: 0.6 });
+    } else if (fid === 'spore' && src.damagingEntity && src.damagingEntity.id !== p.id) {
+      effect(src.damagingEntity, 'poison', 3, 0);
+      particle(p.dimension, 'bc:dust_burst', p.location, { color: rgb('c8a070'), scale: 0.6 });
     } else if (fid === 'ink' && src.damagingEntity && src.damagingEntity.id !== p.id) {
       effect(src.damagingEntity, 'blindness', 3, 0);
       particle(p.dimension, 'bc:dust_burst', p.location, { color: rgb('1a1430'), scale: 0.8 });
@@ -62,10 +74,16 @@ world.afterEvents.entityHurt.subscribe((ev) => {
   });
 });
 
-// Blast Fruit: punches go off with a small blast
+// Blast Fruit: punches go off with a small blast; Chain Fruit: punches hit like a hammer
 world.afterEvents.entityHitEntity.subscribe((ev) => {
   const p = ev.damagingEntity;
-  if (!(p instanceof Player) || active(p) !== 'blast') return;
+  if (!(p instanceof Player)) return;
+  if (active(p) === 'chain') {
+    hurt(ev.hitEntity, 3, p);
+    particle(p.dimension, 'bc:burst_spark', ev.hitEntity.location, { color: rgb('c8d0dc'), scale: 0.4 });
+    return;
+  }
+  if (active(p) !== 'blast') return;
   safe(() => {
     const at = ev.hitEntity.location;
     particle(p.dimension, 'bc:flame_burst', at, { scale: 0.4 });

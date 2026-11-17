@@ -19,6 +19,7 @@ const FACTION = {
   'bc:dark_disciple': 'devil', 'bc:devil': 'devil', 'bc:imp': 'devil', 'bc:archdevil': 'devil', 'bc:devil_gate': 'devil',
   'bc:sea_raider': 'pirate', 'bc:raider_captain': 'pirate', 'bc:phantom_raider': 'pirate', 'bc:phantom_galleon': 'pirate',
   'bc:tidewatch_sentinel': 'navy', 'bc:tidewatch_commodore': 'navy',
+  'bc:raider_gunner': 'pirate', 'bc:tidewatch_marksman': 'navy', 'bc:hellhound': 'devil', 'bc:mana_wraith': 'devil', 'bc:fallen_captain': 'devil',
 };
 /** NPCs that only harm a player who attacked them first. */
 const PEACEFUL = new Set(['bc:magic_knight', 'bc:construct', 'bc:magic_merchant', 'bc:shade_soldier', 'bc:earth_golem', 'bc:mirror_clone']);

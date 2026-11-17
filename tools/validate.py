@@ -153,7 +153,9 @@ for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
              # living world: dynamic-property keys and the /scriptevent id
              'bc:team', 'bc:kname', 'bc:leave_at', 'bc:events', 'bc:event',
              # AI & simulation: knight progression, traits, orders and the world state
-             'bc:klv', 'bc:kxp', 'bc:kills', 'bc:prefix', 'bc:skill', 'bc:courage', 'bc:order', 'bc:anchor', 'bc:stance', 'bc:world'):
+             'bc:klv', 'bc:kxp', 'bc:kills', 'bc:prefix', 'bc:skill', 'bc:courage', 'bc:order', 'bc:anchor', 'bc:stance', 'bc:world',
+             # companions: the saved party, companion ids and starting bond
+             'bc:party', 'bc:cid', 'bc:bond0'):
         continue
     errors.append(f'script references unknown id {m}')
 for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):

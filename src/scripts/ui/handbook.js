@@ -52,6 +52,8 @@ export async function openHandbook(p) {
   actions.push(() => livingPage(p));
   form.button('§lKnights & the War Table\n§r§8Factions, battles, bets');
   actions.push(() => warPage(p));
+  form.button('§lCompanions\n§r§8Your party, bonds and orders');
+  actions.push(() => companionPage(p));
   form.button('§lState of the Kingdom\n§r§8Faction power and world news');
   actions.push(() => kingdomPage(p));
   form.button('§lHow to play\n§r§8Altar, mana, robes, the Devil');
@@ -180,9 +182,24 @@ async function seaGuide(p) {
   });
 }
 
+async function companionPage(p) {
+  const body = [
+    '§l§bYour party§r\n§7Up to ' + DATA.companion.partyMax + ' Magic Knights travel with you. Recruit them with a §aKnight Contract§7, by talking to a wild knight (contract or doubloons), or by rescuing a wounded knight. Your party is saved with you: companions level up to 20, keep their robe and bond, and come back 60 seconds after they fall.',
+    '§l§bThe Companion Whistle§r\n§7Use it to open your party: summon or dismiss, rename, give orders, change formation (wedge, line, circle) and stance (aggressive, defensive, passive), and switch loot gathering. §fSneak + use§7 while looking at a foe: everyone attacks it. Looking at nothing: regroup.',
+    '§l§bHow they think§r\n§7Companions attack what you attack, rush whoever hurts you, heal you first when you are low, dodge spells, keep out of your line of fire, walk in formation, gather loot after a fight and sit down when you rest.',
+    '§l§dBond§r\n' + DATA.companion.bond.map((b) => `§d${b.name}§7 (${b.at}): ${b.perk}`).join('\n') + '\n§7Bond grows with time together, victories, level-ups and gifts (hold a Mana Cookie, mana crystal or cooked food and talk to them).',
+    '§l§6Robes§r\n§7Hand a companion a squad robe to dress them in it and give them its perk.',
+  ].join('\n\n');
+  await new MessageFormData().title('Companions').body(body).button1('Back').button2('Close').show(p).then((r) => {
+    if (r.selection === 0) return openHandbook(p);
+    return undefined;
+  });
+}
+
 async function livingPage(p) {
   const body = [
     '§l§4The Archdevil§r\n§7Craft an §4Archdevil Sigil§7 (crying obsidian, mana crystals, a devil heart). Dark lances, hellfire, a crushing nova, and imps. Enrages at half health.',
+    '§l§4The Fallen Captain§r\n§7Use a §4Seal of the Fallen Captain§7 (crying obsidian, devil hearts, knight contracts, a diamond) or meet it on a dark night. It duels with a blade and three grimoires, blinks behind you, parries blows and dodges spells.',
     '§l§6The Stone Colossus§r\n§7A §6Colossus Core§7 (mossy cobblestone, ancient pages, a diamond block) wakes a walking mountain that slams, hurls boulders and splits the earth.',
     '§l§3The Phantom Galleon§r\n§7Ring a §3Phantom Galleon Bell§7 (phantom membranes, doubloons, a bell). A ghost ship sails the sky, fires broadsides and drops its drowned crew.',
     '§l§9The Storm Kraken§r\n§7Throw a §9Storm Kraken Lure§7 (Leviathan scales, lightning rods, a heart of the sea) into deep water. Lightning, whirlpools and tentacle slams.',

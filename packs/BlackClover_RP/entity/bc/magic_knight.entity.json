@@ -25,7 +25,15 @@
         "walk": "animation.bc.magic_knight.walk",
         "look": "animation.bc.magic_knight.look_at_target",
         "cast": "animation.bc.magic_knight.cast",
-        "attack": "animation.bc.magic_knight.attack"
+        "attack": "animation.bc.magic_knight.attack",
+        "cast_raise": "animation.bc.magic_knight.cast_raise",
+        "channel": "animation.bc.magic_knight.channel",
+        "slam": "animation.bc.magic_knight.slam",
+        "dodge": "animation.bc.magic_knight.dodge",
+        "flinch": "animation.bc.magic_knight.flinch",
+        "salute": "animation.bc.magic_knight.salute",
+        "cheer": "animation.bc.magic_knight.cheer",
+        "sit": "animation.bc.magic_knight.sit"
       },
       "scripts": {
         "animate": [

@@ -151,7 +151,7 @@ def gen_mana_bolt(ctx: Ctx):
                                  'uncertainty_base': 0.0, 'uncertainty_multiplier': 0.0, 'anchor': 1, 'offset': [0, -0.1, 0]},
         'minecraft:conditional_bandwidth_optimization': {'default_values': {'max_optimized_distance': 96.0, 'max_dropped_ticks': 4, 'use_motion_prediction_hints': True}},
     }
-    props = {'bc:tint': {'type': 'int', 'range': [0, 63], 'default': 0, 'client_sync': True},
+    props = {'bc:tint': {'type': 'int', 'range': [0, 127], 'default': 0, 'client_sync': True},
              'bc:shape': {'type': 'int', 'range': [0, 3], 'default': 0, 'client_sync': True},
              'bc:size': {'type': 'int', 'range': [0, 3], 'default': 0, 'client_sync': True}}
     heavy = copy.deepcopy(comps['minecraft:projectile'])
@@ -521,40 +521,44 @@ EXTRA_TARGETS = {
 }
 
 
-def gen_factions(ctx: Ctx):
-    for ident in {u for f in FACTIONS.values() for u in f['units'] + [f['leader']]}:
-        assert ident in FACTION_FILES, ident
-    for ident, rel in FACTION_FILES.items():
-        d = _load(rel)
-        e = d['minecraft:entity']
-        c = e['components']
-        nat = c.get('minecraft:behavior.nearest_attackable_target')
-        if nat and ident in EXTRA_TARGETS:
-            et = nat['entity_types'][0]
-            filt = et['filters']
-            lst = filt['any_of'] if 'any_of' in filt else [filt]
-            for fam in EXTRA_TARGETS[ident]:
+def add_team_groups(rel, ident):
+    """New faction targets in the wild, plus the War Table team groups (a / b / c) for one entity file."""
+    d = _load(rel)
+    e = d['minecraft:entity']
+    c = e['components']
+    nat = c.get('minecraft:behavior.nearest_attackable_target')
+    if nat and ident in EXTRA_TARGETS:
+        et = nat['entity_types'][0]
+        filt = et['filters']
+        lst = filt['any_of'] if 'any_of' in filt else [filt]
+        for fam in EXTRA_TARGETS[ident]:
+            if not any(x.get('value') == fam for x in lst):
                 lst.append({'test': 'is_family', 'subject': 'other', 'value': fam})
-            et['filters'] = {'any_of': lst}
-        groups = e.setdefault('component_groups', {})
-        events = e.setdefault('events', {})
-        fam = c['minecraft:type_family']['family']
-        prio = (nat or {}).get('priority', 2)
-        for team in ('a', 'b', 'c'):
-            enemies = [{'test': 'is_family', 'subject': 'other', 'value': f'bc_team_{o}'} for o in ('a', 'b', 'c') if o != team]
-            groups[f'bc:team_{team}'] = {
-                'minecraft:type_family': {'family': fam + [f'bc_team_{team}']},
-                'minecraft:behavior.nearest_attackable_target': {
-                    'priority': prio, 'must_see': False, 'reselect_targets': True, 'scan_interval': 5,
-                    'entity_types': [{'filters': {'any_of': enemies}, 'max_dist': 48}]},
-                'minecraft:follow_range': {'value': 64, 'max': 64},
-                'minecraft:persistent': {},
-            }
-            ev = {'add': {'component_groups': [f'bc:team_{team}']}}
-            if 'bc:wild' in groups:
-                ev['remove'] = {'component_groups': ['bc:wild']}
-            events[f'bc:team_{team}'] = ev
-        write_json(BP, rel, d)
+        et['filters'] = {'any_of': lst}
+    groups = e.setdefault('component_groups', {})
+    events = e.setdefault('events', {})
+    fam = c['minecraft:type_family']['family']
+    prio = (nat or {}).get('priority', 2)
+    for team in ('a', 'b', 'c'):
+        enemies = [{'test': 'is_family', 'subject': 'other', 'value': f'bc_team_{o}'} for o in ('a', 'b', 'c') if o != team]
+        groups[f'bc:team_{team}'] = {
+            'minecraft:type_family': {'family': fam + [f'bc_team_{team}']},
+            'minecraft:behavior.nearest_attackable_target': {
+                'priority': prio, 'must_see': False, 'reselect_targets': True, 'scan_interval': 5,
+                'entity_types': [{'filters': {'any_of': enemies}, 'max_dist': 48}]},
+            'minecraft:follow_range': {'value': 64, 'max': 64},
+            'minecraft:persistent': {},
+        }
+        ev = {'add': {'component_groups': [f'bc:team_{team}']}}
+        if 'bc:wild' in groups:
+            ev['remove'] = {'component_groups': ['bc:wild']}
+        events[f'bc:team_{team}'] = ev
+    write_json(BP, rel, d)
+
+
+def gen_factions(ctx: Ctx):
+    for ident, rel in FACTION_FILES.items():
+        add_team_groups(rel, ident)
 
 
 def build(ctx: Ctx):

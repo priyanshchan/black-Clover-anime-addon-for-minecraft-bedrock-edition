@@ -15,6 +15,10 @@ import { summonBoss } from './bosses.js';
 import { boltFrom } from './engine.js';
 import { setupKnight } from './knights.js';
 import { spawnMerchant } from './merchant.js';
+import { joinParty } from './companions.js';
+import { addMana } from '../core/data.js';
+import { hurt, targetsAround } from '../core/combat.js';
+import { notoriety } from '../sea/navy.js';
 
 const night = () => {
   const t = world.getTimeOfDay();
@@ -240,6 +244,87 @@ export const EVENTS = {
       }, () => {
         for (const q of world.getAllPlayers()) title(q, '§7The crimson moon sets', '', 40);
       });
+    },
+  },
+  wounded_knight: {
+    w: 5,
+    run(p) {
+      const at = spotNear(p, rand(14, 20));
+      if (!at) return false;
+      const k = safe(() => p.dimension.spawnEntity('bc:magic_knight', at));
+      if (!k) return false;
+      setupKnight(k, { level: 3 + Math.floor(Math.random() * 4), randomRobe: true });
+      safe(() => {
+        const h = k.getComponent('minecraft:health');
+        h.setCurrentValue(Math.max(6, h.effectiveMax * 0.3));
+        k.addTag('bc_wounded');
+      });
+      const foes = [];
+      for (let i = 0; i < 3; i++) {
+        const type = i === 0 && Math.random() < 0.5 ? 'bc:hellhound' : 'bc:dark_disciple';
+        const f = safe(() => p.dimension.spawnEntity(type, V.add(at, { x: rand(-6, 6), y: 0.5, z: rand(-6, 6) })));
+        if (f) foes.push(f);
+      }
+      const name = safe(() => k.getDynamicProperty('bc:kname')) ?? 'A knight';
+      announce(p, '§e§lA KNIGHT IN TROUBLE', '§7Help them before the devils finish them off', `§e♣ §f${name}§e is hurt and surrounded by devils nearby - save them!`);
+      repeat(60, 40, () => {
+        if (!alive(k)) {
+          safe(() => p.sendMessage(`§7${name} has fallen...`));
+          return false;
+        }
+        if (foes.some((f) => alive(f))) return undefined;
+        particle(k.dimension, 'bc:heal', center(k), { scale: 1 });
+        safe(() => k.removeTag('bc_wounded'));
+        if (alive(p) && joinParty(k, p, 150)) safe(() => p.sendMessage(`§b${name}§f: You saved my life. My grimoire is yours!`));
+        else safe(() => p.sendMessage(`§b${name}§f: Thank you, friend! §7(Your party is full - talk to them to recruit later.)`));
+        return false;
+      });
+    },
+  },
+  mana_storm: {
+    w: 5,
+    run(p) {
+      announce(p, '§b§lMANA STORM', '§7The air crackles with free mana', '§b⚡ A mana storm rolls in: everyone regains mana fast, and wild lightning strikes monsters!');
+      repeat(45, 20, (i) => {
+        for (const q of world.getAllPlayers()) {
+          if (q.dimension.id !== 'minecraft:overworld') continue;
+          addMana(q, 4);
+          if (i % 3) continue;
+          const a = Math.random() * Math.PI * 2;
+          const spot = V.add(q.location, { x: Math.cos(a) * rand(6, 20), y: 0, z: Math.sin(a) * rand(6, 20) });
+          const top = safe(() => q.dimension.getTopmostBlock({ x: spot.x, z: spot.z }));
+          if (top) spot.y = top.location.y + 1;
+          particle(q.dimension, 'bc:pillar', spot, { color: rgb('9ae8ff'), scale: 1.4 });
+          particle(q.dimension, 'bc:burst_spark', spot, { color: rgb('9ae8ff'), scale: 1 });
+          sound(q.dimension, 'bc.lightning.zap', spot, 1, 1.2);
+          for (const m of targetsAround(q.dimension, spot, 3, undefined)) if (safe(() => m.matches({ families: ['monster'] }))) hurt(m, 8, undefined, 'lightning');
+        }
+      });
+    },
+  },
+  bounty_hunters: {
+    w: 4,
+    ok: (p) => notoriety(p) >= 300,
+    run(p) {
+      const at = spotNear(p, rand(14, 18));
+      if (!at) return false;
+      announce(p, '§9§lBOUNTY HUNTERS', '§7The Tidewatch have found you', '§9⚓ Tidewatch bounty hunters have tracked you down!');
+      const squad = ['bc:tidewatch_marksman', 'bc:tidewatch_marksman', 'bc:tidewatch_sentinel', 'bc:tidewatch_sentinel'];
+      if (notoriety(p) >= 1500) squad.push('bc:tidewatch_commodore');
+      for (const type of squad) {
+        const e = safe(() => p.dimension.spawnEntity(type, V.add(at, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) })));
+        safe(() => { if (e) e.nameTag = '§9Bounty Hunter'; });
+      }
+    },
+  },
+  fallen_captain: {
+    w: 2,
+    ok: () => night(),
+    run(p) {
+      const at = spotNear(p, rand(20, 26));
+      if (!at) return false;
+      announce(p, '§4§lA CAPTAIN FALLEN', '§7Something wearing a Magic Knight\'s robe walks in the dark', '§4☠ The Fallen Captain hunts tonight...');
+      summonBoss('bc:fallen_captain', p.dimension, at);
     },
   },
   colossus: {

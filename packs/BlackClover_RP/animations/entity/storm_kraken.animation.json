@@ -1033,6 +1033,63 @@
           ]
         }
       }
+    },
+    "animation.bc.storm_kraken.submerge": {
+      "animation_length": 1.2,
+      "bones": {
+        "root": {
+          "position": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.8": [
+              0,
+              -18,
+              0
+            ],
+            "1.2": [
+              0,
+              -18,
+              0
+            ]
+          },
+          "scale": {
+            "0.0": 1.0,
+            "1.2": 0.6
+          }
+        }
+      }
+    },
+    "animation.bc.storm_kraken.emerge": {
+      "animation_length": 1.0,
+      "bones": {
+        "root": {
+          "position": {
+            "0.0": [
+              0,
+              -18,
+              0
+            ],
+            "0.7": [
+              0,
+              3,
+              0
+            ],
+            "1.0": [
+              0,
+              0,
+              0
+            ]
+          },
+          "scale": {
+            "0.0": 0.6,
+            "0.7": 1.05,
+            "1.0": 1.0
+          }
+        }
+      }
     }
   }
 }

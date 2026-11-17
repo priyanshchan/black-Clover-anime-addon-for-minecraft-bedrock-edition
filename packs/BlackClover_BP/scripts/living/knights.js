@@ -13,8 +13,22 @@ import { countCoins } from '../sea/bounty.js';
 const ATTRS = DATA.order.filter((a) => a !== 'anti');
 /** knight XP needed for levels 1..10 */
 const XP_AT = [0, 0, 20, 60, 120, 200, 320, 480, 700, 1000, 1400];
-const RANK = ['', 'Junior', 'Junior', 'Intermediate', 'Intermediate', 'Senior', 'Senior', 'First Class', 'First Class', 'Vice-Captain', 'Captain'];
-const MAX_HIRED = 4;
+export const RANK = ['', 'Junior', 'Junior', 'Intermediate', 'Intermediate', 'Senior', 'Senior', 'First Class', 'First Class', 'Vice-Captain', 'Captain',
+  'Captain', 'Captain', 'Captain', 'Captain', 'Champion', 'Champion', 'Champion', 'Champion', 'Champion', 'Royal Champion'];
+const MAX_HIRED = DATA.companion.partyMax;
+
+/** companions.js plugs in here (knights.js must not import it) */
+const hooks = {
+  /** @type {(e: any, p: any) => void} */ onEnlist: () => {},
+  /** @type {(p: any) => number} */ partySize: (p) => hiredBy(p).length,
+  /** @type {((p: any, e: any, item: any) => Promise<void> | void) | undefined} */ talk: undefined,
+};
+export function setCompanionHooks(h) {
+  Object.assign(hooks, h);
+}
+function isCompanion(e) {
+  return typeof safe(() => e.getDynamicProperty('bc:cid')) === 'string';
+}
 
 export function knightAttr(e) {
   const v = safe(() => e.getDynamicProperty('bc:attr'));
@@ -87,9 +101,11 @@ export function giveKnightXp(e, amount) {
   if (!alive(e) || e.typeId !== 'bc:magic_knight') return;
   const xp = (safe(() => e.getDynamicProperty('bc:kxp')) ?? 0) + amount;
   safe(() => e.setDynamicProperty('bc:kxp', xp));
+  const table = isCompanion(e) ? DATA.companion.xp : XP_AT;
+  const cap = table.length - 1;
   let lv = knightLevel(e);
   const before = lv;
-  while (lv < 10 && xp >= XP_AT[lv + 1]) lv++;
+  while (lv < cap && xp >= table[lv + 1]) lv++;
   if (lv === before) return;
   safe(() => e.setDynamicProperty('bc:klv', lv));
   nameKnight(e);
@@ -129,11 +145,12 @@ function enlist(e, p) {
     e.getComponent('minecraft:tameable')?.tame(p);
   });
   nameKnight(e);
+  safe(() => hooks.onEnlist(e, p));
 }
 
 /** Use a Knight Contract: a Magic Knight joins you as a companion. */
 export function hireKnight(p) {
-  if (hiredBy(p).length >= MAX_HIRED) {
+  if (hooks.partySize(p) >= MAX_HIRED) {
     safe(() => p.sendMessage(`§7You already lead ${MAX_HIRED} knights. Release one before hiring another.`));
     return false;
   }
@@ -172,11 +189,12 @@ function profile(e, roleInfo) {
   const a = DATA.attributes[knightAttr(e)];
   const lv = knightLevel(e);
   const xp = safe(() => e.getDynamicProperty('bc:kxp')) ?? 0;
+  const table = isCompanion(e) ? DATA.companion.xp : XP_AT;
   const kills = safe(() => e.getDynamicProperty('bc:kills')) ?? 0;
   const stars = (v) => '★'.repeat(Math.max(1, Math.round(v * 5))).padEnd(5, '☆');
   const known = kitFor(knightAttr(e), lv).length;
   return `${a.glyph} ${a.mc}§l${knightName(e)}§r\n`
-    + `§7${RANK[lv]} Magic Knight - level §e${lv}§7 (${xp}${lv < 10 ? `/${XP_AT[lv + 1]}` : ''} XP)\n`
+    + `§7${RANK[lv]} Magic Knight - level §e${lv}§7 (${xp}${lv < table.length - 1 ? `/${table[lv + 1]}` : ''} XP)\n`
     + `§7Magic: ${a.mc}${a.name}§7 - knows ${known} spell${known > 1 ? 's' : ''}\n`
     + `§7Fighting style: §f${roleInfo.role}§7   Kills: §f${kills}\n`
     + `§7Skill: §e${stars(roleInfo.skill)}§7   Courage: §e${stars(roleInfo.courage)}`;
@@ -227,7 +245,7 @@ async function talk(p, e) {
     const price = 100 + knightLevel(e) * 25;
     form.button(`§lRecruit\n§r§8A Knight Contract, or ${price} doubloons`);
     acts.push(() => {
-      if (hiredBy(p).length >= MAX_HIRED) return `cannot join - you already lead ${MAX_HIRED} knights`;
+      if (hooks.partySize(p) >= MAX_HIRED) return `cannot join - you already lead ${MAX_HIRED} companions`;
       const inv = p.getComponent('minecraft:inventory')?.container;
       let paid = false;
       for (let i = 0; inv && i < inv.size && !paid; i++) {
@@ -257,7 +275,12 @@ world.afterEvents.playerInteractWithEntity.subscribe((ev) => {
   if (ev.target.typeId !== 'bc:magic_knight') return;
   const p = ev.player;
   const e = ev.target;
+  const item = ev.beforeItemStack;
   face(e, p);
+  if (hooks.talk && safe(() => e.getDynamicProperty('bc:owner')) === p.id && isCompanion(e)) {
+    system.run(() => Promise.resolve(hooks.talk(p, e, item)).catch(() => {}));
+    return;
+  }
   system.run(() => talk(p, e).catch(() => {}));
 });
 
@@ -265,6 +288,7 @@ world.afterEvents.playerInteractWithEntity.subscribe((ev) => {
 system.runInterval(() => {
   for (const p of world.getAllPlayers()) {
     for (const e of hiredBy(p)) {
+      if (isCompanion(e)) continue; // companions.js handles its party
       safe(() => {
         if (e.getDynamicProperty('bc:order') === 'hold') return;
         if (V.dist(p.location, e.location) > 24) e.teleport(V.add(p.location, { x: rand(-2, 2), y: 0.2, z: rand(-2, 2) }));
@@ -278,4 +302,4 @@ world.afterEvents.entityHitEntity.subscribe((ev) => {
   if (ev.damagingEntity.typeId === 'bc:magic_knight') anim(ev.damagingEntity, 'animation.bc.magic_knight.attack');
 });
 
-export { title };
+export { title, hiredBy, enlist };

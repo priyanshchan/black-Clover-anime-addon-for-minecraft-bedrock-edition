@@ -16,7 +16,10 @@
         "idle": "animation.bc.stone_colossus.idle",
         "walk": "animation.bc.stone_colossus.walk",
         "look": "animation.bc.stone_colossus.look_at_target",
-        "slam": "animation.bc.stone_colossus.slam"
+        "slam": "animation.bc.stone_colossus.slam",
+        "throw": "animation.bc.stone_colossus.throw",
+        "stomp": "animation.bc.stone_colossus.stomp",
+        "roar": "animation.bc.stone_colossus.roar"
       },
       "scripts": {
         "animate": [

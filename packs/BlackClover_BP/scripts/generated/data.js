@@ -168,6 +168,62 @@ export const DATA = {
       "leaves": 4,
       "mc": "\u00a7e",
       "glyph": "\ue7b7"
+    },
+    "cotton": {
+      "name": "Cotton",
+      "color": "f4eee0",
+      "leaves": 3,
+      "mc": "\u00a7f",
+      "glyph": "\ue7b8"
+    },
+    "paper": {
+      "name": "Paper",
+      "color": "efe6c8",
+      "leaves": 3,
+      "mc": "\u00a7f",
+      "glyph": "\ue7b9"
+    },
+    "smoke": {
+      "name": "Smoke",
+      "color": "9a9aa4",
+      "leaves": 3,
+      "mc": "\u00a78",
+      "glyph": "\ue7ba"
+    },
+    "glass": {
+      "name": "Glass",
+      "color": "c8f0ff",
+      "leaves": 3,
+      "mc": "\u00a7b",
+      "glyph": "\ue7bb"
+    },
+    "gold": {
+      "name": "Gold",
+      "color": "ffcf40",
+      "leaves": 4,
+      "mc": "\u00a76",
+      "glyph": "\ue7bc"
+    },
+    "beast": {
+      "name": "Beast",
+      "color": "c08040",
+      "leaves": 3,
+      "mc": "\u00a76",
+      "glyph": "\ue7bd"
+    },
+    "spirit": {
+      "name": "Spirit",
+      "color": "90ffe8",
+      "leaves": 4,
+      "mc": "\u00a73",
+      "glyph": "\ue7be"
+    },
+    "rune": {
+      "name": "Rune",
+      "color": "b070ff",
+      "leaves": 4,
+      "mc": "\u00a75",
+      "glyph": "\ue7bf"
     }
   },
   "order": [
@@ -194,7 +250,15 @@ export const DATA = {
     "crystal",
     "bone",
     "magma",
-    "time"
+    "time",
+    "cotton",
+    "paper",
+    "smoke",
+    "glass",
+    "gold",
+    "beast",
+    "spirit",
+    "rune"
   ],
   "spells": {
     "wind": [
@@ -1630,6 +1694,683 @@ export const DATA = {
           "fx": "time"
         }
       }
+    ],
+    "cotton": [
+      {
+        "id": "cotton_puffs",
+        "name": "Cotton Puffs",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "Three soft puffs that tangle and slow foes.",
+        "spec": {
+          "t": "bolt",
+          "d": 3,
+          "n": 3,
+          "spread": 10,
+          "shape": 0,
+          "size": 1,
+          "speed": 1.6,
+          "fx": "cotton",
+          "eff": [
+            [
+              "slowness",
+              2,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "cotton_bind",
+        "name": "Cotton Bind",
+        "mana": 24,
+        "cooldown": 7.0,
+        "level": 3,
+        "desc": "Wrap enemies near your aim in thick cotton.",
+        "spec": {
+          "t": "prison",
+          "d": 4,
+          "r": 3,
+          "dur": 4,
+          "fx": "cotton"
+        }
+      },
+      {
+        "id": "cloud_cushion",
+        "name": "Cloud Cushion",
+        "mana": 30,
+        "cooldown": 14.0,
+        "level": 6,
+        "desc": "A cloud of cotton heals you and your allies.",
+        "spec": {
+          "t": "heal",
+          "heal": 7,
+          "r": 7,
+          "regen": 5,
+          "fx": "cotton"
+        }
+      },
+      {
+        "id": "cotton_fortress",
+        "name": "Cotton Fortress",
+        "mana": 75,
+        "cooldown": 26.0,
+        "level": 10,
+        "desc": "Armour of packed cotton for your allies, and a smothering field around you.",
+        "spec": {
+          "t": "buff",
+          "allies": 8,
+          "fx": "cotton",
+          "self": [
+            [
+              "resistance",
+              10,
+              1
+            ],
+            [
+              "absorption",
+              10,
+              2
+            ]
+          ],
+          "then": {
+            "t": "zone",
+            "at": "self",
+            "d": 0,
+            "r": 7,
+            "dur": 6,
+            "fx": "cotton",
+            "eff": [
+              [
+                "slowness",
+                2,
+                2
+              ],
+              [
+                "weakness",
+                2,
+                0
+              ]
+            ]
+          }
+        }
+      }
+    ],
+    "paper": [
+      {
+        "id": "paper_cuts",
+        "name": "Paper Cuts",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "Four razor-edged sheets of paper.",
+        "spec": {
+          "t": "bolt",
+          "d": 3,
+          "n": 4,
+          "spread": 16,
+          "shape": 2,
+          "speed": 2.2,
+          "fx": "paper"
+        }
+      },
+      {
+        "id": "paper_cranes",
+        "name": "Paper Cranes",
+        "mana": 28,
+        "cooldown": 8.0,
+        "level": 3,
+        "desc": "Folded cranes dive onto enemies near your aim.",
+        "spec": {
+          "t": "strikes",
+          "d": 7,
+          "n": 4,
+          "r": 9,
+          "fx": "paper"
+        }
+      },
+      {
+        "id": "paper_wall",
+        "name": "Paper Wall",
+        "mana": 22,
+        "cooldown": 12.0,
+        "level": 6,
+        "desc": "Raise a wall of tightly folded paper.",
+        "spec": {
+          "t": "wall",
+          "block": "minecraft:white_wool",
+          "w": 5,
+          "h": 3,
+          "dur": 10,
+          "fx": "paper"
+        }
+      },
+      {
+        "id": "thousand_sheets",
+        "name": "Thousand Sheets",
+        "mana": 80,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "Two storms of paper blades burst out from you.",
+        "spec": {
+          "t": "radial",
+          "d": 6,
+          "n": 30,
+          "rings": 2,
+          "shape": 2,
+          "speed": 1.8,
+          "fx": "paper"
+        }
+      }
+    ],
+    "smoke": [
+      {
+        "id": "smoke_shot",
+        "name": "Smoke Shot",
+        "mana": 12,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "A ball of smoke that bursts and blinds.",
+        "spec": {
+          "t": "bolt",
+          "d": 5,
+          "shape": 0,
+          "size": 1,
+          "speed": 1.6,
+          "aoe": 2.2,
+          "fx": "smoke",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "smokescreen",
+        "name": "Smokescreen",
+        "mana": 24,
+        "cooldown": 14.0,
+        "level": 3,
+        "desc": "Vanish into thick smoke that blinds those nearby.",
+        "spec": {
+          "t": "buff",
+          "fx": "smoke",
+          "self": [
+            [
+              "invisibility",
+              6,
+              0
+            ],
+            [
+              "speed",
+              6,
+              1
+            ]
+          ],
+          "then": {
+            "t": "zone",
+            "at": "self",
+            "d": 0,
+            "r": 6,
+            "dur": 6,
+            "fx": "smoke",
+            "eff": [
+              [
+                "blindness",
+                2,
+                0
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "id": "choking_cloud",
+        "name": "Choking Cloud",
+        "mana": 30,
+        "cooldown": 9.0,
+        "level": 6,
+        "desc": "A choking cloud settles over your aim.",
+        "spec": {
+          "t": "zone",
+          "d": 1.5,
+          "r": 5,
+          "dur": 6,
+          "fx": "smoke",
+          "eff": [
+            [
+              "nausea",
+              3,
+              0
+            ],
+            [
+              "weakness",
+              3,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "smoke_dragon",
+        "name": "Smoke Dragon",
+        "mana": 78,
+        "cooldown": 22.0,
+        "level": 10,
+        "desc": "A dragon of smoke coils through every foe in its path.",
+        "spec": {
+          "t": "bolt",
+          "d": 14,
+          "shape": 2,
+          "size": 3,
+          "speed": 1.3,
+          "pierce": 5,
+          "fx": "smoke",
+          "eff": [
+            [
+              "blindness",
+              3,
+              0
+            ]
+          ]
+        }
+      }
+    ],
+    "glass": [
+      {
+        "id": "glass_shards",
+        "name": "Glass Shards",
+        "mana": 12,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "Five shards of glass in a wide spray.",
+        "spec": {
+          "t": "bolt",
+          "d": 3,
+          "n": 5,
+          "spread": 20,
+          "shape": 1,
+          "speed": 2.0,
+          "fx": "glass"
+        }
+      },
+      {
+        "id": "glass_wall",
+        "name": "Glass Wall",
+        "mana": 22,
+        "cooldown": 12.0,
+        "level": 3,
+        "desc": "A clear wall of glass blocks the way.",
+        "spec": {
+          "t": "wall",
+          "block": "minecraft:glass",
+          "w": 5,
+          "h": 3,
+          "dur": 12,
+          "fx": "glass"
+        }
+      },
+      {
+        "id": "shatter_prison",
+        "name": "Shatter Prison",
+        "mana": 36,
+        "cooldown": 9.0,
+        "level": 6,
+        "desc": "Encase enemies in glass, then shatter it.",
+        "spec": {
+          "t": "prison",
+          "d": 12,
+          "r": 3.5,
+          "dur": 3,
+          "fx": "glass"
+        }
+      },
+      {
+        "id": "glass_rain",
+        "name": "Glass Rain",
+        "mana": 80,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "A storm of falling glass over your aim.",
+        "spec": {
+          "t": "rain",
+          "d": 5,
+          "n": 16,
+          "r": 6,
+          "every": 2,
+          "fx": "glass"
+        }
+      }
+    ],
+    "gold": [
+      {
+        "id": "gold_coins",
+        "name": "Golden Coins",
+        "mana": 12,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "Three heavy golden coins.",
+        "spec": {
+          "t": "bolt",
+          "d": 4,
+          "n": 3,
+          "spread": 8,
+          "shape": 0,
+          "speed": 2.0,
+          "fx": "gold"
+        }
+      },
+      {
+        "id": "gilded_armor",
+        "name": "Gilded Armour",
+        "mana": 30,
+        "cooldown": 20.0,
+        "level": 3,
+        "desc": "Coat yourself in gold: resistance, absorption and strength.",
+        "spec": {
+          "t": "buff",
+          "fx": "gold",
+          "self": [
+            [
+              "resistance",
+              10,
+              1
+            ],
+            [
+              "absorption",
+              10,
+              1
+            ],
+            [
+              "strength",
+              10,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "golden_chains",
+        "name": "Golden Chains",
+        "mana": 36,
+        "cooldown": 9.0,
+        "level": 6,
+        "desc": "Golden chains bind everything near your aim.",
+        "spec": {
+          "t": "prison",
+          "d": 8,
+          "r": 4,
+          "dur": 4,
+          "fx": "gold"
+        }
+      },
+      {
+        "id": "midas_judgment",
+        "name": "Midas Judgment",
+        "mana": 85,
+        "cooldown": 26.0,
+        "level": 10,
+        "desc": "A colossal golden coin falls from the sky.",
+        "spec": {
+          "t": "meteor",
+          "d": 26,
+          "n": 1,
+          "r": 0,
+          "aoe": 6,
+          "size": 3,
+          "fx": "gold"
+        }
+      }
+    ],
+    "beast": [
+      {
+        "id": "beast_claws",
+        "name": "Beast Claws",
+        "mana": 10,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "Spirit claws rake everything in front of you.",
+        "spec": {
+          "t": "nova",
+          "at": "front",
+          "d": 7,
+          "r": 3,
+          "kb": [
+            0.8,
+            0.2
+          ],
+          "fx": "beast"
+        }
+      },
+      {
+        "id": "beast_charge",
+        "name": "Beast Charge",
+        "mana": 20,
+        "cooldown": 4.0,
+        "level": 3,
+        "desc": "Charge forward like a wild beast.",
+        "spec": {
+          "t": "leap",
+          "d": 9,
+          "dist": 10,
+          "mode": "dash",
+          "fx": "beast"
+        }
+      },
+      {
+        "id": "predator_roar",
+        "name": "Predator Roar",
+        "mana": 30,
+        "cooldown": 14.0,
+        "level": 6,
+        "desc": "A roar that weakens and scatters foes.",
+        "spec": {
+          "t": "nova",
+          "d": 3,
+          "r": 7,
+          "kb": [
+            1.6,
+            0.4
+          ],
+          "fx": "beast",
+          "eff": [
+            [
+              "weakness",
+              5,
+              1
+            ],
+            [
+              "slowness",
+              3,
+              1
+            ]
+          ],
+          "self": [
+            [
+              "strength",
+              8,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "primal_rampage",
+        "name": "Primal Rampage",
+        "mana": 75,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "Five savage strikes in a row.",
+        "spec": {
+          "t": "repeat",
+          "n": 5,
+          "every": 5,
+          "fx": "beast",
+          "spec": {
+            "t": "nova",
+            "at": "front",
+            "d": 7,
+            "r": 3.2,
+            "kb": [
+              0.5,
+              0.2
+            ],
+            "fx": "beast"
+          }
+        }
+      }
+    ],
+    "spirit": [
+      {
+        "id": "wisp_bolts",
+        "name": "Wisp Bolts",
+        "mana": 12,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "Three spirit wisps that feed your life.",
+        "spec": {
+          "t": "bolt",
+          "d": 4,
+          "n": 3,
+          "spread": 12,
+          "shape": 0,
+          "speed": 1.8,
+          "ls": 0.3,
+          "fx": "spirit"
+        }
+      },
+      {
+        "id": "spirit_mend",
+        "name": "Spirit Mend",
+        "mana": 32,
+        "cooldown": 14.0,
+        "level": 3,
+        "desc": "Spirits mend you and your allies.",
+        "spec": {
+          "t": "heal",
+          "heal": 8,
+          "r": 8,
+          "regen": 6,
+          "fx": "spirit"
+        }
+      },
+      {
+        "id": "soul_chains",
+        "name": "Soul Chains",
+        "mana": 36,
+        "cooldown": 9.0,
+        "level": 6,
+        "desc": "Spirit chains drag foes together and tear at them.",
+        "spec": {
+          "t": "vortex",
+          "d": 8,
+          "r": 6,
+          "dur": 2,
+          "fx": "spirit"
+        }
+      },
+      {
+        "id": "spirit_storm",
+        "name": "Spirit Storm",
+        "mana": 85,
+        "cooldown": 26.0,
+        "level": 10,
+        "desc": "A host of spirits strikes every foe around your aim.",
+        "spec": {
+          "t": "strikes",
+          "d": 10,
+          "n": 8,
+          "r": 12,
+          "ls": 0.2,
+          "fx": "spirit"
+        }
+      }
+    ],
+    "rune": [
+      {
+        "id": "rune_darts",
+        "name": "Rune Darts",
+        "mana": 12,
+        "cooldown": 0.7,
+        "level": 1,
+        "desc": "Two glowing rune darts.",
+        "spec": {
+          "t": "bolt",
+          "d": 5,
+          "n": 2,
+          "spread": 6,
+          "shape": 3,
+          "speed": 2.4,
+          "fx": "rune"
+        }
+      },
+      {
+        "id": "rune_trap",
+        "name": "Rune Trap",
+        "mana": 26,
+        "cooldown": 10.0,
+        "level": 3,
+        "desc": "A rune circle that bites everything that walks over it.",
+        "spec": {
+          "t": "zone",
+          "d": 4,
+          "r": 3,
+          "dur": 10,
+          "fx": "rune",
+          "eff": [
+            [
+              "slowness",
+              2,
+              3
+            ]
+          ]
+        }
+      },
+      {
+        "id": "sealing_circle",
+        "name": "Sealing Circle",
+        "mana": 40,
+        "cooldown": 12.0,
+        "level": 6,
+        "desc": "A circle of runes seals the strength of enemies near your aim.",
+        "spec": {
+          "t": "prison",
+          "d": 6,
+          "r": 5,
+          "dur": 4,
+          "fx": "rune",
+          "eff": [
+            [
+              "weakness",
+              6,
+              2
+            ]
+          ]
+        }
+      },
+      {
+        "id": "grand_runecraft",
+        "name": "Grand Runecraft",
+        "mana": 85,
+        "cooldown": 26.0,
+        "level": 10,
+        "desc": "Runic lines burst out in eight directions.",
+        "spec": {
+          "t": "wave",
+          "d": 14,
+          "len": 14,
+          "dirs": 8,
+          "fx": "rune",
+          "kb": [
+            0.2,
+            0.9
+          ]
+        }
+      }
     ]
   },
   "swords": {
@@ -2730,6 +3471,506 @@ export const DATA = {
           }
         }
       ]
+    },
+    "spore": {
+      "name": "Spore Fruit",
+      "color": "c8a070",
+      "mc": "\u00a76",
+      "power": "Spore Body",
+      "passive": "A haze of spores poisons whoever strikes you.",
+      "glyph": "\ue7d6",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "spore_shot",
+          "name": "Spore Shot",
+          "cooldown": 1.8,
+          "desc": "A puffball that bursts into poison.",
+          "spec": {
+            "t": "bolt",
+            "d": 4,
+            "shape": 0,
+            "size": 1,
+            "speed": 1.5,
+            "aoe": 2.5,
+            "fx": "poison",
+            "eff": [
+              [
+                "poison",
+                4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "id": "spore_burst",
+          "name": "Spore Burst",
+          "cooldown": 9.0,
+          "desc": "A cloud of spores around you.",
+          "spec": {
+            "t": "zone",
+            "at": "self",
+            "d": 1,
+            "r": 5,
+            "dur": 4,
+            "fx": "poison",
+            "eff": [
+              [
+                "poison",
+                3,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "fungal_bloom",
+          "name": "Fungal Bloom",
+          "cooldown": 16.0,
+          "desc": "Healing mushrooms sprout around you.",
+          "spec": {
+            "t": "heal",
+            "heal": 6,
+            "r": 6,
+            "regen": 5,
+            "fx": "leaf"
+          }
+        }
+      ]
+    },
+    "thread": {
+      "name": "Thread Fruit",
+      "color": "e8e8f0",
+      "mc": "\u00a7f",
+      "power": "Thread Hands",
+      "passive": "Silk lines catch you: you never take fall damage.",
+      "glyph": "\ue7d7",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "thread_lash",
+          "name": "Thread Lash",
+          "cooldown": 2.0,
+          "desc": "A razor-thin line slices everything ahead.",
+          "spec": {
+            "t": "beam",
+            "d": 9,
+            "range": 18,
+            "width": 0.8,
+            "fx": "paper"
+          }
+        },
+        {
+          "id": "string_cage",
+          "name": "String Cage",
+          "cooldown": 9.0,
+          "desc": "A cage of threads binds foes near your aim.",
+          "spec": {
+            "t": "prison",
+            "d": 8,
+            "r": 4,
+            "dur": 4,
+            "fx": "paper"
+          }
+        },
+        {
+          "id": "puppet_strings",
+          "name": "Puppet Strings",
+          "cooldown": 12.0,
+          "desc": "Strings drag foes together.",
+          "spec": {
+            "t": "vortex",
+            "d": 6,
+            "r": 6,
+            "dur": 2,
+            "fx": "paper"
+          }
+        }
+      ]
+    },
+    "slime": {
+      "name": "Slime Fruit",
+      "color": "60e060",
+      "mc": "\u00a7a",
+      "power": "Slime Body",
+      "passive": "A bouncy body: falls barely hurt you and knockback slides off.",
+      "glyph": "\ue7d8",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "slime_ball",
+          "name": "Slime Ball",
+          "cooldown": 1.8,
+          "desc": "A lobbed slime ball that splats and sticks.",
+          "spec": {
+            "t": "bolt",
+            "d": 5,
+            "shape": 0,
+            "size": 2,
+            "speed": 1.3,
+            "grav": 0.03,
+            "aoe": 2.5,
+            "fx": "acid",
+            "eff": [
+              [
+                "slowness",
+                3,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "id": "sticky_pool",
+          "name": "Sticky Pool",
+          "cooldown": 9.0,
+          "desc": "A pool of slime glues enemies in place.",
+          "spec": {
+            "t": "zone",
+            "d": 1,
+            "r": 4,
+            "dur": 6,
+            "fx": "acid",
+            "eff": [
+              [
+                "slowness",
+                2,
+                4
+              ]
+            ]
+          }
+        },
+        {
+          "id": "slime_slam",
+          "name": "Slime Slam",
+          "cooldown": 10.0,
+          "desc": "Bounce high and splat down on your aim.",
+          "spec": {
+            "t": "dive",
+            "d": 12,
+            "r": 5,
+            "fx": "acid"
+          }
+        }
+      ]
+    },
+    "chain": {
+      "name": "Chain Fruit",
+      "color": "a0a0a8",
+      "mc": "\u00a77",
+      "power": "Chain Arms",
+      "passive": "Iron links: your punches hit like a hammer.",
+      "glyph": "\ue7d9",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "chain_hook",
+          "name": "Chain Hook",
+          "cooldown": 2.0,
+          "desc": "A hooked chain that pierces and slows.",
+          "spec": {
+            "t": "bolt",
+            "d": 6,
+            "shape": 3,
+            "speed": 2.6,
+            "pierce": 1,
+            "fx": "metal",
+            "eff": [
+              [
+                "slowness",
+                2,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "id": "chain_whirl",
+          "name": "Chain Whirl",
+          "cooldown": 8.0,
+          "desc": "Chains whirl out in every direction.",
+          "spec": {
+            "t": "radial",
+            "d": 6,
+            "n": 12,
+            "shape": 2,
+            "speed": 1.6,
+            "fx": "metal"
+          }
+        },
+        {
+          "id": "binding_chains",
+          "name": "Binding Chains",
+          "cooldown": 12.0,
+          "desc": "Chains erupt and bind every foe near your aim.",
+          "spec": {
+            "t": "prison",
+            "d": 10,
+            "r": 4,
+            "dur": 4,
+            "fx": "metal"
+          }
+        }
+      ]
+    },
+    "lion": {
+      "name": "Lion Fruit",
+      "color": "e0a040",
+      "mc": "\u00a76",
+      "power": "Lion Form",
+      "passive": "Beast form: a king's strength and a thick mane.",
+      "glyph": "\ue7da",
+      "beast": true,
+      "abilities": [
+        {
+          "id": "pride_pounce",
+          "name": "Pride Pounce",
+          "cooldown": 4.0,
+          "desc": "Pounce onto your aim.",
+          "spec": {
+            "t": "dive",
+            "d": 12,
+            "r": 4,
+            "fx": "beast"
+          }
+        },
+        {
+          "id": "mane_lash",
+          "name": "Mane Lash",
+          "cooldown": 6.0,
+          "desc": "Three heavy swipes.",
+          "spec": {
+            "t": "repeat",
+            "n": 3,
+            "every": 5,
+            "spec": {
+              "t": "nova",
+              "at": "front",
+              "d": 7,
+              "r": 3,
+              "kb": [
+                0.7,
+                0.2
+              ],
+              "fx": "beast"
+            }
+          }
+        },
+        {
+          "id": "roar_of_kings",
+          "name": "Roar of Kings",
+          "cooldown": 18.0,
+          "desc": "A roar that cows every foe and fires your blood.",
+          "spec": {
+            "t": "nova",
+            "d": 4,
+            "r": 8,
+            "kb": [
+              1.8,
+              0.4
+            ],
+            "fx": "sound",
+            "eff": [
+              [
+                "weakness",
+                6,
+                1
+              ],
+              [
+                "slowness",
+                4,
+                1
+              ]
+            ],
+            "self": [
+              [
+                "strength",
+                10,
+                1
+              ],
+              [
+                "resistance",
+                10,
+                0
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "shark": {
+      "name": "Shark Fruit",
+      "color": "4a86c8",
+      "mc": "\u00a79",
+      "power": "Shark Form",
+      "passive": "Beast form: you swim like a shark - the sea does not drain you.",
+      "glyph": "\ue7db",
+      "beast": true,
+      "abilities": [
+        {
+          "id": "shark_bite",
+          "name": "Shark Bite",
+          "cooldown": 2.0,
+          "desc": "A crushing bite in front of you.",
+          "spec": {
+            "t": "nova",
+            "at": "front",
+            "d": 14,
+            "r": 2.6,
+            "kb": [
+              0.4,
+              0.1
+            ],
+            "fx": "water"
+          }
+        },
+        {
+          "id": "tidal_rush",
+          "name": "Tidal Rush",
+          "cooldown": 5.0,
+          "desc": "Rush forward on a wave.",
+          "spec": {
+            "t": "leap",
+            "d": 9,
+            "dist": 12,
+            "mode": "dash",
+            "fx": "water"
+          }
+        },
+        {
+          "id": "riptide",
+          "name": "Riptide",
+          "cooldown": 14.0,
+          "desc": "A riptide drags foes together and under.",
+          "spec": {
+            "t": "vortex",
+            "d": 8,
+            "r": 6,
+            "dur": 2,
+            "fx": "water"
+          }
+        }
+      ]
+    },
+    "phoenix": {
+      "name": "Phoenix Fruit",
+      "color": "ff8a30",
+      "mc": "\u00a76",
+      "power": "Phoenix Form",
+      "passive": "Beast form: blue flame mends you, you glide on burning wings, fire cannot touch you.",
+      "glyph": "\ue7dc",
+      "beast": true,
+      "abilities": [
+        {
+          "id": "blazing_feathers",
+          "name": "Blazing Feathers",
+          "cooldown": 2.4,
+          "desc": "A fan of burning feathers.",
+          "spec": {
+            "t": "bolt",
+            "d": 4,
+            "n": 5,
+            "spread": 30,
+            "shape": 2,
+            "speed": 2.0,
+            "fire": 3,
+            "fx": "flame"
+          }
+        },
+        {
+          "id": "firewing_dive",
+          "name": "Firewing Dive",
+          "cooldown": 10.0,
+          "desc": "Dive onto your aim wreathed in flame.",
+          "spec": {
+            "t": "dive",
+            "d": 14,
+            "r": 5,
+            "fire": 4,
+            "fx": "flame"
+          }
+        },
+        {
+          "id": "rebirth_flame",
+          "name": "Rebirth Flame",
+          "cooldown": 20.0,
+          "desc": "Blue flames heal you and your allies.",
+          "spec": {
+            "t": "heal",
+            "heal": 10,
+            "r": 6,
+            "regen": 6,
+            "fx": "spirit"
+          }
+        }
+      ]
+    },
+    "spider": {
+      "name": "Spider Fruit",
+      "color": "7a4a8a",
+      "mc": "\u00a75",
+      "power": "Spider Form",
+      "passive": "Beast form: you see in the dark and webs never slow you.",
+      "glyph": "\ue7dd",
+      "beast": true,
+      "abilities": [
+        {
+          "id": "web_shot",
+          "name": "Web Shot",
+          "cooldown": 2.0,
+          "desc": "Three strands of sticky web.",
+          "spec": {
+            "t": "bolt",
+            "d": 3,
+            "n": 3,
+            "spread": 12,
+            "shape": 3,
+            "speed": 2.0,
+            "fx": "paper",
+            "eff": [
+              [
+                "slowness",
+                3,
+                3
+              ]
+            ]
+          }
+        },
+        {
+          "id": "venom_bite",
+          "name": "Venom Bite",
+          "cooldown": 3.0,
+          "desc": "A venomous bite in front of you.",
+          "spec": {
+            "t": "nova",
+            "at": "front",
+            "d": 10,
+            "r": 2.6,
+            "fx": "poison",
+            "eff": [
+              [
+                "poison",
+                5,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "web_trap",
+          "name": "Web Trap",
+          "cooldown": 12.0,
+          "desc": "Webs pin down every foe near your aim.",
+          "spec": {
+            "t": "prison",
+            "d": 4,
+            "r": 4,
+            "dur": 5,
+            "fx": "paper"
+          }
+        }
+      ]
     }
   },
   "fruitOrder": [
@@ -2754,7 +3995,15 @@ export const DATA = {
     "ink",
     "bear",
     "tiger",
-    "wyvern"
+    "wyvern",
+    "spore",
+    "thread",
+    "slime",
+    "chain",
+    "lion",
+    "shark",
+    "phoenix",
+    "spider"
   ],
   "willMax": 10,
   "captainFirst": [
@@ -2919,28 +4168,44 @@ export const DATA = {
     "a:bone": 21,
     "a:magma": 22,
     "a:time": 23,
-    "f:ember": 24,
-    "f:stone": 25,
-    "f:gravity": 26,
-    "f:shadow": 27,
-    "f:bloom": 28,
-    "f:quicksilver": 29,
-    "f:frost": 30,
-    "f:barrier": 31,
-    "f:wolf": 32,
-    "f:hawk": 33,
-    "f:lava": 34,
-    "f:ash": 35,
-    "f:prism": 36,
-    "f:bounce": 37,
-    "f:blast": 38,
-    "f:acid": 39,
-    "f:lodestone": 40,
-    "f:cloud": 41,
-    "f:ink": 42,
-    "f:bear": 43,
-    "f:tiger": 44,
-    "f:wyvern": 45
+    "a:cotton": 24,
+    "a:paper": 25,
+    "a:smoke": 26,
+    "a:glass": 27,
+    "a:gold": 28,
+    "a:beast": 29,
+    "a:spirit": 30,
+    "a:rune": 31,
+    "f:ember": 32,
+    "f:stone": 33,
+    "f:gravity": 34,
+    "f:shadow": 35,
+    "f:bloom": 36,
+    "f:quicksilver": 37,
+    "f:frost": 38,
+    "f:barrier": 39,
+    "f:wolf": 40,
+    "f:hawk": 41,
+    "f:lava": 42,
+    "f:ash": 43,
+    "f:prism": 44,
+    "f:bounce": 45,
+    "f:blast": 46,
+    "f:acid": 47,
+    "f:lodestone": 48,
+    "f:cloud": 49,
+    "f:ink": 50,
+    "f:bear": 51,
+    "f:tiger": 52,
+    "f:wyvern": 53,
+    "f:spore": 54,
+    "f:thread": 55,
+    "f:slime": 56,
+    "f:chain": 57,
+    "f:lion": 58,
+    "f:shark": 59,
+    "f:phoenix": 60,
+    "f:spider": 61
   },
   "altarWeights": {
     "wind": 11,
@@ -2966,7 +4231,15 @@ export const DATA = {
     "crystal": 7,
     "bone": 6,
     "magma": 7,
-    "time": 3
+    "time": 3,
+    "cotton": 7,
+    "paper": 7,
+    "smoke": 7,
+    "glass": 7,
+    "gold": 4,
+    "beast": 7,
+    "spirit": 4,
+    "rune": 4
   },
   "npcKits": {
     "wind": [
@@ -3294,6 +4567,18 @@ export const DATA = {
       "count": 1,
       "price": 900,
       "label": "Wishing Clover Charm"
+    },
+    {
+      "item": "bc:companion_whistle",
+      "count": 1,
+      "price": 80,
+      "label": "Companion Whistle"
+    },
+    {
+      "item": "bc:mana_cookie",
+      "count": 6,
+      "price": 40,
+      "label": "Mana Cookies x6"
     }
   ],
   "factions": {
@@ -3311,7 +4596,8 @@ export const DATA = {
       "units": [
         "bc:dark_disciple",
         "bc:dark_disciple",
-        "bc:imp"
+        "bc:imp",
+        "bc:hellhound"
       ],
       "leader": "bc:dark_disciple"
     },
@@ -3319,7 +4605,8 @@ export const DATA = {
       "name": "Sea Raiders",
       "mc": "\u00a7c",
       "units": [
-        "bc:sea_raider"
+        "bc:sea_raider",
+        "bc:raider_gunner"
       ],
       "leader": "bc:raider_captain"
     },
@@ -3327,7 +4614,8 @@ export const DATA = {
       "name": "Tidewatch Navy",
       "mc": "\u00a79",
       "units": [
-        "bc:tidewatch_sentinel"
+        "bc:tidewatch_sentinel",
+        "bc:tidewatch_marksman"
       ],
       "leader": "bc:tidewatch_commodore"
     },
@@ -3338,6 +4626,293 @@ export const DATA = {
         "bc:construct"
       ],
       "leader": "bc:construct"
+    }
+  },
+  "enemyKits": {
+    "bc:dark_disciple": {
+      "src": "a:dark",
+      "kit": [
+        {
+          "t": "prison",
+          "d": 4,
+          "r": 2.5,
+          "dur": 2,
+          "fx": "dark"
+        },
+        {
+          "t": "bolt",
+          "d": 5,
+          "n": 3,
+          "spread": 14,
+          "shape": 2,
+          "speed": 1.8,
+          "fx": "dark",
+          "eff": [
+            [
+              "weakness",
+              3,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "bc:imp": {
+      "src": "a:flame",
+      "kit": [
+        {
+          "t": "bolt",
+          "d": 4,
+          "shape": 0,
+          "speed": 1.6,
+          "fire": 2,
+          "fx": "flame"
+        },
+        {
+          "t": "dive",
+          "d": 6,
+          "r": 2.5,
+          "fx": "flame"
+        }
+      ]
+    },
+    "bc:sea_raider": {
+      "src": "f:blast",
+      "kit": [
+        {
+          "t": "bolt",
+          "d": 6,
+          "shape": 0,
+          "size": 1,
+          "speed": 1.2,
+          "grav": 0.03,
+          "aoe": 2.5,
+          "fx": "flame"
+        }
+      ]
+    },
+    "bc:raider_gunner": {
+      "src": "a:steel",
+      "kit": [
+        {
+          "t": "bolt",
+          "d": 6,
+          "shape": 3,
+          "speed": 3.0,
+          "fx": "gun"
+        },
+        {
+          "t": "bolt",
+          "d": 7,
+          "shape": 0,
+          "size": 1,
+          "speed": 1.2,
+          "grav": 0.03,
+          "aoe": 2.8,
+          "fx": "flame"
+        }
+      ]
+    },
+    "bc:tidewatch_marksman": {
+      "src": "a:steel",
+      "kit": [
+        {
+          "t": "bolt",
+          "d": 7,
+          "shape": 3,
+          "speed": 3.2,
+          "fx": "gun"
+        },
+        {
+          "t": "bolt",
+          "d": 4,
+          "n": 3,
+          "spread": 6,
+          "shape": 3,
+          "speed": 3.0,
+          "fx": "gun"
+        }
+      ]
+    },
+    "bc:hellhound": {
+      "src": "a:magma",
+      "kit": [
+        {
+          "t": "leap",
+          "d": 7,
+          "dist": 8,
+          "mode": "dash",
+          "fire": 3,
+          "fx": "flame"
+        },
+        {
+          "t": "beam",
+          "d": 5,
+          "range": 6,
+          "width": 1.4,
+          "fire": 4,
+          "fx": "flame"
+        }
+      ]
+    },
+    "bc:mana_wraith": {
+      "src": "a:spirit",
+      "kit": [
+        {
+          "t": "beam",
+          "d": 5,
+          "range": 14,
+          "ls": 0.5,
+          "fx": "spirit"
+        },
+        {
+          "t": "leap",
+          "d": 3,
+          "dist": 8,
+          "mode": "blink",
+          "fx": "spirit"
+        },
+        {
+          "t": "prison",
+          "d": 3,
+          "r": 3,
+          "dur": 2,
+          "fx": "spirit"
+        }
+      ]
+    }
+  },
+  "companion": {
+    "xp": [
+      0,
+      0,
+      20,
+      60,
+      120,
+      200,
+      320,
+      480,
+      700,
+      1000,
+      1400,
+      1900,
+      2500,
+      3200,
+      4000,
+      5000,
+      6200,
+      7600,
+      9200,
+      11000,
+      13000
+    ],
+    "hp": [
+      [
+        1,
+        40
+      ],
+      [
+        5,
+        60
+      ],
+      [
+        10,
+        80
+      ],
+      [
+        15,
+        100
+      ],
+      [
+        20,
+        130
+      ]
+    ],
+    "bond": [
+      {
+        "at": 0,
+        "name": "Stranger",
+        "perk": "Follows and fights at your side."
+      },
+      {
+        "at": 100,
+        "name": "Comrade",
+        "perk": "Keeps formation and casts 10% harder."
+      },
+      {
+        "at": 300,
+        "name": "Friend",
+        "perk": "Mana Link: tops up your mana when it runs low (60s cooldown)."
+      },
+      {
+        "at": 700,
+        "name": "Sworn Ally",
+        "perk": "Guardian: shields you when you fall below 25% health (90s cooldown)."
+      },
+      {
+        "at": 1500,
+        "name": "Soulbound",
+        "perk": "Union Magic: unleash a combined spell together from the whistle (120s cooldown)."
+      }
+    ],
+    "partyMax": 4,
+    "lines": {
+      "join": [
+        "My grimoire is yours, {p}.",
+        "Point me at the enemy, {p}.",
+        "Together, then. Let's go!"
+      ],
+      "summon": [
+        "Here!",
+        "At your side.",
+        "Ready when you are, {p}.",
+        "Did you call?"
+      ],
+      "return": [
+        "That one hurt... but I'm back.",
+        "You can't get rid of me that easily.",
+        "Back on my feet!"
+      ],
+      "level": [
+        "I can feel my magic growing!",
+        "My grimoire turned a new page!",
+        "Stronger every day!"
+      ],
+      "kill": [
+        "Got one!",
+        "Down it goes.",
+        "Next!",
+        "Too easy."
+      ],
+      "low": [
+        "{p}, you're hurt - fall back!",
+        "Hang in there, {p}!",
+        "I'll cover you!"
+      ],
+      "boss": [
+        "That thing is huge...",
+        "Stay together - this is a big one!",
+        "Careful, {p}!"
+      ],
+      "idle": [
+        "Nice weather for a stroll.",
+        "I wonder what the Wizard King is doing.",
+        "My feet hurt.",
+        "Want to spar later?"
+      ],
+      "gift": [
+        "For me? Thank you, {p}!",
+        "Delicious!",
+        "You're too kind."
+      ],
+      "union": [
+        "Now, {p}! Together!",
+        "Our magic as one!"
+      ],
+      "loot": [
+        "I picked these up for you.",
+        "Don't forget your loot!"
+      ]
     }
   }
 };

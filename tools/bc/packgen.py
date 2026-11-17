@@ -6,7 +6,7 @@ from .data import ATTR_ORDER, ATTRIBUTES, NS, ROBES, SPELLS, SWORDS
 from .models import items, mobs, spells, world
 from .out import BP, RP, write_json, write_png, write_text
 
-VERSION = [0, 1, 0]  # v0.1.0 early access - bump on every release so Minecraft replaces the installed packs
+VERSION = [0, 2, 0]  # v0.2.0 early access - bump on every release so Minecraft replaces the installed packs
 MIN_ENGINE = [1, 21, 90]
 ITEM_FMT = '1.21.60'
 ENTITY_FMT = '1.21.0'
@@ -42,7 +42,7 @@ def manifest_bp():
         'format_version': 2,
         'header': {
             'name': 'Black Clover: Grimoire Awakening §7(Behavior)',
-            'description': 'Early Access v0.1.0 - 24 grimoires, 22 Abyss Fruits, Magic Knights with tactical AI, faction battles, the War Table simulator, giant bosses and world events. Unofficial fan addon.',
+            'description': 'Early Access v0.2.0 - 32 grimoires, 30 Abyss Fruits, a saved companion party with smart AI, tactical enemies and bosses, faction battles, the War Table and world events. Unofficial fan addon.',
             'uuid': out.uid('bp-header'),
             'version': VERSION,
             'min_engine_version': MIN_ENGINE,
@@ -65,7 +65,7 @@ def manifest_rp():
         'format_version': 2,
         'header': {
             'name': 'Black Clover: Grimoire Awakening §7(Resources)',
-            'description': 'Early Access v0.1.0 - 3D grimoires, swords, robes, spells, knights, bosses, particles and sounds. Unofficial fan addon.',
+            'description': 'Early Access v0.2.0 - 3D grimoires, swords, robes, spells, knights, bosses, particles and sounds. Unofficial fan addon.',
             'uuid': out.uid('rp-header'),
             'version': VERSION,
             'min_engine_version': MIN_ENGINE,
@@ -570,7 +570,9 @@ def player_animations():
 
     def k(x):
         return f'({x}) * {tp}'
-    return {
+    from .models.v2 import player_extra_animations
+    extra = player_extra_animations(k)
+    return {**extra, 
         'animation.bc.player.cast_forward': {
             'animation_length': 0.55,
             'bones': {
@@ -675,9 +677,10 @@ def build():
     gen_loot(ctx)
     gen_spell_entities(ctx)
     gen_mobs(ctx)
-    from . import grandgen, seagen, wave4gen  # expansions (import this module, so loaded lazily)
+    from . import grandgen, seagen, v2gen, wave4gen  # expansions (import this module, so loaded lazily)
     seagen.build(ctx)
     grandgen.build(ctx)
     wave4gen.build(ctx)
+    v2gen.build(ctx)
     flush(ctx)
     return ctx

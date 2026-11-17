@@ -462,3 +462,158 @@ FACTIONS = {
     'navy': dict(name='Tidewatch Navy', mc='§9', units=['bc:tidewatch_sentinel'], leader='bc:tidewatch_commodore'),
     'constructs': dict(name='Ancient Constructs', mc='§7', units=['bc:construct'], leader='bc:construct'),
 }
+
+# ======================================================================================
+# v0.2.0: eight more grimoires, eight more fruits, enemy spell kits, companions
+# ======================================================================================
+ATTRIBUTES.update({
+    'cotton': dict(name='Cotton', color='f4eee0', leaves=3, cover=('4a4438', '6a6252', '8a826e', 'aaa28c', 'c8c0aa', 'e0d8c4'), trim='gold', mc='§f'),
+    'paper': dict(name='Paper', color='efe6c8', leaves=3, cover=('3a3020', '54462e', '6e5e40', '8a7854', 'a6946a', 'c2b084'), trim='silver', mc='§f'),
+    'smoke': dict(name='Smoke', color='9a9aa4', leaves=3, cover=('141418', '202026', '2e2e36', '3e3e48', '50505c', '646472'), trim='blackiron', mc='§8'),
+    'glass': dict(name='Glass', color='c8f0ff', leaves=3, cover=('163240', '204656', '2c5c70', '3a748a', '4a8ea6', '5ea8c0'), trim='silver', mc='§b'),
+    'gold': dict(name='Gold', color='ffcf40', leaves=4, cover=('3a2606', '5a3c0a', '7a5410', '9c6e18', 'be8a22', 'dca832'), trim='gold', mc='§6'),
+    'beast': dict(name='Beast', color='c08040', leaves=3, cover=('2a1a0c', '402814', '58381c', '704826', '8a5a30', 'a46c3c'), trim='blackiron', mc='§6'),
+    'spirit': dict(name='Spirit', color='90ffe8', leaves=4, cover=('062a26', '0c3e38', '14564e', '1e7066', '2a8c80', '3aa89a'), trim='silver', mc='§3'),
+    'rune': dict(name='Rune', color='b070ff', leaves=4, cover=('14082a', '22103e', '321856', '442270', '582e8c', '6e3ca8'), trim='gold', mc='§5'),
+})
+ATTR_ORDER += ['cotton', 'paper', 'smoke', 'glass', 'gold', 'beast', 'spirit', 'rune']
+
+SPELLS.update({
+    'cotton': [
+        _s('cotton_puffs', 'Cotton Puffs', 10, 0.6, 1, 'Three soft puffs that tangle and slow foes.', t='bolt', d=3, n=3, spread=10, shape=0, size=1, speed=1.6, fx='cotton', eff=[['slowness', 2, 1]]),
+        _s('cotton_bind', 'Cotton Bind', 24, 7.0, 3, 'Wrap enemies near your aim in thick cotton.', t='prison', d=4, r=3, dur=4, fx='cotton'),
+        _s('cloud_cushion', 'Cloud Cushion', 30, 14.0, 6, 'A cloud of cotton heals you and your allies.', t='heal', heal=7, r=7, regen=5, fx='cotton'),
+        _s('cotton_fortress', 'Cotton Fortress', 75, 26.0, 10, 'Armour of packed cotton for your allies, and a smothering field around you.', t='buff', allies=8, fx='cotton',
+           self=[['resistance', 10, 1], ['absorption', 10, 2]], then=dict(t='zone', at='self', d=0, r=7, dur=6, fx='cotton', eff=[['slowness', 2, 2], ['weakness', 2, 0]])),
+    ],
+    'paper': [
+        _s('paper_cuts', 'Paper Cuts', 10, 0.6, 1, 'Four razor-edged sheets of paper.', t='bolt', d=3, n=4, spread=16, shape=2, speed=2.2, fx='paper'),
+        _s('paper_cranes', 'Paper Cranes', 28, 8.0, 3, 'Folded cranes dive onto enemies near your aim.', t='strikes', d=7, n=4, r=9, fx='paper'),
+        _s('paper_wall', 'Paper Wall', 22, 12.0, 6, 'Raise a wall of tightly folded paper.', t='wall', block='minecraft:white_wool', w=5, h=3, dur=10, fx='paper'),
+        _s('thousand_sheets', 'Thousand Sheets', 80, 24.0, 10, 'Two storms of paper blades burst out from you.', t='radial', d=6, n=30, rings=2, shape=2, speed=1.8, fx='paper'),
+    ],
+    'smoke': [
+        _s('smoke_shot', 'Smoke Shot', 12, 0.8, 1, 'A ball of smoke that bursts and blinds.', t='bolt', d=5, shape=0, size=1, speed=1.6, aoe=2.2, fx='smoke', eff=[['blindness', 2, 0]]),
+        _s('smokescreen', 'Smokescreen', 24, 14.0, 3, 'Vanish into thick smoke that blinds those nearby.', t='buff', fx='smoke', self=[['invisibility', 6, 0], ['speed', 6, 1]],
+           then=dict(t='zone', at='self', d=0, r=6, dur=6, fx='smoke', eff=[['blindness', 2, 0]])),
+        _s('choking_cloud', 'Choking Cloud', 30, 9.0, 6, 'A choking cloud settles over your aim.', t='zone', d=1.5, r=5, dur=6, fx='smoke', eff=[['nausea', 3, 0], ['weakness', 3, 1]]),
+        _s('smoke_dragon', 'Smoke Dragon', 78, 22.0, 10, 'A dragon of smoke coils through every foe in its path.', t='bolt', d=14, shape=2, size=3, speed=1.3, pierce=5, fx='smoke', eff=[['blindness', 3, 0]]),
+    ],
+    'glass': [
+        _s('glass_shards', 'Glass Shards', 12, 0.8, 1, 'Five shards of glass in a wide spray.', t='bolt', d=3, n=5, spread=20, shape=1, speed=2.0, fx='glass'),
+        _s('glass_wall', 'Glass Wall', 22, 12.0, 3, 'A clear wall of glass blocks the way.', t='wall', block='minecraft:glass', w=5, h=3, dur=12, fx='glass'),
+        _s('shatter_prison', 'Shatter Prison', 36, 9.0, 6, 'Encase enemies in glass, then shatter it.', t='prison', d=12, r=3.5, dur=3, fx='glass'),
+        _s('glass_rain', 'Glass Rain', 80, 24.0, 10, 'A storm of falling glass over your aim.', t='rain', d=5, n=16, r=6, every=2, fx='glass'),
+    ],
+    'gold': [
+        _s('gold_coins', 'Golden Coins', 12, 0.8, 1, 'Three heavy golden coins.', t='bolt', d=4, n=3, spread=8, shape=0, speed=2.0, fx='gold'),
+        _s('gilded_armor', 'Gilded Armour', 30, 20.0, 3, 'Coat yourself in gold: resistance, absorption and strength.', t='buff', fx='gold', self=[['resistance', 10, 1], ['absorption', 10, 1], ['strength', 10, 0]]),
+        _s('golden_chains', 'Golden Chains', 36, 9.0, 6, 'Golden chains bind everything near your aim.', t='prison', d=8, r=4, dur=4, fx='gold'),
+        _s('midas_judgment', 'Midas Judgment', 85, 26.0, 10, 'A colossal golden coin falls from the sky.', t='meteor', d=26, n=1, r=0, aoe=6, size=3, fx='gold'),
+    ],
+    'beast': [
+        _s('beast_claws', 'Beast Claws', 10, 0.8, 1, 'Spirit claws rake everything in front of you.', t='nova', at='front', d=7, r=3, kb=[0.8, 0.2], fx='beast'),
+        _s('beast_charge', 'Beast Charge', 20, 4.0, 3, 'Charge forward like a wild beast.', t='leap', d=9, dist=10, mode='dash', fx='beast'),
+        _s('predator_roar', 'Predator Roar', 30, 14.0, 6, 'A roar that weakens and scatters foes.', t='nova', d=3, r=7, kb=[1.6, 0.4], fx='beast', eff=[['weakness', 5, 1], ['slowness', 3, 1]], self=[['strength', 8, 1]]),
+        _s('primal_rampage', 'Primal Rampage', 75, 24.0, 10, 'Five savage strikes in a row.', t='repeat', n=5, every=5, fx='beast', spec=dict(t='nova', at='front', d=7, r=3.2, kb=[0.5, 0.2], fx='beast')),
+    ],
+    'spirit': [
+        _s('wisp_bolts', 'Wisp Bolts', 12, 0.8, 1, 'Three spirit wisps that feed your life.', t='bolt', d=4, n=3, spread=12, shape=0, speed=1.8, ls=0.3, fx='spirit'),
+        _s('spirit_mend', 'Spirit Mend', 32, 14.0, 3, 'Spirits mend you and your allies.', t='heal', heal=8, r=8, regen=6, fx='spirit'),
+        _s('soul_chains', 'Soul Chains', 36, 9.0, 6, 'Spirit chains drag foes together and tear at them.', t='vortex', d=8, r=6, dur=2, fx='spirit'),
+        _s('spirit_storm', 'Spirit Storm', 85, 26.0, 10, 'A host of spirits strikes every foe around your aim.', t='strikes', d=10, n=8, r=12, ls=0.2, fx='spirit'),
+    ],
+    'rune': [
+        _s('rune_darts', 'Rune Darts', 12, 0.7, 1, 'Two glowing rune darts.', t='bolt', d=5, n=2, spread=6, shape=3, speed=2.4, fx='rune'),
+        _s('rune_trap', 'Rune Trap', 26, 10.0, 3, 'A rune circle that bites everything that walks over it.', t='zone', d=4, r=3, dur=10, fx='rune', eff=[['slowness', 2, 3]]),
+        _s('sealing_circle', 'Sealing Circle', 40, 12.0, 6, 'A circle of runes seals the strength of enemies near your aim.', t='prison', d=6, r=5, dur=4, fx='rune', eff=[['weakness', 6, 2]]),
+        _s('grand_runecraft', 'Grand Runecraft', 85, 26.0, 10, 'Runic lines burst out in eight directions.', t='wave', d=14, len=14, dirs=8, fx='rune', kb=[0.2, 0.9]),
+    ],
+})
+ALTAR_WEIGHTS.update({'cotton': 7, 'paper': 7, 'smoke': 7, 'glass': 7, 'gold': 4, 'beast': 7, 'spirit': 4, 'rune': 4})
+
+FRUITS.update({
+    'spore': dict(name='Spore Fruit', color='c8a070', mc='§6', power='Spore Body', beast=False,
+                  passive='A haze of spores poisons whoever strikes you.',
+                  abilities=[('spore_shot', 'Spore Shot', 1.8, 'A puffball that bursts into poison.', dict(t='bolt', d=4, shape=0, size=1, speed=1.5, aoe=2.5, fx='poison', eff=[['poison', 4, 0]])),
+                             ('spore_burst', 'Spore Burst', 9.0, 'A cloud of spores around you.', dict(t='zone', at='self', d=1, r=5, dur=4, fx='poison', eff=[['poison', 3, 1]])),
+                             ('fungal_bloom', 'Fungal Bloom', 16.0, 'Healing mushrooms sprout around you.', dict(t='heal', heal=6, r=6, regen=5, fx='leaf'))]),
+    'thread': dict(name='Thread Fruit', color='e8e8f0', mc='§f', power='Thread Hands', beast=False,
+                   passive='Silk lines catch you: you never take fall damage.',
+                   abilities=[('thread_lash', 'Thread Lash', 2.0, 'A razor-thin line slices everything ahead.', dict(t='beam', d=9, range=18, width=0.8, fx='paper')),
+                              ('string_cage', 'String Cage', 9.0, 'A cage of threads binds foes near your aim.', dict(t='prison', d=8, r=4, dur=4, fx='paper')),
+                              ('puppet_strings', 'Puppet Strings', 12.0, 'Strings drag foes together.', dict(t='vortex', d=6, r=6, dur=2, fx='paper'))]),
+    'slime': dict(name='Slime Fruit', color='60e060', mc='§a', power='Slime Body', beast=False,
+                  passive='A bouncy body: falls barely hurt you and knockback slides off.',
+                  abilities=[('slime_ball', 'Slime Ball', 1.8, 'A lobbed slime ball that splats and sticks.', dict(t='bolt', d=5, shape=0, size=2, speed=1.3, grav=0.03, aoe=2.5, fx='acid', eff=[['slowness', 3, 2]])),
+                             ('sticky_pool', 'Sticky Pool', 9.0, 'A pool of slime glues enemies in place.', dict(t='zone', d=1, r=4, dur=6, fx='acid', eff=[['slowness', 2, 4]])),
+                             ('slime_slam', 'Slime Slam', 10.0, 'Bounce high and splat down on your aim.', dict(t='dive', d=12, r=5, fx='acid'))]),
+    'chain': dict(name='Chain Fruit', color='a0a0a8', mc='§7', power='Chain Arms', beast=False,
+                  passive='Iron links: your punches hit like a hammer.',
+                  abilities=[('chain_hook', 'Chain Hook', 2.0, 'A hooked chain that pierces and slows.', dict(t='bolt', d=6, shape=3, speed=2.6, pierce=1, fx='metal', eff=[['slowness', 2, 2]])),
+                             ('chain_whirl', 'Chain Whirl', 8.0, 'Chains whirl out in every direction.', dict(t='radial', d=6, n=12, shape=2, speed=1.6, fx='metal')),
+                             ('binding_chains', 'Binding Chains', 12.0, 'Chains erupt and bind every foe near your aim.', dict(t='prison', d=10, r=4, dur=4, fx='metal'))]),
+    'lion': dict(name='Lion Fruit', color='e0a040', mc='§6', power='Lion Form', beast=True,
+                 passive='Beast form: a king\'s strength and a thick mane.',
+                 abilities=[('pride_pounce', 'Pride Pounce', 4.0, 'Pounce onto your aim.', dict(t='dive', d=12, r=4, fx='beast')),
+                            ('mane_lash', 'Mane Lash', 6.0, 'Three heavy swipes.', dict(t='repeat', n=3, every=5, spec=dict(t='nova', at='front', d=7, r=3, kb=[0.7, 0.2], fx='beast'))),
+                            ('roar_of_kings', 'Roar of Kings', 18.0, 'A roar that cows every foe and fires your blood.', dict(t='nova', d=4, r=8, kb=[1.8, 0.4], fx='sound', eff=[['weakness', 6, 1], ['slowness', 4, 1]], self=[['strength', 10, 1], ['resistance', 10, 0]]))]),
+    'shark': dict(name='Shark Fruit', color='4a86c8', mc='§9', power='Shark Form', beast=True,
+                  passive='Beast form: you swim like a shark - the sea does not drain you.',
+                  abilities=[('shark_bite', 'Shark Bite', 2.0, 'A crushing bite in front of you.', dict(t='nova', at='front', d=14, r=2.6, kb=[0.4, 0.1], fx='water')),
+                             ('tidal_rush', 'Tidal Rush', 5.0, 'Rush forward on a wave.', dict(t='leap', d=9, dist=12, mode='dash', fx='water')),
+                             ('riptide', 'Riptide', 14.0, 'A riptide drags foes together and under.', dict(t='vortex', d=8, r=6, dur=2, fx='water'))]),
+    'phoenix': dict(name='Phoenix Fruit', color='ff8a30', mc='§6', power='Phoenix Form', beast=True,
+                    passive='Beast form: blue flame mends you, you glide on burning wings, fire cannot touch you.',
+                    abilities=[('blazing_feathers', 'Blazing Feathers', 2.4, 'A fan of burning feathers.', dict(t='bolt', d=4, n=5, spread=30, shape=2, speed=2.0, fire=3, fx='flame')),
+                               ('firewing_dive', 'Firewing Dive', 10.0, 'Dive onto your aim wreathed in flame.', dict(t='dive', d=14, r=5, fire=4, fx='flame')),
+                               ('rebirth_flame', 'Rebirth Flame', 20.0, 'Blue flames heal you and your allies.', dict(t='heal', heal=10, r=6, regen=6, fx='spirit'))]),
+    'spider': dict(name='Spider Fruit', color='7a4a8a', mc='§5', power='Spider Form', beast=True,
+                   passive='Beast form: you see in the dark and webs never slow you.',
+                   abilities=[('web_shot', 'Web Shot', 2.0, 'Three strands of sticky web.', dict(t='bolt', d=3, n=3, spread=12, shape=3, speed=2.0, fx='paper', eff=[['slowness', 3, 3]])),
+                              ('venom_bite', 'Venom Bite', 3.0, 'A venomous bite in front of you.', dict(t='nova', at='front', d=10, r=2.6, fx='poison', eff=[['poison', 5, 1]])),
+                              ('web_trap', 'Web Trap', 12.0, 'Webs pin down every foe near your aim.', dict(t='prison', d=4, r=4, dur=5, fx='paper'))]),
+})
+for _f in FRUITS.values():
+    _f.setdefault('beast', False)
+FRUIT_ORDER += ['spore', 'thread', 'slime', 'chain', 'lion', 'shark', 'phoenix', 'spider']
+
+# Spell kits for script-driven enemies (run by the tactical brain). src = tint/colour source.
+ENEMY_KITS = {
+    'bc:dark_disciple': dict(src='a:dark', kit=[dict(t='prison', d=4, r=2.5, dur=2, fx='dark'), dict(t='bolt', d=5, n=3, spread=14, shape=2, speed=1.8, fx='dark', eff=[['weakness', 3, 0]])]),
+    'bc:imp': dict(src='a:flame', kit=[dict(t='bolt', d=4, shape=0, speed=1.6, fire=2, fx='flame'), dict(t='dive', d=6, r=2.5, fx='flame')]),
+    'bc:sea_raider': dict(src='f:blast', kit=[dict(t='bolt', d=6, shape=0, size=1, speed=1.2, grav=0.03, aoe=2.5, fx='flame')]),
+    'bc:raider_gunner': dict(src='a:steel', kit=[dict(t='bolt', d=6, shape=3, speed=3.0, fx='gun'), dict(t='bolt', d=7, shape=0, size=1, speed=1.2, grav=0.03, aoe=2.8, fx='flame')]),
+    'bc:tidewatch_marksman': dict(src='a:steel', kit=[dict(t='bolt', d=7, shape=3, speed=3.2, fx='gun'), dict(t='bolt', d=4, n=3, spread=6, shape=3, speed=3.0, fx='gun')]),
+    'bc:hellhound': dict(src='a:magma', kit=[dict(t='leap', d=7, dist=8, mode='dash', fire=3, fx='flame'), dict(t='beam', d=5, range=6, width=1.4, fire=4, fx='flame')]),
+    'bc:mana_wraith': dict(src='a:spirit', kit=[dict(t='beam', d=5, range=14, ls=0.5, fx='spirit'), dict(t='leap', d=3, dist=8, mode='blink', fx='spirit'), dict(t='prison', d=3, r=3, dur=2, fx='spirit')]),
+}
+
+# Companions (hired Magic Knights): levels 1-20, health tiers, bond ranks
+COMPANION_XP = [0, 0, 20, 60, 120, 200, 320, 480, 700, 1000, 1400, 1900, 2500, 3200, 4000, 5000, 6200, 7600, 9200, 11000, 13000]
+COMPANION_HP = [(1, 40), (5, 60), (10, 80), (15, 100), (20, 130)]   # (from level, max health)
+BOND = [(0, 'Stranger', 'Follows and fights at your side.'),
+        (100, 'Comrade', 'Keeps formation and casts 10% harder.'),
+        (300, 'Friend', 'Mana Link: tops up your mana when it runs low (60s cooldown).'),
+        (700, 'Sworn Ally', 'Guardian: shields you when you fall below 25% health (90s cooldown).'),
+        (1500, 'Soulbound', 'Union Magic: unleash a combined spell together from the whistle (120s cooldown).')]
+PARTY_MAX = 4
+COMPANION_LINES = {
+    'join': ['My grimoire is yours, {p}.', 'Point me at the enemy, {p}.', 'Together, then. Let\'s go!'],
+    'summon': ['Here!', 'At your side.', 'Ready when you are, {p}.', 'Did you call?'],
+    'return': ['That one hurt... but I\'m back.', 'You can\'t get rid of me that easily.', 'Back on my feet!'],
+    'level': ['I can feel my magic growing!', 'My grimoire turned a new page!', 'Stronger every day!'],
+    'kill': ['Got one!', 'Down it goes.', 'Next!', 'Too easy.'],
+    'low': ['{p}, you\'re hurt - fall back!', 'Hang in there, {p}!', 'I\'ll cover you!'],
+    'boss': ['That thing is huge...', 'Stay together - this is a big one!', 'Careful, {p}!'],
+    'idle': ['Nice weather for a stroll.', 'I wonder what the Wizard King is doing.', 'My feet hurt.', 'Want to spar later?'],
+    'gift': ['For me? Thank you, {p}!', 'Delicious!', 'You\'re too kind.'],
+    'union': ['Now, {p}! Together!', 'Our magic as one!'],
+    'loot': ['I picked these up for you.', 'Don\'t forget your loot!'],
+}
+MERCHANT += [('bc:companion_whistle', 1, 80, 'Companion Whistle'), ('bc:mana_cookie', 6, 40, 'Mana Cookies x6')]
+
+# v0.2.0 units join the War Table armies
+FACTIONS['devils']['units'] += ['bc:hellhound']
+FACTIONS['raiders']['units'] += ['bc:raider_gunner']
+FACTIONS['navy']['units'] += ['bc:tidewatch_marksman']

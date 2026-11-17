@@ -336,6 +336,95 @@
             "bc:wild"
           ]
         }
+      },
+      "bc:hp_1": {
+        "add": {
+          "component_groups": [
+            "bc:hp_1"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "bc:hp_2",
+            "bc:hp_3",
+            "bc:hp_4",
+            "bc:hp_5"
+          ]
+        }
+      },
+      "bc:hp_2": {
+        "add": {
+          "component_groups": [
+            "bc:hp_2"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "bc:hp_1",
+            "bc:hp_3",
+            "bc:hp_4",
+            "bc:hp_5"
+          ]
+        }
+      },
+      "bc:hp_3": {
+        "add": {
+          "component_groups": [
+            "bc:hp_3"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "bc:hp_1",
+            "bc:hp_2",
+            "bc:hp_4",
+            "bc:hp_5"
+          ]
+        }
+      },
+      "bc:hp_4": {
+        "add": {
+          "component_groups": [
+            "bc:hp_4"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "bc:hp_1",
+            "bc:hp_2",
+            "bc:hp_3",
+            "bc:hp_5"
+          ]
+        }
+      },
+      "bc:hp_5": {
+        "add": {
+          "component_groups": [
+            "bc:hp_5"
+          ]
+        },
+        "remove": {
+          "component_groups": [
+            "bc:hp_1",
+            "bc:hp_2",
+            "bc:hp_3",
+            "bc:hp_4"
+          ]
+        }
+      },
+      "bc:passive_on": {
+        "add": {
+          "component_groups": [
+            "bc:passive"
+          ]
+        }
+      },
+      "bc:passive_off": {
+        "remove": {
+          "component_groups": [
+            "bc:passive"
+          ]
+        }
       }
     },
     "component_groups": {
@@ -584,6 +673,52 @@
           "max": 64
         },
         "minecraft:persistent": {}
+      },
+      "bc:hp_1": {
+        "minecraft:health": {
+          "value": 40,
+          "max": 40
+        }
+      },
+      "bc:hp_2": {
+        "minecraft:health": {
+          "value": 60,
+          "max": 60
+        }
+      },
+      "bc:hp_3": {
+        "minecraft:health": {
+          "value": 80,
+          "max": 80
+        }
+      },
+      "bc:hp_4": {
+        "minecraft:health": {
+          "value": 100,
+          "max": 100
+        }
+      },
+      "bc:hp_5": {
+        "minecraft:health": {
+          "value": 130,
+          "max": 130
+        }
+      },
+      "bc:passive": {
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 3,
+          "must_see": true,
+          "entity_types": [
+            {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "bc_nothing"
+              },
+              "max_dist": 1
+            }
+          ]
+        }
       }
     }
   }

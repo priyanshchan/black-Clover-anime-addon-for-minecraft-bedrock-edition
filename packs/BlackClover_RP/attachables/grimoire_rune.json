@@ -1,0 +1,36 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "bc:grimoire_rune",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/grimoire_rune"
+      },
+      "geometry": {
+        "default": "geometry.bc.grimoire_rune"
+      },
+      "animations": {
+        "third_person": "animation.bc.grimoire.third_person",
+        "first_person": "animation.bc.grimoire.first_person",
+        "page_flip": "animation.bc.grimoire.page_flip"
+      },
+      "scripts": {
+        "animate": [
+          {
+            "third_person": "!c.is_first_person"
+          },
+          {
+            "first_person": "c.is_first_person"
+          },
+          "page_flip"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.attachable"
+      ]
+    }
+  }
+}

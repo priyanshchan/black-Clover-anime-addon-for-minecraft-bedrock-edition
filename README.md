@@ -1,6 +1,6 @@
 # Black Clover: Grimoire Awakening
 
-> **Early Access – v0.1.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
+> **Early Access – v0.2.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
 **An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 24 magic attributes, draw anti-magic demon swords, wear Magic Knight squad robes and fight Dark Disciples and a full Devil boss.
 
@@ -14,7 +14,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 
 ## Features
 
-* **24 grimoires, 96 spells** – Wind, Flame, Water, Lightning, Ice, Earth, Steel, Sand, Bubble, Plant, Poison, Blood, Sound, Mist, Crystal, Bone, Magma, the rarer Light, Dark, Spatial, Mirror, Star and Time (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
+* **32 grimoires, 128 spells** – Wind, Flame, Water, Lightning, Ice, Earth, Steel, Sand, Bubble, Plant, Poison, Blood, Sound, Mist, Crystal, Bone, Magma, Cotton, Paper, Smoke, Glass, Beast, the rarer Light, Dark, Spatial, Mirror, Star, Time, Gold, Spirit and Rune (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
 * **3D held grimoires** – your grimoire floats open beside your shoulder with flipping pages, glowing rune text and a spinning magic sigil (first-person view included).
 * **3D anti-magic swords** – Demon-Slayer, Demon-Dweller and Demon-Destroyer, each with its own ability, spell-cutting and an Anti-Magic gauge that powers **Black Form**.
 * **3D spell entities with animations** – wind crescents, fireballs, a roaring flame lion, a serpentine water dragon, a spinning tornado, thunder spears, swords of light, dark crescents, a black hole, ice spears and ice prisons.
@@ -26,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v0.2.0 – companions & smarter foes:** a saved party of up to 4 knight companions (levels to 20, bonds, orders, stances, formations, gifts, robes, Union Magic) with a smart support AI; tactical enemies (gunners, marksmen, pack-hunting Hellhounds, Mana Wraiths); bosses with threat tables, three phases, telegraphs and desperation moves; the Fallen Captain; 8 more grimoires and 8 more fruits (Lion, Shark, Phoenix and Spider forms); many new animations.
 * **v0.1.0 – AI & simulation:** a tactical brain for spellcasting NPCs (spell choice by situation, aim leading, dodging, focus fire, healing allies, retreating), battle tactics, formations, morale and routs, leaders, three-army battles and knight duels with a live scoreboard, kill feed, battle reports and a cinematic camera, and a world simulation where the four factions gain and lose power, fight off screen and launch offensives.
 * **Wave 4 – a living world:** a data-driven spell engine, 12 more grimoires and 12 more Abyss Fruits (Bear, Tiger and Wyvern beast forms), four giant bosses (Archdevil, Stone Colossus, Phantom Galleon, Storm Kraken), random world events, roaming Magic Knight NPCs, factions that fight each other, a travelling merchant, and the **War Table** battle simulator.
 * **Wave 3:** Spatial, Earth, Steel and Mirror magic, all nine squad robes, Magic Knight ranks, Mana Skin and Mana Zone, ancient dungeons with traps and a Guardian, Imps, four more Abyss Fruits (including Wolf and Hawk beast forms), a bounty on your head and the Tidewatch navy, treasure maps, cutlass, flintlock and grappling harpoon.
@@ -50,11 +51,12 @@ Every detail lives in **[docs/](docs/README.md)** (generated from the game data,
 | Page | |
 |---|---|
 | [Getting started](docs/getting-started.md) | install, your first hour, where to go next |
-| [Magic](docs/magic.md) | all 24 attributes with altar odds, all 96 spells with numbers, anti-magic, techniques |
-| [Abyss Fruits](docs/fruits.md) | all 22 fruits and 66 abilities with numbers, the rules, Will |
-| [AI & simulation](docs/ai-and-simulation.md) | how NPCs think, battles (tactics, morale, leaders, bets, camera), the world simulation, knights and orders |
+| [Magic](docs/magic.md) | all 32 attributes with altar odds, all 128 spells with numbers, anti-magic, techniques |
+| [Abyss Fruits](docs/fruits.md) | all 30 fruits and 90 abilities with numbers, the rules, Will |
+| [Companions](docs/companions.md) | your saved party: recruiting, the whistle, orders, stances, formations, bond and its perks, robes, levels to 20 |
+| [AI & simulation](docs/ai-and-simulation.md) | how NPCs, enemies and bosses think, battles (tactics, morale, leaders, bets, camera), the world simulation |
 | [World events](docs/world-events.md) | every event, its odds, conditions and rewards |
-| [Mobs & bosses](docs/mobs-and-bosses.md) | every creature's health, attack, spawning and drops; all 7 bosses; factions; structures |
+| [Mobs & bosses](docs/mobs-and-bosses.md) | every creature's health, attack, spawning and drops; all 8 bosses; factions; structures |
 | [Items & recipes](docs/items-and-recipes.md) | every crafting recipe, every item id, both shops |
 | [Progression](docs/progression.md) | magic levels and mana, ranks and stars, robes, bounties |
 | [Commands](docs/commands.md) | every `/give`, `/summon` and `/scriptevent` |
@@ -72,7 +74,7 @@ Every detail lives in **[docs/](docs/README.md)** (generated from the game data,
 
 1. On your first spawn you receive a **Grimoire Altar** and the **Magic Knight's Handbook**.
 2. Place the altar and **interact** with it. After a short ceremony a grimoire chooses you
-   (24 attributes; [odds](docs/magic.md#attributes-and-altar-odds)).
+   (32 attributes; [odds](docs/magic.md#attributes-and-altar-odds)).
 3. Hold your grimoire:
    * **Use** (right-click / tap & hold) – cast the selected spell.
    * **Sneak + Use** – flip to the next unlocked spell (or pick one in the Handbook).
@@ -335,6 +337,21 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 /summon bc:dungeon_golem
 /summon bc:tidewatch_commodore
 ```
+
+---
+
+## v0.2.0: companions, smarter enemies & bosses
+
+![v0.2.0](docs/images/v020.png)
+
+![Beast forms](docs/images/beasts020.png)
+
+![New grimoires, fruits and items](docs/images/items020.png)
+
+* **Companions** - recruited knights become a saved party of up to 4 with levels to 20, bonds (Mana Link, Guardian, Union Magic), gifts, robes, stances, formations and a **Companion Whistle** (sneak + use at a foe: everyone attacks it). They attack what you attack, protect you, heal you first, keep out of your line of fire and come back 60 s after they fall. → [Companions](docs/companions.md)
+* **Smarter enemies** - Disciples, Imps, Raiders, the new Gunners and Marksmen, pack-hunting Hellhounds and mana-draining Wraiths use the tactical brain; hurt one and its kind come running. → [Enemy brains](docs/ai-and-simulation.md#enemy-brains)
+* **Smarter bosses** - threat tables, three phases with desperation moves, telegraphed blows, blinking, submerging and ramming, an enrage timer, and the new **Fallen Captain**. → [Boss brains](docs/ai-and-simulation.md#boss-brains-bossesjs)
+* **More content** - Cotton, Paper, Smoke, Glass, Gold, Beast, Spirit and Rune magic; Spore, Thread, Slime, Chain, Lion, Shark, Phoenix and Spider fruits; four new events. → [Changelog](CHANGELOG.md)
 
 ---
 
