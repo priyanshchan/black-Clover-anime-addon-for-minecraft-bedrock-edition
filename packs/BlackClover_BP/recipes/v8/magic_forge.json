@@ -1,0 +1,39 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:magic_forge"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "MAM",
+      "IBI",
+      "SSS"
+    ],
+    "key": {
+      "M": {
+        "item": "bc:mana_crystal"
+      },
+      "A": {
+        "item": "minecraft:anvil"
+      },
+      "I": {
+        "item": "minecraft:iron_block"
+      },
+      "B": {
+        "item": "minecraft:blast_furnace"
+      },
+      "S": {
+        "item": "minecraft:stone_bricks"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:magic_forge"
+    }
+  }
+}

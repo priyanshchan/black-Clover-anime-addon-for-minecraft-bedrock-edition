@@ -1,0 +1,42 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:bandit_thief",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/bandit_thief"
+      },
+      "geometry": {
+        "default": "geometry.bc.bandit_thief"
+      },
+      "animations": {
+        "idle": "animation.bc.bandit.idle",
+        "walk": "animation.bc.bandit.walk",
+        "look_at_target": "animation.bc.bandit.look_at_target",
+        "attack": "animation.bc.bandit.attack",
+        "cast": "animation.bc.bandit.cast",
+        "shoot": "animation.bc.bandit.shoot",
+        "taunt": "animation.bc.bandit.taunt"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#24242c",
+        "overlay_color": "#d39a2c"
+      }
+    }
+  }
+}

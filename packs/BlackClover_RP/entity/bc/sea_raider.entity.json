@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:sea_raider",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/sea_raider"
+      },
+      "geometry": {
+        "default": "geometry.bc.sea_raider"
+      },
+      "animations": {
+        "idle": "animation.bc.sea_raider.idle",
+        "walk": "animation.bc.sea_raider.walk",
+        "look": "animation.bc.sea_raider.look_at_target"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#1d2f5a",
+        "overlay_color": "#b32a2c"
+      }
+    }
+  }
+}

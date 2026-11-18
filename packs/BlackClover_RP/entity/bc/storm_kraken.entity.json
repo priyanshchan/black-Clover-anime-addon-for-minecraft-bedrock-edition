@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:storm_kraken",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/storm_kraken"
+      },
+      "geometry": {
+        "default": "geometry.bc.storm_kraken"
+      },
+      "animations": {
+        "swim": "animation.bc.storm_kraken.swim",
+        "look": "animation.bc.storm_kraken.look_at_target",
+        "slam": "animation.bc.storm_kraken.slam",
+        "submerge": "animation.bc.storm_kraken.submerge",
+        "emerge": "animation.bc.storm_kraken.emerge"
+      },
+      "scripts": {
+        "animate": [
+          "swim",
+          "look"
+        ],
+        "scale": "2.2"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:leviathan_bubbles"
+      },
+      "spawn_egg": {
+        "base_color": "#141434",
+        "overlay_color": "#9ae8ff"
+      }
+    }
+  }
+}

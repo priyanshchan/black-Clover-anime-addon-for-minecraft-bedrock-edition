@@ -1,0 +1,30 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.robe.wear": {
+      "loop": true,
+      "bones": {
+        "robe_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "robe_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "robe_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "robe_cape": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0",
+          "rotation": [
+            "math.clamp(q.modified_move_speed * 70.0, 0.0, 55.0) + math.sin(q.life_time * 110.0) * 2.5 + (q.is_sneaking ? 22.0 : 4.0)",
+            0,
+            0
+          ]
+        },
+        "robe_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.hellhound.idle": {
+      "loop": true,
+      "bones": {
+        "body": {
+          "scale": [
+            1,
+            "1.0 + math.sin(q.life_time * 200.0) * 0.02",
+            1
+          ]
+        },
+        "tail": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 250.0) * 15.0",
+            0
+          ]
+        },
+        "jaw": {
+          "rotation": [
+            "math.max(0.0, math.sin(q.life_time * 120.0)) * 10.0",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.hellhound.walk": {
+      "loop": true,
+      "bones": {
+        "legFR": {
+          "rotation": [
+            "math.cos(q.modified_distance_moved * 40.0) * 40.0 * q.modified_move_speed",
+            0,
+            0
+          ]
+        },
+        "legBL": {
+          "rotation": [
+            "math.cos(q.modified_distance_moved * 40.0) * 40.0 * q.modified_move_speed",
+            0,
+            0
+          ]
+        },
+        "legFL": {
+          "rotation": [
+            "-(math.cos(q.modified_distance_moved * 40.0) * 40.0 * q.modified_move_speed)",
+            0,
+            0
+          ]
+        },
+        "legBR": {
+          "rotation": [
+            "-(math.cos(q.modified_distance_moved * 40.0) * 40.0 * q.modified_move_speed)",
+            0,
+            0
+          ]
+        },
+        "body": {
+          "rotation": [
+            "math.sin(q.modified_distance_moved * 80.0) * 3.0 * q.modified_move_speed",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.hellhound.look_at_target": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": [
+            "q.target_x_rotation * 0.7",
+            "q.target_y_rotation * 0.7",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.hellhound.bite": {
+      "animation_length": 0.45,
+      "bones": {
+        "neck": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.15": [
+              -25,
+              0,
+              0
+            ],
+            "0.25": [
+              20,
+              0,
+              0
+            ],
+            "0.45": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "jaw": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.15": [
+              35,
+              0,
+              0
+            ],
+            "0.25": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "body": {
+          "position": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.2": [
+              0,
+              0,
+              -2.5
+            ],
+            "0.45": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.hellhound.howl": {
+      "animation_length": 1.4,
+      "bones": {
+        "neck": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -55,
+              0,
+              0
+            ],
+            "1.1": [
+              -55,
+              0,
+              0
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "jaw": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              25,
+              0,
+              0
+            ],
+            "1.1": [
+              25,
+              0,
+              0
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

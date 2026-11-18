@@ -1,0 +1,303 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "bc:dark_disciple",
+      "is_spawnable": true,
+      "is_summonable": true
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "bc_magic",
+          "bc_disciple",
+          "monster",
+          "mob"
+        ]
+      },
+      "minecraft:health": {
+        "value": 40,
+        "max": 40
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 1.95
+      },
+      "minecraft:movement": {
+        "value": 0.27
+      },
+      "minecraft:physics": {},
+      "minecraft:pushable": {
+        "is_pushable": true,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:breathable": {
+        "total_supply": 15,
+        "suffocate_time": 0
+      },
+      "minecraft:nameable": {},
+      "minecraft:loot": {
+        "table": "loot_tables/entities/bc_dark_disciple.json"
+      },
+      "minecraft:experience_reward": {
+        "on_death": "q.last_hit_by_player ? 12 : 0"
+      },
+      "minecraft:follow_range": {
+        "value": 40,
+        "max": 40
+      },
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:hurt_on_condition": {
+        "damage_conditions": [
+          {
+            "filters": {
+              "test": "in_lava",
+              "subject": "self"
+            },
+            "cause": "lava",
+            "damage_per_tick": 4
+          }
+        ]
+      },
+      "minecraft:navigation.walk": {
+        "can_path_over_water": true,
+        "avoid_water": true,
+        "can_open_doors": true,
+        "avoid_damage_blocks": true
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:can_climb": {},
+      "minecraft:attack": {
+        "damage": 4
+      },
+      "minecraft:shooter": {
+        "def": "bc:dark_bolt"
+      },
+      "minecraft:despawn": {
+        "despawn_from_distance": {}
+      },
+      "minecraft:behavior.float": {
+        "priority": 0
+      },
+      "minecraft:behavior.hurt_by_target": {
+        "priority": 1,
+        "alert_same_type": true
+      },
+      "minecraft:behavior.ranged_attack": {
+        "priority": 2,
+        "attack_interval_min": 2.2,
+        "attack_interval_max": 3.6,
+        "attack_radius": 16.0,
+        "speed_multiplier": 1.0
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 2,
+        "must_see": true,
+        "reselect_targets": true,
+        "entity_types": [
+          {
+            "filters": {
+              "any_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "player"
+                },
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "irongolem"
+                },
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "villager"
+                },
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "bc_knight"
+                },
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "bc_navy"
+                }
+              ]
+            },
+            "max_dist": 24
+          }
+        ]
+      },
+      "minecraft:behavior.random_stroll": {
+        "priority": 6,
+        "speed_multiplier": 0.8
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 7,
+        "look_distance": 10,
+        "probability": 0.03
+      },
+      "minecraft:behavior.random_look_around": {
+        "priority": 8
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "fall",
+            "damage_multiplier": 0.5
+          }
+        ]
+      }
+    },
+    "events": {
+      "bc:team_a": {
+        "add": {
+          "component_groups": [
+            "bc:team_a"
+          ]
+        }
+      },
+      "bc:team_b": {
+        "add": {
+          "component_groups": [
+            "bc:team_b"
+          ]
+        }
+      },
+      "bc:team_c": {
+        "add": {
+          "component_groups": [
+            "bc:team_c"
+          ]
+        }
+      }
+    },
+    "component_groups": {
+      "bc:team_a": {
+        "minecraft:type_family": {
+          "family": [
+            "bc_magic",
+            "bc_disciple",
+            "monster",
+            "mob",
+            "bc_team_a"
+          ]
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "must_see": false,
+          "reselect_targets": true,
+          "scan_interval": 5,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
+              },
+              "max_dist": 48
+            }
+          ]
+        },
+        "minecraft:follow_range": {
+          "value": 64,
+          "max": 64
+        },
+        "minecraft:persistent": {}
+      },
+      "bc:team_b": {
+        "minecraft:type_family": {
+          "family": [
+            "bc_magic",
+            "bc_disciple",
+            "monster",
+            "mob",
+            "bc_team_b"
+          ]
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "must_see": false,
+          "reselect_targets": true,
+          "scan_interval": 5,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
+              },
+              "max_dist": 48
+            }
+          ]
+        },
+        "minecraft:follow_range": {
+          "value": 64,
+          "max": 64
+        },
+        "minecraft:persistent": {}
+      },
+      "bc:team_c": {
+        "minecraft:type_family": {
+          "family": [
+            "bc_magic",
+            "bc_disciple",
+            "monster",
+            "mob",
+            "bc_team_c"
+          ]
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 2,
+          "must_see": false,
+          "reselect_targets": true,
+          "scan_interval": 5,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  }
+                ]
+              },
+              "max_dist": 48
+            }
+          ]
+        },
+        "minecraft:follow_range": {
+          "value": 64,
+          "max": 64
+        },
+        "minecraft:persistent": {}
+      }
+    }
+  }
+}

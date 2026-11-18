@@ -1,0 +1,35 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:mana_wraith",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/mana_wraith"
+      },
+      "geometry": {
+        "default": "geometry.bc.mana_wraith"
+      },
+      "animations": {
+        "float": "animation.bc.mana_wraith.float",
+        "look_at_target": "animation.bc.mana_wraith.look_at_target",
+        "cast": "animation.bc.mana_wraith.cast"
+      },
+      "scripts": {
+        "animate": [
+          "float",
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#0c1c1a",
+        "overlay_color": "#90ffe8"
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:water_orb",
+      "materials": {
+        "default": "entity_alphablend"
+      },
+      "textures": {
+        "default": "textures/entity/bc/water_orb"
+      },
+      "geometry": {
+        "default": "geometry.bc.water_orb"
+      },
+      "animations": {
+        "fly": "animation.bc.water_orb.fly",
+        "trail": "animation.bc.spell.trail"
+      },
+      "particle_effects": {
+        "trail": "bc:trail_water"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ]
+    }
+  }
+}

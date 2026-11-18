@@ -1,0 +1,32 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shapeless": {
+    "description": {
+      "identifier": "bc:rune_vitality"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "ingredients": [
+      {
+        "item": "bc:rune_shard"
+      },
+      {
+        "item": "bc:rune_shard"
+      },
+      {
+        "item": "bc:mana_crystal"
+      },
+      {
+        "item": "minecraft:glistering_melon_slice"
+      }
+    ],
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:rune_vitality",
+      "count": 1
+    }
+  }
+}

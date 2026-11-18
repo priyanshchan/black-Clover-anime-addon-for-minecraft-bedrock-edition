@@ -1,0 +1,40 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:war_table"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "MBF",
+      "PPP",
+      "S S"
+    ],
+    "key": {
+      "M": {
+        "item": "minecraft:map"
+      },
+      "B": {
+        "item": "minecraft:iron_sword"
+      },
+      "F": {
+        "item": "minecraft:feather"
+      },
+      "P": {
+        "item": "minecraft:oak_planks"
+      },
+      "S": {
+        "item": "minecraft:stick"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:war_table",
+      "count": 1
+    }
+  }
+}

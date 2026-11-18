@@ -1,0 +1,42 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:construct",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "v0": "textures/entity/bc/construct/sand",
+        "v1": "textures/entity/bc/construct/plant",
+        "v2": "textures/entity/bc/construct/bone",
+        "v3": "textures/entity/bc/construct/crystal"
+      },
+      "geometry": {
+        "default": "geometry.bc.construct"
+      },
+      "animations": {
+        "idle": "animation.bc.construct.idle",
+        "walk": "animation.bc.construct.walk",
+        "look": "animation.bc.construct.look_at_target",
+        "slam": "animation.bc.construct.slam"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.construct"
+      ],
+      "spawn_egg": {
+        "base_color": "#967a46",
+        "overlay_color": "#5ad8c0"
+      }
+    }
+  }
+}

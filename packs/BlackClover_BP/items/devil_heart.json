@@ -1,0 +1,27 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:devil_heart",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_devil_heart"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§4Devil Heart"
+      },
+      "minecraft:max_stack_size": {
+        "value": 16
+      },
+      "minecraft:glint": {
+        "value": true
+      }
+    }
+  }
+}

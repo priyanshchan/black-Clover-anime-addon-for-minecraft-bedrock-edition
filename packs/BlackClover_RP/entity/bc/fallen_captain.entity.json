@@ -1,0 +1,49 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:fallen_captain",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/fallen_captain"
+      },
+      "geometry": {
+        "default": "geometry.bc.fallen_captain"
+      },
+      "animations": {
+        "idle": "animation.bc.fallen_captain.idle",
+        "walk": "animation.bc.fallen_captain.walk",
+        "look_at_target": "animation.bc.fallen_captain.look_at_target",
+        "attack": "animation.bc.fallen_captain.attack",
+        "slash": "animation.bc.fallen_captain.slash",
+        "cast": "animation.bc.fallen_captain.cast",
+        "roar": "animation.bc.fallen_captain.roar",
+        "parry": "animation.bc.fallen_captain.parry",
+        "aura": "animation.bc.mob.aura"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target",
+          "aura"
+        ],
+        "scale": "1.15"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:devil_aura"
+      },
+      "spawn_egg": {
+        "base_color": "#16161c",
+        "overlay_color": "#d0202a"
+      }
+    }
+  }
+}

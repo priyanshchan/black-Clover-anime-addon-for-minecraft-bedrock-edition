@@ -1,0 +1,402 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.bone_dragon.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "position": [
+            0,
+            "4.0 + math.sin(q.life_time * 80.0) * 2.0",
+            0
+          ]
+        },
+        "rightWing": {
+          "rotation": [
+            0,
+            "-10.0 + math.sin(q.life_time * 160.0) * 15.0",
+            "10.0 + math.sin(q.life_time * 160.0) * 25.0"
+          ]
+        },
+        "leftWing": {
+          "rotation": [
+            0,
+            "10.0 - math.sin(q.life_time * 160.0) * 15.0",
+            "-10.0 - math.sin(q.life_time * 160.0) * 25.0"
+          ]
+        },
+        "rightWingTip": {
+          "rotation": [
+            0,
+            0,
+            "math.sin(q.life_time * 160.0) * 20.0"
+          ]
+        },
+        "leftWingTip": {
+          "rotation": [
+            0,
+            0,
+            "-math.sin(q.life_time * 160.0) * 20.0"
+          ]
+        },
+        "neck0": {
+          "rotation": [
+            "math.sin(q.life_time * 90.0) * 4.0",
+            "math.sin(q.life_time * 60.0) * 6.0",
+            0
+          ]
+        },
+        "jaw": {
+          "rotation": [
+            "math.max(0.0, math.sin(q.life_time * 50.0)) * 8.0",
+            0,
+            0
+          ]
+        },
+        "rightLeg": {
+          "rotation": [
+            "20.0",
+            0,
+            0
+          ]
+        },
+        "leftLeg": {
+          "rotation": [
+            "20.0",
+            0,
+            0
+          ]
+        },
+        "tail0": {
+          "rotation": [
+            "math.sin(q.life_time * 100.0 - 0) * 6.0",
+            "math.sin(q.life_time * 80.0 - 0) * 12.0",
+            0
+          ]
+        },
+        "tail1": {
+          "rotation": [
+            "math.sin(q.life_time * 100.0 - 40) * 6.0",
+            "math.sin(q.life_time * 80.0 - 50) * 12.0",
+            0
+          ]
+        },
+        "tail2": {
+          "rotation": [
+            "math.sin(q.life_time * 100.0 - 80) * 6.0",
+            "math.sin(q.life_time * 80.0 - 100) * 12.0",
+            0
+          ]
+        },
+        "tail3": {
+          "rotation": [
+            "math.sin(q.life_time * 100.0 - 120) * 6.0",
+            "math.sin(q.life_time * 80.0 - 150) * 12.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.bone_dragon.look_at_target": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": [
+            "q.target_x_rotation * 0.6",
+            "q.target_y_rotation * 0.6",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.bone_dragon.breath": {
+      "animation_length": 1.4,
+      "bones": {
+        "neck0": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -20,
+              0,
+              0
+            ],
+            "0.5": [
+              15,
+              0,
+              0
+            ],
+            "1.2": [
+              15,
+              0,
+              0
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "jaw": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              40,
+              0,
+              0
+            ],
+            "1.2": [
+              40,
+              0,
+              0
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.bone_dragon.roar": {
+      "animation_length": 1.6,
+      "bones": {
+        "neck0": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              -35,
+              0,
+              0
+            ],
+            "1.2": [
+              -35,
+              0,
+              0
+            ],
+            "1.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "jaw": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              45,
+              0,
+              0
+            ],
+            "1.2": [
+              45,
+              0,
+              0
+            ],
+            "1.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "rightWing": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              0,
+              -40,
+              50
+            ],
+            "1.2": [
+              0,
+              -40,
+              50
+            ],
+            "1.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftWing": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              0,
+              40,
+              -50
+            ],
+            "1.2": [
+              0,
+              40,
+              -50
+            ],
+            "1.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.bone_dragon.dive": {
+      "animation_length": 1.2,
+      "bones": {
+        "body": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              25,
+              0,
+              0
+            ],
+            "0.9": [
+              25,
+              0,
+              0
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "rightWing": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              0,
+              50,
+              10
+            ],
+            "0.9": [
+              0,
+              50,
+              10
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftWing": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              0,
+              -50,
+              -10
+            ],
+            "0.9": [
+              0,
+              -50,
+              -10
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.bone_dragon.tail": {
+      "animation_length": 0.8,
+      "bones": {
+        "tail0": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              0,
+              60,
+              0
+            ],
+            "0.55": [
+              0,
+              -60,
+              0
+            ],
+            "0.8": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "tail1": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              0,
+              30,
+              0
+            ],
+            "0.55": [
+              0,
+              -30,
+              0
+            ],
+            "0.8": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:frost_witch",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/frost_witch"
+      },
+      "geometry": {
+        "default": "geometry.bc.frost_witch"
+      },
+      "animations": {
+        "float": "animation.bc.frost_witch.float",
+        "look_at_target": "animation.bc.frost_witch.look_at_target",
+        "cast": "animation.bc.frost_witch.cast",
+        "sweep": "animation.bc.frost_witch.sweep",
+        "roar": "animation.bc.frost_witch.roar",
+        "aura": "animation.bc.mob.aura"
+      },
+      "scripts": {
+        "animate": [
+          "float",
+          "look_at_target",
+          "aura"
+        ],
+        "scale": "1.25"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:disciple_aura"
+      },
+      "spawn_egg": {
+        "base_color": "#122a46",
+        "overlay_color": "#c6f0fb"
+      }
+    }
+  }
+}

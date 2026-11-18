@@ -1,0 +1,39 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:puppet",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/puppet"
+      },
+      "geometry": {
+        "default": "geometry.bc.puppet"
+      },
+      "animations": {
+        "idle": "animation.bc.puppet.idle",
+        "walk": "animation.bc.puppet.walk",
+        "attack": "animation.bc.puppet.attack"
+      },
+      "scripts": {
+        "animate": [
+          {
+            "idle": "q.modified_move_speed < 0.02"
+          },
+          {
+            "walk": "q.modified_move_speed >= 0.02"
+          }
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#86583a",
+        "overlay_color": "#741a2a"
+      }
+    }
+  }
+}

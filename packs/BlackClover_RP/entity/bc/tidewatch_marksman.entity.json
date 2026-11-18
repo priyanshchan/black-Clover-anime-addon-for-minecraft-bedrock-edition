@@ -1,0 +1,42 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:tidewatch_marksman",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/tidewatch_marksman"
+      },
+      "geometry": {
+        "default": "geometry.bc.tidewatch_marksman"
+      },
+      "animations": {
+        "idle": "animation.bc.tidewatch_marksman.idle",
+        "walk": "animation.bc.tidewatch_marksman.walk",
+        "look_at_target": "animation.bc.tidewatch_marksman.look_at_target",
+        "attack": "animation.bc.tidewatch_marksman.attack",
+        "aim": "animation.bc.tidewatch_marksman.aim",
+        "shoot": "animation.bc.tidewatch_marksman.shoot",
+        "throw": "animation.bc.tidewatch_marksman.throw"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#23345f",
+        "overlay_color": "#eceff4"
+      }
+    }
+  }
+}

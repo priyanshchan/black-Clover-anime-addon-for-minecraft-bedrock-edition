@@ -1,0 +1,45 @@
+{
+  "format_version": "1.10.0",
+  "render_controllers": {
+    "controller.render.bc.broom": {
+      "arrays": {
+        "textures": {
+          "Array.tiers": [
+            "Texture.t0",
+            "Texture.t1"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.tiers[q.property('bc:tier')]"
+      ]
+    },
+    "controller.render.bc.rogue_mage": {
+      "arrays": {
+        "textures": {
+          "Array.variants": [
+            "Texture.v0",
+            "Texture.v1",
+            "Texture.v2",
+            "Texture.v3"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.variants[q.property('bc:variant')]"
+      ]
+    }
+  }
+}

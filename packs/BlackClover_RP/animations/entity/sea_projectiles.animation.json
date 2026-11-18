@@ -1,0 +1,124 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.boulder.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            "q.life_time * 400.0",
+            "q.life_time * 250.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.meteor.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            "q.life_time * 400.0",
+            "q.life_time * 250.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.cannonball.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            "q.life_time * 400.0",
+            "q.life_time * 250.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.metal_blade.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            0,
+            0,
+            "q.life_time * 900.0"
+          ]
+        }
+      }
+    },
+    "animation.bc.steel_lance.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            "q.life_time * 600.0"
+          ]
+        }
+      }
+    },
+    "animation.bc.harpoon_bolt.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.lead_shot.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "rotation": [
+            "-q.target_x_rotation",
+            "-q.target_y_rotation",
+            0
+          ]
+        },
+        "spin": {
+          "rotation": [
+            "q.life_time * 400.0",
+            "q.life_time * 250.0",
+            0
+          ]
+        }
+      }
+    }
+  }
+}

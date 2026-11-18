@@ -1,0 +1,501 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.armor.manasteel_head": {
+      "loop": true,
+      "bones": {
+        "ar_head": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.manasteel_chest": {
+      "loop": true,
+      "bones": {
+        "ar_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.manasteel_legs": {
+      "loop": true,
+      "bones": {
+        "ar_belt": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.manasteel_feet": {
+      "loop": true,
+      "bones": {
+        "ar_rfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.royal_head": {
+      "loop": true,
+      "bones": {
+        "ar_head": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.royal_chest": {
+      "loop": true,
+      "bones": {
+        "ar_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_cape": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0",
+          "rotation": [
+            "math.clamp(q.modified_move_speed * 70.0, 0.0, 55.0) + math.sin(q.life_time * 110.0) * 2.5 + (q.is_sneaking ? 22.0 : 4.0)",
+            0,
+            0
+          ]
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.royal_legs": {
+      "loop": true,
+      "bones": {
+        "ar_belt": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.royal_feet": {
+      "loop": true,
+      "bones": {
+        "ar_rfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.devilhide_head": {
+      "loop": true,
+      "bones": {
+        "ar_head": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.devilhide_chest": {
+      "loop": true,
+      "bones": {
+        "ar_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.devilhide_legs": {
+      "loop": true,
+      "bones": {
+        "ar_belt": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.devilhide_feet": {
+      "loop": true,
+      "bones": {
+        "ar_rfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.abyssal_head": {
+      "loop": true,
+      "bones": {
+        "ar_head": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.abyssal_chest": {
+      "loop": true,
+      "bones": {
+        "ar_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.abyssal_legs": {
+      "loop": true,
+      "bones": {
+        "ar_belt": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.abyssal_feet": {
+      "loop": true,
+      "bones": {
+        "ar_rfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.shadow_head": {
+      "loop": true,
+      "bones": {
+        "ar_head": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.shadow_chest": {
+      "loop": true,
+      "bones": {
+        "ar_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_cape": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0",
+          "rotation": [
+            "math.clamp(q.modified_move_speed * 70.0, 0.0, 55.0) + math.sin(q.life_time * 110.0) * 2.5 + (q.is_sneaking ? 22.0 : 4.0)",
+            0,
+            0
+          ]
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.shadow_legs": {
+      "loop": true,
+      "bones": {
+        "ar_belt": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.shadow_feet": {
+      "loop": true,
+      "bones": {
+        "ar_rfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.chitin_head": {
+      "loop": true,
+      "bones": {
+        "ar_head": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.chitin_chest": {
+      "loop": true,
+      "bones": {
+        "ar_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.chitin_legs": {
+      "loop": true,
+      "bones": {
+        "ar_belt": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.chitin_feet": {
+      "loop": true,
+      "bones": {
+        "ar_rfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.runeplate_head": {
+      "loop": true,
+      "bones": {
+        "ar_head": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.runeplate_chest": {
+      "loop": true,
+      "bones": {
+        "ar_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.runeplate_legs": {
+      "loop": true,
+      "bones": {
+        "ar_belt": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.runeplate_feet": {
+      "loop": true,
+      "bones": {
+        "ar_rfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.archmage_head": {
+      "loop": true,
+      "bones": {
+        "ar_head": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.archmage_chest": {
+      "loop": true,
+      "bones": {
+        "ar_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_cape": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0",
+          "rotation": [
+            "math.clamp(q.modified_move_speed * 50.0, 0.0, 35.0) + math.sin(q.life_time * 90.0) * 2.0",
+            0,
+            0
+          ]
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.archmage_legs": {
+      "loop": true,
+      "bones": {
+        "ar_belt": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.archmage_feet": {
+      "loop": true,
+      "bones": {
+        "ar_rfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    }
+  }
+}

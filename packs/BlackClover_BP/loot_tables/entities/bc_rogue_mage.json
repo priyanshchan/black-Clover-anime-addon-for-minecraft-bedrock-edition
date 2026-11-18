@@ -1,0 +1,99 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "bc:ancient_page",
+          "weight": 100,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "empty",
+          "weight": 150
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "bc:mana_crystal",
+          "weight": 100,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "bc:doubloon",
+          "weight": 100,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 3,
+                "max": 8
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "item",
+          "name": "bc:amulet_mana",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "bc:amulet_swift",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "bc:amulet_power",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "bc:amulet_guard",
+          "weight": 10
+        },
+        {
+          "type": "item",
+          "name": "bc:amulet_vigor",
+          "weight": 10
+        },
+        {
+          "type": "empty",
+          "weight": 1616
+        }
+      ]
+    }
+  ]
+}

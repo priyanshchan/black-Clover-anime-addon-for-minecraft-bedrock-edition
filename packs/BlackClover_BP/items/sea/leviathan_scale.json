@@ -1,0 +1,28 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:leviathan_scale",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_leviathan_scale"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§3Leviathan Scale"
+      },
+      "minecraft:max_stack_size": {
+        "value": 16
+      },
+      "minecraft:use_modifiers": {
+        "use_duration": 0.6,
+        "movement_modifier": 1.0
+      }
+    }
+  }
+}

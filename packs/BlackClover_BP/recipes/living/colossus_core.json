@@ -1,0 +1,34 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:colossus_core"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "SPS",
+      "PDP",
+      "SPS"
+    ],
+    "key": {
+      "S": {
+        "item": "minecraft:mossy_cobblestone"
+      },
+      "P": {
+        "item": "bc:ancient_page"
+      },
+      "D": {
+        "item": "minecraft:diamond_block"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:colossus_core",
+      "count": 1
+    }
+  }
+}

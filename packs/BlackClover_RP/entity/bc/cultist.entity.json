@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:cultist",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/cultist"
+      },
+      "geometry": {
+        "default": "geometry.bc.cultist"
+      },
+      "animations": {
+        "idle": "animation.bc.cultist.idle",
+        "walk": "animation.bc.cultist.walk",
+        "look_at_target": "animation.bc.cultist.look_at_target",
+        "attack": "animation.bc.cultist.attack",
+        "cast": "animation.bc.cultist.cast",
+        "ritual": "animation.bc.cultist.ritual"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#30080e",
+        "overlay_color": "#d8cfb8"
+      }
+    }
+  }
+}

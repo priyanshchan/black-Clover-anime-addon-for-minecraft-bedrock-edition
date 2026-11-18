@@ -1,0 +1,285 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.grimoire_devourer.float": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "position": [
+            0,
+            "math.sin(q.life_time * 80.0) * 2.0",
+            0
+          ]
+        },
+        "upper": {
+          "rotation": [
+            "-8.0 - math.abs(math.sin(q.life_time * 60.0)) * 6.0",
+            0,
+            0
+          ]
+        },
+        "lower": {
+          "rotation": [
+            "6.0 + math.abs(math.sin(q.life_time * 60.0)) * 4.0",
+            0,
+            0
+          ]
+        },
+        "pages": {
+          "rotation": [
+            0,
+            "q.life_time * 40.0",
+            0
+          ]
+        },
+        "armL": {
+          "rotation": [
+            "math.sin(q.life_time * 100.0) * 10.0",
+            0,
+            0
+          ]
+        },
+        "armR": {
+          "rotation": [
+            "-math.sin(q.life_time * 100.0) * 10.0",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.grimoire_devourer.look_at_target": {
+      "loop": true,
+      "bones": {
+        "book": {
+          "rotation": [
+            0,
+            "q.target_y_rotation * 0.3",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.grimoire_devourer.chomp": {
+      "animation_length": 0.8,
+      "bones": {
+        "upper": {
+          "rotation": {
+            "0.0": [
+              -8,
+              0,
+              0
+            ],
+            "0.25": [
+              -55,
+              0,
+              0
+            ],
+            "0.4": [
+              2,
+              0,
+              0
+            ],
+            "0.8": [
+              -8,
+              0,
+              0
+            ]
+          }
+        },
+        "lower": {
+          "rotation": {
+            "0.0": [
+              6,
+              0,
+              0
+            ],
+            "0.25": [
+              35,
+              0,
+              0
+            ],
+            "0.4": [
+              -2,
+              0,
+              0
+            ],
+            "0.8": [
+              6,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.grimoire_devourer.cast": {
+      "animation_length": 1.0,
+      "bones": {
+        "upper": {
+          "rotation": {
+            "0.0": [
+              -8,
+              0,
+              0
+            ],
+            "0.3": [
+              -80,
+              0,
+              0
+            ],
+            "0.8": [
+              -80,
+              0,
+              0
+            ],
+            "1.0": [
+              -8,
+              0,
+              0
+            ]
+          }
+        },
+        "armL": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -60,
+              0,
+              -30
+            ],
+            "1.0": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "armR": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -60,
+              0,
+              30
+            ],
+            "1.0": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.grimoire_devourer.roar": {
+      "animation_length": 1.4,
+      "bones": {
+        "upper": {
+          "rotation": {
+            "0.0": [
+              -8,
+              0,
+              0
+            ],
+            "0.3": [
+              -70,
+              0,
+              0
+            ],
+            "1.1": [
+              -70,
+              0,
+              0
+            ],
+            "1.4": [
+              -8,
+              0,
+              0
+            ]
+          }
+        },
+        "lower": {
+          "rotation": {
+            "0.0": [
+              6,
+              0,
+              0
+            ],
+            "0.3": [
+              40,
+              0,
+              0
+            ],
+            "1.1": [
+              40,
+              0,
+              0
+            ],
+            "1.4": [
+              6,
+              0,
+              0
+            ]
+          }
+        },
+        "armL": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -30,
+              0,
+              -70
+            ],
+            "1.1": [
+              -30,
+              0,
+              -70
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "armR": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -30,
+              0,
+              70
+            ],
+            "1.1": [
+              -30,
+              0,
+              70
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

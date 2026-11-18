@@ -1,0 +1,48 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:archdevil",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/archdevil"
+      },
+      "geometry": {
+        "default": "geometry.bc.archdevil"
+      },
+      "animations": {
+        "hover": "animation.bc.devil.hover",
+        "wings": "animation.bc.devil.wings",
+        "look": "animation.bc.devil.look_at_target",
+        "halo": "animation.bc.archdevil.halo",
+        "aura": "animation.bc.mob.aura",
+        "attack": "animation.bc.devil.attack",
+        "cast": "animation.bc.devil.cast",
+        "roar": "animation.bc.archdevil.roar",
+        "blink": "animation.bc.archdevil.blink"
+      },
+      "scripts": {
+        "animate": [
+          "hover",
+          "wings",
+          "look",
+          "halo",
+          "aura"
+        ],
+        "scale": "1.5"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:devil_aura"
+      },
+      "spawn_egg": {
+        "base_color": "#3e0a12",
+        "overlay_color": "#ffb030"
+      }
+    }
+  }
+}

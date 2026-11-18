@@ -1,0 +1,318 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "bc:construct",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "properties": {
+        "bc:variant": {
+          "type": "int",
+          "range": [
+            0,
+            3
+          ],
+          "default": 0,
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "bc_construct",
+          "mob"
+        ]
+      },
+      "minecraft:health": {
+        "value": 50,
+        "max": 50
+      },
+      "minecraft:collision_box": {
+        "width": 0.8,
+        "height": 2.0
+      },
+      "minecraft:movement": {
+        "value": 0.27
+      },
+      "minecraft:physics": {},
+      "minecraft:pushable": {
+        "is_pushable": true,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:breathable": {
+        "total_supply": 15,
+        "suffocate_time": 0
+      },
+      "minecraft:nameable": {},
+      "minecraft:loot": {
+        "table": "loot_tables/entities/bc_empty.json"
+      },
+      "minecraft:experience_reward": {
+        "on_death": "q.last_hit_by_player ? 0 : 0"
+      },
+      "minecraft:follow_range": {
+        "value": 40,
+        "max": 40
+      },
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:hurt_on_condition": {
+        "damage_conditions": [
+          {
+            "filters": {
+              "test": "in_lava",
+              "subject": "self"
+            },
+            "cause": "lava",
+            "damage_per_tick": 4
+          }
+        ]
+      },
+      "minecraft:navigation.walk": {
+        "can_path_over_water": true,
+        "can_swim": true,
+        "avoid_water": false,
+        "can_open_doors": true,
+        "avoid_damage_blocks": true
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:can_climb": {},
+      "minecraft:attack": {
+        "damage": 7
+      },
+      "minecraft:behavior.float": {
+        "priority": 0
+      },
+      "minecraft:behavior.hurt_by_target": {
+        "priority": 1
+      },
+      "minecraft:behavior.melee_box_attack": {
+        "priority": 2,
+        "speed_multiplier": 1.2,
+        "track_target": true
+      },
+      "minecraft:behavior.nearest_attackable_target": {
+        "priority": 3,
+        "must_see": true,
+        "reselect_targets": true,
+        "entity_types": [
+          {
+            "filters": {
+              "any_of": [
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "monster"
+                },
+                {
+                  "test": "is_family",
+                  "subject": "other",
+                  "value": "bc_pirate"
+                }
+              ]
+            },
+            "max_dist": 20
+          }
+        ]
+      },
+      "minecraft:behavior.random_stroll": {
+        "priority": 6,
+        "speed_multiplier": 0.9
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 7,
+        "look_distance": 8,
+        "probability": 0.03
+      },
+      "minecraft:behavior.random_look_around": {
+        "priority": 8
+      },
+      "minecraft:knockback_resistance": {
+        "value": 0.5
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "fall",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "drowning",
+            "deals_damage": "no"
+          }
+        ]
+      }
+    },
+    "events": {
+      "bc:expire": {
+        "add": {
+          "component_groups": [
+            "bc:expire"
+          ]
+        }
+      },
+      "bc:summoned": {
+        "add": {
+          "component_groups": [
+            "bc:summoned"
+          ]
+        }
+      },
+      "bc:team_a": {
+        "add": {
+          "component_groups": [
+            "bc:team_a"
+          ]
+        }
+      },
+      "bc:team_b": {
+        "add": {
+          "component_groups": [
+            "bc:team_b"
+          ]
+        }
+      },
+      "bc:team_c": {
+        "add": {
+          "component_groups": [
+            "bc:team_c"
+          ]
+        }
+      }
+    },
+    "component_groups": {
+      "bc:expire": {
+        "minecraft:instant_despawn": {}
+      },
+      "bc:summoned": {
+        "minecraft:timer": {
+          "looping": false,
+          "time": 30,
+          "randomInterval": false,
+          "time_down_event": {
+            "event": "bc:expire",
+            "target": "self"
+          }
+        }
+      },
+      "bc:team_a": {
+        "minecraft:type_family": {
+          "family": [
+            "bc_construct",
+            "mob",
+            "bc_team_a"
+          ]
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 3,
+          "must_see": false,
+          "reselect_targets": true,
+          "scan_interval": 5,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
+              },
+              "max_dist": 48
+            }
+          ]
+        },
+        "minecraft:follow_range": {
+          "value": 64,
+          "max": 64
+        },
+        "minecraft:persistent": {}
+      },
+      "bc:team_b": {
+        "minecraft:type_family": {
+          "family": [
+            "bc_construct",
+            "mob",
+            "bc_team_b"
+          ]
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 3,
+          "must_see": false,
+          "reselect_targets": true,
+          "scan_interval": 5,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_c"
+                  }
+                ]
+              },
+              "max_dist": 48
+            }
+          ]
+        },
+        "minecraft:follow_range": {
+          "value": 64,
+          "max": 64
+        },
+        "minecraft:persistent": {}
+      },
+      "bc:team_c": {
+        "minecraft:type_family": {
+          "family": [
+            "bc_construct",
+            "mob",
+            "bc_team_c"
+          ]
+        },
+        "minecraft:behavior.nearest_attackable_target": {
+          "priority": 3,
+          "must_see": false,
+          "reselect_targets": true,
+          "scan_interval": 5,
+          "entity_types": [
+            {
+              "filters": {
+                "any_of": [
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_a"
+                  },
+                  {
+                    "test": "is_family",
+                    "subject": "other",
+                    "value": "bc_team_b"
+                  }
+                ]
+              },
+              "max_dist": 48
+            }
+          ]
+        },
+        "minecraft:follow_range": {
+          "value": 64,
+          "max": 64
+        },
+        "minecraft:persistent": {}
+      }
+    }
+  }
+}

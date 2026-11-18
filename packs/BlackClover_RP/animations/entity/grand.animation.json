@@ -1,0 +1,27 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.warp_gate.spin": {
+      "loop": true,
+      "bones": {
+        "ring": {
+          "rotation": [
+            0,
+            0,
+            "q.life_time * 40.0"
+          ]
+        },
+        "swirl": {
+          "rotation": [
+            0,
+            0,
+            "-q.life_time * 220.0"
+          ]
+        },
+        "root": {
+          "scale": "math.min(q.life_time * 4.0, 1.0)"
+        }
+      }
+    }
+  }
+}

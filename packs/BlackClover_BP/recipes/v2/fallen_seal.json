@@ -1,0 +1,37 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:fallen_seal"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "OHO",
+      "KDK",
+      "OHO"
+    ],
+    "key": {
+      "O": {
+        "item": "minecraft:crying_obsidian"
+      },
+      "H": {
+        "item": "bc:devil_heart"
+      },
+      "K": {
+        "item": "bc:knight_contract"
+      },
+      "D": {
+        "item": "minecraft:diamond"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:fallen_seal",
+      "count": 1
+    }
+  }
+}

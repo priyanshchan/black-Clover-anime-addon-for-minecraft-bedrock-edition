@@ -1,0 +1,40 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:grimoire_glass",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_grimoire_glass"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§bGlass Grimoire §7(Three-Leaf)"
+      },
+      "minecraft:max_stack_size": {
+        "value": 1
+      },
+      "minecraft:use_modifiers": {
+        "use_duration": 0.6,
+        "movement_modifier": 1.0
+      },
+      "minecraft:glint": {
+        "value": false
+      },
+      "minecraft:can_destroy_in_creative": {
+        "value": false
+      },
+      "minecraft:tags": {
+        "tags": [
+          "bc:grimoire",
+          "bc:attr_glass"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,426 @@
+{
+ "format_version": "1.16.0",
+ "minecraft:geometry": [
+  {
+   "description": {
+    "identifier": "geometry.bc.power_quicksilver",
+    "texture_width": 64.0,
+    "texture_height": 16.0,
+    "visible_bounds_width": 3,
+    "visible_bounds_height": 3,
+    "visible_bounds_offset": [
+     0,
+     1,
+     0
+    ]
+   },
+   "bones": [
+    {
+     "name": "root",
+     "pivot": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    {
+     "name": "waist",
+     "parent": "root",
+     "pivot": [
+      0.0,
+      12.0,
+      0.0
+     ]
+    },
+    {
+     "name": "body",
+     "parent": "waist",
+     "pivot": [
+      0.0,
+      24.0,
+      0.0
+     ]
+    },
+    {
+     "name": "head",
+     "parent": "body",
+     "pivot": [
+      0.0,
+      24.0,
+      0.0
+     ]
+    },
+    {
+     "name": "leftArm",
+     "parent": "body",
+     "pivot": [
+      5.0,
+      22.0,
+      0.0
+     ]
+    },
+    {
+     "name": "leftItem",
+     "parent": "leftArm",
+     "pivot": [
+      6.0,
+      15.0,
+      1.0
+     ]
+    },
+    {
+     "name": "rightArm",
+     "parent": "body",
+     "pivot": [
+      -5.0,
+      22.0,
+      0.0
+     ]
+    },
+    {
+     "name": "rightItem",
+     "parent": "rightArm",
+     "pivot": [
+      -6.0,
+      15.0,
+      1.0
+     ]
+    },
+    {
+     "name": "leftLeg",
+     "parent": "root",
+     "pivot": [
+      1.9,
+      12.0,
+      0.0
+     ]
+    },
+    {
+     "name": "rightLeg",
+     "parent": "root",
+     "pivot": [
+      -1.9,
+      12.0,
+      0.0
+     ]
+    },
+    {
+     "name": "aura",
+     "parent": "rightArm",
+     "pivot": [
+      -6.0,
+      14.0,
+      0.0
+     ],
+     "cubes": [
+      {
+       "origin": [
+        -8.5,
+        11.2,
+        -2.5
+       ],
+       "size": [
+        5.0,
+        7.0,
+        5.0
+       ],
+       "uv": {
+        "north": {
+         "uv": [
+          6.0,
+          0.0
+         ],
+         "uv_size": [
+          5.0,
+          7.0
+         ]
+        },
+        "south": {
+         "uv": [
+          11.0,
+          0.0
+         ],
+         "uv_size": [
+          5.0,
+          7.0
+         ]
+        },
+        "east": {
+         "uv": [
+          16.0,
+          0.0
+         ],
+         "uv_size": [
+          5.0,
+          7.0
+         ]
+        },
+        "west": {
+         "uv": [
+          21.0,
+          0.0
+         ],
+         "uv_size": [
+          5.0,
+          7.0
+         ]
+        },
+        "up": {
+         "uv": [
+          26.0,
+          0.0
+         ],
+         "uv_size": [
+          5.0,
+          5.0
+         ]
+        },
+        "down": {
+         "uv": [
+          31.0,
+          0.0
+         ],
+         "uv_size": [
+          5.0,
+          5.0
+         ]
+        }
+       }
+      },
+      {
+       "origin": [
+        -7.7,
+        11.6,
+        -9.5
+       ],
+       "size": [
+        0.6,
+        0.8,
+        7.2
+       ],
+       "uv": {
+        "north": {
+         "uv": [
+          22.5,
+          7.5
+         ],
+         "uv_size": [
+          0.6,
+          0.8
+         ]
+        },
+        "south": {
+         "uv": [
+          23.5,
+          7.5
+         ],
+         "uv_size": [
+          0.6,
+          0.8
+         ]
+        },
+        "east": {
+         "uv": [
+          36.0,
+          0.0
+         ],
+         "uv_size": [
+          7.2,
+          0.8
+         ]
+        },
+        "west": {
+         "uv": [
+          43.5,
+          0.0
+         ],
+         "uv_size": [
+          7.2,
+          0.8
+         ]
+        },
+        "up": {
+         "uv": [
+          0.0,
+          0.0
+         ],
+         "uv_size": [
+          0.6,
+          7.2
+         ]
+        },
+        "down": {
+         "uv": [
+          1.0,
+          0.0
+         ],
+         "uv_size": [
+          0.6,
+          7.2
+         ]
+        }
+       }
+      },
+      {
+       "origin": [
+        -6.3,
+        11.6,
+        -9.5
+       ],
+       "size": [
+        0.6,
+        0.8,
+        7.2
+       ],
+       "uv": {
+        "north": {
+         "uv": [
+          24.5,
+          7.5
+         ],
+         "uv_size": [
+          0.6,
+          0.8
+         ]
+        },
+        "south": {
+         "uv": [
+          25.5,
+          7.5
+         ],
+         "uv_size": [
+          0.6,
+          0.8
+         ]
+        },
+        "east": {
+         "uv": [
+          51.0,
+          0.0
+         ],
+         "uv_size": [
+          7.2,
+          0.8
+         ]
+        },
+        "west": {
+         "uv": [
+          0.0,
+          7.5
+         ],
+         "uv_size": [
+          7.2,
+          0.8
+         ]
+        },
+        "up": {
+         "uv": [
+          2.0,
+          0.0
+         ],
+         "uv_size": [
+          0.6,
+          7.2
+         ]
+        },
+        "down": {
+         "uv": [
+          3.0,
+          0.0
+         ],
+         "uv_size": [
+          0.6,
+          7.2
+         ]
+        }
+       }
+      },
+      {
+       "origin": [
+        -4.9,
+        11.6,
+        -9.5
+       ],
+       "size": [
+        0.6,
+        0.8,
+        7.2
+       ],
+       "uv": {
+        "north": {
+         "uv": [
+          26.5,
+          7.5
+         ],
+         "uv_size": [
+          0.6,
+          0.8
+         ]
+        },
+        "south": {
+         "uv": [
+          27.5,
+          7.5
+         ],
+         "uv_size": [
+          0.6,
+          0.8
+         ]
+        },
+        "east": {
+         "uv": [
+          7.5,
+          7.5
+         ],
+         "uv_size": [
+          7.2,
+          0.8
+         ]
+        },
+        "west": {
+         "uv": [
+          15.0,
+          7.5
+         ],
+         "uv_size": [
+          7.2,
+          0.8
+         ]
+        },
+        "up": {
+         "uv": [
+          4.0,
+          0.0
+         ],
+         "uv_size": [
+          0.6,
+          7.2
+         ]
+        },
+        "down": {
+         "uv": [
+          5.0,
+          0.0
+         ],
+         "uv_size": [
+          0.6,
+          7.2
+         ]
+        }
+       }
+      }
+     ]
+    },
+    {
+     "name": "orbit",
+     "parent": "aura",
+     "pivot": [
+      -6.0,
+      14.0,
+      0.0
+     ]
+    }
+   ]
+  }
+ ]
+}

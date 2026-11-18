@@ -1,0 +1,42 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:bandit",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/bandit"
+      },
+      "geometry": {
+        "default": "geometry.bc.bandit"
+      },
+      "animations": {
+        "idle": "animation.bc.bandit.idle",
+        "walk": "animation.bc.bandit.walk",
+        "look_at_target": "animation.bc.bandit.look_at_target",
+        "attack": "animation.bc.bandit.attack",
+        "cast": "animation.bc.bandit.cast",
+        "shoot": "animation.bc.bandit.shoot",
+        "taunt": "animation.bc.bandit.taunt"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#541610",
+        "overlay_color": "#52341c"
+      }
+    }
+  }
+}

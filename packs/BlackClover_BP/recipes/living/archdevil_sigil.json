@@ -1,0 +1,34 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:archdevil_sigil"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "OCO",
+      "CHC",
+      "OCO"
+    ],
+    "key": {
+      "O": {
+        "item": "minecraft:crying_obsidian"
+      },
+      "C": {
+        "item": "bc:mana_crystal"
+      },
+      "H": {
+        "item": "bc:devil_heart"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:archdevil_sigil",
+      "count": 1
+    }
+  }
+}

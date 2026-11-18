@@ -1,0 +1,29 @@
+{
+  "resource_pack_name": "black_clover",
+  "texture_name": "atlas.terrain",
+  "padding": 8,
+  "num_mip_levels": 4,
+  "texture_data": {
+    "bc_bounty_board": {
+      "textures": "textures/blocks/bc/bounty_board"
+    },
+    "bc_grimoire_altar": {
+      "textures": "textures/blocks/bc/grimoire_altar"
+    },
+    "bc_magic_forge": {
+      "textures": "textures/blocks/bc/magic_forge"
+    },
+    "bc_mission_board": {
+      "textures": "textures/blocks/bc/mission_board"
+    },
+    "bc_squad_banner": {
+      "textures": "textures/blocks/bc/squad_banner"
+    },
+    "bc_war_table": {
+      "textures": "textures/blocks/bc/war_table"
+    },
+    "bc_waygate": {
+      "textures": "textures/blocks/bc/waygate"
+    }
+  }
+}

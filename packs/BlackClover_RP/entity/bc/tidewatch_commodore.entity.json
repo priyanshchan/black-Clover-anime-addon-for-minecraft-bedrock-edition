@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:tidewatch_commodore",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/tidewatch_commodore"
+      },
+      "geometry": {
+        "default": "geometry.bc.tidewatch_commodore"
+      },
+      "animations": {
+        "idle": "animation.bc.tidewatch_commodore.idle",
+        "walk": "animation.bc.tidewatch_commodore.walk",
+        "look": "animation.bc.tidewatch_commodore.look_at_target"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#23345f",
+        "overlay_color": "#f0c24a"
+      }
+    }
+  }
+}

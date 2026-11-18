@@ -1,0 +1,31 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "bc:chitin_boots",
+      "materials": {
+        "default": "entity_alphatest",
+        "enchanted": "entity_alphatest_glint"
+      },
+      "textures": {
+        "default": "textures/entity/bc/armor/chitin_feet",
+        "enchanted": "textures/misc/enchanted_item_glint"
+      },
+      "geometry": {
+        "default": "geometry.bc.chitin_feet"
+      },
+      "animations": {
+        "wear": "animation.bc.armor.chitin_feet"
+      },
+      "scripts": {
+        "parent_setup": "v.boot_layer_visible = 0.0;",
+        "animate": [
+          "wear"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.attachable"
+      ]
+    }
+  }
+}

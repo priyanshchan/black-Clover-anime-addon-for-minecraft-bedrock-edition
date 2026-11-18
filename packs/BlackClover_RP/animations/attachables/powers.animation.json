@@ -1,0 +1,190 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.power.aura": {
+      "loop": true,
+      "bones": {
+        "orbit": {
+          "rotation": [
+            0,
+            "q.life_time * 120.0",
+            0
+          ]
+        },
+        "aura": {
+          "scale": "1.0 + math.sin(q.life_time * 300.0) * 0.04"
+        }
+      }
+    },
+    "animation.bc.power.beast_wolf": {
+      "loop": true,
+      "bones": {
+        "tail": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 400.0) * 18.0",
+            0
+          ]
+        },
+        "ears": {
+          "rotation": [
+            "math.max(0.0, math.sin(q.life_time * 90.0)) * 8.0",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.power.beast_hawk": {
+      "loop": true,
+      "bones": {
+        "rightWing": {
+          "rotation": [
+            "5.0",
+            "math.sin(q.life_time * 260.0) * 18.0 - 15.0",
+            "22.0 + math.sin(q.life_time * 260.0) * 12.0"
+          ]
+        },
+        "leftWing": {
+          "rotation": [
+            "5.0",
+            "-math.sin(q.life_time * 260.0) * 18.0 + 15.0",
+            "-22.0 - math.sin(q.life_time * 260.0) * 12.0"
+          ]
+        }
+      }
+    },
+    "animation.bc.power.beast_bear": {
+      "loop": true,
+      "bones": {
+        "tail": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 120.0) * 6.0",
+            0
+          ]
+        },
+        "ears": {
+          "rotation": [
+            "math.max(0.0, math.sin(q.life_time * 90.0)) * 6.0",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.power.beast_tiger": {
+      "loop": true,
+      "bones": {
+        "tail": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 300.0) * 22.0",
+            0
+          ]
+        },
+        "ears": {
+          "rotation": [
+            "math.max(0.0, math.sin(q.life_time * 90.0)) * 6.0",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.power.beast_wyvern": {
+      "loop": true,
+      "bones": {
+        "rightWing": {
+          "rotation": [
+            "8.0",
+            "math.sin(q.life_time * 200.0) * 22.0 - 20.0",
+            "18.0 + math.sin(q.life_time * 200.0) * 10.0"
+          ]
+        },
+        "leftWing": {
+          "rotation": [
+            "8.0",
+            "-math.sin(q.life_time * 200.0) * 22.0 + 20.0",
+            "-18.0 - math.sin(q.life_time * 200.0) * 10.0"
+          ]
+        },
+        "tail": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 150.0) * 15.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.power.beast_lion": {
+      "loop": true,
+      "bones": {
+        "tail": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 150.0) * 18.0",
+            0
+          ]
+        },
+        "mane": {
+          "scale": "1.0 + math.sin(q.life_time * 200.0) * 0.03"
+        }
+      }
+    },
+    "animation.bc.power.beast_shark": {
+      "loop": true,
+      "bones": {
+        "tail": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 300.0) * 22.0",
+            0
+          ]
+        },
+        "fin": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 150.0) * 6.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.power.beast_phoenix": {
+      "loop": true,
+      "bones": {
+        "rightWing": {
+          "rotation": [
+            "5.0",
+            "math.sin(q.life_time * 220.0) * 20.0 - 15.0",
+            "22.0 + math.sin(q.life_time * 220.0) * 12.0"
+          ]
+        },
+        "leftWing": {
+          "rotation": [
+            "5.0",
+            "-math.sin(q.life_time * 220.0) * 20.0 + 15.0",
+            "-22.0 - math.sin(q.life_time * 220.0) * 12.0"
+          ]
+        },
+        "crest": {
+          "scale": "1.0 + math.sin(q.life_time * 400.0) * 0.08"
+        }
+      }
+    },
+    "animation.bc.power.beast_spider": {
+      "loop": true,
+      "bones": {
+        "legs": {
+          "rotation": [
+            "math.sin(q.life_time * 300.0) * 4.0",
+            0,
+            "math.sin(q.life_time * 150.0) * 3.0"
+          ]
+        }
+      }
+    }
+  }
+}

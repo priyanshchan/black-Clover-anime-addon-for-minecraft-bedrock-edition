@@ -1,0 +1,28 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "bc:power_ash",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/power_ash"
+      },
+      "geometry": {
+        "default": "geometry.bc.power_ash"
+      },
+      "animations": {
+        "aura": "animation.bc.power.aura"
+      },
+      "scripts": {
+        "animate": [
+          "aura"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.attachable"
+      ]
+    }
+  }
+}

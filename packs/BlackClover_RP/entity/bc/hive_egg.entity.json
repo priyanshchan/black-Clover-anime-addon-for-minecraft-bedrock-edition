@@ -1,0 +1,32 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:hive_egg",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/hive_egg"
+      },
+      "geometry": {
+        "default": "geometry.bc.hive_egg"
+      },
+      "animations": {
+        "pulse": "animation.bc.hive_egg.pulse"
+      },
+      "scripts": {
+        "animate": [
+          "pulse"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#8aa03a",
+        "overlay_color": "#eaffb0"
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:shadow_assassin",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/shadow_assassin"
+      },
+      "geometry": {
+        "default": "geometry.bc.shadow_assassin"
+      },
+      "animations": {
+        "idle": "animation.bc.shadow_assassin.idle",
+        "walk": "animation.bc.shadow_assassin.walk",
+        "look_at_target": "animation.bc.shadow_assassin.look_at_target",
+        "attack": "animation.bc.shadow_assassin.attack",
+        "cast": "animation.bc.shadow_assassin.cast",
+        "backstab": "animation.bc.shadow_assassin.backstab"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#100c16",
+        "overlay_color": "#c070ff"
+      }
+    }
+  }
+}

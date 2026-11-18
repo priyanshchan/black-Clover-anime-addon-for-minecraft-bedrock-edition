@@ -1,0 +1,152 @@
+{
+  "format_version": "1.10.0",
+  "render_controllers": {
+    "controller.render.bc.mana_bolt": {
+      "arrays": {
+        "textures": {
+          "Array.tints": [
+            "Texture.t0",
+            "Texture.t1",
+            "Texture.t2",
+            "Texture.t3",
+            "Texture.t4",
+            "Texture.t5",
+            "Texture.t6",
+            "Texture.t7",
+            "Texture.t8",
+            "Texture.t9",
+            "Texture.t10",
+            "Texture.t11",
+            "Texture.t12",
+            "Texture.t13",
+            "Texture.t14",
+            "Texture.t15",
+            "Texture.t16",
+            "Texture.t17",
+            "Texture.t18",
+            "Texture.t19",
+            "Texture.t20",
+            "Texture.t21",
+            "Texture.t22",
+            "Texture.t23",
+            "Texture.t24",
+            "Texture.t25",
+            "Texture.t26",
+            "Texture.t27",
+            "Texture.t28",
+            "Texture.t29",
+            "Texture.t30",
+            "Texture.t31",
+            "Texture.t32",
+            "Texture.t33",
+            "Texture.t34",
+            "Texture.t35",
+            "Texture.t36",
+            "Texture.t37",
+            "Texture.t38",
+            "Texture.t39",
+            "Texture.t40",
+            "Texture.t41",
+            "Texture.t42",
+            "Texture.t43",
+            "Texture.t44",
+            "Texture.t45",
+            "Texture.t46",
+            "Texture.t47",
+            "Texture.t48",
+            "Texture.t49",
+            "Texture.t50",
+            "Texture.t51",
+            "Texture.t52",
+            "Texture.t53",
+            "Texture.t54",
+            "Texture.t55",
+            "Texture.t56",
+            "Texture.t57",
+            "Texture.t58",
+            "Texture.t59",
+            "Texture.t60",
+            "Texture.t61",
+            "Texture.t62",
+            "Texture.t63",
+            "Texture.t64",
+            "Texture.t65",
+            "Texture.t66",
+            "Texture.t67",
+            "Texture.t68",
+            "Texture.t69",
+            "Texture.t70",
+            "Texture.t71",
+            "Texture.t72",
+            "Texture.t73"
+          ]
+        },
+        "geometries": {
+          "Array.shapes": [
+            "Geometry.orb",
+            "Geometry.shard",
+            "Geometry.blade",
+            "Geometry.needle",
+            "Geometry.comet"
+          ]
+        }
+      },
+      "geometry": "Array.shapes[q.property('bc:shape')]",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.tints[q.property('bc:tint')]"
+      ]
+    },
+    "controller.render.bc.magic_knight": {
+      "arrays": {
+        "textures": {
+          "Array.robes": [
+            "Texture.r0",
+            "Texture.r1",
+            "Texture.r2",
+            "Texture.r3",
+            "Texture.r4",
+            "Texture.r5",
+            "Texture.r6",
+            "Texture.r7",
+            "Texture.r8"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.robes[q.property('bc:robe')]"
+      ]
+    },
+    "controller.render.bc.construct": {
+      "arrays": {
+        "textures": {
+          "Array.kinds": [
+            "Texture.v0",
+            "Texture.v1",
+            "Texture.v2",
+            "Texture.v3"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.kinds[q.property('bc:variant')]"
+      ]
+    }
+  }
+}

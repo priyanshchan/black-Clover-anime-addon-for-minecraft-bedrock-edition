@@ -1,0 +1,373 @@
+# Changelog
+
+## v1.0.0 (2026-11-18)
+
+**A living world.** The first full release: world events are now incidents that happen out in the world, develop on their own and are discovered from afar - plus four grimoires, four Abyss Fruits, new incidents, Mana Waygates and more. (This release also contains everything since v0.1.0: see the sections below.)
+
+### The living world
+* **No more events in your face.** Incidents are placed about 60-200 blocks away (out of sight) and reported to everyone within 360 blocks **by direction and distance**, with a horn or gong from that direction.
+* **Signs on the horizon:** smoke columns and pillars of light mark every incident near you.
+* **Tracking:** the newest incident is tracked on your HUD (arrow, distance and state - *gate strength 4/10, erupts in 6 min*); the Handbook's new **World events** page lists everything, nearest first, and tracks your pick.
+* **A simulation:** while nobody is there, Devil Gates grow stronger, rituals near completion, hives lay eggs, two armies wear each other down, wounded knights bleed out, bandit raids march on your home, caravans and patrols cross the land.
+* **Consequences:** left alone, gates erupt (Devil power rises; the Archdevil roams or ruins remain), rituals wake the Grimoire Devourer, hives grow a queen, raids sack the land and leave ruins, sieges overrun camps, unwatched battles shift faction power, knights fall - all in the news and the event log.
+* **Made real on arrival:** an incident's units appear only when a player comes within about 50 blocks, in its current state (a gate left open for 8 minutes pours out 10 devils; a late arrival finds fewer soldiers). If everyone leaves for a minute it fades back into the simulation and remembers its survivors.
+* **Hunters approach:** thieves, Shadow Assassins, bounty hunters, Rogue Mage ambushes, rival squads and crimson-night devils come from behind you, 20-34 blocks away, with a warning.
+* **Offensives** by a dominant faction are great battles somewhere out there.
+* New incidents: **merchant caravans** (half the time ambushed - save them for 60 doubloons), **mana springs** (stand in the geyser to refill; crystals spill out), **Magic Knight camps under siege**, **refugees** fleeing a Devil Gate (they show you where it is), and **ruins** left by failures (salvage and its guards). The great bosses walk the world as incidents too.
+* Cheat: `/scriptevent bc:incident <kind> [near]`.
+
+### New grimoires and fruits
+* Four grimoires with six spells each: **Storm** (Storm Bolt, Squall Ring, Thunderhead, Tempest Eye, Lightning Lattice, Heaven's Wrath), **Blossom** (Petal Darts, Sakura Veil, Petal Storm, Thousand Blossoms, Blooming Prison, Spring Eternal), **Coral** (Coral Shard, Reef Spikes, Tide Pool, Barrier Reef, Riptide Reef, Leviathan Reef) and **Dream** (Drowsy Mote, Lullaby, Nightmare, Dreamscape, Waking Nightmare, Eternal Slumber).
+* Four Abyss Fruits with four powers each and a passive: **Spark** (speed), **Echo** (night vision), **Sand** (tougher on dry ground) and **Gale** (higher jumps, gentle falls).
+* 40 grimoires, 239 spells, 34 fruits and 136 fruit powers in all.
+
+### Mana Waygates
+* A new block (craft: stone bricks, a mana crystal, an ender pearl, a rune shard; or buy one from the merchant). Every Waygate joins a network all players share: travel to any other for 20 mana + 15 per 100 blocks (or a Mana Crystal), with a short cooldown. Rename your gates from their menu.
+
+### Other changes
+* New feats: Answer the Call, Gatebreaker, Wayfarer, Late Bloomer. New missions: win a world event; break up a bandit band.
+* The Handbook's Recent events page became **World events**.
+
+## v0.9.0 – Early Access (2026-11-18)
+
+**Spells that look the part.** Every spell and fruit power is redrawn with layered, high-resolution effects, a rebuilt projectile and full-body cast animations.
+
+### Layered spell effects
+* 48 new high-resolution particle effects: lens-flare flashes and white-hot cores, sparks that stretch with their speed and bounce off the ground, sprays, rising embers, rolling 8-frame smoke and licking 8-frame fire, dust waves, coloured mist, void smoke, expanding shock rings, ground cracks (dark and glowing), tumbling rock debris, converging charge streaks, a detailed magic circle (in the air and on the ground), solid beams with a white-hot core, jagged lightning bolts, crescent slashes, light pillars, spiralling wisps, auras, and element sprites (shards, snowflakes, leaves, droplets, bubbles, sparkles, notes, rune glyphs).
+* A **VFX director** composes them: a spell forms in a magic circle, is released with a flash, a shock ring and sparks, and lands with a flash, its element's particles, sparks, smoke or mist, and - on the ground - a shock ring, a dust wave and cracks. Every element has its own kit; Abyss Fruits map onto them (and surge from the user's body instead of a magic circle).
+* Every spell template is redrawn: beams are solid bars, strikes call down lightning or columns of light, rains fall as streaks from a circle in the sky, meteors are burning comets with warning circles, zones and vortices swirl, prisons cage their victims, buffs raise pillars and auras, heals lift glyphs, dives leave craters, blinks leave a streak of light.
+* Magic Knights and enemy mages now cast through magic circles too.
+* The biggest spells (huge novas, dives and time stops) flash the screen for an instant.
+* A per-tick particle budget drops the optional layers in huge battles.
+* The classic particles (bursts, sparks, magic circles, shockwaves, fire, smoke) now use the high-resolution textures, and the classic helpers (bursts, beams, arcs, magic circles) use the new layers - so the original spells, fruit powers and bosses look better too.
+
+### A rebuilt spell projectile
+* Layered shapes with a white-hot core: orbs with two spinning rings, faceted shards, crescent blades, spiralling spears, and a new **burning comet** for meteors.
+* A glowing halo and an element trail: flames, droplets, snowflakes, sparks, dust, leaves, void smoke, sparkles, wisps or bubbles.
+
+### Full-body cast animations
+* New animations with anticipation, overshoot, follow-through and smooth curves, moving the arms, body, head and legs: thrust, two-handed push, trembling channel, call the sky, overhead slam, sweep, spin, summon, power-up, heal, dash - and for Abyss Fruit users a punch, a stomp and a roar.
+* Each spell picks the animation that fits it. Magic Knights, companions and Rogue Mages use the same set.
+
+## v0.8.0 – Early Access (2026-11-18)
+
+**The armour update.** Eight 3D armour sets with set bonuses, materials from the foes that suit them, and the Magic Forge to forge, reinforce, inscribe and tailor your armour - for you and your companions.
+
+### Eight armour sets
+* 32 pieces (helmet, chestplate, leggings, boots), each a 3D model in its own style, worn over your skin and robe. Wear two pieces of a set for its first bonus and four for the second:
+  * **Mana-Steel** - +25 max mana / +25% mana regeneration and 10% cheaper spells.
+  * **Royal Knight** (Senior Magic Knights only) - +10% spell power / the **Royal Aegis** below 30% health, and companions within 16 blocks fight 10% harder.
+  * **Devilhide** - Fire Resistance / spells heal you for 8% of their damage and hit 20% harder below 30% health.
+  * **Abyssal Scale** - Water Breathing and Conduit Power in water / the sea no longer drains Abyss Fruit users, and fruit powers recharge 15% faster.
+  * **Shadowweave** - Speed / 20% evasion against melee; crouch still to vanish, and your first blow from hiding lands twice.
+  * **Hive Chitin** - poison immunity / barbs (3 damage and poison for melee attackers) and Regeneration below half health.
+  * **Runeplate** (First Class Senior Magic Knights only) - 40% less from explosions and falls / Resistance, 20% less from spells and rune pulses that hurl foes back.
+  * **Archmage** - 10% shorter spell and fruit cooldowns / +20% spell power and +40 max mana.
+* Pieces are enchantable and repairable with their material.
+
+### Materials
+* New: **Mana-Steel Ingot** (craft: an iron ingot and two mana crystals), **Devil Hide**, **Shadow Silk**, **Chitin Plate**, **Rune Shard** and **Arcane Thread**; the Abyssal set uses **Leviathan Scales**, now also dropped by raider captains and sea raiders.
+* Materials drop from the foes that suit them when you or your companions defeat them; bosses drop plenty. Lair chests, dungeon and camp chests carry them, elites have a 30% chance to, and the merchant sells ingots and rune shards.
+
+### The Magic Forge
+* A new block (craft it, or find one in any Magic Knight camp). **Forge** any piece; **reinforce** the piece in your hand up to +5 (1.5% less damage from everything per level); **inscribe** one of six **runes** (Vitality, Warding, Mana, Swiftness, Thorns, Focus); **sew a squad robe** onto a chestplate as a mantle so you keep the robe's perk; or **salvage** a piece for half its materials.
+* **The Armoury** (at the forge and in the Handbook): what you wear, your active bonuses, how much damage you shrug off, every set and where its materials drop.
+
+### Companions in armour
+* Hand a companion a piece of armour and they wear it - it shows on them, and its bonuses, runes and reinforcement work for them too. Take it back from their profile, upgrades intact.
+
+### Other changes
+* Five armour feats: Fully Armoured, Armour Collector, Forgemaster, Master Smith, Runesmith.
+* The Handbook shows the armour you wear.
+* Fixed: lore lines longer than the game allows (50 characters) were rejected, so spell scrolls with long descriptions could lose their written spell, and Abyss Fruit power items had no description. Long lines are now wrapped.
+
+## v0.7.5 – Early Access (2026-11-18)
+
+**Places to raid, foes worth hunting, and something to show for it.** Three kinds of lairs, elite enemies with seven traits, potions, elixirs, smoke bombs and spell scrolls, and 22 feats with titles.
+
+### Lairs
+* **Bandit hideouts** - a palisade, two shacks, a watchtower and a campfire, guarded by bandits, archers and a thief; one in five has the **Bandit King** at home. A stash chest and a vault.
+* **Hive nests** - a honeycomb mound full of eggs and drones; sometimes the **Hive Queen**.
+* **Cultist shrines** - pillars around a crying-obsidian altar, with cultists and imps.
+* Lairs appear out of sight near explorers and suit the ground (hideouts on sand, terracotta and coarse dirt; nests on mud, moss, podzol, clay and mycelium; any of the three on grassland), never within 360 blocks of another structure. The first time you open a lair's chest it counts as a raid. Cheat: `/scriptevent bc:lair [hideout|nest|shrine]`.
+
+### Elite enemies
+* About 6% of hostile spawns (9% during a Mana Eclipse) come as an **elite**: a gold name with its trait, Health Boost III and Resistance.
+* Seven traits: **Vampiric** (heals for 30% of the damage it deals), **Shielded** (spells do half damage until three blows break the shield), **Swift**, **Explosive** (a 10-damage burst a second after it falls), **Summoner** (two lesser copies every 15 s), **Arcane** (a spell from a random grimoire every 8 s) and **Frenzied** (Strength II and Speed below half health).
+* Elites drop 10-25 doubloons and maybe a spell scroll, a Mana Potion or an amulet. Bosses, eggs, gates and summoned minions are never elite.
+
+### Potions, elixirs, smoke bombs and spell scrolls
+* **Mana Potion** (60 mana, or 30% of the Anti-Magic gauge), **Greater Mana Potion** (all your mana and Regeneration), **Elixir of Iron** (Resistance II and Absorption II for 60 s), **Elixir of Haste** (Speed and 25% shorter spell cooldowns for 60 s).
+* **Smoke Bomb** - blinds foes within 6 blocks and hides you for 4 s.
+* **Spell Scroll** - casts the spell written on it (any grimoire, up to level 10, never Anti-Magic) at your spell power, or at base power without a grimoire. Blank scrolls settle on a random spell when read; scrolls from elites and lairs come written.
+* All six are craftable, and the Travelling Merchant sells potions, the Elixir of Iron, smoke bombs and scrolls.
+
+### Feats and titles
+* **22 feats** for kills, bosses (and different bosses), casts, levels, a full party, a Soulbound companion, missions, events won, elites, thieves, hive eggs, scrolls, your first fruit, your first broom flight and lairs raided.
+* Each pays doubloons (and most pay stars) and unlocks a **title**. Choose one in the Handbook (**Feats & titles**) and it appears under your name.
+
+### Other changes
+* Missions, event victories and caught thieves now tell the rest of the game (they count for feats).
+* New icons for the potions, elixirs, the smoke bomb and the spell scroll; a v0.7.5 preview sheet in the docs.
+
+## v0.7.0 – Early Access (2026-11-18)
+
+**Enemies that fight together, bosses that adapt, and events that matter.** New enemies and three new bosses, warband tactics for every hostile spellcaster, smarter bosses, and a reworked event director with six new events.
+
+### New enemies
+* **The Bandit Brotherhood** - Bandits (cleavers, lunges), Bandit Archers (keep their distance and loose volleys) and **Bandit Thieves**: a thief's blow snatches your doubloons (or emeralds, diamonds, gold, mana crystals) and it runs off invisible. Catch it to get everything back; let it get 40 blocks away and it's gone. They roam plains, savannas, deserts and badlands, and form a War Table army.
+* **Shadow Assassins** - invisible stalkers (a faint shadow gives them away) that blink behind their prey and backstab, then vanish in a smoke bomb when hurt.
+* **Cultists** - devil summoners who chant rituals to call imps and heal their allies; the devils around them protect them.
+* **The Hive** - Hive Drones that hunt in packs, and Hive Eggs that hatch into drones unless you smash them first. A War Table army too.
+
+### New bosses
+* **The Bandit King** - twin-sabre combos, a whirlwind, thrown knives, smoke bombs, archer volleys and reinforcements; at half health he falls back behind fresh bandits. Desperation: **Last Stand**. Summon him with a **Bandit's Crown**.
+* **The Grimoire Devourer** - a fanged, floating grimoire that **swallows the spells cast near it and casts them back at you**, and roars to **silence grimoires** and seal fruits. Desperation: **Final Chapter**. Summon it with a **Forbidden Tome**.
+* **The Hive Queen** - acid sprays and rain, a screech, **eggs** that hatch into drones, and **burrowing** ambushes. Desperation: **Swarm Mother**. Summon her with **Royal Jelly**.
+
+### Smarter enemies: warbands
+* Hostile spellcasters of a faction now fight as a **warband**: they share a focus (the most vulnerable foe - hurt, alone, or a healer; whoever attacks their Cultist), **surround** it (fighters on flank slots, casters and archers in an arc behind), **call for help** from up to 32 blocks away, and **break and run** when they have lost more than half their number and are outnumbered.
+* Enemies read danger zones too (by skill), and rallied enemies march on a distant target.
+
+### Smarter bosses
+* **Adapting:** every boss watches how it's being hurt. All spells? A spell ward soaks 40% of magic for 10 s. All blades? Iron hide: Resistance II, and blows bounce back. Mix it up!
+* **Healers first:** bosses treat support companions as 30% more threatening.
+* **No clumping:** when three or more of you bunch up, bosses favour area attacks.
+
+### Random events
+* **The event director:** events now **scale** with your level and party (more enemies; the nastiest outcomes need tier 2), never repeat the last two events, come sooner after quiet stretches and later after hard fights, and are written to a **log** in the Handbook (Recent events).
+* **Objectives:** many events now have a goal, a reward - and a consequence.
+* **Six new events:** **Bandit raid** (maybe led by the Bandit King), **Devil ritual** (stop the cultists in 90 seconds or the Grimoire Devourer wakes), **Hive infestation** (smash the eggs or the Hive Queen emerges), **Assassins** (for renowned knights at night), **A thief** (when your purse is full), and the **Mana Eclipse** (+25% spell power for everyone, ×1.5 magic XP, bolder monsters).
+
+### Other changes
+* Three new summoning items with recipes: Bandit's Crown, Forbidden Tome, Royal Jelly.
+* New animations: bandit cast, shoot and taunt; the Bandit King's slash, whirlwind, command and roar; assassin backstab; cultist ritual; drone spit; the Queen's spit, screech, lay, burrow and emerge; the Devourer's chomp, cast and roar; pulsing eggs.
+
+## v0.6.0 – Early Access (2026-11-18)
+
+**A grimoire and a fruit.** Every companion now fights with its own grimoire **and** an Abyss Fruit, and every grimoire and every fruit gains a new move: 66 new moves in all.
+
+> v0.2.0, v0.3.0 and v0.5.0 were never published as releases, so this build also contains all of them: the companion party and its squad AI, smarter enemies and bosses, brooms, missions, amulets, awakened spells, Rogue Mages, the Witch Sisters, the Bone Dragon, the Soul Puppeteer and 20 more grimoires and fruits. See [CHANGELOG.md](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/blob/ccr-62b3f23b-74ycbu/CHANGELOG.md) for everything.
+
+### Download
+* **`BlackClover_GrimoireAwakening_v0.6.0.mcaddon`** – open it and Minecraft imports both packs (it replaces earlier versions; your grimoire, fruit, levels and party are kept).
+* `BlackClover_BP_v0.6.0.mcpack` / `BlackClover_RP_v0.6.0.mcpack` – the packs separately.
+
+### Companions: a grimoire and a fruit
+* Every companion carries an **Abyss Fruit** next to its grimoire. Companions you already lead get one automatically; its glyph follows their name and their profile lists its moves.
+* The tactical brain weighs **every spell and every fruit power together** and casts whatever fits the moment - a prison from the grimoire, then a fruit volley into the bound foe.
+* Fruit powers follow the usual rules: no fruit in water (the Shark Fruit excepted), and anti-magic seals them.
+* The fruit's fourth move opens at companion level 10 (or after their first personal trial); the grimoire's new move at level 12, the awakened spell at 15.
+* **Change a companion's fruit:** hold any Abyss Fruit and talk to them - they eat it and its power replaces the old one.
+
+### A new move for every grimoire (level 12)
+* **35 new spells** for the spell engine - Vacuum Cutter (Wind), Flame Emperor's Ring (Flame), Riptide Whirlpool (Water), Chain Storm (Lightning), Sacred Cage (Light), Night Fangs (Dark), Frost Barrage (Ice), Folding Strike (Spatial), Stone Fist Rain (Earth), Blade Cage (Steel), Prism Beam (Mirror), Sand Spear Barrage, Bubble Armour, Strangler Vines, Toxic Rain, Crimson Scythe, Polaris Beam, Echo Field, Mist Bind, Crystal Prison, Bone Rain, Magma Serpent, Quickened Hour, Cotton Cannon, Paper Prison, Smog Vortex, Glass Lances, Golden Barrage, Beast Spirit Pounce, Soul Lance, Rune Barrier, Meteor Pull, Moonlit Prison, Thorn Barrage and Ash Phoenix.
+* **Anti-Magic: Black Hurricane** - spin with your swords: every hostile spell and projectile within 7 blocks is cut out of the air, everyone close is slashed, knocked back, stripped of buffs and fruit users are sealed. Costs 25% of the Anti-Magic gauge (free in Black Form).
+* Grimoires now hold six spells (levels 1, 3, 6, 10, 12, 15): **215 spells** in total. Magic Knights and companions learn the new move at level 12 too.
+
+### A fourth move for every fruit (Will 2)
+* **30 new fruit powers** - Ember Storm, Landslide, Black Star, Night Parade, Pollen Storm, Mercury Rain, Glacier Crash, Barrier Prison, Moon Fang, Gale Feathers, Lava Serpent, Cinder Phoenix, Spectrum Prison, Rubber Barrage, Chain Blast, Acid Flood, Iron Maiden, Hailstorm, Ink Prison, Avalanche Charge, Tiger Strike, Dragon Rain, Fairy Ring, Thousand Threads, Slime Rain, Chain Storm, King's Charge, Feeding Frenzy, Phoenix Halo and Venom Rain.
+* The fourth move **awakens at Will 2**: until then switching skips it, and the HUD and Handbook show it locked. Reaching Will 2 announces it. **120 fruit powers** in total.
+
+### Other changes
+* The night watch at camp now spots intruders twice a second instead of every two seconds.
+* The tactical brain now keeps count of the spells, fruit powers and skills it casts (used by the automated tests).
+
+## v0.5.0 – Early Access (2026-11-18)
+
+**The companion update.** Your Magic Knights become a real squad: personalities, specialisations, party tactics, combos, revives, mood, camps, personal trials, a reserve with expeditions, sparring and rival squads - and they fly brooms beside you. Plus four new grimoires and a boss that turns your own companions against you.
+
+> v0.2.0 and v0.3.0 were never published as releases, so this build also contains both: the saved companion party, smarter enemies and bosses, the Fallen Captain, 16 grimoires and 8 Abyss Fruits (v0.2.0), and magic brooms, daily missions, amulets, awakened spells, Rogue Mages, the Witch Sisters, the Bone Dragon and Magic Knight camps (v0.3.0). See [CHANGELOG.md](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/blob/ccr-62b3f23b-74ycbu/CHANGELOG.md) for everything.
+
+### Download
+* **`BlackClover_GrimoireAwakening_v0.5.0.mcaddon`** – open it and Minecraft imports both packs (it replaces earlier versions; your grimoire, levels and party are kept, and existing companions get a personality).
+* `BlackClover_BP_v0.5.0.mcpack` / `BlackClover_RP_v0.5.0.mcpack` – the packs separately.
+
+### Companions: who they are
+* **Personalities** – Brave, Cautious, Loyal, Hothead, Cheerful, Scholar. They change courage, skill, spell power, casting pace, where a companion stands in a fight and what it says (Scholars learn 25% faster, Cheerful companions lift the party's morale, Loyal ones stay at your side).
+* **Specialisations at level 10** – **Vanguard** (resistance, Taunt pulls every foe and boss onto itself, Shield Bash, stands between you and danger), **Arcanist** (+15% power, 15% shorter cooldowns, Arcane Barrage), **Warden** (Aegis shields the party, Cleanse removes curses, cuts down arrows and spells aimed at you, revives twice as fast), **Ranger** (fights from 10+ blocks, piercing Volley, Mark for +20% squad damage). **Mastery** at level 20 or through a trial: Bulwark, Spell Echo, Sanctuary, Hawk Eye. A **Companion Tome** retrains them.
+* **Mood** – morale and weariness. Inspired companions hit 10% harder; shaken ones lose their nerve; exhausted ones cast slower. Victories, gifts, talks, rest and **Field Rations** keep them going.
+* **Talk** – ask how they feel, about their hometown and dream, or for advice.
+* **Personal trials** – at bond Friend a companion asks for help with a trial (hunt devils, rogues, the dead, face a giant...). Finishing it **awakens their grimoire** early and earns them a title; a second trial at Sworn Ally grants mastery.
+
+### Companions: how they fight (AI)
+* **Party tactics** on the whistle: Balanced, Focus fire, Protect me, Spread out, Hit and run.
+* **Combos** – foes held by a prison or a time stop take +25% from the squad; strikers go for bound foes while controllers look for fresh ones. **Marks** add +20% (+35% at mastery).
+* **Danger awareness** – boss warning circles, spell fields, meteor and rain targets are danger zones; companions step out of them (other NPCs do too, by skill).
+* **Revives** – a fallen companion leaves a glowing clover for 60 s. Sneak beside it, or a squadmate kneels there (a Warden first, and twice as fast), and they get up at half health. **Clover Leaf of Return** revives everyone at once.
+* **Smarter positioning** – Vanguards bodyguard you, Rangers and cautious companions keep their distance, Protect me keeps everyone close, Spread out keeps them apart.
+* **Flying together** – mount a broom and your companions summon their own and fly in formation behind you; land and they land with you.
+* The brain itself gained taunts (forced targets), extra skill actions, target preferences, spell echo and personality-driven courage and skill.
+
+### Companions: squad life
+* **Make camp** with the whistle: they sit around a fire, heal, shed weariness and tell stories. At night one keeps **watch** and raises the alarm when something creeps up. Between fights they **banter** with each other.
+* **Squad Banner** block: a **reserve** of 6 more knights (new recruits wait there when your party of 4 is full), swap knights in and out, reserve knights train while they wait, and **expeditions** - 6 timed missions from 8 to 60 real minutes (they run even while you are offline) that bring back doubloons, pages, amulets, rare loot and XP. Odds depend on level, specialisation, mastery and mood.
+* **Training Dummy** – shows your DPS; switch training on and your companions practise on it between fights.
+* **Sparring matches** – two companions duel, non-lethally, for XP.
+* **Rival squads** (world event) – another company's squad challenges your party to a friendly match: beaten rivals yield, nobody dies, the winner takes doubloons and glory.
+* Hold the **Companion Whistle** to see your party's health and mood on screen. Hand a companion an **amulet** to wear.
+
+### New boss: the Soul Puppeteer
+* A floating marionette master with a porcelain mask (600 HP). String lashes, falling needles, marionette minions - and **the strings**: it takes control of your companions, who turn their magic on you. Strike them a few times or have a Warden Cleanse them to cut the strings. Desperation: **Grand Finale**.
+* Summon it with a **Cursed Spool**, or meet it in the new night event.
+
+### More content
+* **4 new grimoires, 20 spells:** Gravity, Moon, Thorn and Ash, each with an awakened spell (36 grimoires and 179 spells in total).
+* **New items:** Squad Banner, Training Dummy, Clover Leaf of Return, Field Rations, Companion Tome, Cursed Spool. The merchant sells rations, clover leaves and tomes.
+* **New creature:** the Marionette.
+* **New events:** rival squad, puppet show.
+
+### Animations & models
+* Companions: kneel (reviving), point (marking), guard, victory, wave, taunt, eat, sleep, and a riding pose for brooms.
+* The Soul Puppeteer (float, cast, control, summon, roar), the Marionette (idle, jerky walk, attack), the Training Dummy (hit wobble), the Squad Banner block.
+
+### Fixes & changes
+* Friendly fights (sparring, rival squads) can never kill.
+* The companion loop now runs on aligned ticks, so periodic checks (bond over time, saving) fire reliably.
+* Knight Contracts and recruiting count the reserve: you can lead up to 10 knights.
+
+### Known issues
+* Companions on brooms are steered by script; in tight caves they may clip through leaves or ceilings until you land.
+* Expedition timers use real time; changing your device clock changes them too.
+* Balance is still a first pass: please report anything too strong or too weak.
+
+## v0.3.0 – Early Access (2026-11-17)
+
+A big content drop: take to the sky on **magic brooms**, earn rewards with **daily missions**, wear **amulets**, awaken a **fifth spell** in every grimoire, and face **Rogue Mages**, the **Witch Sisters** and the **Bone Dragon**.
+
+> v0.2.0 was never published as a release, so this build also contains all of v0.2.0: the saved **companion party** with smart AI, smarter enemies and bosses (threat, three phases, desperation moves), the Fallen Captain, 8 more grimoires and 8 more Abyss Fruits. See the v0.2.0 section of [CHANGELOG.md](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/blob/ccr-62b3f23b-74ycbu/CHANGELOG.md) for the full list.
+
+### Download
+* **`BlackClover_GrimoireAwakening_v0.3.0.mcaddon`** – open it and Minecraft imports both packs (it replaces v0.1.0 / v0.2.0; your grimoire, levels and party are kept).
+* `BlackClover_BP_v0.3.0.mcpack` / `BlackClover_RP_v0.3.0.mcpack` – the packs separately.
+
+### New: magic brooms
+* **Magic Broom** (stick, hay block, mana crystal) and **Swift Broom** (feathers, a diamond, a Magic Broom). Use one to mount it.
+* **Look** to steer, **hold forward** to fly (look up to climb, down to dive), **hold back** to brake, let go to **hover**, **sneak** to step off – the broom flies back into your pack and you float down gently.
+* Flying costs mana (1.5 / 2.5 per second, 40% while hovering) and your mana does not regenerate in the air. Run dry and the broom glides down until 15% of your mana is back.
+* Without a grimoire a broom can only glide; Anti-Magic smothers it entirely. A small HUD shows speed, mana and altitude.
+
+### New: daily missions
+* **Three missions every in-game day** – an easy one, a harder one and a wild card – from 15 kinds: hunt Dark Disciples, Imps, Hellhounds, raiders, Mana Wraiths or Rogue Mages, patrol against monsters, defeat any boss, seal a Devil Gate, cast 40 spells, earn 600 XP, deliver crystals, pages or bones, or lead your companions to 10 victories.
+* Progress counts anywhere (your companions' kills count too); everyone near a boss or a sealed gate gets credit.
+* Claim rewards at the new **Mission Board** block (oak planks, paper, green dye, sticks): 1-3 stars, 30-150 doubloons and 120-500 magic XP; all three done gives 4 Mana Crystals. Swap an unstarted mission (free once a day). The Handbook shows today's missions.
+
+### New: amulets
+* Hold one in your **off hand**: **Mana Heart** (+30 max mana, +20% regen), **Swift Sigil** (cooldowns −12%), **Battle Charm** (+12% spell power), **Guardian Ward** (Resistance II below 40% health), **Vigor Band** (two extra hearts, faster healing).
+* Craft them (gold nuggets, string, a mana crystal and a focus), buy a **Mystery Amulet** from the merchant, or find them in camps and boss loot.
+
+### New: awakened spells
+* At **magic level 15** every grimoire except Anti-Magic awakens a **fifth, strongest spell** – 31 in total (159 spells overall): Gale Emperor, Crown of Suns, Ocean Sovereign, Thousand Bolts and more.
+* Magic Knights and companions learn their awakened spell at level 15 too.
+
+### New foes
+* **Rogue Mages** – outlaw mages with a real grimoire (any attribute) and a level from 2 to 8. They spawn at night in plains, forests, taiga and savanna, fight with the same tactical brain and spell kits as knights, hunt players, knights and the Tidewatch, and form a **Rogue Mages** army at the War Table.
+* **The Witch Sisters** (twin boss, 450 HP each) – the Frost Witch and the Ember Witch fly, blink away from melee and weave **Twin Spells** (an ice prison, then falling fire on the same spot). Kill one and the other screams, gains strength and speed and unleashes her desperation move: **Absolute Winter** or **Inferno Requiem**. Summon them with a **Twin Moon Charm**.
+* **The Bone Dragon** (1100 HP) – circles overhead, breathes withering bone-fire, blows you away with its wings, rains bones, dives onto a warning circle, sweeps its tail and raises skeletons. Desperation: **Death's Wingbeat**. Summon it with a **Bone Totem**.
+
+### World
+* **Magic Knight camps** appear on open grassland: tents and bedrolls around a campfire, a Mission Board, a supply chest and three knights on watch.
+* New events: **Rogue ambush** (sometimes with a knight patrol coming to help), **Witch Sisters** (night) and **Bone Dragon** (night).
+* The Travelling Merchant sells **Magic Brooms** and **Mystery Amulets**.
+
+### Animations & models
+* New 3D models: two brooms, the Mission Board, Rogue Mages (four robe colours), the Frost and Ember Witches, the Bone Dragon.
+* Witches: float, cast, staff sweep, roar. Bone Dragon: wingbeat flight, breath, dive, tail sweep, roar. Brooms bob and sway in flight.
+
+### Known issues
+* Camps only appear on fairly flat grass or dirt, so they are rarer in hilly biomes.
+* Balance is still a first pass: please report anything too strong or too weak.
+
+## v0.2.0 – Early Access (2026-11-17)
+
+A big content update with a full **companion system**, smarter **enemies** and **bosses**, and many new **animations**.
+
+### Download
+* **`BlackClover_GrimoireAwakening_v0.2.0.mcaddon`** – open it and Minecraft imports both packs (it replaces v0.1.0).
+* `BlackClover_BP_v0.2.0.mcpack` / `BlackClover_RP_v0.2.0.mcpack` – the packs separately.
+
+### New: companions
+* Recruited Magic Knights become a **saved party of up to 4**: name, magic, level, robe and bond stay with your player across sessions, and a fallen companion **returns after 60 seconds**.
+* **Companion Whistle:** open your party, summon or dismiss, rename, give orders, choose a **stance** (aggressive, defensive, passive) and a **formation** (wedge, line, circle), toggle loot gathering. **Sneak + use** at a foe: everyone attacks it; at nothing: regroup.
+* **Smart support AI:** companions attack what you attack, rush whoever hurts you, heal you first when you are low, step out of your line of fire, walk in formation, gather loot, sit when you rest and talk to you.
+* **Levels 1-20** with health tiers (40 → 130), more spells at 3 and 6, extra power above 10.
+* **Bond:** grows with time, victories, level-ups and **gifts** (Mana Cookies and more). Ranks unlock **Mana Link**, **Guardian** and **Union Magic** (a combined ultimate spell).
+* **Robes:** hand a companion a squad robe to dress them and give them its perk.
+* Rescue a **wounded knight** (new event) and it joins you.
+
+### Smarter enemies
+* Dark Disciples, Imps, Sea Raiders, the new **Raider Gunners** and **Tidewatch Marksmen**, **Hellhounds** and **Mana Wraiths** now fight with the tactical brain: spell kits, aim leading, dodging, retreating.
+* Gunners and marksmen aim before they fire and keep their distance; Hellhounds hunt in packs, circling their prey before lunging; hurt one enemy and its kind come running.
+
+### Smarter bosses
+* **Threat tables:** bosses turn on whoever hurts them most (melee knights and companions can tank).
+* **Three phases** with a once-only **desperation** move: Hellgate, Avalanche, Ghost Ram, Maelstrom, Final Form.
+* **Telegraphed** slams and waves, **signature movement** (Archdevil blinks, Kraken submerges, Colossus stomps, Galleon rams) and a six-minute **enrage timer**.
+* New boss: **the Fallen Captain** - a corrupted Magic Knight captain who duels with a blade and three grimoires, blinks behind you, parries and dodges.
+
+### New content
+* **8 grimoires, 32 spells:** Cotton, Paper, Smoke, Glass, Gold, Beast, Spirit, Rune (32 grimoires and 128 spells in total).
+* **8 Abyss Fruits, 24 abilities:** Spore, Thread, Slime, Chain, and the **Lion, Shark, Phoenix and Spider** beast forms (30 fruits and 90 abilities in total; the Shark Fruit is not drained by the sea).
+* **New creatures:** Raider Gunner, Tidewatch Marksman, Hellhound, Mana Wraith (drains your mana), the Fallen Captain.
+* **New items:** Companion Whistle, Mana Cookie (+30 mana), Seal of the Fallen Captain.
+* **New events:** wounded knight, mana storm, bounty hunters, the Fallen Captain.
+
+### Animations
+* Knights and companions: cast animations per kind of spell (raise, channel, slam), dodge, flinch, salute, cheer, sit.
+* Player: channel and slam casting animations for the new spell kinds.
+* Bosses: Colossus throw, stomp and roar; Archdevil roar and blink; Kraken submerge and emerge; Galleon broadside and ram; Fallen Captain slash, cast, parry and roar.
+* Enemies: gunner aim, shoot and throw; Hellhound bite and howl; Mana Wraith float and cast.
+
+### Known issues
+* Balance is still a first pass: please report anything too strong or too weak.
+* Companions fall back to the vanilla follow behaviour on rough terrain; the whistle's regroup fixes stragglers.
+* The Stone Colossus can get stuck on rough terrain; the Phantom Galleon is steered by script and may drift.
+
+## v0.1.0 – Early Access (2026-11-17)
+
+The first public build of **Black Clover: Grimoire Awakening**, an unofficial fan addon for Minecraft Bedrock (1.21.90+, no experimental toggles).
+This release puts the focus on **AI behaviour and simulation**: NPCs that fight with tactics, battles you can stage and watch, and a world whose factions rise and fall on their own.
+
+> Early access: everything works end to end in our automated checks, but balance (damage, morale, bets, boss health) is a first pass. Please report anything odd in the issue tracker.
+
+### Download
+* **`BlackClover_GrimoireAwakening_v0.1.0.mcaddon`** – open it and Minecraft imports both packs.
+* `BlackClover_BP_v0.1.0.mcpack` / `BlackClover_RP_v0.1.0.mcpack` – the behavior and resource packs separately.
+* If you tried a private test build before, remove those packs first (they used a higher internal version number).
+
+### New: tactical AI for spellcasters
+* Magic Knights and Raider Captains are run by a shared **tactical brain**. Each has a **fighting style** worked out from the spells it knows (striker, controller, brawler or support) and two traits: **skill** and **courage**.
+* Every moment it scores each spell for the situation – range, how tightly enemies are bunched, hurt allies, cooldowns – and casts the best one, **leading moving targets** (better aim with more skill).
+* NPCs **side-step spells and arrows** flying at them, **gang up** on their army's focus target, prefer foes that just hurt them, **heal and buff** hurt friends, and **fall back** to their allies when badly wounded (unless they are brave).
+* Spellcasters **keep their distance** from foes that get too close while brawlers dive in.
+* Team-aware targeting everywhere: commodore bombardments and captain powers in a battle only hit the other armies.
+
+### New: battle simulation
+* **Tactics** per army: *Charge* (speed burst), *Hold the line*, *Flank* (half the army swings around the side), *Skirmish* (mages kite).
+* **Formations**: melee in front, mages behind, the leader in the middle.
+* **Morale**: losses, a fallen leader or being outnumbered break an army; frightened soldiers **flee** and can **rally** while their leader lives. An army with no one left fighting loses.
+* **Leaders** steady and strengthen the soldiers around them.
+* **Three-army battles** (Blue, Red and Gold) and **knight duels** with any two magic attributes and a chosen level.
+* A live **scoreboard** (soldiers and morale per army), a **kill feed**, a **battle report** with an MVP, bets that pay 2x (3x with three armies), and a slowly circling **cinematic camera** (sneak to leave).
+
+### New: the world simulates itself
+* The Clover Magic Knights, Devil Host, Sea Raiders and Tidewatch Navy each have a **power** that falls when their people die and rises when they win real battles. Off screen, rivals keep fighting and the **news** reaches you.
+* Strong factions show up more often in world events; a dominant one launches an **offensive** – a large battle near a player.
+* **State of the Kingdom** page (Handbook and War Table) with power bars and the latest news.
+
+### New: knights you can lead
+* Knights **level up** (1–10) from kills, with ranks shown over their heads, and learn more of their grimoire at levels 3 and 6.
+* **Talk** to any knight to see its profile (magic, rank, style, skill, courage, kills). **Recruit** wild knights with a Knight Contract or doubloons (up to 4).
+* Give your knights **orders**: follow, hold this position, guard you (defensive) or hunt freely (aggressive), or release them.
+* New world event: a **knights' tournament** duel.
+
+### Everything else in this first build
+* 24 grimoires (96 spells) including the five-leaf Anti-Magic grimoire with three demon swords and Black Form; 22 Abyss Fruits (66 abilities) with Wolf, Hawk, Bear, Tiger and Wyvern beast forms; Will; nine squad robes and Magic Knight ranks.
+* Sailing ships with cannons, raider outposts and wrecks, a Bounty Board, ancient dungeons, treasure maps and pirate weapons.
+* Bosses: the Devil, the Abyssal Leviathan, the Dungeon Guardian, the Archdevil, the Stone Colossus, the Phantom Galleon and the Storm Kraken.
+* Random world events, the Travelling Magic Merchant, the War Table and the Skirmish Horn.
+
+### Known issues
+* Not yet tuned in long play sessions: damage numbers, bet payouts, boss health and morale thresholds may change.
+* The Stone Colossus is huge and can get stuck on rough terrain; the Phantom Galleon is steered by script and may drift.
+* Spell trails behind the new mana bolts may appear white on some devices.

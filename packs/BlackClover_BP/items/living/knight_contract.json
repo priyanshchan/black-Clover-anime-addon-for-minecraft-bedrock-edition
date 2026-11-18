@@ -1,0 +1,31 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:knight_contract",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_knight_contract"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§aKnight Contract"
+      },
+      "minecraft:max_stack_size": {
+        "value": 16
+      },
+      "minecraft:glint": {
+        "value": false
+      },
+      "minecraft:use_modifiers": {
+        "use_duration": 0.6,
+        "movement_modifier": 1.0
+      }
+    }
+  }
+}

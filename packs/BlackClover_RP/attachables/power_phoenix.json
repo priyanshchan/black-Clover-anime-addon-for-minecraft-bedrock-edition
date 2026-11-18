@@ -1,0 +1,28 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "bc:power_phoenix",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/power_phoenix"
+      },
+      "geometry": {
+        "default": "geometry.bc.power_phoenix"
+      },
+      "animations": {
+        "aura": "animation.bc.power.beast_phoenix"
+      },
+      "scripts": {
+        "animate": [
+          "aura"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.attachable"
+      ]
+    }
+  }
+}

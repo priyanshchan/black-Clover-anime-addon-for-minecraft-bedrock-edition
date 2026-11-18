@@ -1,0 +1,39 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:shade_soldier",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/shade_soldier"
+      },
+      "geometry": {
+        "default": "geometry.bc.shade_soldier"
+      },
+      "animations": {
+        "idle": "animation.bc.dark_disciple.idle",
+        "walk": "animation.bc.dark_disciple.walk",
+        "look": "animation.bc.dark_disciple.look_at_target",
+        "aura": "animation.bc.mob.aura"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look",
+          "aura"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:disciple_aura"
+      }
+    }
+  }
+}

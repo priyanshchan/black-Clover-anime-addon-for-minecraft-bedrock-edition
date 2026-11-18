@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:ember_witch",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/ember_witch"
+      },
+      "geometry": {
+        "default": "geometry.bc.ember_witch"
+      },
+      "animations": {
+        "float": "animation.bc.ember_witch.float",
+        "look_at_target": "animation.bc.ember_witch.look_at_target",
+        "cast": "animation.bc.ember_witch.cast",
+        "sweep": "animation.bc.ember_witch.sweep",
+        "roar": "animation.bc.ember_witch.roar",
+        "aura": "animation.bc.mob.aura"
+      },
+      "scripts": {
+        "animate": [
+          "float",
+          "look_at_target",
+          "aura"
+        ],
+        "scale": "1.25"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:disciple_aura"
+      },
+      "spawn_egg": {
+        "base_color": "#2e0808",
+        "overlay_color": "#f0c24a"
+      }
+    }
+  }
+}

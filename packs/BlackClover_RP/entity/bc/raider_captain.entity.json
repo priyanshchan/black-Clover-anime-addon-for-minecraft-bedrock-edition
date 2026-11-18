@@ -1,0 +1,38 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:raider_captain",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/raider_captain"
+      },
+      "geometry": {
+        "default": "geometry.bc.raider_captain"
+      },
+      "animations": {
+        "idle": "animation.bc.raider_captain.idle",
+        "walk": "animation.bc.raider_captain.walk",
+        "look": "animation.bc.raider_captain.look_at_target"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#6a1018",
+        "overlay_color": "#f0c24a"
+      }
+    }
+  }
+}

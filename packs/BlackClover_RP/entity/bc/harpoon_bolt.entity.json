@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:harpoon_bolt",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/harpoon_bolt"
+      },
+      "geometry": {
+        "default": "geometry.bc.harpoon_bolt"
+      },
+      "animations": {
+        "fly": "animation.bc.harpoon_bolt.fly",
+        "trail": "animation.bc.spell.trail"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "trail"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "trail": "bc:trail_dust"
+      }
+    }
+  }
+}
