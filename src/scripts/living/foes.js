@@ -9,6 +9,7 @@ import { ItemStack, Player, system, world } from '@minecraft/server';
 import { canHit, center, effect, hurt } from '../core/combat.js';
 import { anim, particle, rgb, sound } from '../core/fx.js';
 import { V, alive, rand, safe } from '../core/util.js';
+import { emit } from '../core/bus.js';
 
 const VALUABLES = ['bc:doubloon', 'minecraft:emerald', 'minecraft:diamond', 'minecraft:gold_ingot', 'bc:mana_crystal'];
 /** @type {Map<string, {from: string, until: number}>} thief id -> who it robbed */
@@ -62,6 +63,7 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
   safe(() => e.dimension.spawnItem(new ItemStack(s.id, s.n), e.location));
   const p = world.getEntity(s.from);
   if (p instanceof Player) safe(() => p.onScreenDisplay.setActionBar('§aYou caught the thief - your goods are on the ground!'));
+  if (p instanceof Player) emit('thief', p);
 }, 'thiefDie'));
 
 system.runInterval(() => {

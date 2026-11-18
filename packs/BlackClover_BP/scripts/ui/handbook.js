@@ -11,6 +11,7 @@ import { notoriety, notorietyTitle } from '../sea/navy.js';
 import { kingdomPage } from '../living/worldsim.js';
 import { missionSummary } from '../living/missions.js';
 import { eventLog } from '../living/events.js';
+import { featsPage } from '../living/feats.js';
 
 const G = DATA.glyphs;
 
@@ -64,6 +65,8 @@ export async function openHandbook(p) {
   actions.push(() => kingdomPage(p));
   form.button('§lRecent events\n§r§8Raids, rituals, hives and more');
   actions.push(() => eventPage(p));
+  form.button('§lFeats & titles\n§r§8Lifetime achievements');
+  actions.push(() => featsPage(p, () => openHandbook(p)));
   form.button('§lHow to play\n§r§8Altar, mana, robes, the Devil');
   actions.push(() => guide(p));
   sound(p.dimension, 'bc.grimoire.flip', p.location, 0.8, 1);
@@ -292,6 +295,8 @@ async function gearPage(p) {
     '§l§6Magic Brooms§r\n' + brooms + '\n§7Use a broom to mount it. Look where you want to go and hold forward (look up to climb), hold back to brake, let go to hover, sneak to step off - the broom returns to your pack. Flying drains mana; when you run dry it only glides. Without a grimoire a broom can only glide, and Anti-Magic smothers it entirely.',
     '§l§dAmulets§r\n' + amulets + '\n§7Hold an amulet in your §foff hand§7. Craft them from gold nuggets, string, a mana crystal and a focus (lapis block, emerald, redstone block, iron block or golden apple), buy a Mystery Amulet from the merchant, or find one in camp chests.',
     '§l§aMagic Knight camps§r\n§7Tents around a campfire on open grassland, with knights on watch, a supply chest and a Mission Board.',
+    '§l§6Potions & scrolls§r\n§7Mana Potions (+60 mana), Greater Mana Potions (all of it), the Elixir of Iron (Resistance II, Absorption II) and the Elixir of Haste (Speed, spells 25% faster) for 60 s; Smoke Bombs blind everything around you and hide you; Spell Scrolls cast a spell from any grimoire - even if you have none.',
+    '§l§6Elites & lairs§r\n§7Some enemies spawn as §6elites§7 with a trait (Vampiric, Shielded, Swift, Explosive, Summoner, Arcane, Frenzied) and drop better loot. Bandit hideouts, hive nests and cultist shrines appear in the wild - guarded, and full of treasure.',
     '§l§5New moves & awakening§r\n§7Every grimoire has a new move at magic level 12 (Anti-Magic: Black Hurricane), and every grimoire but Anti-Magic awakens its strongest spell at 15. Every Abyss Fruit has a fourth move that awakens at Will 2. Knights and companions learn theirs at levels 12 and 15 too.',
   ].join('\n\n');
   await new MessageFormData().title('Brooms & amulets').body(body).button1('Back').button2('Close').show(p).then((res) => {

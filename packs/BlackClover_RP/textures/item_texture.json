@@ -89,6 +89,12 @@
     "bc_doubloon": {
       "textures": "textures/items/bc/doubloon"
     },
+    "bc_elixir_haste": {
+      "textures": "textures/items/bc/elixir_haste"
+    },
+    "bc_elixir_iron": {
+      "textures": "textures/items/bc/elixir_iron"
+    },
     "bc_fallen_seal": {
       "textures": "textures/items/bc/fallen_seal"
     },
@@ -196,6 +202,9 @@
     },
     "bc_golden_dawn_robe": {
       "textures": "textures/items/bc/golden_dawn_robe"
+    },
+    "bc_greater_mana_potion": {
+      "textures": "textures/items/bc/greater_mana_potion"
     },
     "bc_green_mantis_robe": {
       "textures": "textures/items/bc/green_mantis_robe"
@@ -338,6 +347,9 @@
     "bc_mana_crystal": {
       "textures": "textures/items/bc/mana_crystal"
     },
+    "bc_mana_potion": {
+      "textures": "textures/items/bc/mana_potion"
+    },
     "bc_power_acid": {
       "textures": "textures/items/bc/power_acid"
     },
@@ -442,6 +454,12 @@
     },
     "bc_skirmish_horn": {
       "textures": "textures/items/bc/skirmish_horn"
+    },
+    "bc_smoke_bomb": {
+      "textures": "textures/items/bc/smoke_bomb"
+    },
+    "bc_spell_scroll": {
+      "textures": "textures/items/bc/spell_scroll"
     },
     "bc_swift_broom": {
       "textures": "textures/items/bc/swift_broom"

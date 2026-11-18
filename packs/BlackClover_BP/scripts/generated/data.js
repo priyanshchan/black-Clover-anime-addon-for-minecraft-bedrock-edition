@@ -7066,6 +7066,30 @@ export const DATA = {
       "count": 1,
       "price": 150,
       "label": "Companion Tome"
+    },
+    {
+      "item": "bc:mana_potion",
+      "count": 3,
+      "price": 45,
+      "label": "Mana Potions x3"
+    },
+    {
+      "item": "bc:elixir_iron",
+      "count": 1,
+      "price": 60,
+      "label": "Elixir of Iron"
+    },
+    {
+      "item": "bc:smoke_bomb",
+      "count": 3,
+      "price": 30,
+      "label": "Smoke Bombs x3"
+    },
+    {
+      "item": "bc:spell_scroll",
+      "count": 1,
+      "price": 70,
+      "label": "Spell Scroll"
     }
   ],
   "factions": {
@@ -7609,6 +7633,292 @@ export const DATA = {
       "mana": 2.5
     }
   },
+  "elites": {
+    "vampiric": {
+      "name": "Vampiric",
+      "mc": "\u00a74",
+      "desc": "heals itself for 30% of the damage it deals"
+    },
+    "shielded": {
+      "name": "Shielded",
+      "mc": "\u00a7b",
+      "desc": "a mana shield halves spell damage until three blows break it"
+    },
+    "swift": {
+      "name": "Swift",
+      "mc": "\u00a7a",
+      "desc": "fast, skilled and hard to hit"
+    },
+    "explosive": {
+      "name": "Explosive",
+      "mc": "\u00a7c",
+      "desc": "bursts one second after it falls - get clear!"
+    },
+    "summoner": {
+      "name": "Summoner",
+      "mc": "\u00a75",
+      "desc": "calls two lesser copies of itself every 15 seconds"
+    },
+    "arcane": {
+      "name": "Arcane",
+      "mc": "\u00a7d",
+      "desc": "casts a spell from a random grimoire every 8 seconds"
+    },
+    "frenzied": {
+      "name": "Frenzied",
+      "mc": "\u00a76",
+      "desc": "below half health it gains Strength II and Speed"
+    }
+  },
+  "eliteChance": 0.06,
+  "consumables": {
+    "mana_potion": {
+      "name": "\u00a7bMana Potion",
+      "desc": "Restores 60 mana (or 30% of the Anti-Magic gauge)."
+    },
+    "greater_mana_potion": {
+      "name": "\u00a79Greater Mana Potion",
+      "desc": "Restores all your mana and grants Regeneration for 10 s."
+    },
+    "elixir_iron": {
+      "name": "\u00a77Elixir of Iron",
+      "desc": "Resistance II and Absorption II for 60 s."
+    },
+    "elixir_haste": {
+      "name": "\u00a7aElixir of Haste",
+      "desc": "Speed and 25% shorter spell cooldowns for 60 s."
+    },
+    "smoke_bomb": {
+      "name": "\u00a78Smoke Bomb",
+      "desc": "Blinds foes around you and hides you in smoke for 4 s."
+    },
+    "spell_scroll": {
+      "name": "\u00a7eSpell Scroll",
+      "desc": "Read it to cast the spell written on it - from any grimoire, even without one of your own."
+    }
+  },
+  "feats": [
+    {
+      "id": "first_blood",
+      "name": "First Blood",
+      "desc": "Defeat your first monster.",
+      "counter": "kills",
+      "goal": 1,
+      "stars": 0,
+      "coins": 10,
+      "title": "the Rookie"
+    },
+    {
+      "id": "hunter",
+      "name": "Monster Hunter",
+      "desc": "Defeat 100 hostile creatures.",
+      "counter": "kills",
+      "goal": 100,
+      "stars": 1,
+      "coins": 50,
+      "title": "the Hunter"
+    },
+    {
+      "id": "scourge",
+      "name": "Scourge of Monsters",
+      "desc": "Defeat 1000 hostile creatures.",
+      "counter": "kills",
+      "goal": 1000,
+      "stars": 3,
+      "coins": 300,
+      "title": "the Scourge"
+    },
+    {
+      "id": "giant_slayer",
+      "name": "Giant Slayer",
+      "desc": "Defeat a boss.",
+      "counter": "bosses",
+      "goal": 1,
+      "stars": 1,
+      "coins": 60,
+      "title": "Giant Slayer"
+    },
+    {
+      "id": "legend",
+      "name": "Legend",
+      "desc": "Defeat 10 bosses.",
+      "counter": "bosses",
+      "goal": 10,
+      "stars": 3,
+      "coins": 300,
+      "title": "the Legend"
+    },
+    {
+      "id": "bane",
+      "name": "Bane of Giants",
+      "desc": "Defeat 8 different bosses.",
+      "counter": "boss_kinds",
+      "goal": 8,
+      "stars": 3,
+      "coins": 400,
+      "title": "Bane of Giants"
+    },
+    {
+      "id": "spellslinger",
+      "name": "Spellslinger",
+      "desc": "Cast 500 spells or fruit powers.",
+      "counter": "casts",
+      "goal": 500,
+      "stars": 1,
+      "coins": 60,
+      "title": "the Spellslinger"
+    },
+    {
+      "id": "archmage",
+      "name": "Archmage",
+      "desc": "Cast 5000 spells or fruit powers.",
+      "counter": "casts",
+      "goal": 5000,
+      "stars": 3,
+      "coins": 300,
+      "title": "the Archmage"
+    },
+    {
+      "id": "seasoned",
+      "name": "Seasoned Knight",
+      "desc": "Reach magic level 10.",
+      "counter": "level",
+      "goal": 10,
+      "stars": 1,
+      "coins": 80,
+      "title": "the Seasoned"
+    },
+    {
+      "id": "grand_knight",
+      "name": "Grand Magic Knight",
+      "desc": "Reach magic level 20.",
+      "counter": "level",
+      "goal": 20,
+      "stars": 3,
+      "coins": 300,
+      "title": "Grand Magic Knight"
+    },
+    {
+      "id": "captain",
+      "name": "Squad Captain",
+      "desc": "Lead four companions at once.",
+      "counter": "party",
+      "goal": 4,
+      "stars": 1,
+      "coins": 80,
+      "title": "Squad Captain"
+    },
+    {
+      "id": "soulbound",
+      "name": "Soulbound",
+      "desc": "Reach Soulbound with a companion.",
+      "counter": "soulbound",
+      "goal": 1,
+      "stars": 2,
+      "coins": 150,
+      "title": "the Soulbound"
+    },
+    {
+      "id": "reliable",
+      "name": "Reliable",
+      "desc": "Complete 10 missions.",
+      "counter": "missions",
+      "goal": 10,
+      "stars": 1,
+      "coins": 80,
+      "title": "the Reliable"
+    },
+    {
+      "id": "hero",
+      "name": "Hero of the Kingdom",
+      "desc": "Complete 50 missions.",
+      "counter": "missions",
+      "goal": 50,
+      "stars": 3,
+      "coins": 300,
+      "title": "Hero of the Kingdom"
+    },
+    {
+      "id": "defender",
+      "name": "Defender",
+      "desc": "Win 10 events (raids, rituals, hives...).",
+      "counter": "events",
+      "goal": 10,
+      "stars": 2,
+      "coins": 150,
+      "title": "the Defender"
+    },
+    {
+      "id": "elite_hunter",
+      "name": "Elite Hunter",
+      "desc": "Defeat 10 elite enemies.",
+      "counter": "elites",
+      "goal": 10,
+      "stars": 2,
+      "coins": 150,
+      "title": "Elite Hunter"
+    },
+    {
+      "id": "not_my_purse",
+      "name": "Not My Purse",
+      "desc": "Catch a thief.",
+      "counter": "thieves",
+      "goal": 1,
+      "stars": 1,
+      "coins": 40,
+      "title": "the Vigilant"
+    },
+    {
+      "id": "exterminator",
+      "name": "Exterminator",
+      "desc": "Smash 25 hive eggs.",
+      "counter": "eggs",
+      "goal": 25,
+      "stars": 1,
+      "coins": 80,
+      "title": "the Exterminator"
+    },
+    {
+      "id": "scroll_scholar",
+      "name": "Scroll Scholar",
+      "desc": "Read 10 spell scrolls.",
+      "counter": "scrolls",
+      "goal": 10,
+      "stars": 1,
+      "coins": 60,
+      "title": "the Scholar"
+    },
+    {
+      "id": "sea_cursed",
+      "name": "Cursed by the Sea",
+      "desc": "Eat an Abyss Fruit.",
+      "counter": "fruit",
+      "goal": 1,
+      "stars": 0,
+      "coins": 30,
+      "title": "Sea-Cursed"
+    },
+    {
+      "id": "sky_rider",
+      "name": "Sky Rider",
+      "desc": "Fly a magic broom.",
+      "counter": "broom",
+      "goal": 1,
+      "stars": 0,
+      "coins": 30,
+      "title": "Sky Rider"
+    },
+    {
+      "id": "lair_raider",
+      "name": "Lair Raider",
+      "desc": "Loot 3 lairs (hideouts, nests, shrines).",
+      "counter": "lairs",
+      "goal": 3,
+      "stars": 2,
+      "coins": 120,
+      "title": "the Raider"
+    }
+  ],
   "companion": {
     "xp": [
       0,

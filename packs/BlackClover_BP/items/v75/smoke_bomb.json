@@ -1,0 +1,28 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:smoke_bomb",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_smoke_bomb"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§8Smoke Bomb"
+      },
+      "minecraft:max_stack_size": {
+        "value": 16
+      },
+      "minecraft:use_modifiers": {
+        "use_duration": 0.4,
+        "movement_modifier": 1.0
+      }
+    }
+  }
+}

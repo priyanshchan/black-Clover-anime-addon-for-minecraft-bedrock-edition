@@ -26,6 +26,7 @@ from bc.data import (ALTAR_WEIGHTS, ATTR_ORDER, ATTRIBUTES, BOND, CAPTAIN_FIRST,
                      SWORDS, WILL_MAX_LEVEL)
 from bc.data import (BANTER, DREAMS, EXPEDITIONS, HOMETOWNS, MOOD, PERSONALITIES, RESERVE_MAX, SPEC_LEVEL, SPECS, TACTICS_PARTY,  # noqa: E402
                      TIPS, TRIAL_TITLES, TRIALS, COMPANION_FRUIT_LEVEL)
+from bc.data import CONSUMABLES, ELITE_AFFIXES, ELITE_CHANCE, FEATS  # noqa: E402
 from bc.models import wave4  # noqa: E402
 
 ROOT = out.ROOT
@@ -87,6 +88,10 @@ def gen_script_data():
         'missionRewards': MISSION_REWARDS,
         'amulets': {k: dict(name=n, perk=d) for k, (n, d) in AMULETS.items()},
         'brooms': {k: dict(name=n, speed=sp, mana=m) for k, (n, sp, m) in BROOMS.items()},
+        'elites': {k: dict(name=n, mc=c, desc=d) for k, (n, c, d) in ELITE_AFFIXES.items()},
+        'eliteChance': ELITE_CHANCE,
+        'consumables': {k: dict(name=n, desc=d) for k, (n, d) in CONSUMABLES.items()},
+        'feats': [dict(id=i, name=n, desc=d, counter=c, goal=g, stars=st, coins=co, title=t) for i, n, d, c, g, st, co, t in FEATS],
         'companion': {'xp': COMPANION_XP, 'hp': COMPANION_HP, 'bond': [dict(at=a, name=n, perk=k) for a, n, k in BOND],
                       'partyMax': PARTY_MAX, 'lines': COMPANION_LINES, 'personalities': PERSONALITIES, 'specs': SPECS, 'specLevel': SPEC_LEVEL,
                       'tactics': {k: dict(name=n, desc=d) for k, (n, d) in TACTICS_PARTY.items()}, 'mood': MOOD,

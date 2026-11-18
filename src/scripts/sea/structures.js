@@ -5,6 +5,7 @@ import { DATA } from '../generated/data.js';
 import { STRUCTURES } from '../generated/structures.js';
 import { V, pick, rand, safe, yawOf } from '../core/util.js';
 import { spawnCaptain } from './captains.js';
+import { makeScroll } from '../core/scrolls.js';
 
 const SPACING = 200;
 const KEY = 'bc:sea_structs';
@@ -16,6 +17,14 @@ const LOOT = {
     ['minecraft:heart_of_the_sea', 1, 1, 0.12], ['fruit', 1, 1, 0.35], ['bc:leviathan_lure', 1, 1, 0.06], ['bc:treasure_map', 1, 1, 0.3]],
   dungeon: [['bc:ancient_page', 1, 3, 0.9], ['bc:mana_crystal', 2, 5, 0.8], ['minecraft:gold_ingot', 3, 7, 0.7], ['minecraft:diamond', 1, 2, 0.35],
     ['robe', 1, 1, 0.15], ['bc:clover_charm', 1, 1, 0.04], ['bc:treasure_map', 1, 1, 0.2]],
+  hideout: [['bc:doubloon', 20, 45, 1], ['minecraft:gold_ingot', 2, 5, 0.7], ['minecraft:emerald', 1, 4, 0.6], ['bc:mana_potion', 1, 2, 0.5],
+    ['bc:smoke_bomb', 1, 3, 0.5], ['minecraft:bread', 3, 6, 0.6], ['scroll', 1, 1, 0.3]],
+  hideout_vault: [['bc:doubloon', 40, 90, 1], ['minecraft:diamond', 1, 3, 0.5], ['bc:treasure_map', 1, 1, 0.5], ['amulet', 1, 1, 0.25],
+    ['bc:bandit_crown', 1, 1, 0.12], ['bc:elixir_haste', 1, 1, 0.4], ['scroll', 1, 1, 0.5]],
+  hive: [['minecraft:honeycomb', 4, 10, 1], ['minecraft:honey_bottle', 1, 3, 0.7], ['minecraft:slime_ball', 2, 5, 0.6], ['bc:mana_crystal', 2, 5, 0.8],
+    ['bc:royal_jelly', 1, 1, 0.1], ['bc:greater_mana_potion', 1, 1, 0.25], ['amulet', 1, 1, 0.12]],
+  shrine: [['bc:ancient_page', 1, 3, 0.9], ['bc:mana_crystal', 3, 6, 0.9], ['bc:devil_heart', 1, 1, 0.15], ['bc:forbidden_tome', 1, 1, 0.08],
+    ['bc:elixir_iron', 1, 1, 0.4], ['scroll', 1, 2, 0.7], ['amulet', 1, 1, 0.15]],
   camp: [['bc:mana_crystal', 2, 4, 0.9], ['bc:mana_cookie', 2, 5, 0.7], ['minecraft:bread', 3, 6, 0.8], ['bc:knight_contract', 1, 1, 0.25],
     ['bc:ancient_page', 1, 1, 0.3], ['amulet', 1, 1, 0.08], ['robe', 1, 1, 0.1], ['bc:companion_whistle', 1, 1, 0.15]],
   treasure: [['bc:doubloon', 30, 60, 1], ['minecraft:gold_ingot', 4, 9, 0.9], ['minecraft:diamond', 1, 4, 0.6], ['minecraft:emerald', 2, 6, 0.6],
@@ -82,6 +91,7 @@ export function lootItems(table) {
     if (id === 'fruit') out.push(new ItemStack(`bc:fruit_${pick(DATA.fruitOrder)}`, 1));
     else if (id === 'robe') out.push(new ItemStack(`bc:${pick(ROBE_IDS)}`, 1));
     else if (id === 'amulet') out.push(new ItemStack(`bc:${pick(Object.keys(DATA.amulets))}`, 1));
+    else if (id === 'scroll') for (let k = 0; k < Math.max(1, n); k++) out.push(makeScroll());
     else out.push(new ItemStack(id, Math.max(1, n)));
   }
   return out;
@@ -96,7 +106,7 @@ export function fill(block, table) {
 /**
  * Build a blueprint. Runs as a background job so big structures never lag the game.
  * @param {import('@minecraft/server').Dimension} dim
- * @param {'outpost'|'wreck'|'dungeon'|'camp'} kind
+ * @param {'outpost'|'wreck'|'dungeon'|'camp'|'hideout'|'nest'|'shrine'} kind
  * @param {{x:number,y:number,z:number}} anchor
  * @param {{bountyFor?: string, captainName?: string, captainFruit?: string}} [opts]
  */
@@ -150,6 +160,10 @@ export function build(dim, kind, anchor, opts = {}) {
       const loc = { x: ax + dx + 0.5, y: ay + dy, z: az + dz + 0.5 };
       if (what === 'captain') {
         if (opts.bountyFor || Math.random() < 0.6) spawnCaptain(dim, loc, { name: opts.captainName, fruit: opts.captainFruit, bountyFor: opts.bountyFor });
+      } else if (what.startsWith('chance:')) {
+        // "chance:0.2:bc:bandit_king" - sometimes the lair's master is home
+        const [, p, ...rest] = what.split(':');
+        if (Math.random() < Number(p)) safe(() => dim.spawnEntity(rest.join(':'), loc));
       } else safe(() => dim.spawnEntity(what, loc));
     }
   }

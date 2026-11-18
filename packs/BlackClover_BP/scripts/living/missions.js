@@ -5,7 +5,7 @@
 import { ItemStack, Player, system, world } from '@minecraft/server';
 import { ActionFormData } from '@minecraft/server-ui';
 import { DATA } from '../generated/data.js';
-import { on } from '../core/bus.js';
+import { emit, on } from '../core/bus.js';
 import { ownerOf } from '../core/combat.js';
 import { particle, sound } from '../core/fx.js';
 import { addXp } from '../core/progress.js';
@@ -182,6 +182,7 @@ function claim(p, b, slot) {
   slot.claimed = true;
   b.total += 1;
   store(p, b);
+  emit('mission', p, m.id);
   sound(p.dimension, 'bc.fanfare', p.location, 0.9, 1.1);
   particle(p.dimension, 'bc:level_up', p.location);
   giveCoins(p, r.coins);

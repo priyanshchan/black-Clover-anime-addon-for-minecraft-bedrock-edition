@@ -1,6 +1,6 @@
 # Black Clover: Grimoire Awakening
 
-> **Early Access – v0.7.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
+> **Early Access – v0.7.5.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
 **An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 36 magic attributes, lead a squad of Magic Knight companions with their own personalities and specialisations, draw anti-magic demon swords, wear squad robes, fly brooms, and fight devils, pirates, bandits, assassins, rogue mages, insect swarms and fifteen giant bosses.
 
@@ -26,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v0.7.5 – lairs, elites & feats:** bandit hideouts, hive nests and cultist shrines to raid; **elite enemies** with seven traits (Vampiric, Shielded, Swift, Explosive, Summoner, Arcane, Frenzied) and better loot; Mana Potions, elixirs, Smoke Bombs and **spell scrolls** that cast a spell from any grimoire; and **22 feats** that pay stars and doubloons and unlock a title shown under your name.
 * **v0.7.0 – foes that fight together:** the Bandit Brotherhood (thieves steal your doubloons and run), Shadow Assassins, Cultists and the Hive; three new bosses (the Bandit King, the spell-stealing Grimoire Devourer, the egg-laying Hive Queen); enemy warbands that focus, surround, call for help and break; bosses that adapt to how you fight; and an event director with scaling, objectives, an event log and six new events.
 * **v0.6.0 – a grimoire and a fruit:** every companion fights with a grimoire **and** an Abyss Fruit (feed them any fruit to change it), and every grimoire and fruit gains a new move - 35 level-12 spells, Black Hurricane for Anti-Magic, and a fourth power for all 30 fruits (awakens at Will 2): 215 spells and 120 fruit powers in all.
 * **v0.5.0 – the companion update:** personalities, specialisations (Vanguard, Arcanist, Warden, Ranger) with mastery, party tactics, combos and marks, danger-aware positioning, revives, mood, camps with a night watch, talking, personal trials, a reserve of 6 more knights with real-time expeditions, a Training Dummy, sparring and rival squads, companions flying brooms with you; 4 new grimoires (Gravity, Moon, Thorn, Ash) and the **Soul Puppeteer**, a boss that takes control of your companions.
@@ -344,6 +345,17 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 
 ---
 
+## v0.7.5: lairs, elites & feats
+
+![v0.7.5](docs/images/v075.png)
+
+* **Lairs** - **bandit hideouts** (a palisade, shacks and a watchtower; sometimes the Bandit King is home) on dry, open ground, **hive nests** (eggs, drones, maybe the Hive Queen) in mossy lowlands and **cultist shrines** with imps in the woods. Each has chests worth the fight. → [Structures and lairs](docs/mobs-and-bosses.md#lairs-v075)
+* **Elite enemies** - about 6% of hostile spawns are elites with a gold name, more health and a trait: **Vampiric** heals as it hits, **Shielded** halves spells until three blows break its shield, **Swift**, **Explosive** (bursts when it falls), **Summoner** (calls copies), **Arcane** (casts from random grimoires) and **Frenzied**. They drop doubloons, spell scrolls, potions and amulets. → [Elite enemies](docs/mobs-and-bosses.md#elite-enemies-v075)
+* **Potions and scrolls** - **Mana Potions**, Greater Mana Potions, the **Elixir of Iron** (Resistance and Absorption) and the **Elixir of Haste** (Speed and 25% shorter cooldowns), **Smoke Bombs**, and **spell scrolls** that cast one spell from any grimoire - even without one of your own. All craftable, and sold by the merchant. → [Potions, elixirs and scrolls](docs/items-and-recipes.md#potions-elixirs-and-scrolls-v075)
+* **Feats and titles** - 22 lifetime feats (First Blood, Giant Slayer, Archmage, Squad Captain, Not My Purse, Lair Raider...) that pay stars and doubloons and unlock a **title** you can wear under your name. Handbook → Feats & titles. → [Feats](docs/progression.md#feats-and-titles-v075)
+
+---
+
 ## v0.7.0: foes that fight together
 
 ![v0.7.0](docs/images/v070.png)
@@ -636,7 +648,7 @@ python3 tools/docs.py         # regenerates the reference pages in docs/
 
 The scripts are type-checked against the official `@minecraft/server` 2.0.0 typings (`tsc --checkJs`).
 
-**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.7.0`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
+**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.7.5`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
 
 **Tuning held items:** third/first-person poses live in `grimoire_animations()` and `sword_animations()` in `tools/bc/models/items.py`. First-person poses are solved from a target screen position by `tools/bc/fpsolve.py`, so moving an item on screen means changing one target point.
 

@@ -2,12 +2,12 @@
   "format_version": 2,
   "header": {
     "name": "Black Clover: Grimoire Awakening §7(Behavior)",
-    "description": "Early Access v0.7.0 - bandits, assassins, cultists and the Hive with warband tactics, adaptive bosses (the Bandit King, the Grimoire Devourer, the Hive Queen), a smarter event director, companions with a grimoire and a fruit, 215 spells and 120 fruit powers. Unofficial fan addon.",
+    "description": "Early Access v0.7.5 - elite enemies, bandit hideouts, hive nests and cultist shrines, potions, elixirs and spell scrolls, feats and titles; warbands, adaptive bosses, companions with a grimoire and a fruit, 215 spells and 120 fruit powers. Unofficial fan addon.",
     "uuid": "e31c2aa6-e171-5e62-8d60-e4fb08605627",
     "version": [
       0,
       7,
-      0
+      5
     ],
     "min_engine_version": [
       1,
@@ -22,7 +22,7 @@
       "version": [
         0,
         7,
-        0
+        5
       ]
     },
     {
@@ -32,7 +32,7 @@
       "version": [
         0,
         7,
-        0
+        5
       ],
       "entry": "scripts/main.js"
     }
@@ -43,7 +43,7 @@
       "version": [
         0,
         7,
-        0
+        5
       ]
     },
     {

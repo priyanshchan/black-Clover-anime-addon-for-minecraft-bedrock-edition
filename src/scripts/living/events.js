@@ -22,6 +22,7 @@ import { summonBoss } from './bosses.js';
 import { boltFrom } from './engine.js';
 import { setupKnight } from './knights.js';
 import { setupRogue } from './rogues.js';
+import { emit } from '../core/bus.js';
 import { startRivalMatch } from './rivals.js';
 import { partySize } from './companions.js';
 import { spawnMerchant } from './merchant.js';
@@ -136,6 +137,7 @@ system.runInterval(() => {
     if (!left.length) {
       objectives.splice(i, 1);
       setOutcome(o.label, 'success');
+      for (const q of playersNear(o.dim, o.at, 64)) emit('event_win', q, o.label);
       safe(o.success, 'eventWin');
     } else if (o.until <= t) {
       objectives.splice(i, 1);

@@ -982,3 +982,55 @@ V7_ITEMS = {
     'forbidden_tome': ('§5Forbidden Tome', 'Wake the Grimoire Devourer'),
     'royal_jelly': ('§eRoyal Jelly', 'Call the Hive Queen'),
 }
+
+# ======================================================================================
+# v0.7.5: elite enemies, lairs (bandit hideouts, hive nests, cultist shrines), potions,
+# elixirs, smoke bombs, spell scrolls and feats
+# ======================================================================================
+# Elite affixes: id -> (name, colour, description)
+ELITE_AFFIXES = {
+    'vampiric': ('Vampiric', '§4', 'heals itself for 30% of the damage it deals'),
+    'shielded': ('Shielded', '§b', 'a mana shield halves spell damage until three blows break it'),
+    'swift': ('Swift', '§a', 'fast, skilled and hard to hit'),
+    'explosive': ('Explosive', '§c', 'bursts one second after it falls - get clear!'),
+    'summoner': ('Summoner', '§5', 'calls two lesser copies of itself every 15 seconds'),
+    'arcane': ('Arcane', '§d', 'casts a spell from a random grimoire every 8 seconds'),
+    'frenzied': ('Frenzied', '§6', 'below half health it gains Strength II and Speed'),
+}
+ELITE_CHANCE = 0.06
+# Consumables: id -> (name, description)
+CONSUMABLES = {
+    'mana_potion': ('§bMana Potion', 'Restores 60 mana (or 30% of the Anti-Magic gauge).'),
+    'greater_mana_potion': ('§9Greater Mana Potion', 'Restores all your mana and grants Regeneration for 10 s.'),
+    'elixir_iron': ('§7Elixir of Iron', 'Resistance II and Absorption II for 60 s.'),
+    'elixir_haste': ('§aElixir of Haste', 'Speed and 25% shorter spell cooldowns for 60 s.'),
+    'smoke_bomb': ('§8Smoke Bomb', 'Blinds foes around you and hides you in smoke for 4 s.'),
+    'spell_scroll': ('§eSpell Scroll', 'Read it to cast the spell written on it - from any grimoire, even without one of your own.'),
+}
+# Feats: (id, name, description, counter, goal, stars, doubloons, title)
+FEATS = [
+    ('first_blood', 'First Blood', 'Defeat your first monster.', 'kills', 1, 0, 10, 'the Rookie'),
+    ('hunter', 'Monster Hunter', 'Defeat 100 hostile creatures.', 'kills', 100, 1, 50, 'the Hunter'),
+    ('scourge', 'Scourge of Monsters', 'Defeat 1000 hostile creatures.', 'kills', 1000, 3, 300, 'the Scourge'),
+    ('giant_slayer', 'Giant Slayer', 'Defeat a boss.', 'bosses', 1, 1, 60, 'Giant Slayer'),
+    ('legend', 'Legend', 'Defeat 10 bosses.', 'bosses', 10, 3, 300, 'the Legend'),
+    ('bane', 'Bane of Giants', 'Defeat 8 different bosses.', 'boss_kinds', 8, 3, 400, 'Bane of Giants'),
+    ('spellslinger', 'Spellslinger', 'Cast 500 spells or fruit powers.', 'casts', 500, 1, 60, 'the Spellslinger'),
+    ('archmage', 'Archmage', 'Cast 5000 spells or fruit powers.', 'casts', 5000, 3, 300, 'the Archmage'),
+    ('seasoned', 'Seasoned Knight', 'Reach magic level 10.', 'level', 10, 1, 80, 'the Seasoned'),
+    ('grand_knight', 'Grand Magic Knight', 'Reach magic level 20.', 'level', 20, 3, 300, 'Grand Magic Knight'),
+    ('captain', 'Squad Captain', 'Lead four companions at once.', 'party', 4, 1, 80, 'Squad Captain'),
+    ('soulbound', 'Soulbound', 'Reach Soulbound with a companion.', 'soulbound', 1, 2, 150, 'the Soulbound'),
+    ('reliable', 'Reliable', 'Complete 10 missions.', 'missions', 10, 1, 80, 'the Reliable'),
+    ('hero', 'Hero of the Kingdom', 'Complete 50 missions.', 'missions', 50, 3, 300, 'Hero of the Kingdom'),
+    ('defender', 'Defender', 'Win 10 events (raids, rituals, hives...).', 'events', 10, 2, 150, 'the Defender'),
+    ('elite_hunter', 'Elite Hunter', 'Defeat 10 elite enemies.', 'elites', 10, 2, 150, 'Elite Hunter'),
+    ('not_my_purse', 'Not My Purse', 'Catch a thief.', 'thieves', 1, 1, 40, 'the Vigilant'),
+    ('exterminator', 'Exterminator', 'Smash 25 hive eggs.', 'eggs', 25, 1, 80, 'the Exterminator'),
+    ('scroll_scholar', 'Scroll Scholar', 'Read 10 spell scrolls.', 'scrolls', 10, 1, 60, 'the Scholar'),
+    ('sea_cursed', 'Cursed by the Sea', 'Eat an Abyss Fruit.', 'fruit', 1, 0, 30, 'Sea-Cursed'),
+    ('sky_rider', 'Sky Rider', 'Fly a magic broom.', 'broom', 1, 0, 30, 'Sky Rider'),
+    ('lair_raider', 'Lair Raider', 'Loot 3 lairs (hideouts, nests, shrines).', 'lairs', 3, 2, 120, 'the Raider'),
+]
+MERCHANT += [('bc:mana_potion', 3, 45, 'Mana Potions x3'), ('bc:elixir_iron', 1, 60, 'Elixir of Iron'), ('bc:smoke_bomb', 3, 30, 'Smoke Bombs x3'),
+             ('bc:spell_scroll', 1, 70, 'Spell Scroll')]

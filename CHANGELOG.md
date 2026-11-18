@@ -1,5 +1,34 @@
 # Changelog
 
+## v0.7.5 – Early Access (2026-11-18)
+
+**Places to raid, foes worth hunting, and something to show for it.** Three kinds of lairs, elite enemies with seven traits, potions, elixirs, smoke bombs and spell scrolls, and 22 feats with titles.
+
+### Lairs
+* **Bandit hideouts** - a palisade, two shacks, a watchtower and a campfire, guarded by bandits, archers and a thief; one in five has the **Bandit King** at home. A stash chest and a vault.
+* **Hive nests** - a honeycomb mound full of eggs and drones; sometimes the **Hive Queen**.
+* **Cultist shrines** - pillars around a crying-obsidian altar, with cultists and imps.
+* Lairs appear out of sight near explorers and suit the ground (hideouts on sand, terracotta and coarse dirt; nests on mud, moss, podzol, clay and mycelium; any of the three on grassland), never within 360 blocks of another structure. The first time you open a lair's chest it counts as a raid. Cheat: `/scriptevent bc:lair [hideout|nest|shrine]`.
+
+### Elite enemies
+* About 6% of hostile spawns (9% during a Mana Eclipse) come as an **elite**: a gold name with its trait, Health Boost III and Resistance.
+* Seven traits: **Vampiric** (heals for 30% of the damage it deals), **Shielded** (spells do half damage until three blows break the shield), **Swift**, **Explosive** (a 10-damage burst a second after it falls), **Summoner** (two lesser copies every 15 s), **Arcane** (a spell from a random grimoire every 8 s) and **Frenzied** (Strength II and Speed below half health).
+* Elites drop 10-25 doubloons and maybe a spell scroll, a Mana Potion or an amulet. Bosses, eggs, gates and summoned minions are never elite.
+
+### Potions, elixirs, smoke bombs and spell scrolls
+* **Mana Potion** (60 mana, or 30% of the Anti-Magic gauge), **Greater Mana Potion** (all your mana and Regeneration), **Elixir of Iron** (Resistance II and Absorption II for 60 s), **Elixir of Haste** (Speed and 25% shorter spell cooldowns for 60 s).
+* **Smoke Bomb** - blinds foes within 6 blocks and hides you for 4 s.
+* **Spell Scroll** - casts the spell written on it (any grimoire, up to level 10, never Anti-Magic) at your spell power, or at base power without a grimoire. Blank scrolls settle on a random spell when read; scrolls from elites and lairs come written.
+* All six are craftable, and the Travelling Merchant sells potions, the Elixir of Iron, smoke bombs and scrolls.
+
+### Feats and titles
+* **22 feats** for kills, bosses (and different bosses), casts, levels, a full party, a Soulbound companion, missions, events won, elites, thieves, hive eggs, scrolls, your first fruit, your first broom flight and lairs raided.
+* Each pays doubloons (and most pay stars) and unlocks a **title**. Choose one in the Handbook (**Feats & titles**) and it appears under your name.
+
+### Other changes
+* Missions, event victories and caught thieves now tell the rest of the game (they count for feats).
+* New icons for the potions, elixirs, the smoke bomb and the spell scroll; a v0.7.5 preview sheet in the docs.
+
 ## v0.7.0 – Early Access (2026-11-18)
 
 **Enemies that fight together, bosses that adapt, and events that matter.** New enemies and three new bosses, warband tactics for every hostile spellcaster, smarter bosses, and a reworked event director with six new events.

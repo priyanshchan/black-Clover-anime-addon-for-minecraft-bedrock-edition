@@ -311,7 +311,114 @@ def knight_camp():
     return b
 
 
+def _clearing(b, r, floor, alt=None, alt_chance=0.0, seed=0):
+    random.seed(seed)
+    for x in range(-r, r + 1):
+        for z in range(-r, r + 1):
+            if x * x + z * z > r * r:
+                continue
+            for y in range(1, 7):
+                b.put(x, y, z, 'minecraft:air')
+            b.put(x, 0, z, alt if alt and random.random() < alt_chance else floor)
+
+
+def bandit_hideout():
+    """A bandit hideout: a palisade, two shacks, a watchtower, a campfire and their loot. Anchor = ground at the centre."""
+    b = BP()
+    _clearing(b, 9, 'minecraft:coarse_dirt', 'minecraft:gravel', 0.25, seed=41)
+    # the palisade, with a gap to the south
+    for k in range(48):
+        a = k / 48 * math.tau
+        x, z = round(math.cos(a) * 9), round(math.sin(a) * 9)
+        if z > 6 and abs(x) <= 2:
+            continue
+        for y in (1, 2):
+            b.put(x, y, z, 'minecraft:spruce_fence' if y == 2 else 'minecraft:spruce_log')
+    # two shacks open to the centre
+    for cx, cz in ((-5, -3), (4, -4)):
+        b.box(cx - 2, 1, cz - 2, cx + 2, 3, cz + 1, 'minecraft:spruce_planks', hollow=True)
+        for x in range(cx - 1, cx + 2):
+            for y in (1, 2):
+                b.put(x, y, cz + 1, 'minecraft:air')
+        b.box(cx - 2, 4, cz - 2, cx + 2, 4, cz + 1, 'minecraft:dark_oak_planks')
+    # the watchtower
+    for y in range(1, 6):
+        for x, z in ((5, 4), (7, 4), (5, 6), (7, 6)):
+            b.put(x, y, z, 'minecraft:spruce_log')
+    b.box(5, 6, 4, 7, 6, 6, 'minecraft:spruce_planks')
+    for x, z in ((5, 4), (7, 4), (5, 6), (7, 6)):
+        b.put(x, 7, z, 'minecraft:spruce_fence')
+    # the fire, the loot, a red banner of wool
+    b.put(0, 1, 0, 'minecraft:campfire', {'extinguished': False, 'minecraft:cardinal_direction': 'north'})
+    b.put(-5, 1, -4, 'minecraft:chest', {'minecraft:cardinal_direction': 'south'})
+    b.chests.append([-5, 1, -4, 'hideout'])
+    b.put(4, 1, -5, 'minecraft:chest', {'minecraft:cardinal_direction': 'south'})
+    b.chests.append([4, 1, -5, 'hideout_vault'])
+    for x, z in ((-2, 3), (2, 3), (3, 2)):
+        b.put(x, 1, z, 'minecraft:barrel')
+    b.put(-1, 1, -7, 'minecraft:spruce_log')
+    b.put(-1, 2, -7, 'minecraft:spruce_log')
+    b.put(-1, 3, -7, 'minecraft:red_wool')
+    b.put(-1, 4, -7, 'minecraft:red_wool')
+    b.spawns += [[0, 1, 2, 'bc:bandit'], [-2, 1, -1, 'bc:bandit'], [2, 1, -1, 'bc:bandit'], [6, 7, 5, 'bc:bandit_archer'],
+                 [-4, 1, 0, 'bc:bandit_archer'], [3, 1, 3, 'bc:bandit_thief'], [0, 1, -2, 'chance:0.2:bc:bandit_king']]
+    return b
+
+
+def hive_nest():
+    """A hive nest: a mound of wax and moss with eggs, honey and a hollow heart. Anchor = ground at the centre."""
+    b = BP()
+    _clearing(b, 8, 'minecraft:moss_block', 'minecraft:mud', 0.3, seed=43)
+    random.seed(44)
+    # the mound: a dome of honeycomb with mossy patches, hollow inside, open to the west
+    for x in range(-5, 6):
+        for y in range(1, 6):
+            for z in range(-5, 6):
+                r = math.sqrt(x * x + (y * 1.3) ** 2 + z * z)
+                if r > 5.6 or r < 4.3:
+                    continue
+                if x < -3 and abs(z) <= 1 and y <= 2:
+                    continue
+                b.put(x, y, z, 'minecraft:moss_block' if random.random() < 0.25 else 'minecraft:honeycomb_block')
+    for x, z in ((1, 1), (-1, 2), (2, -2)):
+        b.put(x, 1, z, 'minecraft:honey_block')
+    for x, z in ((6, 3), (-6, -4), (4, -6), (-3, 6)):
+        b.put(x, 1, z, 'minecraft:web')
+    b.put(0, 1, -2, 'minecraft:chest', {'minecraft:cardinal_direction': 'west'})
+    b.chests.append([0, 1, -2, 'hive'])
+    b.spawns += [[-1, 1, 0, 'bc:hive_egg'], [1, 1, 2, 'bc:hive_egg'], [2, 1, -1, 'bc:hive_egg'], [6, 1, -2, 'bc:hive_egg'], [-6, 1, 2, 'bc:hive_egg'],
+                 [-7, 1, 0, 'bc:hive_drone'], [5, 1, 5, 'bc:hive_drone'], [0, 1, 6, 'bc:hive_drone'], [0, 1, 0, 'chance:0.12:bc:hive_queen']]
+    return b
+
+
+def cultist_shrine():
+    """A cultist shrine: a ring of broken pillars around a crying-obsidian altar. Anchor = ground at the centre."""
+    b = BP()
+    _clearing(b, 8, 'minecraft:blackstone', 'minecraft:polished_blackstone_bricks', 0.4, seed=45)
+    random.seed(46)
+    for k in range(8):
+        a = k / 8 * math.tau
+        x, z = round(math.cos(a) * 6), round(math.sin(a) * 6)
+        h = 2 + random.randint(0, 3)
+        for y in range(1, h + 1):
+            b.put(x, y, z, random.choice(['minecraft:stone_bricks', 'minecraft:cracked_stone_bricks', 'minecraft:mossy_stone_bricks']))
+        if h >= 4:
+            b.put(x, h + 1, z, 'minecraft:soul_lantern', {'hanging': False})
+    # the altar
+    b.box(-1, 1, -1, 1, 1, 1, 'minecraft:polished_blackstone_bricks')
+    b.put(0, 2, 0, 'minecraft:crying_obsidian')
+    for x, z in ((-1, -1), (1, -1), (-1, 1), (1, 1)):
+        b.put(x, 2, z, 'minecraft:soul_lantern', {'hanging': False})
+    for x, z in ((3, 0), (-3, 0), (0, 3), (0, -3)):
+        b.put(x, 0, z, 'minecraft:redstone_block')
+    b.put(0, 1, -4, 'minecraft:chest', {'minecraft:cardinal_direction': 'south'})
+    b.chests.append([0, 1, -4, 'shrine'])
+    b.spawns += [[3, 1, 2, 'bc:cultist'], [-3, 1, 2, 'bc:cultist'], [0, 1, 4, 'bc:cultist'], [2, 1, -2, 'bc:imp'], [-2, 1, -2, 'bc:imp']]
+    return b
+
+
 def export_js():
-    data = {'outpost': outpost().export(), 'wreck': wreck().export(), 'dungeon': dungeon().export(), 'camp': knight_camp().export()}
+    data = {'outpost': outpost().export(), 'wreck': wreck().export(), 'dungeon': dungeon().export(), 'camp': knight_camp().export(),
+            'hideout': bandit_hideout().export(), 'nest': hive_nest().export(), 'shrine': cultist_shrine().export()}
     return ('// AUTO-GENERATED by tools/build.py (tools/bc/structures.py) - do not edit by hand.\n'
             f'export const STRUCTURES = {json.dumps(data, separators=(",", ":"))};\n')

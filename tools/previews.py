@@ -592,9 +592,102 @@ def v7_sheet():
     grid(e, 5, 280, 'v070.png', 'v0.7.0: bandits, assassins, cultists, the Hive & three new bosses')
 
 
+BLOCK_RGB = {
+    'coarse_dirt': (122, 88, 60), 'gravel': (134, 128, 126), 'spruce_log': (70, 48, 26), 'spruce_fence': (112, 82, 48), 'spruce_planks': (114, 84, 50),
+    'dark_oak_planks': (68, 45, 22), 'campfire': (230, 120, 40), 'chest': (168, 116, 44), 'barrel': (120, 86, 48), 'red_wool': (170, 40, 40),
+    'honey_block': (240, 170, 40), 'honeycomb_block': (226, 146, 30), 'moss_block': (92, 116, 46), 'mud': (62, 58, 62), 'web': (230, 230, 235),
+    'blackstone': (44, 38, 46), 'polished_blackstone_bricks': (56, 50, 60), 'stone_bricks': (122, 122, 122), 'cracked_stone_bricks': (110, 110, 110),
+    'mossy_stone_bricks': (100, 118, 90), 'crying_obsidian': (60, 20, 110), 'redstone_block': (180, 25, 20), 'soul_lantern': (100, 220, 235),
+}
+SMALL = {'spruce_fence': 0.32, 'campfire': 0.75, 'chest': 0.85, 'soul_lantern': 0.45, 'web': 0.6}
+GLOW = {'campfire', 'soul_lantern', 'crying_obsidian', 'redstone_block'}
+
+
+def iso_blueprint(bp, size=380, s=11.0):
+    """An isometric block render of a structure blueprint (viewed from the south-east, above)."""
+    img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    solid = {}
+    for (x, y, z), i in bp.blocks.items():
+        name = bp.palette[i][0].split(':')[1]
+        if name != 'air':
+            solid[(x, y, z)] = name
+    a, b = s * 0.866, s * 0.5
+    ys = [k[1] for k in solid]
+    cx, cy = size / 2, size / 2 + (max(ys) * s) / 2 - 4
+
+    def P(x, y, z):
+        return (cx + (x - z) * a, cy + (x + z) * b - y * s)
+
+    def shade(c, k, glow):
+        return tuple(min(255, int(v * (1.0 if glow else k))) for v in c) + (255,)
+
+    for (x, y, z) in sorted(solid, key=lambda k: (k[0] + k[1] + k[2], k[1])):
+        name = solid[(x, y, z)]
+        c = BLOCK_RGB.get(name, (128, 128, 128))
+        g = name in GLOW
+        w = SMALL.get(name, 1.0)
+        o = (1 - w) / 2
+        x0, x1, z0, z1, y1 = x + o, x + 1 - o, z + o, z + 1 - o, y + (1 if w == 1.0 or name == 'spruce_fence' else w)
+        full = w == 1.0
+        if not (full and solid.get((x, y + 1, z)) and SMALL.get(solid[(x, y + 1, z)], 1.0) == 1.0):
+            d.polygon([P(x0, y1, z0), P(x1, y1, z0), P(x1, y1, z1), P(x0, y1, z1)], fill=shade(c, 1.0, g))
+        if not (full and solid.get((x + 1, y, z)) and SMALL.get(solid[(x + 1, y, z)], 1.0) == 1.0):
+            d.polygon([P(x1, y, z0), P(x1, y1, z0), P(x1, y1, z1), P(x1, y, z1)], fill=shade(c, 0.62, g))
+        if not (full and solid.get((x, y, z + 1)) and SMALL.get(solid[(x, y, z + 1)], 1.0) == 1.0):
+            d.polygon([P(x0, y, z1), P(x1, y, z1), P(x1, y1, z1), P(x0, y1, z1)], fill=shade(c, 0.8, g))
+    # the guards, as coloured markers standing where they spawn
+    cols = {'bandit': (210, 60, 50), 'bandit_archer': (230, 150, 50), 'bandit_thief': (150, 150, 160), 'bandit_king': (250, 210, 60),
+            'hive_egg': (240, 220, 140), 'hive_drone': (250, 190, 40), 'hive_queen': (255, 120, 20), 'cultist': (150, 40, 190), 'imp': (230, 60, 60)}
+    for x, y, z, ident in bp.spawns:
+        kind = ident.split(':')[-1]
+        px, py = P(x + 0.5, y, z + 0.5)
+        col = cols.get(kind, (255, 255, 255))
+        dashed = ident.startswith('chance:')
+        d.ellipse([px - 5, py - 16, px + 5, py - 6], fill=col + (255,), outline=(255, 255, 255, 255) if dashed else (10, 10, 15, 255), width=2)
+        d.rectangle([px - 3, py - 7, px + 3, py], fill=tuple(int(v * 0.7) for v in col) + (255,))
+    return img
+
+
+def v75_sheet():
+    """v0.7.5: the three lairs and the new potions, elixirs, smoke bomb and spell scroll."""
+    from bc import structures
+    from bc.data import CONSUMABLES
+    from bc.models import v75
+    cell = 380
+    top = 330
+    W, H = cell * 3, 50 + top + 70 + 130
+    img = background(W, H, '22222c', '101016', ring=False)
+    draw = ImageDraw.Draw(img)
+    draw.text((20, 14), 'v0.7.5: lairs, elite enemies, potions, scrolls & feats', font=font(30), fill=(235, 235, 235, 255))
+    lairs = ((structures.bandit_hideout(), 'Bandit hideout', '3 bandits, 2 archers, a thief (King: 20%)'),
+             (structures.hive_nest(), 'Hive nest', '5 eggs, 3 drones (Queen: 12%)'),
+             (structures.cultist_shrine(), 'Cultist shrine', '3 cultists, 2 imps'))
+    for i, (bp, name, guards) in enumerate(lairs):
+        img.alpha_composite(iso_blueprint(bp, cell), (i * cell, 50 - (cell - top) // 2))
+        draw.text((i * cell + 20, 50 + top + 6), name, font=font(20), fill=(235, 235, 235, 255))
+        draw.text((i * cell + 20, 50 + top + 34), guards, font=font(15), fill=(185, 185, 195, 255))
+    icons_ = v75.v75_icons()
+    n = len(icons_)
+    step = W // n
+    y0 = 50 + top + 80
+    for i, (k, arr) in enumerate(icons_.items()):
+        x = i * step + step // 2
+        img.alpha_composite(tex.to_image(arr).resize((64, 64), Image.NEAREST), (x - 32, y0))
+        label = strip_codes(CONSUMABLES[k][0])
+        tw = draw.textlength(label, font=font(15))
+        draw.text((x - tw / 2, y0 + 72), label, font=font(15), fill=(225, 225, 225, 255))
+    img.convert('RGB').save(os.path.join(OUT, 'v075.png'), optimize=True)
+
+
+def strip_codes(t):
+    import re
+    return re.sub('\u00a7.', '', t)
+
+
 if __name__ == '__main__':
     names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
-                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet']
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet']
     for n in names:
         print('rendering', n)
         globals()[n]()

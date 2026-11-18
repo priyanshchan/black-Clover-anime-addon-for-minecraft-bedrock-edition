@@ -1,0 +1,31 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:spell_scroll",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_spell_scroll"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§eSpell Scroll"
+      },
+      "minecraft:max_stack_size": {
+        "value": 16
+      },
+      "minecraft:use_modifiers": {
+        "use_duration": 0.4,
+        "movement_modifier": 1.0
+      },
+      "minecraft:glint": {
+        "value": true
+      }
+    }
+  }
+}

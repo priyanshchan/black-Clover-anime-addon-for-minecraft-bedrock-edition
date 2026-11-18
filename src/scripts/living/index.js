@@ -22,6 +22,10 @@ import './roster.js';
 import './rivals.js';
 import './warband.js';
 import './foes.js';
+import './lairs.js';
+import './elites.js';
+import './feats.js';
+import { useScroll, useSmokeBomb } from './consumables.js';
 import { useCloverLeaf } from './squad.js';
 import { placeDummy } from './roster.js';
 import { useBroom } from './brooms.js';
@@ -57,6 +61,10 @@ export function useLivingItem(p, item) {
     safe(() => placeDummy(p));
   } else if (id === 'bc:clover_leaf') {
     safe(() => useCloverLeaf(p));
+  } else if (id === 'bc:smoke_bomb') {
+    safe(() => useSmokeBomb(p));
+  } else if (id === 'bc:spell_scroll') {
+    safe(() => useScroll(p, item));
   } else if (id === 'bc:companion_tome') {
     safe(() => p.onScreenDisplay.setActionBar('§bTalk to a companion (level 10+) while holding the tome to retrain their specialisation.'));
   } else return false;

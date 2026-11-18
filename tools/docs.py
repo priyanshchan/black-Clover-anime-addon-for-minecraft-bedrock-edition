@@ -21,6 +21,7 @@ from bc.data import (ALTAR_WEIGHTS, AMULETS, ATTR_ORDER, ATTRIBUTES, AWAKENED, B
                      PARTY_MAX, RANKS, ROBE_PERKS, ROBES, SHOP, SPELLS, SWORDS, WILL_MAX_LEVEL)
 from bc.data import EXPEDITIONS, MOOD, PERSONALITIES, RESERVE_MAX, SPEC_LEVEL, SPECS, TACTICS_PARTY, TRIALS  # noqa: E402
 from bc.data import COMPANION_FRUIT_LEVEL  # noqa: E402
+from bc.data import CONSUMABLES, ELITE_AFFIXES, ELITE_CHANCE, FEATS  # noqa: E402
 from bc.packgen import VERSION  # noqa: E402
 
 ROOT = out.ROOT
@@ -446,7 +447,23 @@ def page_mobs():
           '* **Ancient dungeons** - form underground near explorers: a ruined entrance, a stairway, a corridor of **flame traps**, a pillared hall with a working Grimoire Altar, '
           'a treasure vault (ancient pages, squad robes, mana crystals, diamonds, treasure maps) and the Dungeon Guardian.\n'
           '* **Magic Knight camps** - appear on open grassland near explorers: three tents with bedrolls around a campfire, benches, a lantern post, '
-          'a **Mission Board**, a supply chest (mana crystals, cookies, bread, sometimes a contract, ancient page, amulet, robe or whistle) and three knights on watch.\n')
+          'a **Mission Board**, a supply chest (mana crystals, cookies, bread, sometimes a contract, ancient page, amulet, robe or whistle) and three knights on watch.\n'
+          '\n### Lairs (v0.7.5)\n\n'
+          'Lairs appear out of sight near explorers (never within 360 blocks of another structure) and suit the ground they stand on. '
+          'The first time you open a lair\'s chest it counts towards the **Lair Raider** feat. Build one on the spot with `/scriptevent bc:lair hideout` (or `nest`, `shrine`).\n\n')
+    o += table(['Lair', 'Where', 'Guards', 'Loot'], [
+        ['**Bandit hideout**', 'sand, red sand, terracotta, coarse dirt; sometimes grassland', 'a palisade, two shacks and a watchtower; 3 Bandits, 2 Bandit Archers, a Bandit Thief - and a 20% chance the **Bandit King** is at home',
+         'a stash chest (20-45 doubloons, gold, emeralds, bread, Mana Potions, Smoke Bombs, maybe a spell scroll) and a vault (40-90 doubloons, diamonds, a treasure map, an Elixir of Haste, spell scrolls; sometimes an amulet or a Bandit\'s Crown)'],
+        ['**Hive nest**', 'mud, moss, podzol, clay, mycelium; sometimes grassland', 'a honeycomb dome with 5 Hive Eggs and 3 Hive Drones - 12% chance of the **Hive Queen**',
+         'honeycomb, honey bottles, slime balls, mana crystals; sometimes a Greater Mana Potion, an amulet or Royal Jelly'],
+        ['**Cultist shrine**', 'grassland and forest', 'a ring of pillars around a crying-obsidian altar; 3 Cultists and 2 Imps',
+         'ancient pages, mana crystals, spell scrolls, an Elixir of Iron; sometimes a Devil Heart, an amulet or a Forbidden Tome'],
+    ])
+    o += (f'## Elite enemies (v0.7.5)\n\nAbout **{ELITE_CHANCE:.0%}** of hostile spawns (half as many again during a Mana Eclipse) come as an **elite**: '
+          'its name turns gold and says its trait, it has Health Boost III and Resistance, and a coloured spark floats over its head. Bosses, Hive Eggs, Devil Gates, '
+          'summoned minions and anything with an owner are never elite. An elite drops **10-25 doubloons**, and maybe a **spell scroll** (40%), '
+          'a **Mana Potion** (25%) or an **amulet** (8%). Defeating ten counts for the **Elite Hunter** feat.\n\n')
+    o += table(['Trait', 'What it does'], [[f'**{n}**', d[0].upper() + d[1:] + ('' if d.endswith('!') else '.')] for n, _, d in ELITE_AFFIXES.values()])
     return write('mobs-and-bosses.md', 'Mobs, NPCs & bosses', o)
 
 
@@ -493,6 +510,7 @@ ITEM_USE = {
     'bc:clover_leaf': 'revives every fallen companion beside you', 'bc:field_rations': 'food (8); a companion gift: -50 weariness, +10 morale',
     'bc:companion_tome': 'hold it and talk to a companion (level 10+) to retrain its specialisation', 'bc:cursed_spool': 'summons the Soul Puppeteer',
     'bc:bandit_crown': 'summons the Bandit King', 'bc:forbidden_tome': 'summons the Grimoire Devourer', 'bc:royal_jelly': 'summons the Hive Queen',
+    **{f'bc:{k}': ('use' if k in ('smoke_bomb', 'spell_scroll') else 'drink') + ' - ' + v[1].rstrip('.') for k, v in CONSUMABLES.items()},
 }
 
 
@@ -516,6 +534,11 @@ def page_items():
                 use = 'anti-magic demon sword'
         rows.append([f'**{ITEMS[ident]}**', f'`{ident}`', use])
     o += table(['Item', 'Id', 'Use'], rows)
+    o += ('## Potions, elixirs and scrolls (v0.7.5)\n\n'
+          'Potions and elixirs are drunk like milk (hold use). A **spell scroll** carries one spell from any grimoire up to level 10 (never Anti-Magic): '
+          'read it to cast that spell at your own spell power - or at base power if you have no grimoire. A blank scroll (crafted or bought) settles on a random spell '
+          'when you read it; scrolls found on elites and in lair chests already have their spell written on them. Reading ten counts for the **Scroll Scholar** feat.\n\n')
+    o += table(['Item', 'Id', 'Effect'], [[strip(n), f'`bc:{k}`', d] for k, (n, d) in CONSUMABLES.items()])
     o += '## Shops\n\n### Bounty Board\n\n'
     o += table(['Ware', 'Doubloons'], [[lbl, p] for _, _, p, lbl in SHOP])
     o += '### Travelling Magic Merchant\n\n'
@@ -556,6 +579,11 @@ def page_progression():
           'let go to **hover**, **sneak** to step off - the broom flies back into your pack, and you float down gently. Flying drinks mana and your mana does not regenerate '
           'while you fly; run dry and the broom glides down until 15% of your mana is back. Without a grimoire a broom can only glide; Anti-Magic smothers it entirely.\n\n')
     o += table(['Broom', 'Top speed', 'Mana per second (hovering: 40%)'], [[strip(n), f'{sp * 20:.0f} blocks/s', m] for n, sp, m in BROOMS.values()])
+    o += ('## Feats and titles (v0.7.5)\n\n'
+          'Feats are lifetime achievements, saved per player. Each pays doubloons (and often stars) and unlocks a **title**. Open the Handbook → **Feats & titles** '
+          'to see your progress and choose the title shown under your name (or none).\n\n')
+    o += table(['Feat', 'Goal', 'Reward', 'Title'], [[f'**{n}**', d, f'{c} doubloons' + (f', {st} star{"s" if st > 1 else ""}' if st else ''), f'"{t}"']
+                                                    for _, n, d, _, _, st, c, t in FEATS])
     o += '## Knight levels\n\nSee [AI & simulation](ai-and-simulation.md#knights-levels-and-orders).\n'
     return write('progression.md', 'Progression', o)
 
@@ -899,6 +927,9 @@ def page_commands():
               'wounded_knight', 'mana_storm', 'bounty_hunters', 'rogue_ambush', 'rival_squad', 'bandit_raid', 'devil_ritual', 'hive_infestation',
               'assassins', 'thief', 'mana_eclipse', 'fallen_captain', 'witch_sisters', 'bone_dragon', 'puppet_show', 'colossus', 'phantom_galleon', 'kraken'):
         o += f'/scriptevent bc:event {n}\n'
+    o += '```\n\n```\n/scriptevent bc:lair                  (a lair suited to the ground behind you)\n'
+    for n in ('hideout', 'nest', 'shrine'):
+        o += f'/scriptevent bc:lair {n}\n'
     o += '```\n\nCreative players can also use any grimoire with every spell unlocked and infinite mana, and start events from a War Table.\n'
     return write('commands.md', 'Commands', o)
 
@@ -1002,7 +1033,9 @@ Everything in `packs/` and `dist/` is generated - edit the generators in `tools/
 | `src/scripts/grand/` | dungeons, treasure maps, pirate weapons |
 | `src/scripts/living/` | `engine.js` spell engine, `ai.js` tactical brain, `danger.js` danger zones, `knights.js`, `battle.js`, `worldsim.js`, `bosses.js`, `events.js`, `merchant.js`, `wartable.js`, `brooms.js`, `missions.js`, `rogues.js`, `camps.js` |
 | `src/scripts/living/` (companions) | `companions.js` saved party, whistle and hooks; `squad.js` specialisations, tactics, combos, revives, broom flight; `camp.js` mood, camp, talk, trials, gear; `roster.js` Squad Banner, expeditions, Training Dummy; `rivals.js` sparring and rival squads; `puppeteer.js` the Soul Puppeteer's strings |
-| `src/scripts/core/bus.js` | a tiny event bus (casts, XP, bosses, crowd control) |
+| `src/scripts/living/` (v0.7) | `warband.js` enemy warbands; `foes.js` thieves, assassins, cultist rituals, the Hive; `elites.js` elite enemies; `lairs.js` hideouts, nests and shrines; `consumables.js` potions, elixirs, smoke bombs, scrolls; `feats.js` feats and titles |
+| `src/scripts/core/scrolls.js` | writing and reading spell scrolls |
+| `src/scripts/core/bus.js` | a tiny event bus (casts, XP, bosses, crowd control, missions, events won, elites, lairs) |
 
 ## Adding a spell or a fruit
 
@@ -1053,8 +1086,8 @@ def page_home():
 | Companions | a saved party of up to {PARTY_MAX} knights plus {RESERVE_MAX} in reserve, each with a grimoire and an Abyss Fruit: personalities, specialisations, party tactics, combos, revives, mood, camps, trials, expeditions, sparring and rival squads |
 | Items | {len(ITEMS)} items and blocks, {len(RECIPES)} recipes |
 | AI & simulation | a tactical brain for spellcasters, enemy warbands (focus, flanking, calling for help, breaking), bosses that adapt, battles with tactics, morale and leaders, a world where four factions rise and fall |
-| Adventure | daily missions and the Mission Board, magic brooms, amulets, Magic Knight camps |
-| World | an event director with scaling, objectives and a log; ships, outposts, wrecks, dungeons, the Bounty Board, a travelling merchant, the War Table |
+| Adventure | daily missions and the Mission Board, {len(FEATS)} feats with titles, potions, elixirs, smoke bombs and spell scrolls, magic brooms, amulets, Magic Knight camps |
+| World | an event director with scaling, objectives and a log; elite enemies with {len(ELITE_AFFIXES)} traits; bandit hideouts, hive nests and cultist shrines; ships, outposts, wrecks, dungeons, the Bounty Board, a travelling merchant, the War Table |
 
 ## Pages
 
@@ -1066,9 +1099,9 @@ def page_home():
 | [Companions](companions.md) | your squad: personalities, specialisations, tactics, combos, revives, mood, camp, talking, trials, the Squad Banner and expeditions, training, sparring, rival squads, bond, robes |
 | [AI & simulation](ai-and-simulation.md) | the tactical brain, enemy and boss brains, battles (tactics, morale, leaders, bets, camera), the world simulation, knights |
 | [World events](world-events.md) | every event, its odds, conditions and rewards |
-| [Mobs & bosses](mobs-and-bosses.md) | every creature: health, attack, spawning, drops; all bosses and their attacks; factions; structures |
-| [Items & recipes](items-and-recipes.md) | every recipe as a grid, every item id, both shops |
-| [Progression](progression.md) | magic levels and mana formulas, ranks and stars, robes, bounties, daily missions, amulets, brooms |
+| [Mobs & bosses](mobs-and-bosses.md) | every creature: health, attack, spawning, drops; all bosses and their attacks; factions; structures and lairs; elite enemies |
+| [Items & recipes](items-and-recipes.md) | every recipe as a grid, every item id, potions and scrolls, both shops |
+| [Progression](progression.md) | magic levels and mana formulas, ranks and stars, robes, bounties, daily missions, amulets, brooms, feats and titles |
 | [Commands](commands.md) | every `/give`, `/summon` and `/scriptevent` |
 | [FAQ](faq.md) | install problems, multiplayer, turning events off, known issues |
 | [Development](development.md) | building from source, the code map, adding spells, releasing |

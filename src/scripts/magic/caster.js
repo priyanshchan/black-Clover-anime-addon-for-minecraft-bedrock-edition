@@ -71,7 +71,9 @@ export function useGrimoire(p, item) {
   if (!impl) return;
   if (!creative) s.mana -= cost;
   const zone = zoneBonus(p);
-  const cdMul = (robe(p) === 'green_mantis_robe' ? 0.85 : 1) * zone.cd * (amuletOf(p) === 'amulet_swift' ? 0.88 : 1);
+  const haste = p.getDynamicProperty('bc:haste_until');
+  const cdMul = (robe(p) === 'green_mantis_robe' ? 0.85 : 1) * zone.cd * (amuletOf(p) === 'amulet_swift' ? 0.88 : 1)
+    * (typeof haste === 'number' && haste > t ? 0.75 : 1);
   s.cd.set(sp.id, t + Math.round(sp.cooldown * 20 * cdMul));
   if (!creative && cost > 0 && robe(p) === 'coral_peacock_robe' && Math.random() < 0.2) {
     s.mana += cost;
