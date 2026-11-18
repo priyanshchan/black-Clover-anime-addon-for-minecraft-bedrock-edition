@@ -20,6 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from bc import audio, fx, icons, out, packgen  # noqa: E402
 from bc import structures  # noqa: E402
+from bc import vfx9  # noqa: E402
 from bc.data import (ALTAR_WEIGHTS, ATTR_ORDER, ATTRIBUTES, BOND, CAPTAIN_FIRST, CAPTAIN_LAST, COMPANION_HP, COMPANION_LINES,  # noqa: E402
                      COMPANION_XP, ENEMY_KITS, FACTIONS, FRUIT_ORDER, FRUITS, PARTY_MAX, MISSIONS, MISSION_REWARDS, AMULETS, BROOMS,
                      KNIGHT_FIRST, KNIGHT_LAST, KNIGHT_ROBES, MERCHANT, NOTORIETY, NPC_KITS, RANKS, ROBE_PERKS, ROBES, SHOP, SPELLS,
@@ -187,6 +188,7 @@ def main():
     packgen.build()
     print('particles ...')
     fx.build()
+    vfx9.build()
     print('ui ...')
     gen_ui()
     if not args.no_audio:

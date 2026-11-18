@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.9.0 – Early Access (2026-11-18)
+
+**Spells that look the part.** Every spell and fruit power is redrawn with layered, high-resolution effects, a rebuilt projectile and full-body cast animations.
+
+### Layered spell effects
+* 48 new high-resolution particle effects: lens-flare flashes and white-hot cores, sparks that stretch with their speed and bounce off the ground, sprays, rising embers, rolling 8-frame smoke and licking 8-frame fire, dust waves, coloured mist, void smoke, expanding shock rings, ground cracks (dark and glowing), tumbling rock debris, converging charge streaks, a detailed magic circle (in the air and on the ground), solid beams with a white-hot core, jagged lightning bolts, crescent slashes, light pillars, spiralling wisps, auras, and element sprites (shards, snowflakes, leaves, droplets, bubbles, sparkles, notes, rune glyphs).
+* A **VFX director** composes them: a spell forms in a magic circle, is released with a flash, a shock ring and sparks, and lands with a flash, its element's particles, sparks, smoke or mist, and - on the ground - a shock ring, a dust wave and cracks. Every element has its own kit; Abyss Fruits map onto them (and surge from the user's body instead of a magic circle).
+* Every spell template is redrawn: beams are solid bars, strikes call down lightning or columns of light, rains fall as streaks from a circle in the sky, meteors are burning comets with warning circles, zones and vortices swirl, prisons cage their victims, buffs raise pillars and auras, heals lift glyphs, dives leave craters, blinks leave a streak of light.
+* Magic Knights and enemy mages now cast through magic circles too.
+* The biggest spells (huge novas, dives and time stops) flash the screen for an instant.
+* A per-tick particle budget drops the optional layers in huge battles.
+* The classic particles (bursts, sparks, magic circles, shockwaves, fire, smoke) now use the high-resolution textures, and the classic helpers (bursts, beams, arcs, magic circles) use the new layers - so the original spells, fruit powers and bosses look better too.
+
+### A rebuilt spell projectile
+* Layered shapes with a white-hot core: orbs with two spinning rings, faceted shards, crescent blades, spiralling spears, and a new **burning comet** for meteors.
+* A glowing halo and an element trail: flames, droplets, snowflakes, sparks, dust, leaves, void smoke, sparkles, wisps or bubbles.
+
+### Full-body cast animations
+* New animations with anticipation, overshoot, follow-through and smooth curves, moving the arms, body, head and legs: thrust, two-handed push, trembling channel, call the sky, overhead slam, sweep, spin, summon, power-up, heal, dash - and for Abyss Fruit users a punch, a stomp and a roar.
+* Each spell picks the animation that fits it. Magic Knights, companions and Rogue Mages use the same set.
+
 ## v0.8.0 – Early Access (2026-11-18)
 
 **The armour update.** Eight 3D armour sets with set bonuses, materials from the foes that suit them, and the Magic Forge to forge, reinforce, inscribe and tailor your armour - for you and your companions.

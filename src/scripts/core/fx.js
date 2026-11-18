@@ -2,6 +2,7 @@
 import { MolangVariableMap } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
 import { V, safe } from './util.js';
+import * as vfx from './vfx.js';
 
 /** @param {string} hex */
 export function rgb(hex) {
@@ -39,63 +40,61 @@ export function sound(dim, id, loc, volume = 1, pitch = 1) {
   safe(() => dim.playSound(id, loc, { volume, pitch }), 'sound');
 }
 
-/** Magic circle in front of the caster, facing the cast direction. */
+/** Magic circle in front of the caster, facing the cast direction (v0.9.0: the detailed sigil, glowing). */
 export function castCircle(player, attr, size = 1.6, dist = 1.2) {
   const dir = player.getViewDirection();
   const at = V.add(player.getHeadLocation(), V.mul(dir, dist));
   at.y -= 0.25;
   const color = COLORS[attr] ?? COLORS.wind;
-  if (attr === 'anti' || attr === 'dark') {
-    particle(player.dimension, 'bc:magic_circle', at, { color: attr === 'anti' ? rgb('b0202a') : rgb('a066e0'), size, dir });
+  if (attr === 'anti') {
+    particle(player.dimension, 'bc:magic_circle', at, { color: rgb('b0202a'), size, dir });
+    vfx.spawn(player.dimension, 'bc:fx_void', at, { scale: 0.5 });
   } else {
-    particle(player.dimension, 'bc:magic_circle', at, { color, size, dir });
+    vfx.sigil(player.dimension, at, dir, attr === 'dark' ? rgb('a066e0') : color, size * 1.05, 0.8);
+    vfx.spawn(player.dimension, 'bc:fx_converge', at, { color, radius: size * 0.9, life: 0.25 }, true);
   }
 }
 
 export function groundCircle(dim, loc, attr, size = 3, life = 1.2) {
   const color = COLORS[attr] ?? COLORS.wind;
   if (attr === 'anti') particle(dim, 'bc:magic_circle_dark', loc, { size, life });
-  else particle(dim, 'bc:magic_circle_ground', loc, { color, size, life });
+  else vfx.groundSigil(dim, loc, color, size, life);
 }
 
+/** A layered hit in the attribute's style (flash, core, element particles, sparks, smoke...). */
 export function burst(dim, loc, attr, scale = 1) {
   const color = COLORS[attr] ?? COLORS.wind;
   if (attr === 'anti') {
     particle(dim, 'bc:anti_burst', loc, { scale });
     particle(dim, 'bc:anti_sparks', loc, { scale });
-  } else if (attr === 'dark') {
-    particle(dim, 'bc:burst_dark', loc, { scale, color: rgb('2a1040') });
-    particle(dim, 'bc:burst_spark', loc, { scale, color });
-  } else {
-    particle(dim, 'bc:burst', loc, { color, scale });
-    particle(dim, 'bc:burst_spark', loc, { color, scale });
+    vfx.impact(dim, loc, 'anti', rgb('e23a3a'), scale);
+    return;
   }
+  vfx.impact(dim, loc, attr, attr === 'dark' ? rgb('8a46c8') : color, scale);
 }
 
 export function shockwave(dim, loc, attr, radius) {
   if (attr === 'anti' || attr === 'dark') particle(dim, 'bc:shockwave_dark', loc, { radius });
-  if (attr !== 'anti') particle(dim, 'bc:shockwave', loc, { radius, color: COLORS[attr] ?? COLORS.wind });
+  if (attr === 'anti') return;
+  const color = COLORS[attr] ?? COLORS.wind;
+  vfx.spawn(dim, 'bc:fx_ring', loc, { color, radius });
+  vfx.spawn(dim, 'bc:fx_dust', loc, { scale: Math.max(0.5, radius / 3.5) }, true);
 }
 
-/** Dotted beam of glowing particles between two points. */
+/** A continuous glowing beam between two points (v0.9.0: a solid bar with a white-hot core, not dots). */
 export function beam(dim, a, b, attr, step = 0.45, size = 0.6, life = 0.35) {
+  const color = attr === 'anti' ? rgb('e23a3a') : COLORS[attr] ?? COLORS.wind;
   const d = V.dist(a, b);
+  if (d < 0.05) return;
   const dir = V.norm(V.sub(b, a));
-  const color = COLORS[attr] ?? COLORS.wind;
-  for (let t = 0; t <= d; t += step) particle(dim, 'bc:beam_dot', V.add(a, V.mul(dir, t)), { color, size, life });
+  vfx.spawn(dim, 'bc:fx_beam', a, { color, dir, len: d, size: size * 1.1, life });
+  vfx.spawn(dim, 'bc:fx_beam_core', a, { color, dir, len: d, size: size * 1.1, life: life * 0.9 });
+  void step;
 }
 
 /** Jagged electric arc between two points. */
 export function arc(dim, a, b, color = rgb('fff38c')) {
-  const d = V.dist(a, b);
-  const n = Math.max(2, Math.ceil(d / 0.6));
-  for (let i = 0; i <= n; i++) {
-    const p = V.lerp(a, b, i / n);
-    const j = i === 0 || i === n ? 0 : 0.35;
-    particle(dim, 'bc:beam_dot', { x: p.x + (Math.random() - 0.5) * j, y: p.y + (Math.random() - 0.5) * j, z: p.z + (Math.random() - 0.5) * j },
-      { color, size: 0.35, life: 0.25 });
-  }
-  particle(dim, 'bc:spark', b, { color });
+  vfx.lightning(dim, a, b, color, 0.55);
 }
 
 export function shake(player, intensity = 0.3, seconds = 0.4) {

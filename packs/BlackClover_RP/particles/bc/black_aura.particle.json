@@ -5,7 +5,7 @@
       "identifier": "bc:black_aura",
       "basic_render_parameters": {
         "material": "particles_blend",
-        "texture": "textures/particle/bc/smoke"
+        "texture": "textures/particle/bc/v9/smoke"
       }
     },
     "components": {
@@ -42,23 +42,23 @@
         ],
         "facing_camera_mode": "rotate_xyz",
         "uv": {
-          "texture_width": 32,
-          "texture_height": 128,
+          "texture_width": 64,
+          "texture_height": 512,
           "flipbook": {
             "base_UV": [
               0,
               0
             ],
             "size_UV": [
-              32,
-              32
+              64,
+              64
             ],
             "step_UV": [
               0,
-              32
+              64
             ],
-            "frames_per_second": 6,
-            "max_frame": 4,
+            "frames_per_second": 12.0,
+            "max_frame": 8,
             "stretch_to_lifetime": true,
             "loop": false
           }

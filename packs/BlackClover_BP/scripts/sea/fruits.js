@@ -14,6 +14,7 @@ import { castSpec } from '../living/engine.js';
 import { emit } from '../core/bus.js';
 import { fruitCdMul, seaWard } from '../core/armor.js';
 import { wrap } from '../core/scrolls.js';
+import * as vfx from '../core/vfx.js';
 
 const F = DATA.fruits;
 export const FRUIT_IDS = DATA.fruitOrder;
@@ -348,6 +349,10 @@ export function castAbility(caster, fid, abilityId, target, pwMul = 1) {
     if (!spec) return false;
     return safe(() => castSpec(caster, spec, `f:${fid}`, x.pw, x.target), `fruit:${abilityId}`);
   }
+  // the power surges out of the user's body (spec abilities get this from the spell engine)
+  const hexc = F[fid]?.color ?? 'ffffff';
+  vfx.muzzle(x.dim, from(x, 1.0, 0.35), x.dir, `f:${fid}`, vfx.hex(hexc), 0.75);
+  vfx.spawn(x.dim, 'bc:fx_glow', from(x, 0.7, 0.45), { color: vfx.hex(hexc), size: 0.9, life: 0.35 }, true);
   return safe(() => fn(x), `fruit:${abilityId}`);
 }
 
@@ -483,7 +488,7 @@ export function usePower(p, item) {
   }
   s.cd.set(ab.id, t + Math.round(ab.cooldown * 20 * fruitCdMul(p)));
   s.lastUse = t;
-  anim(p, s.ability >= 2 ? 'animation.bc.player.cast_raise' : 'animation.bc.player.cast_forward');
+  anim(p, s.ability >= 2 ? 'animation.bc.player.fruit_roar' : 'animation.bc.player.fruit_punch');
   const ok = castAbility(p, fid, ab.id);
   if (ok === false) s.cd.delete(ab.id);
   else {

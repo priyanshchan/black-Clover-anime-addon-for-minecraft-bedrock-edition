@@ -1,6 +1,6 @@
 # Black Clover: Grimoire Awakening
 
-> **Early Access – v0.8.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
+> **Early Access – v0.9.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
 **An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 36 magic attributes, lead a squad of Magic Knight companions with their own personalities and specialisations, draw anti-magic demon swords, wear squad robes, fly brooms, and fight devils, pirates, bandits, assassins, rogue mages, insect swarms and fifteen giant bosses.
 
@@ -26,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v0.9.0 – spells that look the part:** every spell and fruit power is redrawn in layers - magic circles, flashes, shock rings, sparks that bounce, solid beams with white-hot cores, real lightning, licking flames, rolling smoke, dust waves and ground cracks - with a rebuilt glowing projectile (and burning comets), element trails, and new full-body cast animations for players, knights and fruit brawlers.
 * **v0.8.0 – the armour update:** eight 3D armour sets (Mana-Steel, Royal Knight, Devilhide, Abyssal Scale, Shadowweave, Hive Chitin, Runeplate, Archmage) with bonuses for two and four pieces, materials dropped by the foes that suit them, and the **Magic Forge**: forge pieces, reinforce them to +5, inscribe six kinds of runes, sew a squad robe on as a mantle, salvage; companions wear armour too.
 * **v0.7.5 – lairs, elites & feats:** bandit hideouts, hive nests and cultist shrines to raid; **elite enemies** with seven traits (Vampiric, Shielded, Swift, Explosive, Summoner, Arcane, Frenzied) and better loot; Mana Potions, elixirs, Smoke Bombs and **spell scrolls** that cast a spell from any grimoire; and **22 feats** that pay stars and doubloons and unlock a title shown under your name.
 * **v0.7.0 – foes that fight together:** the Bandit Brotherhood (thieves steal your doubloons and run), Shadow Assassins, Cultists and the Hive; three new bosses (the Bandit King, the spell-stealing Grimoire Devourer, the egg-laying Hive Queen); enemy warbands that focus, surround, call for help and break; bosses that adapt to how you fight; and an event director with scaling, objectives, an event log and six new events.
@@ -346,6 +347,20 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 
 ---
 
+## v0.9.0: spells that look the part
+
+![v0.9.0](docs/images/v090.png)
+
+* **Layered spell effects** - a spell now forms in a magic circle, bursts out with a flash, a shock ring and sparks, flies with a glow and an element trail, and lands with a white-hot flash, its element's particles, sparks and smoke, a ground shock ring, a dust wave and cracks. 48 new high-resolution particle effects (flares, sparks that stretch with speed and bounce off the ground, solid beams, jagged lightning, 8-frame fire and smoke, a detailed magic circle, cracks, tumbling rocks, shards, leaves, snowflakes, droplets, glyphs). → [How spells look](docs/magic.md#how-spells-look-v090)
+* **Every element looks like itself** - fire licks and smoulders, water splashes, ice shatters into shards and snow, lightning forks, darkness swallows the light, earth throws rocks, plants scatter leaves, sound rings, time and runes float glyphs. Abyss Fruits use the same kits, surging from the user's body instead of a magic circle.
+* **A rebuilt spell projectile** - orbs with spinning rings, faceted shards, crescent blades, spiralling spears and burning comets for meteors, with a glowing halo and an element trail.
+* **Full-body cast animations** - wind-up, strike, follow-through and settle on the whole body: thrust, push, channel, call the sky, slam, sweep, spin, summon, power-up, heal, dash, and for fruit users a punch, a stomp and a roar. Knights and companions use them too. The biggest spells flash the screen.
+* **The classic effects are sharper too** - old particles now draw with the high-resolution textures, and a per-tick budget keeps huge battles smooth.
+
+![v0.9.0 particles](docs/images/vfx090.png)
+
+---
+
 ## v0.8.0: the armour update
 
 ![v0.8.0](docs/images/v080.png)
@@ -660,7 +675,7 @@ python3 tools/docs.py         # regenerates the reference pages in docs/
 
 The scripts are type-checked against the official `@minecraft/server` 2.0.0 typings (`tsc --checkJs`).
 
-**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.8.0`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
+**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.9.0`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
 
 **Tuning held items:** third/first-person poses live in `grimoire_animations()` and `sword_animations()` in `tools/bc/models/items.py`. First-person poses are solved from a target screen position by `tools/bc/fpsolve.py`, so moving an item on screen means changing one target point.
 

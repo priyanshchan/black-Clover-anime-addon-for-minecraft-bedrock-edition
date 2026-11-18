@@ -276,6 +276,28 @@ def page_magic():
     o += ('* **Mana Skin** (magic level 12): a coat of mana soaks a quarter of every hit, paid for with mana.\n'
           '* **Mana Zone** (magic level 15): hold your grimoire and press **Sneak + Jump**. For 20 s, inside a 12-block zone, your spells recharge twice as fast, '
           'hit 20% harder and mana regenerates twice as fast.\n')
+    o += ('## How spells look (v0.9.0)\n\n'
+          '![Projectile and cast animations](images/v090.png)\n\n'
+          'Every spell is drawn in **layers**, the way anime magic is: a magic circle forms, the spell is released with a flash, a shock ring and a spray of sparks, '
+          'it travels with a glowing halo and an element trail, and it lands with a white-hot flash, the element\'s own particles, sparks, smoke or mist - '
+          'and on the ground a shock ring, a dust wave and cracks. Each element has its own kit:\n\n'
+          '* **Fire and magma** - licking 8-frame flames, embers that drift up, rolling smoke, glowing cracks.\n'
+          '* **Water, bubble, acid, poison, blood** - droplets that splash and bounce, bubbles, coloured mist.\n'
+          '* **Ice, crystal, glass, mirror** - spinning shards and drifting snowflakes, glints.\n'
+          '* **Lightning** - real jagged lightning bolts, sparks that bounce off the ground, glowing cracks.\n'
+          '* **Light, star, moon, gold** - lens-flare flashes and twinkling sparkles.\n'
+          '* **Dark, gravity, ink, spatial, Anti-Magic** - dark void smoke that swallows the light.\n'
+          '* **Earth, sand, bone** - rock chunks that tumble and bounce, dust waves, dark cracks.\n'
+          '* **Plant and thorn** - leaves that flutter down. **Sound** - notes and rings. **Time, rune, paper** - floating rune glyphs. **Wind, cotton, mist, smoke** - wisps and haze.\n\n'
+          'Abyss Fruits use the same kits (the Ember Fruit burns like flame, the Frost Fruit like ice, and so on) but are not magic: no magic circles, the power '
+          'surges out of the user\'s body instead.\n\n'
+          'Beams are solid bars of light with a white-hot core; strikes call down lightning or columns of light; rains fall as streaks from a circle in the sky; '
+          'meteors are burning comets; zones, vortices and prisons swirl. The biggest spells (huge novas, dives and time stops) flash the screen for an instant. '
+          'In a big battle, a per-tick budget drops the optional layers (embers, smoke, debris) before the game can slow down.\n\n'
+          '**Cast animations** move the whole body - wind-up, strike with overshoot, follow-through and settle: a one-handed thrust, a two-handed push, '
+          'a braced channel that trembles, arms flung to the sky, an overhead slam, a sweep, a spin, a summon, a power-up, a heal and a dash. '
+          'Abyss Fruit users fight like brawlers: a punch, a stomp and a roar. Magic Knights, companions and Rogue Mages use the same animations.\n\n'
+          '![Particle textures](images/vfx090.png)\n\n')
     return write('magic.md', 'Magic: grimoires & spells', o)
 
 
@@ -1125,6 +1147,8 @@ Everything in `packs/` and `dist/` is generated - edit the generators in `tools/
 | `src/scripts/living/` (companions) | `companions.js` saved party, whistle and hooks; `squad.js` specialisations, tactics, combos, revives, broom flight; `camp.js` mood, camp, talk, trials, gear; `roster.js` Squad Banner, expeditions, Training Dummy; `rivals.js` sparring and rival squads; `puppeteer.js` the Soul Puppeteer's strings |
 | `src/scripts/living/` (v0.7) | `warband.js` enemy warbands; `foes.js` thieves, assassins, cultist rituals, the Hive; `elites.js` elite enemies; `lairs.js` hideouts, nests and shrines; `consumables.js` potions, elixirs, smoke bombs, scrolls; `feats.js` feats and titles |
 | `src/scripts/core/scrolls.js` | writing and reading spell scrolls |
+| `src/scripts/core/vfx.js` (v0.9.0) | the VFX director: element kits and the layered effects (impact, muzzle, beam, ground, pillar, lightning, slash, swirl, aura, screen flash) and the per-tick particle budget |
+| `tools/bc/vfx9.py`, `v9gen.py` (+ `models/v9.py`) | v0.9.0: high-resolution particle textures and the `bc:fx_*` particle effects; the rebuilt spell projectile, its halo and element trails; the full-body cast animations |
 | `src/scripts/core/armor.js`, `living/armor.js`, `living/forge.js` (v0.8.0) | what is worn and the bonus maths; set effects, damage, drops and companions in armour; the Magic Forge and the Armoury |
 | `tools/bc/v8gen.py` (+ `models/v8.py`) | v0.8.0 armour: 32 attachable pieces in eight styles, materials, runes and the Magic Forge |
 | `src/scripts/core/bus.js` | a tiny event bus (casts, XP, bosses, crowd control, missions, events won, elites, lairs) |
@@ -1176,6 +1200,7 @@ def page_home():
 | Abyss Fruits | {len(FRUITS)} fruits, {n_ab} abilities, 9 beast forms, the Will system |
 | Creatures | {len([e for e in ENTITIES.values() if 'bc_spell' not in e['components'].get('minecraft:type_family', {}).get('family', [])])} creatures, NPCs and bosses, including {len(BOSSES)} bosses |
 | Companions | a saved party of up to {PARTY_MAX} knights plus {RESERVE_MAX} in reserve, each with a grimoire and an Abyss Fruit: personalities, specialisations, party tactics, combos, revives, mood, camps, trials, expeditions, sparring and rival squads |
+| Effects | layered spell and fruit VFX ({len([1 for f in os.listdir(os.path.join(RP, 'particles', 'bc', 'v9'))])} high-resolution particle effects), a rebuilt spell projectile, full-body cast animations |
 | Armour | {len(ARMOR_SETS)} sets ({len(ARMOR_SETS) * 4} 3D pieces) with bonuses for two and four pieces, the Magic Forge, {len(RUNES)} runes, reinforcement to +{REINFORCE_MAX}, squad mantles, companions in armour |
 | Items | {len(ITEMS)} items and blocks, {len(RECIPES)} recipes |
 | AI & simulation | a tactical brain for spellcasters, enemy warbands (focus, flanking, calling for help, breaking), bosses that adapt, battles with tactics, morale and leaders, a world where four factions rise and fall |
@@ -1187,7 +1212,7 @@ def page_home():
 | Page | What is in it |
 |---|---|
 | [Getting started](getting-started.md) | install, your first hour, where to go next |
-| [Magic](magic.md) | every attribute, altar odds, all {n_spells} spells with numbers, anti-magic, techniques |
+| [Magic](magic.md) | every attribute, altar odds, all {n_spells} spells with numbers, anti-magic, techniques, how spells look |
 | [Abyss Fruits](fruits.md) | all {len(FRUITS)} fruits and {n_ab} abilities with numbers, rules, Will |
 | [Armour](armour.md) | every set and its bonuses, the Magic Forge, materials and where they drop, runes, reinforcement, mantles |
 | [Companions](companions.md) | your squad: personalities, specialisations, tactics, combos, revives, mood, camp, talking, trials, the Squad Banner and expeditions, training, sparring, rival squads, bond, robes |

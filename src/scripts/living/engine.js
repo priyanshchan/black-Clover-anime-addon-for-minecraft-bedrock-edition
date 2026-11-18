@@ -8,6 +8,7 @@ import { particle, rgb, shakeArea, sound, title } from '../core/fx.js';
 import { V, alive, rand, repeat, safe, timer } from '../core/util.js';
 import { registerHandler } from '../magic/projectiles.js';
 import { emit } from '../core/bus.js';
+import * as vfx from '../core/vfx.js';
 import { addDanger } from './danger.js';
 
 /**
@@ -32,50 +33,7 @@ export function colorOf(src) {
 }
 
 // ------------------------------------------------------------------------------- visuals & sounds
-const IVORY = rgb('e8e0c8');
-/** @type {Record<string, (d: any, l: any, c: any, s: number) => void>} */
-const STYLE = {
-  sand: (d, l, c, s) => { particle(d, 'bc:dust_burst', l, { color: c, scale: s }); particle(d, 'bc:rock_debris', l, { scale: s * 0.5 }); },
-  earth: (d, l, c, s) => { particle(d, 'bc:rock_debris', l, { scale: s }); particle(d, 'bc:dust_burst', l, { color: c, scale: s * 0.7 }); },
-  bubble: (d, l, c, s) => { particle(d, 'bc:bubble_burst', l, { color: c, scale: s }); particle(d, 'bc:water_splash', l, { scale: s * 0.5 }); },
-  water: (d, l, c, s) => { particle(d, 'bc:water_splash', l, { scale: s }); particle(d, 'bc:bubble_burst', l, { color: c, scale: s * 0.6 }); },
-  leaf: (d, l, c, s) => { particle(d, 'bc:leaf_burst', l, { scale: s }); particle(d, 'bc:burst', l, { color: c, scale: s * 0.6 }); },
-  poison: (d, l, c, s) => { particle(d, 'bc:dust_burst', l, { color: c, scale: s }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.6 }); },
-  acid: (d, l, c, s) => { particle(d, 'bc:bubble_burst', l, { color: c, scale: s }); particle(d, 'bc:dust_burst', l, { color: c, scale: s * 0.6 }); },
-  blood: (d, l, c, s) => { particle(d, 'bc:burst', l, { color: c, scale: s }); particle(d, 'bc:shard_burst', l, { color: c, scale: s * 0.7 }); },
-  star: (d, l, c, s) => { particle(d, 'bc:burst_spark', l, { color: c, scale: s }); particle(d, 'bc:light_burst', l, { scale: s * 0.7 }); },
-  light: (d, l, c, s) => { particle(d, 'bc:light_burst', l, { scale: s }); particle(d, 'bc:burst', l, { color: c, scale: s * 0.6 }); },
-  sound: (d, l, c, s) => { particle(d, 'bc:note_burst', l, { color: c, scale: s }); particle(d, 'bc:shockwave', l, { color: c, radius: 1.5 * s }); },
-  mist: (d, l, c, s) => { particle(d, 'bc:dust_burst', l, { color: c, scale: s * 1.4 }); },
-  ash: (d, l, c, s) => { particle(d, 'bc:dust_burst', l, { color: c, scale: s }); particle(d, 'bc:flame_burst', l, { scale: s * 0.3 }); },
-  ink: (d, l, c, s) => { particle(d, 'bc:dust_burst', l, { color: rgb('1a1430'), scale: s }); particle(d, 'bc:burst', l, { color: c, scale: s * 0.5 }); },
-  crystal: (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: c, scale: s }); particle(d, 'bc:ice_shatter', l, { scale: s * 0.6 }); },
-  ice: (d, l, c, s) => { particle(d, 'bc:ice_shatter', l, { scale: s }); particle(d, 'bc:burst', l, { color: c, scale: s * 0.5 }); },
-  bone: (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: IVORY, scale: s }); particle(d, 'bc:rock_debris', l, { scale: s * 0.5 }); },
-  magma: (d, l, c, s) => { particle(d, 'bc:flame_burst', l, { scale: s }); particle(d, 'bc:rock_debris', l, { scale: s * 0.6 }); particle(d, 'bc:smoke_burst', l, { scale: s * 0.6 }); },
-  flame: (d, l, c, s) => { particle(d, 'bc:flame_burst', l, { scale: s }); particle(d, 'bc:smoke_burst', l, { scale: s * 0.5 }); },
-  lightning: (d, l, c, s) => { particle(d, 'bc:burst_spark', l, { color: c, scale: s }); particle(d, 'bc:spark', l, { color: c }); },
-  dark: (d, l, c, s) => { particle(d, 'bc:burst_dark', l, { color: rgb('2a1040'), scale: s }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.6 }); },
-  metal: (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: rgb('c8d0dc'), scale: s }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.5 }); },
-  time: (d, l, c, s) => { particle(d, 'bc:burst', l, { color: c, scale: s }); particle(d, 'bc:magic_circle_ground', l, { color: c, size: 1.5 * s, life: 0.6 }); },
-};
-STYLE.cotton = (d, l, c, s) => { particle(d, 'bc:dust_burst', l, { color: c, scale: s * 1.2 }); particle(d, 'bc:burst', l, { color: c, scale: s * 0.4 }); };
-STYLE.paper = (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: c, scale: s }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.4 }); };
-STYLE.smoke = (d, l, c, s) => { particle(d, 'bc:smoke_burst', l, { scale: s }); particle(d, 'bc:dust_burst', l, { color: c, scale: s }); };
-STYLE.glass = (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: c, scale: s }); particle(d, 'bc:ice_shatter', l, { scale: s * 0.7 }); };
-STYLE.gold = (d, l, c, s) => { particle(d, 'bc:burst_spark', l, { color: c, scale: s }); particle(d, 'bc:light_burst', l, { scale: s * 0.6 }); };
-STYLE.beast = (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: c, scale: s }); particle(d, 'bc:dust_burst', l, { color: c, scale: s * 0.6 }); };
-STYLE.spirit = (d, l, c, s) => { particle(d, 'bc:burst', l, { color: c, scale: s }); particle(d, 'bc:heal', l, { scale: s * 0.4 }); };
-STYLE.rune = (d, l, c, s) => { particle(d, 'bc:magic_circle_ground', l, { color: c, size: 1.4 * s, life: 0.6 }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.7 }); };
-STYLE.gravity = (d, l, c, s) => { particle(d, 'bc:shockwave', l, { color: c, radius: 1.4 * s }); particle(d, 'bc:burst_dark', l, { color: c, scale: s * 0.7 }); };
-STYLE.moon = (d, l, c, s) => { particle(d, 'bc:light_burst', l, { scale: s * 0.7 }); particle(d, 'bc:burst_spark', l, { color: c, scale: s }); };
-STYLE.thorn = (d, l, c, s) => { particle(d, 'bc:leaf_burst', l, { scale: s * 0.7 }); particle(d, 'bc:shard_burst', l, { color: c, scale: s }); };
-STYLE.gun = (d, l, c, s) => { particle(d, 'bc:smoke_burst', l, { scale: s * 0.5 }); particle(d, 'bc:burst_spark', l, { color: rgb('ffd08a'), scale: s * 0.6 }); };
-STYLE.steel = STYLE.metal;
-STYLE.spatial = STYLE.time;
-STYLE.mirror = STYLE.crystal;
-STYLE.wind = (d, l, c, s) => { particle(d, 'bc:burst', l, { color: c, scale: s }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.7 }); };
-
+// v0.9.0: every element's look lives in core/vfx.js (kits of layered particles); the engine says where and how big.
 /** @type {Record<string, [string, number]>} */
 const CAST_SOUND = {
   sand: ['bc.wind.gust', 0.7], earth: ['bc.stone.crack', 0.9], bubble: ['bc.bubble', 1], water: ['bc.water.surge', 1.1], leaf: ['bc.wind.gust', 1.3],
@@ -88,8 +46,13 @@ const CAST_SOUND = {
 };
 
 function fx(x, spec, loc, scale = 1) {
-  (STYLE[spec.fx] ?? STYLE.wind)(x.dim, loc, x.col, scale);
+  vfx.impact(x.dim, loc, spec.fx ?? x.src, x.col, scale);
 }
+/** Grimoire magic (not fruits) gets magic circles. */
+function magic(x) {
+  return x.src.startsWith('a:');
+}
+const UP = { x: 0, y: 1, z: 0 };
 function castSound(x, spec, loc) {
   const [id, pitch] = CAST_SOUND[spec.fx] ?? ['bc.cast', 1];
   sound(x.dim, id, loc, 1, pitch * (0.92 + Math.random() * 0.16));
@@ -153,7 +116,7 @@ function area(x, spec, at, r, mul = 1, hit) {
 }
 
 // ------------------------------------------------------------------------------- the mana bolt
-const SHAPES = { orb: 0, shard: 1, blade: 2, needle: 3 };
+const SHAPES = { orb: 0, shard: 1, blade: 2, needle: 3, comet: 4 };
 
 function shoot(x, spec, origin, dir, speed = spec.speed ?? 1.6) {
   const tint = DATA.tints[x.src] ?? 0;
@@ -181,10 +144,14 @@ function boltCtx(m, owner, dim) {
 function boltImpact(m, owner, loc, dim, target) {
   const spec = m.extra?.spec ?? {};
   const x = boltCtx(m, owner, dim);
-  fx(x, spec, loc, spec.aoe ? spec.aoe / 2.5 : 0.6);
+  fx(x, spec, loc, spec.aoe ? Math.min(2.6, spec.aoe / 2.2) : 0.65);
   if (spec.aoe) {
     sound(dim, 'bc.spell.impact', loc, 0.8, 1.1);
-    if (spec.aoe >= 3) shakeArea(dim, loc, spec.aoe * 3, 0.25, 0.3);
+    if (spec.aoe >= 3) {
+      shakeArea(dim, loc, spec.aoe * 3, 0.25, 0.3);
+      const g = vfx.groundNear(dim, loc, 2.5);
+      if (g) vfx.ground(dim, g, spec.fx ?? x.src, x.col, spec.aoe, 0.6, false);
+    }
     area(x, spec, loc, spec.aoe, 1, new Set(m.hit));
     if (m.extra?.drop && Math.random() < 0.5) safe(() => dim.spawnItem(new ItemStack(m.extra.drop, 1), loc));
   } else if (target) {
@@ -215,6 +182,10 @@ system.runInterval(() => {
   }
 }, 10);
 
+function kitVoid(s) {
+  return !!vfx.kitOf(s.fx ?? '').void;
+}
+
 // ------------------------------------------------------------------------------- templates
 const walls = [];
 /** @type {Record<string, (x: ECtx, s: Spec) => boolean | void>} */
@@ -223,9 +194,11 @@ const T = {
     const n = s.n ?? 1;
     const spread = s.spread ?? 0;
     castSound(x, s, x.c.location);
+    const o = from(x, 1.2, 0.3);
+    vfx.muzzle(x.dim, o, x.dir, s.fx ?? x.src, x.col, 0.6 + (s.size ?? 0) * 0.35 + (n > 1 ? 0.25 : 0));
     for (let i = 0; i < n; i++) {
       const off = n === 1 ? 0 : -spread / 2 + (spread * i) / (n - 1);
-      shoot(x, s, from(x, 1.2, 0.3), V.yaw(x.dir, off));
+      shoot(x, s, o, V.yaw(x.dir, off));
     }
   },
   radial(x, s) {
@@ -241,7 +214,8 @@ const T = {
           const dir = { x: Math.cos(a), y: 0.02, z: Math.sin(a) };
           shoot(x, s, V.add(o, V.mul(dir, 0.8)), dir);
         }
-        particle(x.dim, 'bc:shockwave', x.c.location, { color: x.col, radius: 3 });
+        vfx.spawn(x.dim, 'bc:fx_flash', o, { color: x.col, size: 1.2 });
+        vfx.ground(x.dim, x.c.location, s.fx ?? x.src, x.col, 4 + r, 0.7, magic(x) && r === 0);
       });
     }
   },
@@ -253,8 +227,8 @@ const T = {
     const len = hit ? Math.max(1, V.dist(a, V.add(hit.block.location, hit.faceLocation))) : range;
     const b = V.add(a, V.mul(x.dir, len));
     castSound(x, s, a);
-    for (let t = 0; t <= len; t += 0.5) particle(x.dim, 'bc:beam_dot', V.add(a, V.mul(x.dir, t)), { color: x.col, size: 0.45 + width * 0.35, life: 0.4 });
-    fx(x, s, b, 0.8);
+    vfx.beam(x.dim, a, b, s.fx ?? x.src, x.col, width, { life: 0.42 });
+    if (width >= 1.5) shakeArea(x.dim, a, 12, 0.2, 0.35);
     for (const t of targetsAlong(x.dim, a, b, width, x.c)) strike(x, s, t, 1, a);
   },
   wave(x, s) {
@@ -265,6 +239,8 @@ const T = {
     castSound(x, s, x.c.location);
     shakeArea(x.dim, x.c.location, 16, 0.25, 0.6);
     const base = x.c.location;
+    vfx.slash(x.dim, from(x, 1.6, 0.4), x.col, 3.2, 0);
+    vfx.ground(x.dim, base, s.fx ?? x.src, x.col, 2.5, 0.6, magic(x));
     for (let d = 0; d < dirs; d++) {
       const dir = dirs === 1 ? V.flat(x.dir) : V.yaw(V.flat(x.dir), (360 / dirs) * d);
       const side = { x: -dir.z, y: 0, z: dir.x };
@@ -273,8 +249,10 @@ const T = {
           for (let l = 0; l < lanes; l++) {
             const off = lanes === 1 ? 0 : (l - (lanes - 1) / 2) * 2.2;
             const p = ground(x.dim, V.add(V.add(base, V.mul(dir, k * 1.5)), V.mul(side, off)));
-            particle(x.dim, 'bc:pillar', p, { color: x.col, scale: 0.8 });
-            if (k % 2 === 0) fx(x, s, p, 0.6);
+            vfx.spawn(x.dim, 'bc:fx_pillar', p, { color: x.col, size: 0.7, radius: 0.7 });
+            vfx.spawn(x.dim, 'bc:fx_dust', p, { scale: 0.55 }, true);
+            if (k % 2 === 0) fx(x, s, V.add(p, { x: 0, y: 0.6, z: 0 }), 0.6);
+            if (k % 3 === 0) vfx.spawn(x.dim, 'bc:fx_crack', p, { size: 1.3 }, true);
             area(x, s, p, 1.8, 1, hit);
           }
         });
@@ -288,15 +266,23 @@ const T = {
     castSound(x, s, at0);
     const ticks = Math.round((s.dur ?? 5) * 2);
     if (!self && (s.d || s.eff)) addDanger(x.dim, at0, r, ticks * 10, x.c);
+    if (!self) {
+      vfx.ground(x.dim, at0, s.fx ?? x.src, x.col, r, (s.dur ?? 5) + 0.3, magic(x));
+      vfx.swirl(x.dim, at0, x.col, r * 0.6, Math.min(3, s.dur ?? 5), 1.2);
+    }
     repeat(ticks, 10, (i) => {
       if (self && !alive(x.c)) return false;
       const at = self ? x.c.location : at0;
-      particle(x.dim, 'bc:magic_circle_ground', V.add(at, { x: 0, y: 0.1, z: 0 }), { color: x.col, size: r, life: 0.7 });
-      for (let k = 0; k < 3; k++) {
+      if (self) {
+        if (magic(x)) vfx.groundSigil(x.dim, at, x.col, r * 2, 0.6);
+        vfx.aura(x.dim, at, x.col, 0.5);
+      }
+      for (let k = 0; k < 2; k++) {
         const a = Math.random() * Math.PI * 2;
         const rr = Math.sqrt(Math.random()) * r;
-        fx(x, s, V.add(at, { x: Math.cos(a) * rr, y: 0.6, z: Math.sin(a) * rr }), 0.5);
+        fx(x, s, V.add(at, { x: Math.cos(a) * rr, y: 0.6, z: Math.sin(a) * rr }), 0.45);
       }
+      if (i % 2 === 0) vfx.spawn(x.dim, 'bc:fx_mist', V.add(at, { x: 0, y: 0.5, z: 0 }), { color: x.col, scale: r / 2.5 }, true);
       for (const t of targetsAround(x.dim, at, r, x.c)) {
         if (s.d) hurt(t, s.d * x.pw * 0.5, x.c, s.fire ? 'fire' : 'magic');
         if (s.fire && i % 4 === 0) safe(() => t.setOnFire(Math.min(s.fire, 3), true));
@@ -309,13 +295,18 @@ const T = {
     const at = s.at === 'aim' ? ground(x.dim, x.aim) : s.at === 'front' ? V.add(x.c.location, V.mul(V.flat(x.dir), 2)) : x.c.location;
     const r = s.r ?? 6;
     castSound(x, s, at);
-    particle(x.dim, 'bc:shockwave', V.add(at, { x: 0, y: 0.3, z: 0 }), { color: x.col, radius: r });
-    fx(x, s, V.add(at, { x: 0, y: 1, z: 0 }), r / 3);
-    for (let k = 0; k < Math.min(8, Math.round(r)); k++) {
-      const a = (k / Math.min(8, Math.round(r))) * Math.PI * 2;
-      fx(x, s, V.add(at, { x: Math.cos(a) * r * 0.7, y: 0.5, z: Math.sin(a) * r * 0.7 }), 0.5);
+    const g = vfx.groundNear(x.dim, V.add(at, { x: 0, y: 0.5, z: 0 }), 3) ?? at;
+    vfx.ground(x.dim, g, s.fx ?? x.src, x.col, r, 0.9, magic(x));
+    vfx.spawn(x.dim, 'bc:fx_flash', V.add(at, { x: 0, y: 1, z: 0 }), { color: x.col, size: 1.2 + r * 0.25 });
+    fx(x, s, V.add(at, { x: 0, y: 1, z: 0 }), Math.min(2.4, r / 3));
+    timer(3, () => vfx.spawn(x.dim, 'bc:fx_ring', V.add(g, { x: 0, y: 0.2, z: 0 }), { color: x.col, radius: r * 1.25, life: 0.5 }, true));
+    const ringN = Math.min(8, Math.round(r));
+    for (let k = 0; k < ringN; k++) {
+      const a = (k / ringN) * Math.PI * 2;
+      timer(1 + (k % 2), () => fx(x, s, V.add(at, { x: Math.cos(a) * r * 0.7, y: 0.5, z: Math.sin(a) * r * 0.7 }), 0.45));
     }
     if (r >= 5) shakeArea(x.dim, at, r * 2.5, 0.3, 0.5);
+    if (r >= 8 && x.c instanceof Player) vfx.screenFlash([x.c], x.col, 0.3);
     const spec = s.kb ? s : { ...s, kb: [1.2, 0.4] };
     area(x, spec, at, r, 1);
   },
@@ -326,12 +317,16 @@ const T = {
     castSound(x, s, at);
     addDanger(x.dim, at, r + 1, n * (s.every ?? 3) + 4, x.c);
     particle(x.dim, 'bc:warning_circle', V.add(at, { x: 0, y: 0.1, z: 0 }), { size: r + 1, life: (n * (s.every ?? 3)) / 20 + 0.4 });
+    if (magic(x)) vfx.groundSigil(x.dim, at, x.col, (r + 1) * 2, (n * (s.every ?? 3)) / 20 + 0.5);
+    vfx.sigil(x.dim, V.add(at, { x: 0, y: 10, z: 0 }), { x: 0, y: -1, z: 0 }, x.col, (r + 1) * 1.6, (n * (s.every ?? 3)) / 20 + 0.5);
     repeat(n, s.every ?? 3, () => {
       const a = Math.random() * Math.PI * 2;
       const rr = Math.sqrt(Math.random()) * r;
       const p = ground(x.dim, V.add(at, { x: Math.cos(a) * rr, y: 0, z: Math.sin(a) * rr }));
-      particle(x.dim, 'bc:pillar', p, { color: x.col, scale: 1 });
-      fx(x, s, V.add(p, { x: 0, y: 0.5, z: 0 }), 0.8);
+      const sky = V.add(p, { x: rand(-0.6, 0.6), y: 9, z: rand(-0.6, 0.6) });
+      if (s.fx === 'lightning') vfx.lightning(x.dim, sky, p, x.col, 0.9);
+      else vfx.beam(x.dim, sky, p, s.fx ?? x.src, x.col, 0.45, { life: 0.2, muzzle: false, impact: false });
+      fx(x, s, V.add(p, { x: 0, y: 0.5, z: 0 }), 0.85);
       area(x, s, p, s.ar ?? 2.0, 1);
     });
   },
@@ -346,19 +341,24 @@ const T = {
       const rr = Math.sqrt(Math.random()) * r;
       const p = ground(x.dim, V.add(at, { x: Math.cos(a) * rr, y: 0, z: Math.sin(a) * rr }));
       particle(x.dim, 'bc:warning_circle', V.add(p, { x: 0, y: 0.1, z: 0 }), { size: s.aoe ?? 3, life: 1.0 });
+      vfx.groundSigil(x.dim, p, x.col, (s.aoe ?? 3) * 2, 1.0);
       addDanger(x.dim, p, (s.aoe ?? 3) + 0.5, 24, x.c);
       const o = V.add(p, { x: rand(-5, 5), y: 20, z: rand(-5, 5) });
-      if (alive(x.c)) shoot(x, { ...s, shape: 0, size: s.size ?? 2 }, o, V.sub(p, o), 1.8);
+      vfx.spawn(x.dim, 'bc:fx_flash', o, { color: x.col, size: 2 });
+      if (alive(x.c)) shoot(x, { ...s, shape: 'comet', size: s.size ?? 2 }, o, V.sub(p, o), 1.8);
     });
   },
   buff(x, s) {
     castSound(x, s, x.c.location);
-    particle(x.dim, 'bc:magic_circle_ground', V.add(x.c.location, { x: 0, y: 0.1, z: 0 }), { color: x.col, size: s.allies ?? 2.5, life: 1.0 });
-    particle(x.dim, 'bc:pillar', x.c.location, { color: x.col, scale: 1 });
+    if (magic(x)) vfx.groundSigil(x.dim, x.c.location, x.col, (s.allies ?? 1.6) * 2, 1.1);
+    vfx.pillar(x.dim, x.c.location, x.col, 5, 0.9);
+    vfx.spawn(x.dim, 'bc:fx_flash', center(x.c), { color: x.col, size: 1.1 });
     const list = s.allies ? friends(x.c, x.c.location, s.allies) : [x.c];
     for (const e of list) {
       applyEffects(e, s.self);
-      fx(x, s, center(e), 0.5);
+      vfx.aura(x.dim, e.location, x.col, 1.2);
+      vfx.swirl(x.dim, e.location, x.col, 0.9, 0.9, 0.8);
+      fx(x, s, center(e), 0.4);
     }
     return true;
   },
@@ -366,8 +366,14 @@ const T = {
     const r = s.r ?? 6;
     const mul = x.c instanceof Player && robe(x.c) === 'blue_rose_robe' ? 1.3 : 1;
     castSound(x, s, x.c.location);
-    particle(x.dim, 'bc:magic_circle_ground', V.add(x.c.location, { x: 0, y: 0.1, z: 0 }), { color: x.col, size: r, life: 1.4 });
+    if (magic(x)) vfx.groundSigil(x.dim, x.c.location, x.col, r * 2, 1.4);
+    vfx.spawn(x.dim, 'bc:fx_ring', V.add(x.c.location, { x: 0, y: 0.15, z: 0 }), { color: x.col, radius: r, life: 0.7 });
+    vfx.spawn(x.dim, 'bc:fx_flash', center(x.c), { color: x.col, size: 1.0 });
+    vfx.pillar(x.dim, x.c.location, x.col, 4, 0.7);
     for (const e of friends(x.c, x.c.location, r)) {
+      vfx.aura(x.dim, e.location, x.col, 1.2);
+      vfx.spawn(x.dim, 'bc:fx_glyph', center(e), { color: x.col, scale: 0.7 }, true);
+      vfx.spawn(x.dim, 'bc:fx_glow', center(e), { color: x.col, size: 1.4, life: 0.8 });
       heal(e, (s.heal ?? 6) * mul * Math.max(1, x.pw * 0.8));
       if (s.regen) effect(e, 'regeneration', s.regen, 0);
       for (const bad of ['poison', 'wither', 'slowness', 'weakness', 'blindness', 'nausea']) safe(() => e.removeEffect(bad));
@@ -389,6 +395,9 @@ const T = {
     const dur = s.dur ?? 3;
     for (const v of victims) emit('cc', v, Math.round(dur * 20), x.c);
     for (const v of victims) {
+      if (magic(x)) vfx.groundSigil(x.dim, v.location, x.col, 2.6, dur);
+      vfx.swirl(x.dim, v.location, x.col, 0.9, Math.min(dur, 3), 0.9);
+      vfx.spawn(x.dim, 'bc:fx_flash', center(v), { color: x.col, size: 0.9 });
       effect(v, 'slowness', dur, 8, false);
       effect(v, 'weakness', dur, 2, false);
       effect(v, 'mining_fatigue', dur, 2, false);
@@ -396,8 +405,8 @@ const T = {
     }
     repeat(Math.round(dur * 2), 10, () => {
       for (const v of victims) if (alive(v)) {
-        particle(x.dim, 'bc:shockwave', v.location, { color: x.col, radius: 1.0 });
-        fx(x, s, center(v), 0.4);
+        vfx.spawn(x.dim, 'bc:fx_ring', V.add(v.location, { x: 0, y: 0.1, z: 0 }), { color: x.col, radius: 1.2, life: 0.4 }, true);
+        vfx.spawn(x.dim, 'bc:fx_sparks', center(v), { color: x.col, scale: 0.35 }, true);
       }
     }, () => {
       for (const v of victims) if (alive(v)) {
@@ -424,8 +433,9 @@ const T = {
           e.triggerEvent(`bc:team_${tm}`);
         }
       });
-      particle(x.dim, 'bc:magic_circle_ground', V.add(p, { x: 0, y: 0.1, z: 0 }), { color: x.col, size: 2, life: 1.2 });
-      fx(x, s, V.add(p, { x: 0, y: 1, z: 0 }), 1);
+      vfx.groundSigil(x.dim, p, x.col, 3, 1.3);
+      vfx.pillar(x.dim, p, x.col, 4, 0.8);
+      fx(x, s, V.add(p, { x: 0, y: 1, z: 0 }), 0.9);
     }
   },
   wall(x, s) {
@@ -441,7 +451,10 @@ const T = {
         if (b && b.isAir) {
           safe(() => b.setType(s.block));
           placed.push(loc);
-          if (h === 0) fx(x, s, V.add(loc, { x: 0.5, y: 0.5, z: 0.5 }), 0.4);
+          if (h === 0) {
+            fx(x, s, V.add(loc, { x: 0.5, y: 0.5, z: 0.5 }), 0.4);
+            vfx.spawn(x.dim, 'bc:fx_dust', V.add(loc, { x: 0.5, y: 0.05, z: 0.5 }), { scale: 0.4 }, true);
+          }
         }
       }
     }
@@ -455,8 +468,11 @@ const T = {
     const victims = targetsAround(x.dim, at, r, x.c).map((v) => ({ v, loc: { ...v.location } }));
     sound(x.dim, 'bc.clock', at, 1.5, 0.7);
     sound(x.dim, 'bc.gong', at, 1, 1.4);
-    particle(x.dim, 'bc:magic_circle_ground', V.add(at, { x: 0, y: 0.1, z: 0 }), { color: x.col, size: r, life: s.dur ?? 4 });
-    particle(x.dim, 'bc:shockwave', V.add(at, { x: 0, y: 1, z: 0 }), { color: x.col, radius: r });
+    vfx.groundSigil(x.dim, at, x.col, r * 2, (s.dur ?? 4) + 0.3);
+    vfx.spawn(x.dim, 'bc:fx_ring', V.add(at, { x: 0, y: 1, z: 0 }), { color: x.col, radius: r * 1.2, life: 0.6 });
+    vfx.spawn(x.dim, 'bc:fx_flash', V.add(at, { x: 0, y: 1.2, z: 0 }), { color: x.col, size: 3 });
+    vfx.spawn(x.dim, 'bc:fx_glyph', V.add(at, { x: 0, y: 1, z: 0 }), { color: x.col, scale: 2 });
+    vfx.screenFlash([...(x.c instanceof Player ? [x.c] : []), ...victims.map((o) => o.v).filter((v) => v instanceof Player)], x.col, 0.5);
     for (const { v } of victims) if (v instanceof Player) title(v, '§e§lTIME STOPS', '§7...', 30);
     // hostile spells in the field simply vanish
     safe(() => {
@@ -475,7 +491,7 @@ const T = {
           effect(v, 'slowness', 1.2, 10, false);
           effect(v, 'weakness', 1.2, 3, false);
           effect(v, 'mining_fatigue', 1.2, 3, false);
-          particle(x.dim, 'bc:burst', center(v), { color: x.col, scale: 0.4 });
+          vfx.spawn(x.dim, 'bc:fx_glyph', center(v), { color: x.col, scale: 0.4 }, true);
         }
       }
       if (i % 10 === 0) sound(x.dim, 'bc.clock', at, 0.6, 1.2);
@@ -493,13 +509,15 @@ const T = {
       let dest;
       if (x.c instanceof Player) dest = blinkDestination(x.c, s.dist ?? 8);
       else dest = V.add(start, V.mul(V.flat(V.sub(x.aim, start)), Math.min(s.dist ?? 8, V.dist(x.aim, start) - 1.5)));
-      fx(x, s, V.add(start, { x: 0, y: 1, z: 0 }), 0.9);
+      fx(x, s, V.add(start, { x: 0, y: 1, z: 0 }), 0.8);
+      vfx.spawn(x.dim, 'bc:fx_smoke', V.add(start, { x: 0, y: 0.8, z: 0 }), { scale: 0.6 }, true);
       safe(() => x.c.teleport(dest, { keepVelocity: false }));
       fx(x, s, V.add(dest, { x: 0, y: 1, z: 0 }), 0.9);
+      vfx.spawn(x.dim, 'bc:fx_ring', V.add(dest, { x: 0, y: 0.15, z: 0 }), { color: x.col, radius: 2.2 });
       castSound(x, s, dest);
       const a = V.add(start, { x: 0, y: 1, z: 0 });
       const b = V.add(dest, { x: 0, y: 1, z: 0 });
-      for (let t = 0; t <= V.dist(a, b); t += 0.6) particle(x.dim, 'bc:beam_dot', V.lerp(a, b, t / Math.max(0.1, V.dist(a, b))), { color: x.col, size: 0.4, life: 0.4 });
+      vfx.beam(x.dim, a, b, s.fx ?? x.src, x.col, 0.35, { life: 0.35, muzzle: false, impact: false });
       for (const t of targetsAlong(x.dim, a, b, 1.5, x.c)) strike(x, s, t, 1, a);
       return true;
     }
@@ -508,9 +526,12 @@ const T = {
     if (x.c instanceof Player) knock(x.c, dir, (s.dist ?? 8) * 0.38, 0.25);
     else safe(() => x.c.applyImpulse({ x: dir.x * 1.6, y: 0.3, z: dir.z * 1.6 }));
     const hit = new Set();
-    repeat(8, 1, () => {
+    vfx.spawn(x.dim, 'bc:fx_ring', V.add(start, { x: 0, y: 0.15, z: 0 }), { color: x.col, radius: 1.8 });
+    vfx.spawn(x.dim, 'bc:fx_dust', start, { scale: 0.7 }, true);
+    repeat(8, 1, (i) => {
       if (!alive(x.c)) return false;
-      fx(x, s, V.add(x.c.location, { x: 0, y: 1, z: 0 }), 0.4);
+      if (i % 2 === 0) fx(x, s, V.add(x.c.location, { x: 0, y: 1, z: 0 }), 0.35);
+      vfx.spawn(x.dim, 'bc:fx_spray', V.add(x.c.location, { x: 0, y: 1, z: 0 }), { color: x.col, dir: V.mul(dir, -1), scale: 0.4 }, true);
       area(x, { ...s, kb: s.kb ?? [1.0, 0.3] }, x.c.location, 2.2, 1, hit);
     });
   },
@@ -520,13 +541,18 @@ const T = {
     castSound(x, s, at);
     const ticks = Math.max(2, Math.round(((s.dur ?? 2) * 20) / 3));
     addDanger(x.dim, at, r, ticks * 3 + 4, x.c);
+    const g0 = vfx.groundNear(x.dim, at, 3) ?? at;
+    if (magic(x)) vfx.groundSigil(x.dim, g0, x.col, r * 2, (s.dur ?? 2) + 0.4);
+    vfx.swirl(x.dim, g0, x.col, r * 0.8, (s.dur ?? 2), 1.4);
     repeat(ticks, 3, (i) => {
-      particle(x.dim, 'bc:shockwave', at, { color: x.col, radius: r * (1 - (i % 6) / 7) });
-      if (i % 2 === 0) fx(x, s, V.add(at, { x: rand(-r, r) * 0.5, y: rand(0, 2), z: rand(-r, r) * 0.5 }), 0.5);
+      if (i % 2 === 0) vfx.spawn(x.dim, 'bc:fx_converge', at, { color: x.col, radius: r, life: 0.3 }, true);
+      if (i % 3 === 0) vfx.spawn(x.dim, kitVoid(s) ? 'bc:fx_void' : 'bc:fx_glow', at, { color: x.col, scale: 0.8, size: 1.2, life: 0.3 }, true);
+      if (i % 2 === 0) fx(x, s, V.add(at, { x: rand(-r, r) * 0.5, y: rand(0, 2), z: rand(-r, r) * 0.5 }), 0.4);
       for (const t of targetsAround(x.dim, at, r, x.c)) pull(t, at, 1.1);
     }, () => {
-      fx(x, s, at, r / 3);
-      particle(x.dim, 'bc:shockwave', at, { color: x.col, radius: r * 0.7 });
+      fx(x, s, at, Math.min(2.4, r / 3));
+      vfx.spawn(x.dim, 'bc:fx_flash', at, { color: x.col, size: 2.2 });
+      vfx.spawn(x.dim, 'bc:fx_ring', g0, { color: x.col, radius: r * 1.1 });
       sound(x.dim, 'bc.spell.impact', at, 1.2, 0.8);
       area(x, { ...s, kb: s.kb ?? [1.4, 0.6] }, at, r * 0.65, 1);
     });
@@ -537,21 +563,21 @@ const T = {
     const list = targetsAround(x.dim, at, r, x.c).sort((a, b) => V.dist(a.location, at) - V.dist(b.location, at)).slice(0, s.n ?? 4);
     castSound(x, s, x.c.location);
     if (!list.length) {
-      particle(x.dim, 'bc:pillar', ground(x.dim, at), { color: x.col, scale: 1.2 });
-      fx(x, s, at, 0.8);
+      const g = ground(x.dim, at);
+      if (s.fx === 'lightning') vfx.lightning(x.dim, V.add(g, { x: 0, y: 11, z: 0 }), g, x.col, 1.1);
+      else vfx.pillar(x.dim, g, x.col, 8, 1);
+      fx(x, s, V.add(g, { x: 0, y: 0.5, z: 0 }), 0.8);
       return true;
     }
     list.forEach((t, i) => {
       timer(i * 3, () => {
         if (!alive(t)) return;
         const c = center(t);
-        const top = V.add(c, { x: rand(-1, 1), y: 9, z: rand(-1, 1) });
-        for (let k = 0; k <= 12; k++) {
-          const p = V.lerp(top, c, k / 12);
-          particle(x.dim, 'bc:beam_dot', { x: p.x + rand(-0.2, 0.2), y: p.y, z: p.z + rand(-0.2, 0.2) }, { color: x.col, size: 0.55, life: 0.35 });
-        }
-        particle(x.dim, 'bc:pillar', t.location, { color: x.col, scale: 0.8 });
-        fx(x, s, c, 0.8);
+        const top = V.add(c, { x: rand(-1, 1), y: 11, z: rand(-1, 1) });
+        if (s.fx === 'lightning') vfx.lightning(x.dim, top, c, x.col, 1.1);
+        else vfx.beam(x.dim, top, c, s.fx ?? x.src, x.col, 0.6, { life: 0.3, muzzle: false, impact: false });
+        vfx.spawn(x.dim, 'bc:fx_ring', V.add(t.location, { x: 0, y: 0.1, z: 0 }), { color: x.col, radius: 1.8 }, true);
+        fx(x, s, c, 0.9);
         sound(x.dim, s.fx === 'lightning' ? 'bc.lightning.zap' : 'bc.spell.impact', c, 0.9, 1.1);
         strike(x, s, t, 1, x.c.location);
       });
@@ -561,6 +587,10 @@ const T = {
     const target = ground(x.dim, x.aim);
     castSound(x, s, x.c.location);
     fx(x, s, x.c.location, 0.8);
+    vfx.spawn(x.dim, 'bc:fx_ring', V.add(x.c.location, { x: 0, y: 0.15, z: 0 }), { color: x.col, radius: 2.4 });
+    vfx.spawn(x.dim, 'bc:fx_dust', x.c.location, { scale: 0.9 }, true);
+    vfx.spawn(x.dim, 'bc:fx_spray', x.c.location, { color: x.col, dir: UP, scale: 0.8 }, true);
+    if (magic(x)) vfx.groundSigil(x.dim, target, x.col, (s.r ?? 4) * 2, 1.4);
     if (x.c instanceof Player) {
       knock(x.c, up, 0, 1.25);
       effect(x.c, 'resistance', 2.5, 4, false);
@@ -575,7 +605,8 @@ const T = {
       let landed = false;
       repeat(20, 2, (i) => {
         if (!alive(x.c)) return false;
-        fx(x, s, V.add(x.c.location, { x: 0, y: 1, z: 0 }), 0.3);
+        if (i % 2 === 0) fx(x, s, V.add(x.c.location, { x: 0, y: 1, z: 0 }), 0.3);
+        vfx.spawn(x.dim, 'bc:fx_spray', V.add(x.c.location, { x: 0, y: 1.6, z: 0 }), { color: x.col, dir: UP, scale: 0.3 }, true);
         if ((i > 1 && safe(() => x.c.isOnGround)) || i === 19) {
           landed = true;
           return false;
@@ -583,9 +614,12 @@ const T = {
       }, () => {
         if (!landed || !alive(x.c)) return;
         const at = x.c.location;
-        particle(x.dim, 'bc:shockwave', V.add(at, { x: 0, y: 0.3, z: 0 }), { color: x.col, radius: s.r ?? 4 });
-        particle(x.dim, 'bc:rock_debris', at, { scale: 1.2 });
-        fx(x, s, V.add(at, { x: 0, y: 0.5, z: 0 }), 1.2);
+        vfx.ground(x.dim, V.add(at, { x: 0, y: 0.05, z: 0 }), s.fx ?? x.src, x.col, s.r ?? 4, 0.8, false);
+        vfx.spawn(x.dim, 'bc:fx_crack', V.add(at, { x: 0, y: 0.05, z: 0 }), { size: (s.r ?? 4) * 0.9 });
+        vfx.spawn(x.dim, 'bc:fx_debris', at, { scale: 1.2 }, true);
+        vfx.spawn(x.dim, 'bc:fx_flash', V.add(at, { x: 0, y: 0.8, z: 0 }), { color: x.col, size: 2.4 });
+        fx(x, s, V.add(at, { x: 0, y: 0.5, z: 0 }), 1.3);
+        if (x.c instanceof Player && (s.r ?? 4) >= 5) vfx.screenFlash([x.c], x.col, 0.25);
         sound(x.dim, 'bc.golem.slam', at, 1.2, 1.1);
         shakeArea(x.dim, at, 14, 0.45, 0.5);
         area(x, { ...s, kb: s.kb ?? [1.0, 0.7] }, at, s.r ?? 4, 1);
@@ -597,11 +631,15 @@ const T = {
     const h = history.get(x.c.id);
     if (!h || h.length < 2) return false;
     const back = h[Math.max(0, h.length - 7)];
-    fx(x, s, center(x.c), 1);
+    const was = center(x.c);
+    fx(x, s, was, 0.8);
+    vfx.spawn(x.dim, 'bc:fx_glyph', was, { color: x.col, scale: 1.2 });
     safe(() => x.c.teleport(back, { keepVelocity: false }));
     heal(x.c, (s.heal ?? 6) * Math.max(1, x.pw * 0.8));
-    fx(x, s, V.add(back, { x: 0, y: 1, z: 0 }), 1.2);
-    particle(x.dim, 'bc:magic_circle_ground', V.add(back, { x: 0, y: 0.1, z: 0 }), { color: x.col, size: 2.5, life: 1.2 });
+    fx(x, s, V.add(back, { x: 0, y: 1, z: 0 }), 1.1);
+    vfx.beam(x.dim, was, V.add(back, { x: 0, y: 1, z: 0 }), s.fx ?? x.src, x.col, 0.3, { life: 0.4, muzzle: false, impact: false });
+    vfx.groundSigil(x.dim, back, x.col, 3.2, 1.3);
+    vfx.swirl(x.dim, back, x.col, 1.0, 1.0, 1);
     sound(x.dim, 'bc.clock', back, 1, 1.4);
     return true;
   },
@@ -628,12 +666,20 @@ system.runInterval(() => {
   }
 }, 10);
 
-/** Which player animation goes with each template. */
+/** Which player animation goes with each template (v0.9.0: full-body animations; fruit users fight like brawlers). */
 const PLAYER_ANIM = {
-  beam: 'cast_channel', zone: 'cast_channel', vortex: 'cast_channel', nova: 'cast_slam', dive: 'cast_slam', wave: 'cast_slam',
-  rain: 'cast_raise', meteor: 'cast_raise', strikes: 'cast_raise', buff: 'cast_raise', heal: 'cast_raise', summon: 'cast_raise',
-  timestop: 'cast_raise', radial: 'cast_sweep', leap: 'cast_sweep',
+  bolt: 'cast_forward', beam: 'cast_channel', zone: 'cast_channel', vortex: 'cast_channel', nova: 'cast_slam', dive: 'cast_slam', wave: 'cast_sweep',
+  rain: 'cast_raise', meteor: 'cast_raise', strikes: 'cast_raise', buff: 'cast_buff', heal: 'cast_heal', summon: 'cast_summon',
+  timestop: 'cast_summon', radial: 'cast_spin', leap: 'cast_dash', prison: 'cast_push', wall: 'cast_slam', rewind: 'cast_raise',
 };
+const FRUIT_ANIM = { bolt: 'fruit_punch', beam: 'cast_push', wave: 'fruit_stomp', nova: 'fruit_stomp', buff: 'fruit_roar', prison: 'cast_push' };
+function animFor(spec, src) {
+  const kind = spec.t === 'repeat' ? spec.spec?.t : spec.t;
+  if (kind === 'bolt' && (spec.n ?? 1) >= 3 && !src.startsWith('f:')) return 'cast_push';
+  if (kind === 'wave' && (spec.dirs ?? 1) > 1) return 'cast_slam';
+  if (kind === 'zone' && spec.at === 'self') return src.startsWith('f:') ? 'fruit_roar' : 'cast_buff';
+  return (src.startsWith('f:') ? FRUIT_ANIM[kind] : undefined) ?? PLAYER_ANIM[kind] ?? 'cast_forward';
+}
 
 // ------------------------------------------------------------------------------- entry points
 /** @returns {ECtx} */
@@ -682,10 +728,15 @@ export function castSpec(caster, spec, src, pw = 1, target, opts = {}) {
     particle(caster.dimension, 'bc:shard_burst', center(caster), { color: rgb('d01a34'), scale: 0.5 });
   }
   const x = makeCtx(caster, src, caster instanceof Player ? pw : pw * eclipseMul(), target, opts.aim);
+  // knights and enemies cast grimoire magic through a magic circle too (players get theirs from the grimoire)
+  const kind0 = spec.t === 'repeat' ? spec.spec?.t : spec.t;
+  if (!(caster instanceof Player) && src.startsWith('a:') && src !== 'a:anti' && ['bolt', 'beam', 'radial', 'wave', 'strikes', 'rain', 'meteor'].includes(kind0)) {
+    vfx.sigil(x.dim, from(x, 1.1, 0.35), x.dir, x.col, 1.4, 0.6);
+  }
+  // fruit users call the power up from their own body
+  if (src.startsWith('f:')) vfx.spawn(x.dim, 'bc:fx_glow', from(x, 0.7, 0.45), { color: x.col, size: 0.9, life: 0.35 }, true);
   if (caster instanceof Player) {
-    const kind = spec.t === 'repeat' ? spec.spec?.t : spec.t;
-    const a = PLAYER_ANIM[kind] ?? 'cast_forward';
-    safe(() => caster.playAnimation(`animation.bc.player.${a}`, { blendOutTime: 0.15 }));
+    safe(() => caster.playAnimation(`animation.bc.player.${animFor(spec, src)}`, { blendOutTime: 0.18 }));
   }
   const ok = safe(() => run(x, spec), `engine:${spec.t}`);
   if (ok === false) return false;

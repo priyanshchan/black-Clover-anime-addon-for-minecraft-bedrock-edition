@@ -179,7 +179,10 @@ def uv(texture, w, h, flip=None):
     return {'texture_width': w, 'texture_height': h, 'uv': [0, 0], 'uv_size': [w, h]}
 
 
-SIZES = {'glow': (32, 32), 'spark': (32, 32), 'circle': (128, 128), 'ring': (64, 64), 'flame': (32, 32), 'smoke': (32, 32),
+# v0.9.0: the classic particles now draw with the high-resolution v9 textures
+HD = {'glow': 'v9/soft', 'spark': 'v9/star', 'circle': 'v9/sigil', 'ring': 'v9/ring', 'flame': 'v9/fire', 'smoke': 'v9/smoke'}
+HD_FRAMES = {'flame': 8, 'smoke': 8}
+SIZES = {'glow': (64, 64), 'spark': (32, 32), 'circle': (256, 256), 'ring': (128, 128), 'flame': (64, 64), 'smoke': (64, 64),
          'bolt': (32, 128), 'slash': (64, 32), 'swirl': (32, 32), 'shard': (16, 16), 'bubble': (16, 16), 'snow': (16, 16),
          'drop': (16, 16), 'clover': (16, 16), 'plus': (16, 16), 'note': (16, 16)}
 
@@ -188,7 +191,7 @@ def P(ident, texture, material, comps):
     return ident, {
         'format_version': '1.10.0',
         'particle_effect': {
-            'description': {'identifier': ident, 'basic_render_parameters': {'material': material, 'texture': T + texture}},
+            'description': {'identifier': ident, 'basic_render_parameters': {'material': material, 'texture': T + HD.get(texture, texture)}},
             'components': comps,
         },
     }
@@ -196,6 +199,9 @@ def P(ident, texture, material, comps):
 
 def billboard(texture, size, mode='rotate_xyz', flip=None, direction=None):
     w, h = SIZES[texture]
+    if flip and texture in HD_FRAMES:
+        frames, fps, stretch = flip
+        flip = (HD_FRAMES[texture], fps * HD_FRAMES[texture] / frames, stretch)
     b = {'size': size, 'facing_camera_mode': mode, 'uv': uv(texture, w, h, flip)}
     if direction:
         b['direction'] = {'mode': 'custom', 'custom_direction': direction}

@@ -1,0 +1,54 @@
+{
+  "format_version": "1.10.0",
+  "particle_effect": {
+    "description": {
+      "identifier": "bc:fx_core",
+      "basic_render_parameters": {
+        "material": "particles_add",
+        "texture": "textures/particle/bc/v9/soft"
+      }
+    },
+    "components": {
+      "minecraft:emitter_initialization": {
+        "creation_expression": "v.sc = v.scale ?? 1.0; v.sz = v.size ?? 1.0;"
+      },
+      "minecraft:emitter_rate_instant": {
+        "num_particles": 2
+      },
+      "minecraft:emitter_lifetime_once": {
+        "active_time": 0.05
+      },
+      "minecraft:emitter_shape_point": {},
+      "minecraft:particle_lifetime_expression": {
+        "max_lifetime": "0.16"
+      },
+      "minecraft:particle_appearance_billboard": {
+        "size": [
+          "v.sz * 1.1 * (0.5 + math.clamp(v.particle_age * 14.0, 0.0, 1.0) * 0.5)",
+          "v.sz * 1.1 * (0.5 + math.clamp(v.particle_age * 14.0, 0.0, 1.0) * 0.5)"
+        ],
+        "facing_camera_mode": "lookat_xyz",
+        "uv": {
+          "texture_width": 64,
+          "texture_height": 64,
+          "uv": [
+            0,
+            0
+          ],
+          "uv_size": [
+            64,
+            64
+          ]
+        }
+      },
+      "minecraft:particle_appearance_tinting": {
+        "color": [
+          "math.lerp(1.0, (v.color.r ?? 1.0), 0.25) * 1.0",
+          "math.lerp(1.0, (v.color.g ?? 1.0), 0.25) * 1.0",
+          "math.lerp(1.0, (v.color.b ?? 1.0), 0.25) * 1.0",
+          "(1.0 - v.particle_age / v.particle_lifetime)"
+        ]
+      }
+    }
+  }
+}

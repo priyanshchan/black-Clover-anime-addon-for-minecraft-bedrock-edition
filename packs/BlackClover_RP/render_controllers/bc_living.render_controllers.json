@@ -78,7 +78,8 @@
             "Geometry.orb",
             "Geometry.shard",
             "Geometry.blade",
-            "Geometry.needle"
+            "Geometry.needle",
+            "Geometry.comet"
           ]
         }
       },

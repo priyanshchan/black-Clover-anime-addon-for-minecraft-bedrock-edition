@@ -627,6 +627,87 @@ def v8_sheet():
     img.convert('RGB').save(os.path.join(OUT, 'v080.png'), optimize=True)
 
 
+def v9_sheet():
+    """v0.9.0: the rebuilt spell projectile (five shapes) and the new cast animations at their strongest moment."""
+    from bc.models import v9
+    from bc.packgen import player_animations
+    W = 1400
+    top = 60
+    bolt_cell = 280
+    pose_cell = 200
+    poses = [('cast_forward', 0.16, 'Thrust'), ('cast_push', 0.2, 'Push'), ('cast_channel', 0.5, 'Channel'), ('cast_raise', 0.24, 'Call the sky'),
+             ('cast_slam', 0.32, 'Slam'), ('cast_sweep', 0.22, 'Sweep'), ('cast_spin', 0.12, 'Spin'), ('cast_summon', 0.4, 'Summon'),
+             ('cast_buff', 0.3, 'Power up'), ('cast_heal', 0.45, 'Heal'), ('cast_dash', 0.08, 'Dash'), ('fruit_punch', 0.14, 'Fruit: punch'),
+             ('fruit_stomp', 0.18, 'Fruit: stomp'), ('fruit_roar', 0.3, 'Fruit: roar')]
+    cols = 7
+    rows = (len(poses) + cols - 1) // cols
+    H = top + bolt_cell + rows * pose_cell + 20
+    img = background(W, H, '22222c', '101016', ring=False)
+    draw = ImageDraw.Draw(img)
+    draw.text((20, 14), 'v0.9.0: the rebuilt spell projectile and full-body cast animations', font=font(30), fill=(235, 235, 235, 255))
+    geo = v9.bolt_geometry_file()['minecraft:geometry']
+    tints = [('orb', 'ff7a1a'), ('shard', '7cc8ff'), ('blade', '6fe0a0'), ('needle', 'ffe03a'), ('comet', 'ff5a1a')]
+    anims = v9.bolt_animations()['animation.bc.mana_bolt.fly']
+    bw = W // len(tints)
+    for i, (shape, hexc) in enumerate(tints):
+        g = next(x for x in geo if x['description']['identifier'] == f'geometry.bc.bolt_{shape}')
+        m = render.Model({'minecraft:geometry': [g]}, v9.bolt_texture(hexc), emissive=True)
+        pose = {}
+        render.pose_from_anim(anims, 0.13, env={'q.target_x_rotation': 0, 'q.target_y_rotation': 0, 'q.life_time': 0.13}, pose=pose)
+        sc = render.Scene(bw, bolt_cell, ss=2)
+        sc.add(m, pose)
+        r = 16 if shape == 'comet' else 11
+        sc.render(render.orbit_eye((0, 0, 1), r * 2.2, 125, 18), (0, 0, 1), fov=40)
+        img.alpha_composite(sc.image(), (i * bw, top))
+        draw.text((i * bw + 14, top + bolt_cell - 30), shape.title(), font=font(18), fill=(225, 225, 225, 255))
+    pa = player_animations()
+    env = {'v.is_first_person': 0.0}
+    for i, (name, t, label) in enumerate(poses):
+        pose = {}
+        render.pose_from_anim(pa[f'animation.bc.player.{name}'], t, env=env, pose=pose)
+        sc = render.Scene(pose_cell, pose_cell, ss=2)
+        sc.add(ref_player(), pose)
+        sc.render(render.orbit_eye((0, 17, 0), 58, 35, 6), (0, 17, 0), fov=40)
+        x, y = (i % cols) * pose_cell, top + bolt_cell + (i // cols) * pose_cell
+        img.alpha_composite(sc.image(), (x, y))
+        draw.text((x + 10, y + pose_cell - 26), label, font=font(15), fill=(225, 225, 225, 255))
+    img.convert('RGB').save(os.path.join(OUT, 'v090.png'), optimize=True)
+
+
+def vfx_sheet():
+    """v0.9.0: the particle textures, tinted the way the game tints them, on a dark sky."""
+    from bc import vfx9
+    cols = {'soft': (120, 200, 255), 'flare': (255, 210, 120), 'streak': (255, 240, 160), 'beam': (120, 220, 255), 'ring': (180, 140, 255),
+            'shock': (255, 255, 255), 'fire': (255, 140, 40), 'smoke': (200, 200, 200), 'dust': (190, 170, 140), 'sigil': (255, 215, 120),
+            'crack': (255, 120, 40), 'bolt': (255, 240, 120), 'slash': (140, 255, 200), 'shard': (180, 230, 255), 'leaf': (110, 200, 90),
+            'drop': (120, 190, 255), 'flake': (220, 240, 255), 'bubble': (150, 220, 255), 'star': (255, 240, 180), 'note': (255, 160, 220),
+            'wisp': (160, 255, 200), 'debris': (170, 160, 150), 'glyph': (200, 160, 255)}
+    cell = 170
+    names = list(vfx9.TEXTURES)
+    per = 8
+    W, H = per * cell, 60 + ((len(names) + per - 1) // per) * (cell + 24)
+    img = background(W, H, '1a1a24', '08080c', ring=False)
+    draw = ImageDraw.Draw(img)
+    draw.text((20, 14), 'v0.9.0: the new particle textures', font=font(30), fill=(235, 235, 235, 255))
+    for i, name in enumerate(names):
+        a = vfx9.TEXTURES[name][0]().astype(np.float32)
+        if name in ('fire', 'smoke', 'glyph'):
+            a = a[:a.shape[1]]                      # first frame
+        if name == 'bolt':
+            a = a[:, :64]
+        c = np.array(cols[name], np.float32)
+        rgb_ = a[..., :3] / 255 * c * (a[..., 3:4] / 255) * 1.3
+        tile = Image.fromarray(np.clip(rgb_, 0, 255).astype(np.uint8)).convert('RGBA')
+        tile.putalpha(Image.fromarray(np.clip(a[..., 3] * 1.0, 0, 255).astype(np.uint8)))
+        w, h = tile.size
+        sc = min((cell - 20) / w, (cell - 20) / h)
+        tile = tile.resize((max(1, int(w * sc)), max(1, int(h * sc))), Image.LANCZOS)
+        x, y = (i % per) * cell, 60 + (i // per) * (cell + 24)
+        img.alpha_composite(tile, (x + (cell - tile.width) // 2, y + (cell - tile.height) // 2))
+        draw.text((x + 10, y + cell), name, font=font(15), fill=(210, 210, 210, 255))
+    img.convert('RGB').save(os.path.join(OUT, 'vfx090.png'), optimize=True)
+
+
 BLOCK_RGB = {
     'coarse_dirt': (122, 88, 60), 'gravel': (134, 128, 126), 'spruce_log': (70, 48, 26), 'spruce_fence': (112, 82, 48), 'spruce_planks': (114, 84, 50),
     'dark_oak_planks': (68, 45, 22), 'campfire': (230, 120, 40), 'chest': (168, 116, 44), 'barrel': (120, 86, 48), 'red_wool': (170, 40, 40),
@@ -722,7 +803,7 @@ def strip_codes(t):
 
 if __name__ == '__main__':
     names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
-                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet']
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet', 'v9_sheet', 'vfx_sheet']
     for n in names:
         print('rendering', n)
         globals()[n]()

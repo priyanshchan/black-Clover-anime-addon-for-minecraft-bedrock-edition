@@ -78,14 +78,27 @@
         "orb": "geometry.bc.bolt_orb",
         "shard": "geometry.bc.bolt_shard",
         "blade": "geometry.bc.bolt_blade",
-        "needle": "geometry.bc.bolt_needle"
+        "needle": "geometry.bc.bolt_needle",
+        "comet": "geometry.bc.bolt_comet"
       },
       "animations": {
         "fly": "animation.bc.mana_bolt.fly",
         "trail": "animation.bc.mana_bolt.trail"
       },
       "particle_effects": {
-        "trail": "bc:trail_mana"
+        "halo": "bc:fx_halo",
+        "trail0": "bc:fx_trail",
+        "trail1": "bc:fx_trail_energy",
+        "trail2": "bc:fx_trail_fire",
+        "trail3": "bc:fx_trail_water",
+        "trail4": "bc:fx_trail_ice",
+        "trail5": "bc:fx_trail_spark",
+        "trail6": "bc:fx_trail_earth",
+        "trail7": "bc:fx_trail_leaf",
+        "trail8": "bc:fx_trail_void",
+        "trail9": "bc:fx_trail_star",
+        "trail10": "bc:fx_trail_wind",
+        "trail11": "bc:fx_trail_bubble"
       },
       "scripts": {
         "animate": [

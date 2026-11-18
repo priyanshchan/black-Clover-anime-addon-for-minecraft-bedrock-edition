@@ -5,7 +5,7 @@
       "identifier": "bc:will_spark",
       "basic_render_parameters": {
         "material": "particles_add",
-        "texture": "textures/particle/bc/spark"
+        "texture": "textures/particle/bc/v9/star"
       }
     },
     "components": {

@@ -5,7 +5,7 @@
       "identifier": "bc:pillar",
       "basic_render_parameters": {
         "material": "particles_add",
-        "texture": "textures/particle/bc/glow"
+        "texture": "textures/particle/bc/v9/soft"
       }
     },
     "components": {
@@ -37,15 +37,15 @@
         ],
         "facing_camera_mode": "rotate_xyz",
         "uv": {
-          "texture_width": 32,
-          "texture_height": 32,
+          "texture_width": 64,
+          "texture_height": 64,
           "uv": [
             0,
             0
           ],
           "uv_size": [
-            32,
-            32
+            64,
+            64
           ]
         }
       },

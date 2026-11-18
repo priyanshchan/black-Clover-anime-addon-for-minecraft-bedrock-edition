@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "Black Clover: Grimoire Awakening §7(Behavior)",
-    "description": "Early Access v0.8.0 - eight armour sets with set bonuses, the Magic Forge, runes, reinforcement and squad mantles; elite enemies, lairs, potions, spell scrolls and feats; companions with a grimoire and a fruit, 215 spells and 120 fruit powers. Unofficial fan addon.",
+    "description": "Early Access v0.9.0 - rebuilt spell and fruit VFX (layered flashes, sparks, beams, lightning, magic circles, shockwaves, ground cracks) and full-body cast animations; eight armour sets and the Magic Forge; 215 spells and 120 fruit powers. Unofficial fan addon.",
     "uuid": "e31c2aa6-e171-5e62-8d60-e4fb08605627",
     "version": [
       0,
-      8,
+      9,
       0
     ],
     "min_engine_version": [
@@ -21,7 +21,7 @@
       "uuid": "7a204969-4e4b-52ad-86a4-9560f8777441",
       "version": [
         0,
-        8,
+        9,
         0
       ]
     },
@@ -31,7 +31,7 @@
       "uuid": "0f990b2f-059e-5390-9de6-781d9993b2f6",
       "version": [
         0,
-        8,
+        9,
         0
       ],
       "entry": "scripts/main.js"
@@ -42,7 +42,7 @@
       "uuid": "fb6916dc-6965-5317-97d9-c2f0276ce444",
       "version": [
         0,
-        8,
+        9,
         0
       ]
     },

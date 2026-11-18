@@ -29,9 +29,11 @@ const ROLES = ['striker', 'controller', 'brawler', 'support'];
 /** default cooldowns (ticks) by template, for kits that do not come from a grimoire */
 const CD = { bolt: 40, beam: 80, wave: 120, zone: 160, nova: 120, rain: 140, meteor: 220, buff: 300, heal: 200, prison: 160, summon: 600,
   wall: 9999, radial: 160, timestop: 500, leap: 100, vortex: 160, strikes: 140, dive: 140, rewind: 300, repeat: 140 };
-/** casting animation per template (knights / companions) */
-const KNIGHT_ANIM = { beam: 'channel', zone: 'channel', vortex: 'channel', nova: 'slam', dive: 'slam', wave: 'slam',
-  rain: 'cast_raise', meteor: 'cast_raise', strikes: 'cast_raise', buff: 'cast_raise', heal: 'cast_raise', summon: 'cast_raise', timestop: 'cast_raise' };
+/** casting animation per template (knights / companions; v0.9.0: the full-body set the players use) */
+const KNIGHT_ANIM = { bolt: 'cast_forward', beam: 'cast_channel', zone: 'cast_channel', vortex: 'cast_channel', nova: 'cast_slam', dive: 'cast_slam',
+  wave: 'cast_sweep', rain: 'cast_raise', meteor: 'cast_raise', strikes: 'cast_raise', buff: 'cast_buff', heal: 'cast_heal', summon: 'cast_summon',
+  timestop: 'cast_summon', radial: 'cast_spin', leap: 'cast_dash', prison: 'cast_push', rewind: 'cast_raise' };
+const KNIGHT_FRUIT_ANIM = { bolt: 'fruit_punch', beam: 'cast_push', wave: 'fruit_stomp', nova: 'fruit_stomp', buff: 'fruit_roar' };
 /** casting animation per creature */
 const TYPE_ANIM = {
   'bc:raider_captain': 'animation.bc.raider_captain.cast', 'bc:dark_disciple': 'animation.bc.dark_disciple.cast',
@@ -321,7 +323,8 @@ function lead(e, target, a, skill) {
 
 function castAnim(e, a) {
   const kind = a.spec?.t === 'repeat' ? a.spec?.spec?.t : a.spec?.t;
-  if (MAGES.has(e.typeId)) anim(e, `animation.bc.magic_knight.${KNIGHT_ANIM[kind] ?? 'cast'}`);
+  const fruit = typeof a.id === 'string' && a.id.startsWith('f:');
+  if (MAGES.has(e.typeId)) anim(e, `animation.bc.magic_knight.v9_${(fruit ? KNIGHT_FRUIT_ANIM[kind] : undefined) ?? KNIGHT_ANIM[kind] ?? 'cast_forward'}`);
   else if (e.typeId === 'bc:sea_raider' || (e.typeId === 'bc:raider_gunner' && a.spec?.grav)) anim(e, `animation.bc.${e.typeId.slice(3)}.${e.typeId === 'bc:sea_raider' ? 'attack' : 'throw'}`);
   else if (TYPE_ANIM[e.typeId]) anim(e, TYPE_ANIM[e.typeId]);
 }

@@ -6,7 +6,7 @@ from .data import ATTR_ORDER, ATTRIBUTES, NS, ROBES, SPELLS, SWORDS
 from .models import items, mobs, spells, world
 from .out import BP, RP, write_json, write_png, write_text
 
-VERSION = [0, 8, 0]  # v0.8.0 early access - bump on every release so Minecraft replaces the installed packs
+VERSION = [0, 9, 0]  # v0.9.0 early access - bump on every release so Minecraft replaces the installed packs
 MIN_ENGINE = [1, 21, 90]
 ITEM_FMT = '1.21.60'
 ENTITY_FMT = '1.21.0'
@@ -42,7 +42,7 @@ def manifest_bp():
         'format_version': 2,
         'header': {
             'name': 'Black Clover: Grimoire Awakening §7(Behavior)',
-            'description': 'Early Access v0.8.0 - eight armour sets with set bonuses, the Magic Forge, runes, reinforcement and squad mantles; elite enemies, lairs, potions, spell scrolls and feats; companions with a grimoire and a fruit, 215 spells and 120 fruit powers. Unofficial fan addon.',
+            'description': 'Early Access v0.9.0 - rebuilt spell and fruit VFX (layered flashes, sparks, beams, lightning, magic circles, shockwaves, ground cracks) and full-body cast animations; eight armour sets and the Magic Forge; 215 spells and 120 fruit powers. Unofficial fan addon.',
             'uuid': out.uid('bp-header'),
             'version': VERSION,
             'min_engine_version': MIN_ENGINE,
@@ -65,7 +65,7 @@ def manifest_rp():
         'format_version': 2,
         'header': {
             'name': 'Black Clover: Grimoire Awakening §7(Resources)',
-            'description': 'Early Access v0.8.0 - 3D grimoires, armour, brooms, swords, robes, spells, companions, bandits, insects, witches, dragons, puppets, bosses, potions, particles and sounds. Unofficial fan addon.',
+            'description': 'Early Access v0.9.0 - HD spell effects, 3D grimoires, armour, brooms, swords, robes, spells, companions, bandits, insects, witches, dragons, puppets, bosses, potions, particles and sounds. Unofficial fan addon.',
             'uuid': out.uid('rp-header'),
             'version': VERSION,
             'min_engine_version': MIN_ENGINE,
@@ -571,6 +571,7 @@ def player_animations():
     def k(x):
         return f'({x}) * {tp}'
     from .models.v2 import player_extra_animations
+    from .models.v9 import player_v9_animations
     extra = player_extra_animations(k)
     return {**extra, 
         'animation.bc.player.cast_forward': {
@@ -619,6 +620,8 @@ def player_animations():
                 'leftArm': {'rotation': {'0.0': [0, 0, 0], '0.1': [k(-60), k(-30), 0], '0.45': [k(-60), k(-30), 0], '0.6': [0, 0, 0]}},
             },
         },
+        # v0.9.0: smooth, full-body cast animations replace the old ones of the same name
+        **player_v9_animations(k),
     }
 
 
@@ -678,7 +681,7 @@ def build():
     gen_loot(ctx)
     gen_spell_entities(ctx)
     gen_mobs(ctx)
-    from . import grandgen, seagen, v2gen, v3gen, v5gen, v7gen, v8gen, v75gen, wave4gen  # expansions (import this module, so loaded lazily)
+    from . import grandgen, seagen, v2gen, v3gen, v5gen, v7gen, v8gen, v9gen, v75gen, wave4gen  # expansions (import this module, so loaded lazily)
     seagen.build(ctx)
     grandgen.build(ctx)
     wave4gen.build(ctx)
@@ -688,6 +691,7 @@ def build():
     v7gen.build(ctx)
     v75gen.build(ctx)
     v8gen.build(ctx)
+    v9gen.build(ctx)
     v3gen.check_armies()
     flush(ctx)
     return ctx

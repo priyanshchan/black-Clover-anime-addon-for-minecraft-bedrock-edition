@@ -5,7 +5,7 @@
       "identifier": "bc:shockwave",
       "basic_render_parameters": {
         "material": "particles_add",
-        "texture": "textures/particle/bc/ring"
+        "texture": "textures/particle/bc/v9/ring"
       }
     },
     "components": {
@@ -35,15 +35,15 @@
         ],
         "facing_camera_mode": "emitter_transform_xz",
         "uv": {
-          "texture_width": 64,
-          "texture_height": 64,
+          "texture_width": 128,
+          "texture_height": 128,
           "uv": [
             0,
             0
           ],
           "uv_size": [
-            64,
-            64
+            128,
+            128
           ]
         }
       },
