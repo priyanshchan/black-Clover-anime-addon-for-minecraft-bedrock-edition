@@ -1,0 +1,51 @@
+# Publish (or re-publish) a version by hand: Actions -> Publish -> Run workflow, and give the version tag.
+# It checks the packs, removes an existing release and tag of that name (for example one created at the wrong
+# commit), and creates the release at the commit this workflow runs on, with the .mcaddon / .mcpack downloads
+# and the notes from docs/releases/<tag>.md (or the matching section of CHANGELOG.md). 0.x versions are pre-releases.
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Version tag to publish, e.g. v1.0.0'
+        required: true
+        default: 'v1.0.0'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the packs
+        run: python3 tools/validate.py
+
+      - name: Name the downloads and notes
+        env:
+          V: ${{ inputs.tag }}
+        run: |
+          mkdir -p out
+          cp dist/BlackClover_GrimoireAwakening.mcaddon "out/BlackClover_GrimoireAwakening_${V}.mcaddon"
+          cp dist/BlackClover_BP.mcpack "out/BlackClover_BP_${V}.mcpack"
+          cp dist/BlackClover_RP.mcpack "out/BlackClover_RP_${V}.mcpack"
+          if [ -f "docs/releases/${V}.md" ]; then cp "docs/releases/${V}.md" notes.md
+          else awk -v v="## ${V}" 'index($0, "## ") == 1 { p = (index($0, v) == 1) } p' CHANGELOG.md > notes.md; fi
+          test -s notes.md || echo "Black Clover: Grimoire Awakening ${V}" > notes.md
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          PRE=""
+          case "$TAG" in v0.*|*-*) PRE="--prerelease" ;; esac
+          # an existing release (and its tag) of this name is replaced, so the tag points at this commit
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release delete "$TAG" --yes --cleanup-tag
+          fi
+          git push origin ":refs/tags/$TAG" 2>/dev/null || true
+          gh release create "$TAG" out/* --target "$GITHUB_SHA" --title "Black Clover: Grimoire Awakening ${TAG}" --notes-file notes.md $PRE --latest
