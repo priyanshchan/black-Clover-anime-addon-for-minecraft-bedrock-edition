@@ -358,6 +358,9 @@ ORIGIN = {
     'bc:rogue_mage': 'rogue ambushes, battles (Rogue Mages army)',
     'bc:puppet': 'the Soul Puppeteer',
     'bc:training_dummy': 'placed with a Training Dummy item',
+    'bc:bandit': 'bandit raids, the Bandit King, battles (Bandit Brotherhood)', 'bc:bandit_archer': 'bandit raids, the Bandit King, battles',
+    'bc:bandit_thief': 'bandit raids, the "thief" event', 'bc:shadow_assassin': 'the "assassins" event', 'bc:cultist': 'devil rituals',
+    'bc:hive_drone': 'Hive Eggs, the Hive Queen, hive infestations, battles (The Hive)', 'bc:hive_egg': 'the Hive Queen, hive infestations',
 }
 
 
@@ -390,6 +393,9 @@ BOSSES = [
     ('bc:frost_witch', 'Twin Moon Charm (both sisters) or the "witch_sisters" night event', 'One of the **Witch Sisters**. Flies. **Ice shards** (3, slowness), **ice prisons**, a telegraphed **frost nova** up close (slowness), and from phase 2 a **hail storm**. **Blinks away** from anyone in melee. With her sister alive she weaves **Twin Spells**: her ice prison, then the Ember Witch\'s falling fire on the same spot. Desperation: **Absolute Winter** - a freezing field, prisons on up to six foes, then a 24-shard hail.'),
     ('bc:ember_witch', 'Twin Moon Charm (both sisters) or the "witch_sisters" night event', 'The other **Witch Sister**. Flies. **Fire shards** (3, burning), **burning ground** where you stand, a telegraphed **six-way flame wave**, and from phase 2 **fire meteors**. Blinks away from melee and joins the **Twin Spells**. Desperation: **Inferno Requiem** - a 12-meteor storm, then a twelve-way wave of fire. **When one sister dies, the other screams, gains strength and speed and goes straight to her desperation move.**'),
     ('bc:bone_dragon', 'Bone Totem (or the "bone_dragon" night event)', 'Circles ~9 blocks above its prey. **Bone-fire breath** (2-3 beams, wither), a telegraphed **wing gust** that blows everyone away, **bone rain**, a **dive** onto a warning circle (16 / 20 dmg), a **tail sweep** up close, and from phase 2 it calls **skeletons** (wither skeletons in phase 3). Desperation: **Death\'s Wingbeat** - it rises, a 12-block circle appears, then a crushing, withering blast and more skeletons.'),
+    ('bc:bandit_king', 'Bandit\'s Crown (or leading a bandit raid)', 'A sword master who fights with his band. **Twin-sabre combos** (3 dashing slashes, 9 dmg), a telegraphed **whirlwind** (11 dmg), **thrown knives** (5 blades), an **archer volley** (every bandit archer within 32 blocks fires, then arrows rain on you) and **smoke bombs** (blinds you, then strikes from behind). Bandits within 16 blocks fight with Strength. At half health he **falls back** behind fresh bandits and regenerates. Desperation: **Last Stand** - Strength II, Speed, regeneration, four whirlwinds and more bandits.'),
+    ('bc:grimoire_devourer', 'Forbidden Tome (or a devil ritual left to finish)', 'A floating, fanged grimoire. It **swallows every spell cast within 24 blocks of it** (keeping the 8 it tasted most) and **casts them back** at you - its favourite attack. **Page storms** (5 paper blades), **ink floods** (blindness), a telegraphed **snap** up close, and a roar that **silences grimoires** within 14 blocks for 5 s (8 s late in the fight) and seals Abyss Fruits. Blinks away when crowded. Desperation: **Final Chapter** - a long silence and its three favourite stolen spells at once.'),
+    ('bc:hive_queen', 'Royal Jelly (or a hive infestation left to hatch)', 'A giant insect queen. **Acid spray** (an 18-block beam, poison), **acid rain**, a telegraphed **screech** (slowness, nausea), **egg laying** (3-4 eggs that hatch two drones each after 25 s, or 17 s late in the fight; up to 10 eggs) and **burrowing** - she sinks into the ground and erupts under you after a warning. Desperation: **Swarm Mother** - every egg hatches at once and she lays fresh eggs that hatch in 5 s.'),
     ('bc:soul_puppeteer', 'Cursed Spool (or the "puppet_show" night event)', 'Floats ~4 blocks up and blinks away when crowded. **String lash** (a 22-block beam, slowness), **falling needles** (5 strikes), **marionettes** (3, then 5; up to 8), a telegraphed **dark nova** in phase 2, and **the strings**: it takes control of one companion (two from phase 2) for 10 s - they turn their magic on you and the squad. Strike them a few times (your squad only does a quarter damage to them) or have a Warden **Cleanse** them to cut the strings. With no companions near, the strings drag you towards it instead. Desperation: **Grand Finale** - two companions controlled for 14 s, darkness, and a stage full of marionettes.'),
     ('bc:devil', 'Devil Summoning Contract', 'Hovers and circles you; claws at close range; **dark lightning** under every player (12 dmg, darkness), a **darkness roar** (knockback, weakness), **orb barrages**, summons Dark Disciples. Below 50%: faster, stronger, resistant.'),
     ('bc:leviathan', 'Leviathan Lure (face deep water)', '**Water volleys** (5, then 7 orbs, 7 dmg), a **slam** under you (11 / 15 dmg, also hurts ships), and below 50% a **roar** (mining fatigue, slowness) that calls the Drowned.'),
@@ -424,10 +430,12 @@ def page_mobs():
     o += '## Who fights whom\n\n'
     o += table(['Side', 'Members', 'Hunts'], [
         ['Clover Kingdom', 'Magic Knights, Ancient Constructs, the Travelling Merchant', 'all monsters (players only after being attacked)'],
-        ['Devil Host', 'Devils, the Archdevil, Dark Disciples, Imps, Devil Gates, Hellhounds, Mana Wraiths, the Fallen Captain, the Soul Puppeteer and its marionettes', 'players, Magic Knights, the Tidewatch'],
+        ['Devil Host', 'Devils, the Archdevil, Dark Disciples, Imps, Devil Gates, Hellhounds, Mana Wraiths, the Fallen Captain, the Soul Puppeteer and its marionettes, Cultists, the Grimoire Devourer', 'players, Magic Knights, the Tidewatch'],
+        ['Bandit Brotherhood', 'Bandits, Bandit Archers, Bandit Thieves, the Bandit King', 'players, Magic Knights, the Tidewatch, villagers'],
+        ['The Hive', 'Hive Drones, Hive Eggs, the Hive Queen', 'players, Magic Knights, the Tidewatch, villagers'],
         ['Sea Raiders', 'Sea Raiders, Raider Captains, Phantom Raiders, the Phantom Galleon', 'players, Magic Knights, the Tidewatch'],
         ['Tidewatch Navy', 'Sentinels, Commodores, Marksmen', 'players with a bounty, pirates, devils, Dark Disciples, Rogue Mages'],
-        ['Rogue Mages', 'Rogue Mages (outlaws with real grimoires, levels 2-8)', 'players, Magic Knights, the Tidewatch'],
+        ['Rogue Mages', 'Rogue Mages (outlaws with real grimoires, levels 2-8), Shadow Assassins', 'players, Magic Knights, the Tidewatch'],
         ['The Witch Sisters', 'the Frost Witch and the Ember Witch', 'players, Magic Knights, the Tidewatch'],
         ['The restless dead', 'the Bone Dragon and the skeletons it calls', 'players, Magic Knights, the Tidewatch'],
     ])
@@ -484,6 +492,7 @@ ITEM_USE = {
     'bc:training_dummy': 'place a Training Dummy (shows DPS; sneak + use to pick it up)',
     'bc:clover_leaf': 'revives every fallen companion beside you', 'bc:field_rations': 'food (8); a companion gift: -50 weariness, +10 morale',
     'bc:companion_tome': 'hold it and talk to a companion (level 10+) to retrain its specialisation', 'bc:cursed_spool': 'summons the Soul Puppeteer',
+    'bc:bandit_crown': 'summons the Bandit King', 'bc:forbidden_tome': 'summons the Grimoire Devourer', 'bc:royal_jelly': 'summons the Hive Queen',
 }
 
 
@@ -590,7 +599,23 @@ def page_ai():
     o += ('* **Gunners and Marksmen** raise their guns (an aiming animation) before every shot and back away from anyone within 5 blocks.\n'
           '* **Hellhounds hunt in packs:** while their lunge recharges, every hound near the same prey circles it at 4-6 blocks, then they lunge in turn.\n'
           '* **Calling for help:** hurt a Dark Disciple, Imp, Sea Raider, Gunner, Sentinel, Marksman, Hellhound or Mana Wraith and every one of its kind nearby joins the fight.\n'
+          '* **Danger zones:** enemies step out of telegraphed blows and spell fields too - the more skilled, the more often.\n'
           '* **Animations:** knights play a different cast animation for each kind of spell (raise for sky spells and heals, channel for beams and fields, slam for blasts), dodge with a side-lean, flinch when hit, salute, cheer and sit; enemies shoot, throw, bite and cast.\n\n')
+    o += ('## Warbands (`warband.js`, v0.7.0)\n\nEvery second, hostile spellcasters of one faction within 18 blocks of each other (near a player) form a **warband**:\n\n'
+          '* **Shared focus** - the band picks the most vulnerable foe within 26 blocks: hurt, alone (nobody within 5 blocks), a healer (support companion), close; '
+          'whoever is hitting one of its Cultists jumps to the top of the list.\n'
+          '* **Surround** - fighters (brawler role) take evenly spaced slots 2 blocks around the focus; casters and archers an arc 9 blocks out, behind the leader.\n'
+          '* **Call for help** - a band of fewer than four that was hurt in the last 3 s rallies its kind within 32 blocks (once every 15 s): they march on its focus.\n'
+          '* **Break and run** - a band that has lost more than half of its largest number and faces at least as many foes breaks: members with courage below 0.55 flee for 12 s '
+          'and leave if no player is within 20 blocks. Enemies of an event objective (a raid, a ritual) never run.\n\n'
+          '### Special enemies (`foes.js`)\n\n'
+          '* **Bandit Thief** - its blow steals 10-24 doubloons (or a third of a stack of emeralds, diamonds, gold or mana crystals), then it turns invisible, speeds away '
+          'and is gone once 40 blocks from you or after 45 s. Kill it and the goods drop.\n'
+          '* **Shadow Assassin** - invisible while stalking (a faint shadow every 1.5 s gives it away); within 7 blocks of prey it blinks behind it and backstabs '
+          '(10 damage, weakness) every 6 s; below 40% health it vanishes in a smoke bomb (blinds those close, invisible and fast for a few seconds, 8 blocks away).\n'
+          '* **Cultist** - every 18 s with a foe within 20 blocks it chants a 3-second ritual and calls two imps (up to six nearby); it also heals its allies.\n'
+          '* **Hive Drone** - hunts in packs like Hellhounds; **Hive Eggs** hatch two drones after 25 s unless destroyed.\n'
+          '* **Bandits near the Bandit King** fight with Strength.\n\n')
     o += '## Boss brains (`bosses.js`)\n\n'
     o += table(['', ''], [
         ['**Threat**', 'every boss remembers how much damage each attacker dealt (knights and companions fighting in melee count 60% extra, so they can tank) and turns on the biggest threat, only switching when someone out-does its current target by 10%. You are told when it turns on you.'],
@@ -598,6 +623,10 @@ def page_ai():
         ['**Telegraphs**', 'slams, stomps and waves show a warning circle about a second before they land'],
         ['**Movement**', 'the Archdevil blinks away when two or more foes crowd it; the Colossus stomps them back; the Kraken submerges and resurfaces by its prey; the Galleon keeps station above you; the Fallen Captain blinks behind you and side-steps spells; the Witch Sisters and the Soul Puppeteer blink away from melee; the Bone Dragon circles overhead and dives'],
         ['**Enrage timer**', 'after six minutes of fighting any boss becomes furious: Strength III, Speed II, 40% stronger spells and 30% faster attacks'],
+        ['**Adapting** (v0.7.0)', 'every 15 s a boss looks at how it was hurt (at least 40 damage): 70%+ from spells → a **spell ward** that soaks 40% of magic for 10 s; '
+                                  '70%+ from blades and blows → **iron hide**: Resistance II for 10 s, and every blow landed within 5 blocks bounces back (3 damage and a shove)'],
+        ['**Healers first**', 'support companions (Wardens and healers) count 30% more threat'],
+        ['**No clumping**', 'when three or more foes stand within 4 blocks of its target, area attacks (and summons, volleys, silences) become 2.5× as likely'],
     ])
     o += 'See [Mobs & bosses](mobs-and-bosses.md#bosses) for every boss\'s attacks.\n\n'
     o += '## Battles (`battle.js`)\n\n'
@@ -803,7 +832,16 @@ def page_companions():
 
 def page_events():
     o = ('Every **4-7 minutes** one event happens near a random player in the Overworld (the first one about 3 minutes after the world loads). '
-         'Toggle them at a **War Table**; creative players can start any event there, and anyone with commands can run `/scriptevent bc:event <name>`.\n\n')
+         'Toggle them at a **War Table**; creative players can start any event there, and anyone with commands can run `/scriptevent bc:event <name>`.\n\n'
+         '## The event director (v0.7.0)\n\n'
+         '* **Scaling:** each player has an event **tier** from their magic level plus 3 per companion nearby: tier 1 (under 7), tier 2 (7-15), tier 3 (16+). '
+         'Enemy counts in raids, rituals, hives, assassins and pirate landings are ×1 / ×1.4 / ×1.8, and the nastiest outcomes (a Bandit King leading a raid, '
+         'the Grimoire Devourer or the Hive Queen when you fail) need tier 2.\n'
+         '* **No repeats:** the last two events are never picked again.\n'
+         '* **Pacing:** 25+ kills since the last event push the next one 50% later; 2 or fewer bring it 30% sooner.\n'
+         '* **Objectives:** raids, rituals, hives and assassins are won by defeating every enemy (or egg) in time - with a reward - and some have consequences when you fail. '
+         'Their enemies never break and run.\n'
+         '* **Event log:** the last 12 events and how they ended are in the Handbook (**Recent events**).\n\n')
     o += table(['Event (`name`)', 'Weight', 'When', 'What happens'], [
         ['Mana meteor shower (`meteor_shower`)', 10, 'any time', 'For 30 s mana meteors fall within 7-30 blocks; each impact may leave a Mana Crystal (50%).'],
         ['Devil Gate (`devil_gate`)', '8 × Devil power', 'any time', 'A 120-HP Devil Gate opens 18-26 blocks away and releases imps and Dark Disciples every 8 s (up to 12 devils) for ~96 s. Break it for 120 XP and a star. If it survives, 30% chance the Archdevil steps out.'],
@@ -817,6 +855,12 @@ def page_events():
         ['Wounded knight (`wounded_knight`)', 5, 'any time', 'A badly hurt Magic Knight is surrounded by Dark Disciples or a Hellhound 14-20 blocks away. Kill the attackers while the knight lives and it joins your party with 150 bond.'],
         ['Mana storm (`mana_storm`)', 5, 'any time', 'For 45 s everyone in the Overworld regains 4 mana per second and wild lightning strikes monsters near players (8 dmg).'],
         ['Bounty hunters (`bounty_hunters`)', 4, 'your bounty is 300+', 'Two Tidewatch Marksmen and two Sentinels (plus a Commodore at 1500+) ambush you.'],
+        ['Bandit raid (`bandit_raid`)', '8 × power', 'any time', '3-5 Bandits, 1-2 Archers and a Thief (scaled) attack from 18-24 blocks away; at tier 2+ there is a 30% chance the Bandit King leads them. **Objective:** defeat them all within 4 minutes for 30 + 8 per raider doubloons, a star and 80 XP.'],
+        ['Devil ritual (`devil_ritual`)', '5 × Devil power', 'night', '3+ Cultists (scaled) and two imps chant in a circle 20-26 blocks away. **Objective:** kill the cultists within 90 s (a countdown shows) for a star, 150 XP and 4 Mana Crystals. **If they finish:** the Grimoire Devourer wakes (tier 2+) or a Devil Gate opens.'],
+        ['Hive infestation (`hive_infestation`)', 5, 'any time', '5+ Hive Eggs (hatching after 60-100 s) and 3+ drones appear 18-24 blocks away. **Objective:** destroy every egg within 2 minutes for 40 doubloons, a star and 120 XP. **If you fail** at tier 2+, the Hive Queen emerges.'],
+        ['Assassins (`assassins`)', 3, 'night, 5+ stars or magic level 8+', '2-4 invisible Shadow Assassins hunt you. Defeat them for 25 doubloons, a star and 100 XP.'],
+        ['A thief (`thief`)', 4, 'you carry 20+ doubloons', 'An invisible Bandit Thief sneaks up behind you. Catch it if it robs you!'],
+        ['Mana Eclipse (`mana_eclipse`)', 4, 'any time', 'For 3 minutes: +25% spell power for everyone (enemies included), ×1.5 magic XP, and monsters near players gain Strength.'],
         ['Rogue ambush (`rogue_ambush`)', 6, 'any time', '3-4 Rogue Mages (one of them stronger) attack from 14-20 blocks away; 35% of the time two Magic Knights who were hunting them arrive behind you.'],
         ['Fallen Captain (`fallen_captain`)', 2, 'night', 'The Fallen Captain appears 20-26 blocks away.'],
         ['Witch Sisters (`witch_sisters`)', 2, 'night', 'Fog rolls in; after 2 s the Frost Witch and the Ember Witch arrive 20-26 blocks away.'],
@@ -852,8 +896,8 @@ def page_commands():
         o += f'/summon {ident}\n'
     o += '```\n\n## Script events\n\n```\n/scriptevent bc:event                 (a random event)\n'
     for n in ('meteor_shower', 'devil_gate', 'pirate_landing', 'skirmish', 'knight_tournament', 'knight_patrol', 'merchant', 'sky_treasure', 'crimson_night',
-              'wounded_knight', 'mana_storm', 'bounty_hunters', 'rogue_ambush', 'rival_squad', 'fallen_captain', 'witch_sisters', 'bone_dragon',
-              'puppet_show', 'colossus', 'phantom_galleon', 'kraken'):
+              'wounded_knight', 'mana_storm', 'bounty_hunters', 'rogue_ambush', 'rival_squad', 'bandit_raid', 'devil_ritual', 'hive_infestation',
+              'assassins', 'thief', 'mana_eclipse', 'fallen_captain', 'witch_sisters', 'bone_dragon', 'puppet_show', 'colossus', 'phantom_galleon', 'kraken'):
         o += f'/scriptevent bc:event {n}\n'
     o += '```\n\nCreative players can also use any grimoire with every spell unlocked and infinite mana, and start events from a War Table.\n'
     return write('commands.md', 'Commands', o)
@@ -883,7 +927,7 @@ def page_getting_started():
 * **Take missions:** craft a Mission Board (or find a Magic Knight camp) for three daily missions with star rewards. → [Missions](progression.md#daily-missions)
 * **Fly:** craft a Magic Broom (stick, hay, a mana crystal) and ride the sky on your mana. → [Brooms](progression.md#magic-brooms)
 * **Build a War Table** (map, iron sword, feather, planks, sticks) and stage battles. → [Battles](ai-and-simulation.md#battles-battlejs)
-* **Fight bosses:** the Devil, the Leviathan, the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken, the Fallen Captain, the Witch Sisters, the Bone Dragon, the Soul Puppeteer. → [Bosses](mobs-and-bosses.md#bosses)
+* **Fight bosses:** the Devil, the Leviathan, the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken, the Fallen Captain, the Witch Sisters, the Bone Dragon, the Soul Puppeteer, the Bandit King, the Grimoire Devourer, the Hive Queen. → [Bosses](mobs-and-bosses.md#bosses)
 * **Watch the world:** events happen every few minutes; the factions rise and fall. → [World events](world-events.md)
 '''
     return write('getting-started.md', 'Getting started', o)
@@ -1008,9 +1052,9 @@ def page_home():
 | Creatures | {len([e for e in ENTITIES.values() if 'bc_spell' not in e['components'].get('minecraft:type_family', {}).get('family', [])])} creatures, NPCs and bosses, including {len(BOSSES)} bosses |
 | Companions | a saved party of up to {PARTY_MAX} knights plus {RESERVE_MAX} in reserve, each with a grimoire and an Abyss Fruit: personalities, specialisations, party tactics, combos, revives, mood, camps, trials, expeditions, sparring and rival squads |
 | Items | {len(ITEMS)} items and blocks, {len(RECIPES)} recipes |
-| AI & simulation | a tactical brain for spellcasters, battles with tactics, morale and leaders, a world where four factions rise and fall |
+| AI & simulation | a tactical brain for spellcasters, enemy warbands (focus, flanking, calling for help, breaking), bosses that adapt, battles with tactics, morale and leaders, a world where four factions rise and fall |
 | Adventure | daily missions and the Mission Board, magic brooms, amulets, Magic Knight camps |
-| World | random events, ships, outposts, wrecks, dungeons, the Bounty Board, a travelling merchant, the War Table |
+| World | an event director with scaling, objectives and a log; ships, outposts, wrecks, dungeons, the Bounty Board, a travelling merchant, the War Table |
 
 ## Pages
 

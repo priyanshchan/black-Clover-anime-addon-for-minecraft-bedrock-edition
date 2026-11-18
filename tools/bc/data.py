@@ -956,3 +956,29 @@ NEW_FRUIT_MOVES = {
 }
 for _f, (_id, _n, _cd, _desc, _spec) in NEW_FRUIT_MOVES.items():
     FRUITS[_f]['abilities'].append((_id, _n, _cd, _desc, _spec, NEW_FRUIT_WILL))
+
+# ======================================================================================
+# v0.7.0: the Bandit Brotherhood, Shadow Assassins, Cultists, the Hive, three new bosses,
+# warband tactics and a new event director
+# ======================================================================================
+ENEMY_KITS.update({
+    'bc:bandit': dict(src='a:steel', kit=[dict(t='nova', at='front', d=6, r=2.6, kb=[0.9, 0.3], fx='metal'),
+                                          dict(t='leap', d=6, dist=7, mode='dash', fx='metal')]),
+    'bc:bandit_archer': dict(src='a:wind', kit=[dict(t='bolt', d=6, shape=3, speed=2.8, fx='wind'),
+                                                dict(t='bolt', d=4, n=3, spread=10, shape=3, speed=2.6, fx='wind')]),
+    'bc:bandit_thief': dict(src='a:smoke', kit=[dict(t='bolt', d=3, n=2, spread=8, shape=2, speed=2.4, fx='metal')]),
+    'bc:shadow_assassin': dict(src='a:dark', kit=[dict(t='bolt', d=5, n=3, spread=12, shape=2, speed=2.6, fx='dark', eff=[['weakness', 3, 0]]),
+                                                  dict(t='nova', at='front', d=8, r=2.6, fx='dark')]),
+    'bc:cultist': dict(src='a:blood', kit=[dict(t='bolt', d=5, shape=0, speed=1.6, ls=0.3, fx='blood'),
+                                           dict(t='heal', heal=6, r=8, regen=3, fx='blood'),
+                                           dict(t='prison', d=3, r=2.5, dur=2, fx='dark')]),
+    'bc:hive_drone': dict(src='f:acid', kit=[dict(t='bolt', d=4, shape=0, size=1, speed=1.6, fx='acid', eff=[['poison', 2, 0]]),
+                                             dict(t='leap', d=5, dist=6, mode='dash', fx='acid')]),
+})
+FACTIONS['bandits'] = dict(name='Bandit Brotherhood', mc='§6', units=['bc:bandit', 'bc:bandit', 'bc:bandit_archer', 'bc:bandit_thief'], leader='bc:bandit')
+FACTIONS['hive'] = dict(name='The Hive', mc='§e', units=['bc:hive_drone'], leader='bc:hive_drone')
+V7_ITEMS = {
+    'bandit_crown': ('§6Bandit\'s Crown', 'Challenge the Bandit King'),
+    'forbidden_tome': ('§5Forbidden Tome', 'Wake the Grimoire Devourer'),
+    'royal_jelly': ('§eRoyal Jelly', 'Call the Hive Queen'),
+}

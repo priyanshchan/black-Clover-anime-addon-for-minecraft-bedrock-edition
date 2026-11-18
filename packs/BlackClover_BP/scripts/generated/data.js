@@ -7121,6 +7121,25 @@ export const DATA = {
         "bc:rogue_mage"
       ],
       "leader": "bc:rogue_mage"
+    },
+    "bandits": {
+      "name": "Bandit Brotherhood",
+      "mc": "\u00a76",
+      "units": [
+        "bc:bandit",
+        "bc:bandit",
+        "bc:bandit_archer",
+        "bc:bandit_thief"
+      ],
+      "leader": "bc:bandit"
+    },
+    "hive": {
+      "name": "The Hive",
+      "mc": "\u00a7e",
+      "units": [
+        "bc:hive_drone"
+      ],
+      "leader": "bc:hive_drone"
     }
   },
   "enemyKits": {
@@ -7273,6 +7292,146 @@ export const DATA = {
           "r": 3,
           "dur": 2,
           "fx": "spirit"
+        }
+      ]
+    },
+    "bc:bandit": {
+      "src": "a:steel",
+      "kit": [
+        {
+          "t": "nova",
+          "at": "front",
+          "d": 6,
+          "r": 2.6,
+          "kb": [
+            0.9,
+            0.3
+          ],
+          "fx": "metal"
+        },
+        {
+          "t": "leap",
+          "d": 6,
+          "dist": 7,
+          "mode": "dash",
+          "fx": "metal"
+        }
+      ]
+    },
+    "bc:bandit_archer": {
+      "src": "a:wind",
+      "kit": [
+        {
+          "t": "bolt",
+          "d": 6,
+          "shape": 3,
+          "speed": 2.8,
+          "fx": "wind"
+        },
+        {
+          "t": "bolt",
+          "d": 4,
+          "n": 3,
+          "spread": 10,
+          "shape": 3,
+          "speed": 2.6,
+          "fx": "wind"
+        }
+      ]
+    },
+    "bc:bandit_thief": {
+      "src": "a:smoke",
+      "kit": [
+        {
+          "t": "bolt",
+          "d": 3,
+          "n": 2,
+          "spread": 8,
+          "shape": 2,
+          "speed": 2.4,
+          "fx": "metal"
+        }
+      ]
+    },
+    "bc:shadow_assassin": {
+      "src": "a:dark",
+      "kit": [
+        {
+          "t": "bolt",
+          "d": 5,
+          "n": 3,
+          "spread": 12,
+          "shape": 2,
+          "speed": 2.6,
+          "fx": "dark",
+          "eff": [
+            [
+              "weakness",
+              3,
+              0
+            ]
+          ]
+        },
+        {
+          "t": "nova",
+          "at": "front",
+          "d": 8,
+          "r": 2.6,
+          "fx": "dark"
+        }
+      ]
+    },
+    "bc:cultist": {
+      "src": "a:blood",
+      "kit": [
+        {
+          "t": "bolt",
+          "d": 5,
+          "shape": 0,
+          "speed": 1.6,
+          "ls": 0.3,
+          "fx": "blood"
+        },
+        {
+          "t": "heal",
+          "heal": 6,
+          "r": 8,
+          "regen": 3,
+          "fx": "blood"
+        },
+        {
+          "t": "prison",
+          "d": 3,
+          "r": 2.5,
+          "dur": 2,
+          "fx": "dark"
+        }
+      ]
+    },
+    "bc:hive_drone": {
+      "src": "f:acid",
+      "kit": [
+        {
+          "t": "bolt",
+          "d": 4,
+          "shape": 0,
+          "size": 1,
+          "speed": 1.6,
+          "fx": "acid",
+          "eff": [
+            [
+              "poison",
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "t": "leap",
+          "d": 5,
+          "dist": 6,
+          "mode": "dash",
+          "fx": "acid"
         }
       ]
     }

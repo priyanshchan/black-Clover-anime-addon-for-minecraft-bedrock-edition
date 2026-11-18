@@ -1,6 +1,6 @@
 // Magic XP, levels and unlock announcements.
 import { DATA } from '../generated/data.js';
-import { MAX_LEVEL, maxMana, spellsOf, state, xpToNext } from './data.js';
+import { MAX_LEVEL, eclipseMul, maxMana, spellsOf, state, xpToNext } from './data.js';
 import { emit } from './bus.js';
 import { particle, sound, title } from './fx.js';
 import { addStars } from './ranks.js';
@@ -10,7 +10,7 @@ export function addXp(player, amount) {
   const s = state(player);
   if (s.attr) emit('xp', player, amount);
   if (!s.attr || s.level >= MAX_LEVEL) return;
-  s.xp += amount;
+  s.xp += eclipseMul() > 1 ? amount * 1.5 : amount;
   s.dirty = true;
   while (s.level < MAX_LEVEL && s.xp >= xpToNext(s.level)) {
     s.xp -= xpToNext(s.level);

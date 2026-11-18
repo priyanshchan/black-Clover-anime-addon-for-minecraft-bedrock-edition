@@ -138,7 +138,7 @@ VANILLA_SOUNDS = {'mob.blaze.shoot', 'mob.blaze.breathe', 'mob.ghast.fireball', 
                   'beacon.activate', 'mob.wither.shoot', 'mob.wither.spawn', 'mob.endermen.portal', 'mob.warden.sonic_boom', 'random.glass',
                   'random.explode', 'random.orb', 'random.anvil_land', 'mob.evocation_illager.cast_spell', 'mob.evocation_illager.prepare_summon',
                   'mob.ravager.bite', 'random.click', 'item.trident.throw', 'random.burp', 'mob.skeleton.say', 'mob.enderdragon.flap',
-                  'mob.enderdragon.growl', 'random.pop', 'random.fizz', 'random.levelup', 'fire.ignite', 'dig.wood'}
+                  'mob.enderdragon.growl', 'random.pop', 'random.fizz', 'random.levelup', 'fire.ignite', 'dig.wood', 'mob.slime.big'}
 js = ''
 for p in walk(os.path.join(BP, 'scripts'), '.js'):
     js += open(p, encoding='utf-8').read()
@@ -160,7 +160,9 @@ for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
              # v0.3.0: the daily missions
              'bc:missions',
              # v0.5.0: awakened companions, companion brooms, rival squads, sparring, mind control, the dummy's owner
-             'bc:awake', 'bc:cbroom', 'bc:rival', 'bc:spar', 'bc:puppet_of', 'bc:dummy_owner'):
+             'bc:awake', 'bc:cbroom', 'bc:rival', 'bc:spar', 'bc:puppet_of', 'bc:dummy_owner',
+             # v0.7.0: stolen goods, egg timers, silenced grimoires, the event log and the Mana Eclipse
+             'bc:stolen', 'bc:hatch_at', 'bc:silenced_until', 'bc:event_log', 'bc:eclipse_until'):
         continue
     errors.append(f'script references unknown id {m}')
 for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):

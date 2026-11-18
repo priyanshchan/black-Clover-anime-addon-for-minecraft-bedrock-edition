@@ -30,6 +30,12 @@ export function useGrimoire(p, item) {
     sound(p.dimension, 'bc.mana.empty', p.location, 0.6, 1);
     return;
   }
+  const silenced = p.getDynamicProperty('bc:silenced_until');
+  if (typeof silenced === 'number' && silenced > system.currentTick && !creative) {
+    safe(() => p.onScreenDisplay.setActionBar(`§5Your grimoire is silenced! §7(${Math.ceil((silenced - system.currentTick) / 20)}s)`));
+    sound(p.dimension, 'bc.mana.empty', p.location, 0.6, 0.7);
+    return;
+  }
   // creative players may borrow any grimoire for testing
   const attr = itemAttr;
   const level = creative ? 20 : s.level;

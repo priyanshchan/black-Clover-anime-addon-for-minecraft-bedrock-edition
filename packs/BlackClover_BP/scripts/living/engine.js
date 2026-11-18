@@ -2,7 +2,7 @@
 // small recipe ("spec") from tools/bc/data.py, run here by one of ~20 templates.
 import { ItemStack, Player, system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
-import { robe } from '../core/data.js';
+import { eclipseMul, robe } from '../core/data.js';
 import { aimEntity, aimPoint, blinkDestination, canHit, center, effect, groundBelow, hurt, knock, launch, ownerOf, factionOf, projectiles, pull, targetsAlong, targetsAround, teamOf } from '../core/combat.js';
 import { particle, rgb, shakeArea, sound, title } from '../core/fx.js';
 import { V, alive, rand, repeat, safe, timer } from '../core/util.js';
@@ -670,6 +670,7 @@ function run(x, spec) {
  * @returns {boolean} false when nothing was cast (refund)
  */
 export function castSpec(caster, spec, src, pw = 1, target, opts = {}) {
+  emit('spellcast', caster, spec, src);
   if (!alive(caster) || !spec) return false;
   if (spec.hp) {
     const h = caster.getComponent('minecraft:health');
@@ -680,7 +681,7 @@ export function castSpec(caster, spec, src, pw = 1, target, opts = {}) {
     hurt(caster, spec.hp, undefined, 'magic');
     particle(caster.dimension, 'bc:shard_burst', center(caster), { color: rgb('d01a34'), scale: 0.5 });
   }
-  const x = makeCtx(caster, src, pw, target, opts.aim);
+  const x = makeCtx(caster, src, caster instanceof Player ? pw : pw * eclipseMul(), target, opts.aim);
   if (caster instanceof Player) {
     const kind = spec.t === 'repeat' ? spec.spec?.t : spec.t;
     const a = PLAYER_ANIM[kind] ?? 'cast_forward';

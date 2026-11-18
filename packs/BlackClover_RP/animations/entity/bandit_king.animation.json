@@ -1,0 +1,407 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.bandit_king.idle": {
+      "loop": true,
+      "bones": {
+        "body": {
+          "rotation": [
+            "math.sin(q.life_time * 90.0) * 1.2",
+            0,
+            0
+          ]
+        },
+        "rightArm": {
+          "rotation": [
+            "-12.0 + math.sin(q.life_time * 90.0) * 2.0",
+            0,
+            4
+          ]
+        },
+        "leftArm": {
+          "rotation": [
+            "math.sin(q.life_time * 90.0) * -2.0",
+            0,
+            -4
+          ]
+        },
+        "cape": {
+          "rotation": [
+            "6.0 + math.sin(q.life_time * 100.0) * 3.0",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.bandit_king.walk": {
+      "loop": true,
+      "bones": {
+        "rightLeg": {
+          "rotation": [
+            "math.cos(q.modified_distance_moved * 38.17) * 38.0 * q.modified_move_speed",
+            0,
+            0
+          ]
+        },
+        "leftLeg": {
+          "rotation": [
+            "-(math.cos(q.modified_distance_moved * 38.17) * 38.0 * q.modified_move_speed)",
+            0,
+            0
+          ]
+        },
+        "leftArm": {
+          "rotation": [
+            "(math.cos(q.modified_distance_moved * 38.17) * 38.0 * q.modified_move_speed) * 0.7",
+            0,
+            0
+          ]
+        },
+        "rightArm": {
+          "rotation": [
+            "-(math.cos(q.modified_distance_moved * 38.17) * 38.0 * q.modified_move_speed) * 0.3",
+            0,
+            0
+          ]
+        },
+        "cape": {
+          "rotation": [
+            "10.0 + math.abs(math.cos(q.modified_distance_moved * 38.17)) * 30.0 * q.modified_move_speed",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.bandit_king.look_at_target": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": [
+            "q.target_x_rotation",
+            "q.target_y_rotation",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.bandit_king.attack": {
+      "animation_length": 0.45,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.12": [
+              -150,
+              20,
+              10
+            ],
+            "0.26": [
+              -40,
+              -25,
+              0
+            ],
+            "0.45": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "body": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.12": [
+              0,
+              15,
+              0
+            ],
+            "0.26": [
+              0,
+              -20,
+              0
+            ],
+            "0.45": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.bandit_king.whirl": {
+      "animation_length": 1.0,
+      "bones": {
+        "body": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.25": [
+              0,
+              180,
+              0
+            ],
+            "0.5": [
+              0,
+              360,
+              0
+            ],
+            "0.75": [
+              0,
+              540,
+              0
+            ],
+            "1.0": [
+              0,
+              720,
+              0
+            ]
+          }
+        },
+        "rightArm": {
+          "rotation": [
+            -20,
+            0,
+            85
+          ]
+        },
+        "leftArm": {
+          "rotation": [
+            -20,
+            0,
+            -85
+          ]
+        }
+      }
+    },
+    "animation.bc.bandit_king.slash": {
+      "animation_length": 0.5,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.15": [
+              -170,
+              30,
+              0
+            ],
+            "0.3": [
+              -30,
+              -40,
+              0
+            ],
+            "0.5": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.2": [
+              -60,
+              0,
+              -40
+            ],
+            "0.35": [
+              -120,
+              40,
+              0
+            ],
+            "0.5": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "body": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.15": [
+              0,
+              25,
+              0
+            ],
+            "0.3": [
+              10,
+              -25,
+              0
+            ],
+            "0.5": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.bandit_king.command": {
+      "animation_length": 1.2,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.25": [
+              -150,
+              0,
+              20
+            ],
+            "0.9": [
+              -150,
+              0,
+              20
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "head": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.25": [
+              -20,
+              0,
+              0
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.bandit_king.roar": {
+      "animation_length": 1.4,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -40,
+              0,
+              80
+            ],
+            "1.1": [
+              -40,
+              0,
+              80
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -40,
+              0,
+              -80
+            ],
+            "1.1": [
+              -40,
+              0,
+              -80
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "head": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -30,
+              0,
+              0
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "cape": {
+          "rotation": {
+            "0.0": [
+              6,
+              0,
+              0
+            ],
+            "0.3": [
+              50,
+              0,
+              0
+            ],
+            "1.4": [
+              6,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

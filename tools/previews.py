@@ -561,9 +561,40 @@ def v5_sheet():
     img.convert('RGB').save(os.path.join(OUT, 'items050.png'), optimize=True)
 
 
+def v7_sheet():
+    """v0.7.0: the Bandit Brotherhood, the Shadow Assassin, the Cultist, the Hive and three new bosses."""
+    from bc.models import v7
+    e = []
+    ba = v7.bandit_animations('bandit')
+    for kind, label in (('brawler', 'Bandit'), ('archer', 'Bandit Archer'), ('thief', 'Bandit Thief')):
+        pose = {}
+        render.pose_from_anim(ba['animation.bc.bandit.idle'], 0.3, pose=pose)
+        e.append((label, model(v7.bandit_geo(kind)), pose, 30, 10, 1.5))
+    pose = {}
+    render.pose_from_anim(v7.bandit_king_animations()['animation.bc.bandit_king.slash'], 0.15, pose=pose)
+    e.append(('The Bandit King', model(v7.bandit_king_geo()), pose, 30, 10, 1.5))
+    pose = {}
+    render.pose_from_anim(v7.assassin_animations()['animation.bc.shadow_assassin.idle'], 0.3, pose=pose)
+    e.append(('Shadow Assassin', model(v7.assassin_geo()), pose, 30, 10, 1.5))
+    pose = {}
+    render.pose_from_anim(v7.cultist_animations()['animation.bc.cultist.ritual'], 0.3, pose=pose)
+    e.append(('Cultist (ritual)', model(v7.cultist_geo()), pose, 30, 10, 1.5))
+    pose = {}
+    render.pose_from_anim(v7.drone_animations()['animation.bc.hive_drone.idle'], 0.3, pose=pose)
+    e.append(('Hive Drone', model(v7.drone_geo()), pose, 40, 20, 1.6))
+    e.append(('Hive Egg', model(v7.egg_geo()), {}, 30, 15, 1.6))
+    pose = {}
+    render.pose_from_anim(v7.queen_animations()['animation.bc.hive_queen.screech'], 0.5, pose=pose)
+    e.append(('The Hive Queen', model(v7.queen_geo()), pose, 40, 15, 1.0))
+    pose = {}
+    render.pose_from_anim(v7.devourer_animations()['animation.bc.grimoire_devourer.chomp'], 0.25, pose=pose)
+    e.append(('The Grimoire Devourer', model(v7.devourer_geo()), pose, 30, 15, 1.0))
+    grid(e, 5, 280, 'v070.png', 'v0.7.0: bandits, assassins, cultists, the Hive & three new bosses')
+
+
 if __name__ == '__main__':
     names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
-                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet']
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet']
     for n in names:
         print('rendering', n)
         globals()[n]()

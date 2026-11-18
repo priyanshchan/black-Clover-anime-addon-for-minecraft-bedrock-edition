@@ -265,4 +265,4 @@ def build(ctx: Ctx):
     gen_loot(ctx)
     rcs = gen_entities(ctx)
     write_json(RP, 'render_controllers/bc_v3.render_controllers.json', {'format_version': '1.10.0', 'render_controllers': rcs})
-    check_armies()
+    # check_armies() runs after every expansion has written its soldiers (packgen.build)

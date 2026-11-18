@@ -1,5 +1,6 @@
 // Giant bosses: the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken, the Fallen Captain,
-// the Witch Sisters (the Frost Witch and the Ember Witch), the Bone Dragon and the Soul Puppeteer.
+// the Witch Sisters (the Frost Witch and the Ember Witch), the Bone Dragon, the Soul Puppeteer, the Bandit King,
+// the Grimoire Devourer and the Hive Queen.
 //
 // One framework drives them all:
 // * THREAT: every boss remembers who hurt it most (players, knights, companions) and turns on the biggest threat -
@@ -11,16 +12,23 @@
 //   the Witches blink away from melee, the Bone Dragon circles above and dives.
 // * TWINS: the Witch Sisters weave Twin Spells together; when one falls, the other goes straight to her desperation move.
 // * STRINGS: the Soul Puppeteer takes control of companions and turns them on their own squad (puppeteer.js).
+// * ADAPTING (v0.7.0): every boss watches how it is being hurt. Mostly spells? A spell ward soaks 40% of magic for 10 s.
+//   Mostly blades and fists? Iron hide: Resistance II, and blows bounce back at whoever lands them.
+// * HEALERS FIRST: bosses rate support companions (Wardens, healers) 30% more threatening.
+// * NO CLUMPING: when three or more foes stand close together, area attacks become far more likely.
 // * ENRAGE TIMER: after six minutes any boss grows stronger and faster.
 import { Player, WeatherType, system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
-import { center, effect, hurt, knock, launch, ownerOf, targetsAround } from '../core/combat.js';
+import { addDamageMod, canHit, center, effect, hurt, knock, launch, ownerOf, targetsAround } from '../core/combat.js';
 import { anim, particle, rgb, shakeArea, shockwave, sound, title } from '../core/fx.js';
 import { addXp } from '../core/progress.js';
 import { addStars } from '../core/ranks.js';
-import { emit } from '../core/bus.js';
+import { emit, on } from '../core/bus.js';
 import { addDanger } from './danger.js';
 import { pullStrings } from './puppeteer.js';
+import { hatch, layEgg } from './foes.js';
+import { brainInfo } from './ai.js';
+import { sealFruit } from '../sea/fruits.js';
 import { V, alive, isCreative, pick, rand, repeat, safe, timer } from '../core/util.js';
 import { castSpec } from './engine.js';
 import { face, kitFor } from './knights.js';
@@ -151,15 +159,58 @@ DEF['bc:soul_puppeteer'] = {
     { w: 2, phase: 2, max: 8, tele: 14, spec: { t: 'nova', d: 12, r: 6, kb: [1.8, 0.6], fx: 'dark' }, anim: 'animation.bc.soul_puppeteer.roar' },
   ],
 };
+DEF['bc:bandit_king'] = {
+  name: '§6The Bandit King', src: 'a:steel', every: [26, 42], range: 36, stars: 7, desperation: 'last_stand', roar: 'animation.bc.bandit_king.roar',
+  intro: ['§6§lTHE BANDIT KING', '§7Your gold or your life - he will take both'],
+  rage: ['§6§lThe King calls his band', '§7Bandits pour out of the hills'],
+  last: ['§6§lLAST STAND', '§7A king does not run'],
+  attacks: [
+    { w: 4, max: 5, fn: 'twin_slash', anim: 'animation.bc.bandit_king.slash' },
+    { w: 3, max: 7, tele: 12, spec: { t: 'nova', d: 11, r: 4.5, kb: [1.4, 0.4], fx: 'metal' }, anim: 'animation.bc.bandit_king.whirl' },
+    { w: 3, min: 5, spec: { t: 'bolt', d: 6, n: 5, spread: 30, shape: 2, speed: 2.6, fx: 'metal' }, anim: 'animation.bc.bandit_king.slash' },
+    { w: 2, fn: 'volley', anim: 'animation.bc.bandit_king.command' },
+    { w: 2, fn: 'smoke_bomb' },
+    { w: 2, phase: 2, fn: 'reinforcements', anim: 'animation.bc.bandit_king.command' },
+  ],
+};
+DEF['bc:grimoire_devourer'] = {
+  name: '§5The Grimoire Devourer', src: 'a:dark', every: [28, 44], range: 40, stars: 9, desperation: 'final_chapter', roar: 'animation.bc.grimoire_devourer.roar',
+  intro: ['§5§lTHE GRIMOIRE DEVOURER', '§7It eats magic - and remembers the taste'],
+  rage: ['§5§lThe Devourer turns its pages', '§7Every spell it swallowed stirs inside'],
+  last: ['§5§lFINAL CHAPTER', '§7It casts everything it has eaten'],
+  attacks: [
+    { w: 3, spec: { t: 'bolt', d: 7, n: 5, spread: 24, shape: 2, speed: 2.2, fx: 'paper' }, src: 'a:paper', anim: 'animation.bc.grimoire_devourer.chomp' },
+    { w: 4, fn: 'regurgitate', anim: 'animation.bc.grimoire_devourer.cast' },
+    { w: 2, fn: 'silence', anim: 'animation.bc.grimoire_devourer.roar' },
+    { w: 2, spec: { t: 'zone', d: 4, r: 6, dur: 5, fx: 'ink', eff: [['blindness', 2, 0]] }, src: 'f:ink', anim: 'animation.bc.grimoire_devourer.cast' },
+    { w: 2, max: 8, tele: 12, spec: { t: 'nova', d: 12, r: 6, kb: [1.8, 0.6], fx: 'dark' }, anim: 'animation.bc.grimoire_devourer.chomp' },
+  ],
+};
+DEF['bc:hive_queen'] = {
+  name: '§eThe Hive Queen', src: 'f:acid', every: [28, 44], range: 40, stars: 8, desperation: 'swarm_mother', roar: 'animation.bc.hive_queen.screech',
+  intro: ['§e§lTHE HIVE QUEEN', '§7The ground hums with a thousand wings'],
+  rage: ['§e§lThe Queen screams', '§7Her eggs answer'],
+  last: ['§e§lSWARM MOTHER', '§7Every egg hatches at once'],
+  attacks: [
+    { w: 3, spec: { t: 'beam', d: 7, range: 18, width: 1.6, fx: 'acid', eff: [['poison', 4, 1]] }, anim: 'animation.bc.hive_queen.spit' },
+    { w: 3, fn: 'lay_eggs', anim: 'animation.bc.hive_queen.lay' },
+    { w: 2, max: 9, tele: 14, spec: { t: 'nova', d: 9, r: 7, kb: [1.2, 0.4], fx: 'acid', eff: [['slowness', 3, 2], ['nausea', 3, 0]] }, anim: 'animation.bc.hive_queen.screech' },
+    { w: 2, min: 8, fn: 'burrow' },
+    { w: 2, spec: { t: 'rain', d: 5, n: 12, r: 6, every: 2, fx: 'acid', eff: [['poison', 3, 0]] }, anim: 'animation.bc.hive_queen.spit' },
+  ],
+};
+const AOE = new Set(['nova', 'rain', 'meteor', 'zone', 'vortex', 'wave', 'strikes', 'radial']);
 const WITCHES = { 'bc:frost_witch': 'bc:ember_witch', 'bc:ember_witch': 'bc:frost_witch' };
 const CAPTAIN_ATTRS = ['flame', 'lightning', 'dark', 'ice', 'blood', 'glass', 'rune', 'spirit', 'star', 'gold', 'smoke', 'magma'];
 
-/** @type {Map<string, {next: number, phase: number, start: number, enraged: boolean, threat: Map<string, number>, target: string, moveAt: number, attrs?: string[], parryAt?: number, dodgeAt?: number, sister?: string}>} */
+/** @type {Map<string, {next: number, phase: number, start: number, enraged: boolean, threat: Map<string, number>, target: string, moveAt: number, attrs?: string[], parryAt?: number, dodgeAt?: number, sister?: string,
+ *   magic: number, phys: number, ward: string, wardUntil: number, adaptAt: number, devoured: Map<string, {spec: any, src: string, n: number}>, retreated: boolean}>} */
 const bosses = new Map();
 
 function track(e) {
   if (!DEF[e.typeId] || bosses.has(e.id)) return;
-  const st = { next: system.currentTick + 60, phase: 1, start: 0, enraged: false, threat: new Map(), target: '', moveAt: system.currentTick + 400 };
+  const st = { next: system.currentTick + 60, phase: 1, start: 0, enraged: false, threat: new Map(), target: '', moveAt: system.currentTick + 400,
+    magic: 0, phys: 0, ward: '', wardUntil: 0, adaptAt: system.currentTick + 300, devoured: new Map(), retreated: false };
   if (e.typeId === 'bc:fallen_captain') {
     const pool = [...CAPTAIN_ATTRS].sort(() => Math.random() - 0.5);
     st.attrs = [pool[0], pool[1], 'time'];
@@ -195,6 +246,93 @@ world.afterEvents.entityHurt.subscribe((ev) => {
   st.threat.set(src.id, (st.threat.get(src.id) ?? 0) + amount);
 });
 
+// ------------------------------------------------------------------------------- adapting to how it is hurt
+/** @type {Map<string, number>} target id -> tick a spell (script) hit was dealt */
+const spellHit = new Map();
+addDamageMod((target, attacker, amount) => {
+  const st = bosses.get(target.id);
+  if (!st) return amount;
+  spellHit.set(target.id, system.currentTick);
+  return st.ward === 'magic' && st.wardUntil > system.currentTick ? amount * 0.6 : amount;
+});
+world.afterEvents.entityHurt.subscribe((ev) => safe(() => {
+  const e = ev.hurtEntity;
+  const st = bosses.get(e.id);
+  if (!st) return;
+  const t = system.currentTick;
+  if (spellHit.get(e.id) === t) st.magic += ev.damage;
+  else st.phys += ev.damage;
+  // iron hide: blows bounce back
+  const src = ev.damageSource.damagingEntity;
+  if (st.ward === 'iron' && st.wardUntil > t && src && spellHit.get(e.id) !== t && V.dist(src.location, e.location) < 5) {
+    hurt(src, 3, e);
+    knock(src, V.sub(src.location, e.location), 1.0, 0.3);
+    particle(e.dimension, 'bc:burst_spark', center(src), { color: rgb('c8d0dc'), scale: 0.5 });
+  }
+}, 'bossAdapt'));
+
+function adapt(e, st, def, t) {
+  if (st.adaptAt > t) return;
+  st.adaptAt = t + 300;
+  const total = st.magic + st.phys;
+  const magicShare = total > 0 ? st.magic / total : 0;
+  st.magic = 0;
+  st.phys = 0;
+  if (total < 40) return;
+  if (magicShare >= 0.7) {
+    st.ward = 'magic';
+    st.wardUntil = t + 200;
+    particle(e.dimension, 'bc:magic_circle', center(e), { color: rgb('c0a0ff'), size: 3, life: 2 });
+    announce(e, `${def.name}§d adapts`, '§7A spell ward soaks your magic - use your blades!');
+  } else if (magicShare <= 0.3) {
+    st.ward = 'iron';
+    st.wardUntil = t + 200;
+    effect(e, 'resistance', 10, 1, false);
+    particle(e.dimension, 'bc:shockwave', e.location, { color: rgb('c8d0dc'), radius: 3 });
+    announce(e, `${def.name}§7 adapts`, '§7Its hide turns to iron - use your magic!');
+  }
+}
+
+// ------------------------------------------------------------------------------- the Grimoire Devourer eats magic
+const tasted = new Map();
+function devour(caster, spec, src, name) {
+  if (!spec || !caster || caster.typeId === 'bc:grimoire_devourer') return;
+  for (const [id, st] of bosses) {
+    const d = world.getEntity(id);
+    if (!d || d.typeId !== 'bc:grimoire_devourer' || d.dimension.id !== caster.dimension?.id) continue;
+    if (V.dist(d.location, caster.location) > 24 || !safe(() => canHit(caster, d))) continue;
+    const key = JSON.stringify(spec);
+    const rec = st.devoured.get(key) ?? { spec, src, n: 0 };
+    rec.n += 1;
+    st.devoured.set(key, rec);
+    if (st.devoured.size > 8) {
+      const least = [...st.devoured.entries()].sort((a, b) => a[1].n - b[1].n)[0];
+      st.devoured.delete(least[0]);
+    }
+    const a = center(caster);
+    const b = center(d);
+    for (let k = 0; k <= 1; k += 0.2) particle(d.dimension, 'bc:beam_dot', V.lerp(a, b, k), { color: rgb('c040ff'), size: 0.25, life: 0.4 });
+    if (caster instanceof Player && (tasted.get(caster.id) ?? 0) < system.currentTick) {
+      tasted.set(caster.id, system.currentTick + 200);
+      safe(() => caster.onScreenDisplay.setActionBar(`§5The Devourer swallows the echo of your ${name ?? 'spell'}...`));
+    }
+  }
+}
+on('spellcast', (caster, spec, src) => safe(() => devour(caster, spec, src), 'devour'));
+// hand-written grimoire spells have no recipe: it tastes the grimoire's new move instead
+on('cast', (p, id) => safe(() => {
+  const s = DATA.spells;
+  for (const a of Object.keys(s)) {
+    const sp = s[a].find((x) => x.id === id);
+    if (!sp) continue;
+    if (!sp.spec) {
+      const alt = s[a].find((x) => x.level === 12)?.spec;
+      if (alt) devour(p, alt, `a:${a}`, sp.name);
+    }
+    return;
+  }
+}, 'devourCast'));
+
 function valid(e, x, range) {
   if (!x || !alive(x) || x.dimension.id !== e.dimension.id || V.dist(x.location, e.location) > range) return false;
   if (x instanceof Player) {
@@ -214,9 +352,11 @@ function bossTarget(e, st, def) {
       if (!x) st.threat.delete(id);
       continue;
     }
-    if (th > bestThreat * 1.1 + (best ? 0 : -1)) {
+    // healers are dangerous: a support companion counts 30% more
+    const w = typeof safe(() => x.getDynamicProperty('bc:cid')) === 'string' && safe(() => brainInfo(x).role) === 'support' ? 1.3 : 1;
+    if (th * w > bestThreat * 1.1 + (best ? 0 : -1)) {
       best = x;
-      bestThreat = th;
+      bestThreat = th * w;
     }
   }
   if (!best) {
@@ -444,6 +584,112 @@ const MOVES = {
       timer(15, () => safe(() => e.dimension.spawnEntity(st.phase > 2 && i === 0 ? 'minecraft:wither_skeleton' : 'minecraft:skeleton', at)));
     }
   },
+  twin_slash(e, target, st) {
+    for (let i = 0; i < 3; i++) {
+      timer(i * 6, () => {
+        if (!alive(e) || !alive(target)) return;
+        anim(e, 'animation.bc.bandit_king.slash');
+        const dir = V.flat(V.sub(target.location, e.location));
+        safe(() => e.applyImpulse({ x: dir.x * 0.6, y: 0, z: dir.z * 0.6 }));
+        particle(e.dimension, 'bc:slash_fx', V.add(e.location, { x: dir.x * 1.5, y: 1.4, z: dir.z * 1.5 }), { size: 2.8, rot: i * 60 - 60 });
+        sound(e.dimension, 'bc.anti.slash', e.location, 1, 0.9 + i * 0.1);
+        for (const v of targetsAround(e.dimension, V.add(e.location, V.mul(dir, 1.6)), 2.6, e)) hurt(v, st.phase > 2 ? 12 : 9, e);
+      });
+    }
+  },
+  volley(e, target, st) {
+    sound(e.dimension, 'bc.horn', e.location, 1.4, 0.8);
+    // every archer of his band looses at once, and arrows rain on the target
+    for (const a of safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 32, type: 'bc:bandit_archer' })) ?? []) {
+      anim(a, 'animation.bc.bandit.shoot');
+      castSpec(a, { t: 'bolt', d: 6, n: 2, spread: 8, shape: 3, speed: 2.8, fx: 'wind' }, 'a:wind', 1, target);
+    }
+    telegraph(e, target.location, 5, 16);
+    timer(16, () => alive(e) && castSpec(e, { t: 'rain', d: 5, n: 12, r: 5, every: 2, fx: 'wind' }, 'a:wind', 1.1, target));
+  },
+  smoke_bomb(e, target, st) {
+    particle(e.dimension, 'bc:smoke_burst', center(e), { scale: 1.6 });
+    sound(e.dimension, 'random.fizz', e.location, 1.2, 0.6);
+    for (const v of targetsAround(e.dimension, e.location, 5, e)) effect(v, 'blindness', 3, 0);
+    effect(e, 'invisibility', 2, 0, false);
+    timer(10, () => {
+      if (!alive(e) || !alive(target)) return;
+      safe(() => e.teleport(V.add(target.location, V.mul(V.flat(target.getViewDirection()), -2)), { facingLocation: target.location }));
+      MOVES.twin_slash(e, target, st);
+    });
+  },
+  reinforcements(e, target, st) {
+    const count = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 32, families: ['bc_bandit'] }).length) ?? 0;
+    if (count >= 9) return;
+    sound(e.dimension, 'bc.horn', e.location, 1.6, 0.6);
+    for (const type of ['bc:bandit', 'bc:bandit', 'bc:bandit_archer']) {
+      const a = Math.random() * Math.PI * 2;
+      const at = V.add(e.location, { x: Math.cos(a) * 8, y: 0.5, z: Math.sin(a) * 8 });
+      const top = safe(() => e.dimension.getTopmostBlock({ x: at.x, z: at.z }));
+      if (top && Math.abs(top.location.y + 1 - at.y) < 6) at.y = top.location.y + 1;
+      particle(e.dimension, 'bc:dust_burst', at, { color: rgb('a08060'), scale: 0.8 });
+      safe(() => e.dimension.spawnEntity(type, at));
+    }
+  },
+  regurgitate(e, target, st) {
+    const list = [...st.devoured.values()].sort((a, b) => b.n - a.n);
+    const pick_ = list.length ? list[Math.floor(Math.random() * Math.min(3, list.length))] : undefined;
+    if (!pick_) {
+      castSpec(e, { t: 'zone', d: 4, r: 6, dur: 5, fx: 'ink', eff: [['blindness', 2, 0]] }, 'f:ink', 1, target);
+      return;
+    }
+    for (const p of e.dimension.getPlayers({ location: e.location, maxDistance: 40 })) safe(() => p.onScreenDisplay.setActionBar('§5The Devourer casts YOUR magic back at you!'));
+    castSpec(e, pick_.spec, pick_.src, st.phase > 1 ? 1.3 : 1.1, target);
+  },
+  silence(e, target, st) {
+    telegraph(e, e.location, 14, 14);
+    timer(14, () => {
+      if (!alive(e)) return;
+      const until = system.currentTick + (st.phase > 2 ? 160 : 100);
+      shockwave(e.dimension, e.location, 'dark', 14);
+      sound(e.dimension, 'bc.anti.nullify', e.location, 2, 0.6);
+      for (const v of targetsAround(e.dimension, e.location, 14, e)) {
+        safe(() => v.setDynamicProperty('bc:silenced_until', until));
+        sealFruit(v, until - system.currentTick);
+        particle(v.dimension, 'bc:anti_burst', center(v), { scale: 0.6 });
+        if (v instanceof Player) title(v, ' ', '§5Your grimoire falls silent!', 30);
+      }
+    });
+  },
+  lay_eggs(e, target, st) {
+    const eggs = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 32, type: 'bc:hive_egg' }).length) ?? 0;
+    if (eggs >= 10) return;
+    sound(e.dimension, 'mob.slime.big', e.location, 1.4, 0.6);
+    for (let i = 0; i < (st.phase > 1 ? 4 : 3); i++) {
+      const a = Math.random() * Math.PI * 2;
+      const at = V.add(e.location, { x: Math.cos(a) * rand(3, 7), y: 0.2, z: Math.sin(a) * rand(3, 7) });
+      const top = safe(() => e.dimension.getTopmostBlock({ x: at.x, z: at.z }));
+      if (top && Math.abs(top.location.y + 1 - at.y) < 6) at.y = top.location.y + 1;
+      layEgg(e.dimension, at, st.phase > 1 ? 340 : 500);
+    }
+  },
+  burrow(e, target, st) {
+    anim(e, 'animation.bc.hive_queen.burrow');
+    effect(e, 'resistance', 2.5, 4, false);
+    particle(e.dimension, 'bc:rock_debris', e.location, { scale: 2 });
+    sound(e.dimension, 'bc.stone.crack', e.location, 2, 0.6);
+    timer(20, () => {
+      if (!alive(e) || !alive(target)) return;
+      const spot = { ...target.location };
+      telegraph(e, spot, 4, 20);
+      timer(20, () => {
+        if (!alive(e)) return;
+        safe(() => e.teleport(spot));
+        anim(e, 'animation.bc.hive_queen.emerge');
+        particle(e.dimension, 'bc:rock_debris', spot, { scale: 2.2 });
+        shakeArea(e.dimension, spot, 20, 0.6, 0.6);
+        for (const v of targetsAround(e.dimension, spot, 4, e)) {
+          hurt(v, st.phase > 1 ? 16 : 12, e);
+          knock(v, V.sub(v.location, spot), 0.8, 1.1);
+        }
+      });
+    });
+  },
   strings(e, target, st) {
     pullStrings(e, target, st.phase, st.phase > 1 ? 2 : 1);
   },
@@ -547,6 +793,35 @@ const DESPERATION = {
       }
       MOVES.bones(e, target, { phase: 3 });
     });
+  },
+  last_stand(e, target) {
+    effect(e, 'strength', 30, 1, false);
+    effect(e, 'speed', 30, 0, false);
+    effect(e, 'regeneration', 8, 1, false);
+    for (let i = 0; i < 4; i++) {
+      timer(20 + i * 22, () => {
+        if (!alive(e)) return;
+        anim(e, 'animation.bc.bandit_king.whirl');
+        castSpec(e, { t: 'nova', d: 12, r: 5, kb: [1.6, 0.4], fx: 'metal' }, 'a:steel', 1.3, target);
+      });
+    }
+    MOVES.reinforcements(e, target, { phase: 3 });
+  },
+  final_chapter(e, target) {
+    const st = bosses.get(e.id);
+    const list = st ? [...st.devoured.values()].sort((a, b) => b.n - a.n).slice(0, 3) : [];
+    MOVES.silence(e, target, { phase: 3 });
+    if (!list.length) list.push({ spec: { t: 'bolt', d: 7, n: 5, spread: 24, shape: 2, speed: 2.2, fx: 'paper' }, src: 'a:paper', n: 0 },
+      { spec: { t: 'zone', d: 4, r: 6, dur: 5, fx: 'ink' }, src: 'f:ink', n: 0 });
+    list.forEach((x, i) => timer(20 + i * 12, () => alive(e) && alive(target) && castSpec(e, x.spec, x.src, 1.4, target)));
+  },
+  swarm_mother(e, target) {
+    for (const egg of safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 32, type: 'bc:hive_egg' })) ?? []) hatch(egg);
+    MOVES.lay_eggs(e, target, { phase: 3 });
+    for (const egg of safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 10, type: 'bc:hive_egg' })) ?? []) {
+      safe(() => egg.setDynamicProperty('bc:hatch_at', system.currentTick + 100));
+    }
+    castSpec(e, { t: 'nova', d: 9, r: 8, kb: [1.4, 0.5], fx: 'acid', eff: [['slowness', 3, 2]] }, 'f:acid', 1.2, target);
   },
   grand_finale(e, target) {
     if (!alive(target)) return;
@@ -671,7 +946,7 @@ system.runInterval(() => {
       if (e.typeId === 'bc:fallen_captain') captainDodge(e, st, t);
       if (target && t > st.moveAt) {
         const crowd = targetsAround(e.dimension, e.location, 5, e).length;
-        if ((WITCHES[e.typeId] && crowd >= 1) || (e.typeId === 'bc:soul_puppeteer' && crowd >= 2)) {
+        if ((WITCHES[e.typeId] && crowd >= 1) || ((e.typeId === 'bc:soul_puppeteer' || e.typeId === 'bc:grimoire_devourer') && crowd >= 2)) {
           st.moveAt = t + 200;
           particle(e.dimension, 'bc:burst_dark', center(e), { scale: 1.2, color: rgb(COLORS[e.typeId]) });
           sound(e.dimension, 'bc.portal', e.location, 1, 1.4);
@@ -694,6 +969,7 @@ system.runInterval(() => {
           });
         }
       }
+      adapt(e, st, def, t);
       // phases
       const hp = e.getComponent('minecraft:health');
       const frac = hp ? hp.currentValue / hp.effectiveMax : 1;
@@ -706,6 +982,14 @@ system.runInterval(() => {
         effect(e, 'strength', 600, 1, false);
         effect(e, 'resistance', 600, 0, false);
         if (e.typeId === 'bc:storm_kraken') safe(() => e.dimension.setWeather(WeatherType.Thunder, 6000));
+        if (e.typeId === 'bc:bandit_king' && target && !st.retreated) {
+          // the King falls back behind fresh bandits and catches his breath
+          st.retreated = true;
+          const away = V.flat(V.sub(e.location, target.location));
+          safe(() => e.applyImpulse({ x: away.x * 1.6, y: 0.5, z: away.z * 1.6 }));
+          effect(e, 'regeneration', 6, 1, false);
+          MOVES.reinforcements(e, target, st);
+        }
       } else if (st.phase === 2 && frac < 0.25) {
         st.phase = 3;
         if (def.roar) anim(e, def.roar);
@@ -726,10 +1010,13 @@ system.runInterval(() => {
       const d = V.dist(target.location, e.location);
       const pool = def.attacks.filter((a) => (a.phase ?? 1) <= st.phase && d >= (a.min ?? 0) && d <= (a.max ?? 99));
       if (!pool.length) return;
-      let r = Math.random() * pool.reduce((s, a) => s + a.w, 0);
+      // foes bunched up around the target? area attacks get much more likely
+      const bunched = targetsAround(e.dimension, target.location, 4, e).length >= 3;
+      const weight = (a) => a.w * (bunched && (AOE.has(a.spec?.t) || ['lay_eggs', 'volley', 'silence'].includes(a.fn)) ? 2.5 : 1);
+      let r = Math.random() * pool.reduce((s, a) => s + weight(a), 0);
       let atk = pool[0];
       for (const a of pool) {
-        r -= a.w;
+        r -= weight(a);
         if (r <= 0) {
           atk = a;
           break;
@@ -777,8 +1064,9 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
 
 // ------------------------------------------------------------------------------- summoning
 const COLORS = { 'bc:archdevil': 'd01a34', 'bc:stone_colossus': 'ff8a2a', 'bc:phantom_galleon': '96ffdc', 'bc:storm_kraken': '9ae8ff', 'bc:fallen_captain': 'b0101a',
-  'bc:frost_witch': '9ae8ff', 'bc:ember_witch': 'ff7a2a', 'bc:bone_dragon': 'e8e0c8', 'bc:soul_puppeteer': '6a40c0' };
-const FLYERS = { 'bc:phantom_galleon': 10, 'bc:bone_dragon': 7, 'bc:frost_witch': 2, 'bc:ember_witch': 2, 'bc:soul_puppeteer': 3 };
+  'bc:frost_witch': '9ae8ff', 'bc:ember_witch': 'ff7a2a', 'bc:bone_dragon': 'e8e0c8', 'bc:soul_puppeteer': '6a40c0',
+  'bc:bandit_king': 'd39a2c', 'bc:grimoire_devourer': 'c040ff', 'bc:hive_queen': 'b8f040' };
+const FLYERS = { 'bc:phantom_galleon': 10, 'bc:bone_dragon': 7, 'bc:frost_witch': 2, 'bc:ember_witch': 2, 'bc:soul_puppeteer': 3, 'bc:grimoire_devourer': 2 };
 
 /** Raise a boss in front of a location with a short ceremony. */
 export function summonBoss(type, dim, loc, players = [], opts = {}) {
@@ -809,7 +1097,7 @@ export function summonBoss(type, dim, loc, players = [], opts = {}) {
     shockwave(dim, loc, 'flame', 8);
     if (def.roar) anim(e, def.roar);
     const roar = { 'bc:storm_kraken': 'bc.leviathan.roar', 'bc:stone_colossus': 'bc.golem.slam', 'bc:bone_dragon': 'mob.enderdragon.growl', 'bc:frost_witch': 'bc.ice.form',
-      'bc:ember_witch': 'bc.chord', 'bc:soul_puppeteer': 'bc.chord' };
+      'bc:ember_witch': 'bc.chord', 'bc:soul_puppeteer': 'bc.chord', 'bc:bandit_king': 'bc.horn', 'bc:grimoire_devourer': 'bc.grimoire.flip', 'bc:hive_queen': 'mob.slime.big' };
     sound(dim, roar[type] ?? 'bc.devil.roar', loc, 3, 0.5);
     if (!opts.quiet) for (const p of dim.getPlayers({ location: loc, maxDistance: 64 })) title(p, def.intro[0], def.intro[1], 60);
     if (type === 'bc:archdevil' || type === 'bc:fallen_captain') for (const p of players) effect(p, 'darkness', 4, 0, false);
@@ -840,6 +1128,9 @@ const ITEMS = {
   'bc:twin_moon_charm': 'twins',
   'bc:bone_totem': 'bc:bone_dragon',
   'bc:cursed_spool': 'bc:soul_puppeteer',
+  'bc:bandit_crown': 'bc:bandit_king',
+  'bc:forbidden_tome': 'bc:grimoire_devourer',
+  'bc:royal_jelly': 'bc:hive_queen',
 };
 
 /** @returns {boolean} true when the item was a boss summon */

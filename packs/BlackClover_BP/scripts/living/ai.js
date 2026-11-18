@@ -37,9 +37,11 @@ const TYPE_ANIM = {
   'bc:raider_captain': 'animation.bc.raider_captain.cast', 'bc:dark_disciple': 'animation.bc.dark_disciple.cast',
   'bc:raider_gunner': 'animation.bc.raider_gunner.shoot', 'bc:tidewatch_marksman': 'animation.bc.tidewatch_marksman.shoot',
   'bc:sea_raider': 'animation.bc.sea_raider.attack', 'bc:hellhound': 'animation.bc.hellhound.bite', 'bc:mana_wraith': 'animation.bc.mana_wraith.cast',
+  'bc:bandit': 'animation.bc.bandit.cast', 'bc:bandit_archer': 'animation.bc.bandit.shoot', 'bc:bandit_thief': 'animation.bc.bandit.cast',
+  'bc:shadow_assassin': 'animation.bc.shadow_assassin.cast', 'bc:cultist': 'animation.bc.cultist.cast', 'bc:hive_drone': 'animation.bc.hive_drone.spit',
 };
 const AIM_ANIM = { 'bc:raider_gunner': 'animation.bc.raider_gunner.aim', 'bc:tidewatch_marksman': 'animation.bc.tidewatch_marksman.aim' };
-const PACK = new Set(['bc:hellhound']);
+const PACK = new Set(['bc:hellhound', 'bc:hive_drone']);
 
 /**
  * @typedef {{ id: string, name: string, spec?: Record<string, any>, cd: number, cast: (target: any, aim: any, pwMul: number) => any,
@@ -69,6 +71,17 @@ let companionInfo = () => undefined;
 /** companions.js tells the brain about focus targets, stances and robe perks */
 export function setCompanionProvider(fn) {
   companionInfo = fn;
+}
+/** @type {(e: any) => ({focus?: string, slot?: any, flee?: boolean, bonus?: (f: any) => number} | undefined)} */
+let bandInfo = () => undefined;
+/** warband.js tells hostile NPCs about their group's focus, their flank slot and whether they are fleeing */
+export function setBandProvider(fn) {
+  bandInfo = fn;
+}
+/** Is this caster's grimoire silenced (the Grimoire Devourer)? */
+export function isSilenced(e) {
+  const v = safe(() => e.getDynamicProperty('bc:silenced_until'));
+  return typeof v === 'number' && v > system.currentTick;
 }
 
 // ------------------------------------------------------------------------------- traits & roles
@@ -107,7 +120,7 @@ function actionsOf(e) {
     const spells = DATA.spells[attr] ?? [];
     // a companion who finished its first trial has an awakened grimoire: every page is open
     const awake = safe(() => e.getDynamicProperty('bc:awake')) === true;
-    kitFor(attr, awake ? Math.max(lvl, 15) : lvl).forEach((spec, i) => {
+    (isSilenced(e) ? [] : kitFor(attr, awake ? Math.max(lvl, 15) : lvl)).forEach((spec, i) => {
       const sp = spells.find((x) => x.spec === spec || JSON.stringify(x.spec) === JSON.stringify(spec));
       out.push({ id: `k${i}`, name: sp?.name ?? spec.t, spec, cd: Math.max(30, Math.round((sp ? sp.cooldown * 20 * 1.5 : CD[spec.t] ?? 100))),
         cast: (t, aim, mul) => castSpec(e, spec, `a:${attr}`, pw * mul, t, { aim }) });
@@ -403,7 +416,17 @@ function think(e, b, t) {
   const info = unitInfo(e.id);
   if (info?.routing) return;
   const cinfo = companionInfo(e);
+  const binfo = cinfo ? undefined : bandInfo(e);
   b.skillNow = cinfo?.skill !== undefined ? Math.max(0.1, Math.min(1, cinfo.skill)) : b.skill;
+  if (binfo?.flee) {
+    // a broken warband: run from the nearest foe
+    const near = foesOf(e, 16)[0];
+    if (near) {
+      const away = V.flat(V.sub(e.location, near.location));
+      safe(() => e.applyImpulse({ x: away.x * 0.32, y: 0, z: away.z * 0.32 }));
+    }
+    return;
+  }
   if (b.dodgeAt <= t) tryDodge(e, b, t);
   // step out of telegraphed blows and spell fields (companions always read them, others by skill)
   if (cinfo || Math.random() < b.skill * 0.6) escape(e, cinfo ? 0.5 : 0.35);
@@ -412,8 +435,15 @@ function think(e, b, t) {
     return;
   }
   const foes = foesOf(e, 24);
-  const target = pickTarget(e, b, foes, info, cinfo);
+  const target = pickTarget(e, b, foes, info, cinfo ?? binfo);
   if (!target) {
+    // called to help a warband further away: march towards its prey
+    const far = binfo?.focus ? world.getEntity(binfo.focus) : undefined;
+    if (far && alive(far) && far.dimension.id === e.dimension.id && V.dist(far.location, e.location) < 48) {
+      const dir = V.flat(V.sub(far.location, e.location));
+      safe(() => e.applyImpulse({ x: dir.x * 0.25, y: 0, z: dir.z * 0.25 }));
+      return;
+    }
     holdPosition(e);
     return;
   }
@@ -435,6 +465,10 @@ function think(e, b, t) {
     return;
   } else if (PACK.has(e.typeId) && (b.cds.get('e0') ?? 0) > t) {
     packCircle(e, b, target);
+  } else if (binfo?.slot && V.dist(binfo.slot, e.location) > 2) {
+    // take the flank slot the warband gave us
+    const dir = V.flat(V.sub(binfo.slot, e.location));
+    safe(() => e.applyImpulse({ x: dir.x * 0.2, y: 0, z: dir.z * 0.2 }));
   }
   if (b.castAt <= t) decide(e, b, target, foes, t, cinfo);
 }

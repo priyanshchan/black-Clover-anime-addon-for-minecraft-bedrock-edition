@@ -1,7 +1,13 @@
 // Random world events: every few minutes something happens near a player - meteor showers, devil gates,
+// bandit raids, devil rituals, hive infestations, assassins, thieves, a Mana Eclipse,
 // pirate landings, faction skirmishes, a travelling merchant, sky treasure, a crimson night, a Rogue Mage ambush,
 // a rival squad's challenge, or a giant boss (the Witch Sisters, the Bone Dragon and the Soul Puppeteer walk at night).
 // Toggle them at a War Table, or trigger one with:  /scriptevent bc:event <name>
+//
+// The EVENT DIRECTOR (v0.7.0): events scale with the player's level and party (more enemies, nastier leaders), never
+// repeat the last two events, come sooner after quiet stretches and later after hard fights, and many of them have an
+// OBJECTIVE (break the raid, stop the ritual, smash the eggs) with a reward - or a consequence. Every event is written
+// to a log you can read in the Handbook.
 import { ItemStack, Player, system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
 import { center } from '../core/combat.js';
@@ -23,6 +29,9 @@ import { joinParty } from './companions.js';
 import { addMana } from '../core/data.js';
 import { hurt, targetsAround } from '../core/combat.js';
 import { notoriety } from '../sea/navy.js';
+import { eclipseMul, state } from '../core/data.js';
+import { layEgg } from './foes.js';
+import { giveCoins } from '../sea/bounty.js';
 
 const night = () => {
   const t = world.getTimeOfDay();
@@ -72,6 +81,82 @@ function waterNear(p, dist) {
   return undefined;
 }
 
+// ------------------------------------------------------------------------------- the director
+/** How tough this player's events should be: 1 (new), 2 (seasoned), 3 (veteran). */
+export function tier(p) {
+  const lv = safe(() => state(p).level) ?? 1;
+  const pals = safe(() => p.dimension.getEntities({ location: p.location, maxDistance: 32, type: 'bc:magic_knight' })
+    .filter((e) => e.getDynamicProperty('bc:owner') === p.id).length) ?? 0;
+  const score = lv + pals * 3;
+  return score >= 16 ? 3 : score >= 7 ? 2 : 1;
+}
+/** Scale an enemy count by tier. */
+function scaled(p, base) {
+  return Math.round(base * [1, 1, 1.4, 1.8][tier(p)]);
+}
+
+/** The event log (newest first), shown in the Handbook. */
+export function eventLog() {
+  const v = world.getDynamicProperty('bc:event_log');
+  try {
+    return typeof v === 'string' ? JSON.parse(v) : [];
+  } catch {
+    return [];
+  }
+}
+function logEvent(label, outcome) {
+  const log = eventLog();
+  log.unshift({ label, outcome, day: world.getDay() });
+  safe(() => world.setDynamicProperty('bc:event_log', JSON.stringify(log.slice(0, 12))));
+}
+function setOutcome(label, outcome) {
+  const log = eventLog();
+  const e = log.find((x) => x.label === label && x.outcome === 'under way');
+  if (e) e.outcome = outcome;
+  safe(() => world.setDynamicProperty('bc:event_log', JSON.stringify(log)));
+}
+
+/** @type {{label: string, ids: string[], until: number, dim: any, at: any, success: () => void, fail: () => void, warn?: (left: number) => void}[]} */
+const objectives = [];
+/** Track an event with an objective: everyone in `ids` must fall before `ticks` run out. */
+function objective(label, ids, ticks, dim, at, success, fail, warn) {
+  // an event's enemies are committed to it: they never break and run (warband.js)
+  for (const id of ids) safe(() => world.getEntity(id)?.addTag('bc_event'));
+  objectives.push({ label, ids, until: system.currentTick + ticks, dim, at, success, fail, warn });
+  logEvent(label, 'under way');
+}
+system.runInterval(() => {
+  const t = system.currentTick;
+  for (let i = objectives.length - 1; i >= 0; i--) {
+    const o = objectives[i];
+    const left = o.ids.filter((id) => {
+      const e = world.getEntity(id);
+      return e && alive(e);
+    });
+    if (!left.length) {
+      objectives.splice(i, 1);
+      setOutcome(o.label, 'success');
+      safe(o.success, 'eventWin');
+    } else if (o.until <= t) {
+      objectives.splice(i, 1);
+      setOutcome(o.label, 'failed');
+      safe(o.fail, 'eventFail');
+    } else if (o.warn) safe(() => o.warn(Math.ceil((o.until - t) / 20)), 'eventWarn');
+  }
+}, 20);
+
+function playersNear(dim, at, r) {
+  return safe(() => dim.getPlayers({ location: at, maxDistance: r })) ?? [];
+}
+function reward(dim, at, coins, stars, xp, why) {
+  for (const q of playersNear(dim, at, 64)) {
+    if (coins) giveCoins(q, coins);
+    if (xp) addXp(q, xp);
+    if (stars) safe(() => addStars(q, stars, why));
+  }
+}
+
+
 // ------------------------------------------------------------------------------- the events
 /** Pick a faction, the stronger ones more often. */
 function weightedFaction(exclude) {
@@ -94,7 +179,7 @@ function battleSpot(p, dist = 20) {
   return { c, dir };
 }
 
-/** @type {Record<string, {w: number, f?: string, ok?: (p: Player) => boolean, run: (p: Player) => boolean | void}>} */
+/** @type {Record<string, {w: number, f?: string, label?: string, ok?: (p: Player) => boolean, run: (p: Player) => boolean | void}>} */
 export const EVENTS = {
   meteor_shower: {
     w: 10,
@@ -152,7 +237,7 @@ export const EVENTS = {
       announce(p, '§c§lPIRATES HAVE LANDED', '§7A raiding party comes ashore', '§c⚓ A raiding party has landed nearby!');
       sound(p.dimension, 'bc.ship.bell', at, 2, 0.8);
       spawnCaptain(p.dimension, at, {});
-      for (let i = 0; i < 4 + Math.floor(Math.random() * 3); i++) safe(() => p.dimension.spawnEntity('bc:sea_raider', V.add(at, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) })));
+      for (let i = 0; i < scaled(p, 4 + Math.floor(Math.random() * 3)); i++) safe(() => p.dimension.spawnEntity('bc:sea_raider', V.add(at, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) })));
     },
   },
   skirmish: {
@@ -355,6 +440,155 @@ export const EVENTS = {
       }
     },
   },
+  bandit_raid: {
+    w: 8,
+    f: 'bandits',
+    label: 'Bandit raid',
+    run(p) {
+      const at = spotNear(p, rand(18, 24));
+      if (!at) return false;
+      const king = tier(p) >= 2 && Math.random() < 0.3;
+      announce(p, '§6§lBANDIT RAID', king ? '§7The Bandit King rides with them!' : '§7Bandits come over the hill', `§6⚔ A bandit raid${king ? ' - led by the Bandit King himself -' : ''} is coming your way!`);
+      sound(p.dimension, 'bc.horn', at, 2, 0.7);
+      const ids = [];
+      const band = [...Array(scaled(p, 3)).fill('bc:bandit'), ...Array(scaled(p, 1)).fill('bc:bandit_archer'), 'bc:bandit_thief'];
+      for (const type of band) {
+        const e = safe(() => p.dimension.spawnEntity(type, V.add(at, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) })));
+        if (e) ids.push(e.id);
+      }
+      if (king) timer(40, () => summonBoss('bc:bandit_king', p.dimension, at, [p]));
+      const coins = 30 + ids.length * 8;
+      objective('Bandit raid', ids, 20 * 240, p.dimension, at,
+        () => {
+          for (const q of playersNear(p.dimension, at, 64)) title(q, '§6§lRAID REPELLED', `§7The bandits are beaten §6+${coins} doubloons`, 50);
+          reward(p.dimension, at, coins, 1, 80, 'repelled a bandit raid');
+        },
+        () => {
+          for (const q of playersNear(p.dimension, at, 64)) safe(() => q.sendMessage('§6The bandits withdraw with whatever they could carry.'));
+        });
+      return true;
+    },
+  },
+  devil_ritual: {
+    w: 5,
+    f: 'devils',
+    label: 'Devil ritual',
+    ok: () => night(),
+    run(p) {
+      const at = spotNear(p, rand(20, 26));
+      if (!at) return false;
+      announce(p, '§4§lA DEVIL RITUAL', '§7Cultists chant in the dark - stop them!', `§4☠ Cultists are performing a ritual near §f${Math.floor(at.x)}, ${Math.floor(at.z)}§4. Kill them before it completes!`);
+      const ids = [];
+      for (let i = 0; i < scaled(p, 3); i++) {
+        const a = (i / scaled(p, 3)) * Math.PI * 2;
+        const e = safe(() => p.dimension.spawnEntity('bc:cultist', V.add(at, { x: Math.cos(a) * 3, y: 0.5, z: Math.sin(a) * 3 })));
+        if (e) ids.push(e.id);
+      }
+      for (let i = 0; i < 2; i++) safe(() => p.dimension.spawnEntity('bc:imp', V.add(at, { x: rand(-4, 4), y: 1, z: rand(-4, 4) })));
+      const ritual = system.runInterval(() => {
+        particle(p.dimension, 'bc:magic_circle_dark', V.add(at, { x: 0, y: 0.1, z: 0 }), { size: 5, life: 1.2, color: rgb('8a1010') });
+        particle(p.dimension, 'bc:pillar', at, { color: rgb('8a1010'), scale: 0.8 });
+      }, 20);
+      objective('Devil ritual', ids, 20 * 90, p.dimension, at,
+        () => {
+          system.clearRun(ritual);
+          for (const q of playersNear(p.dimension, at, 64)) title(q, '§a§lRITUAL STOPPED', '§7The circle fades', 50);
+          reward(p.dimension, at, 0, 1, 150, 'stopped a devil ritual');
+          safe(() => p.dimension.spawnItem(new ItemStack('bc:mana_crystal', 4), at));
+        },
+        () => {
+          system.clearRun(ritual);
+          for (const q of playersNear(p.dimension, at, 64)) title(q, '§4§lTHE RITUAL IS COMPLETE', tier(p) >= 2 ? '§7Something hungry wakes up' : '§7A gate tears open', 60);
+          if (tier(p) >= 2) summonBoss('bc:grimoire_devourer', p.dimension, at, [p]);
+          else safe(() => p.dimension.spawnEntity('bc:devil_gate', V.add(at, { x: 0, y: 0.5, z: 0 })));
+        },
+        (left) => {
+          if (left % 15 === 0 || left <= 10) for (const q of playersNear(p.dimension, at, 48)) safe(() => q.onScreenDisplay.setActionBar(`§4Ritual: §f${left}s§4 left - kill the cultists!`));
+        });
+      return true;
+    },
+  },
+  hive_infestation: {
+    w: 5,
+    label: 'Hive infestation',
+    run(p) {
+      const at = spotNear(p, rand(18, 24));
+      if (!at) return false;
+      announce(p, '§e§lHIVE INFESTATION', '§7Eggs pulse in the grass - smash them!', '§e☣ A hive has taken root nearby. Destroy every egg before they all hatch!');
+      const ids = [];
+      for (let i = 0; i < scaled(p, 5); i++) {
+        const egg = layEgg(p.dimension, V.add(at, { x: rand(-5, 5), y: 0.2, z: rand(-5, 5) }), 20 * (60 + Math.floor(Math.random() * 40)));
+        if (egg) ids.push(egg.id);
+      }
+      for (let i = 0; i < scaled(p, 3); i++) safe(() => p.dimension.spawnEntity('bc:hive_drone', V.add(at, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) })));
+      objective('Hive infestation', ids, 20 * 120, p.dimension, at,
+        () => {
+          for (const q of playersNear(p.dimension, at, 64)) title(q, '§a§lHIVE DESTROYED', '§7Not a single egg survived', 50);
+          reward(p.dimension, at, 40, 1, 120, 'destroyed a hive');
+        },
+        () => {
+          if (tier(p) >= 2) {
+            for (const q of playersNear(p.dimension, at, 64)) title(q, '§e§lTHE QUEEN AWAKENS', '§7The hive protects its mother', 60);
+            summonBoss('bc:hive_queen', p.dimension, at, [p]);
+          }
+        });
+      return true;
+    },
+  },
+  assassins: {
+    w: 3,
+    label: 'Assassins',
+    ok: (p) => night() && ((safe(() => p.getDynamicProperty('bc:stars')) ?? 0) >= 5 || (safe(() => state(p).level) ?? 1) >= 8),
+    run(p) {
+      const at = spotNear(p, rand(18, 22));
+      if (!at) return false;
+      safe(() => p.sendMessage('§5You feel watched... §7(Shadow Assassins hunt you tonight. Look for faint shadows.)'));
+      sound(p.dimension, 'bc.portal', p.location, 0.4, 0.5);
+      const ids = [];
+      for (let i = 0; i < Math.min(4, scaled(p, 2)); i++) {
+        const e = safe(() => p.dimension.spawnEntity('bc:shadow_assassin', V.add(at, { x: rand(-4, 4), y: 0.5, z: rand(-4, 4) })));
+        if (e) {
+          ids.push(e.id);
+          safe(() => e.addEffect('invisibility', 200, { amplifier: 0, showParticles: false }));
+        }
+      }
+      objective('Assassins', ids, 20 * 300, p.dimension, at, () => reward(p.dimension, at, 25, 1, 100, 'survived the assassins'), () => {});
+      return true;
+    },
+  },
+  thief: {
+    w: 4,
+    label: 'A thief',
+    ok: (p) => {
+      const inv = p.getComponent('minecraft:inventory')?.container;
+      let n = 0;
+      for (let i = 0; inv && i < inv.size; i++) if (inv.getItem(i)?.typeId === 'bc:doubloon') n += inv.getItem(i).amount;
+      return n >= 20;
+    },
+    run(p) {
+      const behind = V.add(p.location, V.mul(V.flat(p.getViewDirection()), -9));
+      const top = safe(() => p.dimension.getTopmostBlock({ x: behind.x, z: behind.z }));
+      if (top && Math.abs(top.location.y + 1 - p.location.y) < 5) behind.y = top.location.y + 1;
+      const e = safe(() => p.dimension.spawnEntity('bc:bandit_thief', behind));
+      if (!e) return false;
+      safe(() => e.addEffect('invisibility', 160, { amplifier: 0, showParticles: false }));
+      safe(() => p.sendMessage('§6Watch your purse... §7(a thief is close)'));
+      logEvent('A thief', 'happened');
+      return true;
+    },
+  },
+  mana_eclipse: {
+    w: 4,
+    label: 'Mana Eclipse',
+    run(p) {
+      const until = system.currentTick + 20 * 180;
+      world.setDynamicProperty('bc:eclipse_until', until);
+      for (const q of world.getAllPlayers()) title(q, '§d§lMANA ECLIPSE', '§7Spells strike 25% harder and magic XP flows faster - but monsters grow bold', 70);
+      safe(() => p.sendMessage('§d☾ A Mana Eclipse darkens the sky for 3 minutes: +25% spell power, x1.5 magic XP, stronger monsters.'));
+      logEvent('Mana Eclipse', 'happened');
+      return true;
+    },
+  },
   rival_squad: {
     w: 5,
     ok: (p) => !night() && partySize(p) > 0,
@@ -460,9 +694,10 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
   }
 }, 'gateDie'));
 
+const recent = [];
 /** Run a named event (or a random one) at a player. */
 export function runEvent(p, name) {
-  const pool = name ? [[name, EVENTS[name]]] : Object.entries(EVENTS).filter(([, e]) => !e.ok || e.ok(p));
+  const pool = name ? [[name, EVENTS[name]]] : Object.entries(EVENTS).filter(([k, e]) => !recent.includes(k) && (!e.ok || e.ok(p)));
   if (!pool.length || !pool[0][1]) return false;
   const weight = (e) => e.w * (e.f && POWERS.includes(e.f) ? powerMul(e.f) : 1);
   let r = Math.random() * pool.reduce((s, [, e]) => s + weight(e), 0);
@@ -474,8 +709,40 @@ export function runEvent(p, name) {
       break;
     }
   }
-  return safe(() => chosen[1].run(p), `event:${chosen[0]}`) !== false;
+  const ok = safe(() => chosen[1].run(p), `event:${chosen[0]}`) !== false;
+  if (ok) {
+    recent.unshift(chosen[0]);
+    recent.length = Math.min(recent.length, 2);
+    // events without an objective are logged as they happen
+    if (!chosen[1].label) logEvent(chosen[0].replace(/_/g, ' ').replace(/^\w/, (c) => c.toUpperCase()), 'happened');
+  }
+  return ok;
 }
+
+// pacing: hard fights push the next event back, quiet stretches bring it forward
+const fights = new Map();
+world.afterEvents.entityDie.subscribe((ev) => {
+  const k = ev.damageSource.damagingEntity;
+  const p = k instanceof Player ? k : undefined;
+  if (p) fights.set(p.id, (fights.get(p.id) ?? 0) + 1);
+});
+function pace() {
+  let kills = 0;
+  for (const v of fights.values()) kills += v;
+  fights.clear();
+  return kills >= 25 ? 1.5 : kills <= 2 ? 0.7 : 1;
+}
+
+// the Mana Eclipse makes monsters near players bolder
+system.runInterval(() => {
+  if (eclipseMul() === 1) return;
+  for (const p of world.getAllPlayers()) {
+    particle(p.dimension, 'bc:burst_spark', V.add(p.location, { x: rand(-6, 6), y: rand(3, 6), z: rand(-6, 6) }), { color: rgb('c060ff'), scale: 0.5 });
+    for (const m of safe(() => p.dimension.getEntities({ location: p.location, maxDistance: 32, families: ['monster'] })) ?? []) {
+      safe(() => m.addEffect('strength', 120, { amplifier: 0, showParticles: false }));
+    }
+  }
+}, 100);
 
 let nextAt = 20 * 60 * 3;
 system.runInterval(() => {
@@ -484,7 +751,7 @@ system.runInterval(() => {
   const players = world.getAllPlayers().filter((p) => p.dimension.id === 'minecraft:overworld');
   if (!players.length) return;
   const p = pick(players);
-  if (runEvent(p)) nextAt = t + Math.round(rand(20 * 60 * 4, 20 * 60 * 7));
+  if (runEvent(p)) nextAt = t + Math.round(rand(20 * 60 * 4, 20 * 60 * 7) * pace());
   else nextAt = t + 20 * 30;
 }, 100);
 

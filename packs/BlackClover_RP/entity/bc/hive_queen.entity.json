@@ -1,0 +1,43 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:hive_queen",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/hive_queen"
+      },
+      "geometry": {
+        "default": "geometry.bc.hive_queen"
+      },
+      "animations": {
+        "idle": "animation.bc.hive_queen.idle",
+        "walk": "animation.bc.hive_queen.walk",
+        "look_at_target": "animation.bc.hive_queen.look_at_target",
+        "spit": "animation.bc.hive_queen.spit",
+        "screech": "animation.bc.hive_queen.screech",
+        "lay": "animation.bc.hive_queen.lay",
+        "burrow": "animation.bc.hive_queen.burrow",
+        "emerge": "animation.bc.hive_queen.emerge"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#4a3410",
+        "overlay_color": "#f0c040"
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:grimoire_devourer",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/grimoire_devourer"
+      },
+      "geometry": {
+        "default": "geometry.bc.grimoire_devourer"
+      },
+      "animations": {
+        "float": "animation.bc.grimoire_devourer.float",
+        "look_at_target": "animation.bc.grimoire_devourer.look_at_target",
+        "chomp": "animation.bc.grimoire_devourer.chomp",
+        "cast": "animation.bc.grimoire_devourer.cast",
+        "roar": "animation.bc.grimoire_devourer.roar",
+        "aura": "animation.bc.mob.aura"
+      },
+      "scripts": {
+        "animate": [
+          "float",
+          "look_at_target",
+          "aura"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:devil_aura"
+      },
+      "spawn_egg": {
+        "base_color": "#200a18",
+        "overlay_color": "#e02020"
+      }
+    }
+  }
+}

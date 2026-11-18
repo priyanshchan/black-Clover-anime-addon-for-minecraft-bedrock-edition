@@ -1,6 +1,6 @@
 // Living world entry point: spell engine, tactical AI, knights, battles, world simulation, bosses, events, merchant, War Table,
 // the v0.3.0 systems (brooms, missions, amulets, Rogue Mages, Magic Knight camps) and the v0.5.0 companion update
-// (squad.js, camp.js, roster.js, rivals.js, puppeteer.js).
+// (squad.js, camp.js, roster.js, rivals.js, puppeteer.js), and the v0.7.0 warbands (warband.js) and new foes (foes.js).
 import { safe } from '../core/util.js';
 import './engine.js';
 import './passives.js';
@@ -20,6 +20,8 @@ import './squad.js';
 import './camp.js';
 import './roster.js';
 import './rivals.js';
+import './warband.js';
+import './foes.js';
 import { useCloverLeaf } from './squad.js';
 import { placeDummy } from './roster.js';
 import { useBroom } from './brooms.js';

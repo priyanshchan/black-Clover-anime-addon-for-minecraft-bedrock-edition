@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "Black Clover: Grimoire Awakening §7(Behavior)",
-    "description": "Early Access v0.6.0 - companions with a grimoire and an Abyss Fruit, a new move for every grimoire and fruit (215 spells, 120 fruit powers), a squad AI, 36 grimoires, 30 fruits, brooms, missions and giant bosses. Unofficial fan addon.",
+    "description": "Early Access v0.7.0 - bandits, assassins, cultists and the Hive with warband tactics, adaptive bosses (the Bandit King, the Grimoire Devourer, the Hive Queen), a smarter event director, companions with a grimoire and a fruit, 215 spells and 120 fruit powers. Unofficial fan addon.",
     "uuid": "e31c2aa6-e171-5e62-8d60-e4fb08605627",
     "version": [
       0,
-      6,
+      7,
       0
     ],
     "min_engine_version": [
@@ -21,7 +21,7 @@
       "uuid": "7a204969-4e4b-52ad-86a4-9560f8777441",
       "version": [
         0,
-        6,
+        7,
         0
       ]
     },
@@ -31,7 +31,7 @@
       "uuid": "0f990b2f-059e-5390-9de6-781d9993b2f6",
       "version": [
         0,
-        6,
+        7,
         0
       ],
       "entry": "scripts/main.js"
@@ -42,7 +42,7 @@
       "uuid": "fb6916dc-6965-5317-97d9-c2f0276ce444",
       "version": [
         0,
-        6,
+        7,
         0
       ]
     },

@@ -22,6 +22,9 @@ const FACTION = {
   'bc:raider_gunner': 'pirate', 'bc:tidewatch_marksman': 'navy', 'bc:hellhound': 'devil', 'bc:mana_wraith': 'devil', 'bc:fallen_captain': 'devil',
   'bc:rogue_mage': 'rogue', 'bc:frost_witch': 'witch', 'bc:ember_witch': 'witch', 'bc:bone_dragon': 'undead',
   'bc:soul_puppeteer': 'devil', 'bc:puppet': 'devil',
+  'bc:bandit': 'bandit', 'bc:bandit_archer': 'bandit', 'bc:bandit_thief': 'bandit', 'bc:bandit_king': 'bandit',
+  'bc:shadow_assassin': 'rogue', 'bc:cultist': 'devil', 'bc:grimoire_devourer': 'devil',
+  'bc:hive_drone': 'hive', 'bc:hive_egg': 'hive', 'bc:hive_queen': 'hive',
 };
 /** NPCs that only harm a player who attacked them first. */
 const PEACEFUL = new Set(['bc:magic_knight', 'bc:construct', 'bc:magic_merchant', 'bc:shade_soldier', 'bc:earth_golem', 'bc:mirror_clone']);
@@ -54,11 +57,15 @@ const HUNTS = {
   clover: ['monster'],
   devil: ['bc_knight', 'bc_navy'],
   pirate: ['bc_knight', 'bc_navy'],
-  navy: ['bc_pirate', 'bc_devil', 'bc_disciple', 'bc_rogue'],
+  navy: ['bc_pirate', 'bc_devil', 'bc_disciple', 'bc_rogue', 'bc_bandit'],
   rogue: ['bc_knight', 'bc_navy'],
   witch: ['bc_knight', 'bc_navy'],
   undead: ['bc_knight', 'bc_navy'],
+  bandit: ['bc_knight', 'bc_navy'],
+  hive: ['bc_knight', 'bc_navy'],
 };
+/** Factions that are hostile to players (they form warbands). */
+export const HOSTILE_SIDES = new Set(['devil', 'pirate', 'rogue', 'witch', 'undead', 'bandit', 'hive']);
 export const TEAMS = ['a', 'b', 'c'];
 
 // ---------------------------------------------------------------------------- hooks

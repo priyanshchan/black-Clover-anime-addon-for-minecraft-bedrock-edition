@@ -1,0 +1,17 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.hive_egg.pulse": {
+      "loop": true,
+      "bones": {
+        "egg": {
+          "scale": [
+            "1.0 + math.sin(q.life_time * 240.0) * 0.06",
+            "1.0 + math.sin(q.life_time * 240.0 + 90.0) * 0.08",
+            "1.0 + math.sin(q.life_time * 240.0) * 0.06"
+          ]
+        }
+      }
+    }
+  }
+}

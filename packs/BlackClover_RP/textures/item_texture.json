@@ -26,6 +26,9 @@
     "bc_archdevil_sigil": {
       "textures": "textures/items/bc/archdevil_sigil"
     },
+    "bc_bandit_crown": {
+      "textures": "textures/items/bc/bandit_crown"
+    },
     "bc_black_bull_robe": {
       "textures": "textures/items/bc/black_bull_robe"
     },
@@ -94,6 +97,9 @@
     },
     "bc_flintlock": {
       "textures": "textures/items/bc/flintlock"
+    },
+    "bc_forbidden_tome": {
+      "textures": "textures/items/bc/forbidden_tome"
     },
     "bc_fruit_acid": {
       "textures": "textures/items/bc/fruit_acid"
@@ -424,6 +430,9 @@
     },
     "bc_purple_orca_robe": {
       "textures": "textures/items/bc/purple_orca_robe"
+    },
+    "bc_royal_jelly": {
+      "textures": "textures/items/bc/royal_jelly"
     },
     "bc_ship_kit": {
       "textures": "textures/items/bc/ship_kit"

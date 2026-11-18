@@ -1,0 +1,37 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:hive_drone",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/hive_drone"
+      },
+      "geometry": {
+        "default": "geometry.bc.hive_drone"
+      },
+      "animations": {
+        "idle": "animation.bc.hive_drone.idle",
+        "walk": "animation.bc.hive_drone.walk",
+        "spit": "animation.bc.hive_drone.spit"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          }
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#4a3410",
+        "overlay_color": "#b8f040"
+      }
+    }
+  }
+}

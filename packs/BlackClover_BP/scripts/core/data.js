@@ -125,8 +125,14 @@ export function xpToNext(level) {
   return 30 + level * 22;
 }
 
+/** The Mana Eclipse world event: +25% spell power for everyone while it lasts. */
+export function eclipseMul() {
+  const v = world.getDynamicProperty('bc:eclipse_until');
+  return typeof v === 'number' && v > system.currentTick ? 1.25 : 1;
+}
+
 export function spellPower(p, s = state(p)) {
-  let m = 1 + (s.level - 1) * 0.05;
+  let m = (1 + (s.level - 1) * 0.05) * eclipseMul();
   const r = robe(p);
   if (r === 'golden_dawn_robe') m *= 1.1;
   if (r === 'black_bull_robe') {

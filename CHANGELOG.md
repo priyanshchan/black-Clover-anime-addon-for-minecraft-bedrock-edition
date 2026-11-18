@@ -1,5 +1,38 @@
 # Changelog
 
+## v0.7.0 – Early Access (2026-11-18)
+
+**Enemies that fight together, bosses that adapt, and events that matter.** New enemies and three new bosses, warband tactics for every hostile spellcaster, smarter bosses, and a reworked event director with six new events.
+
+### New enemies
+* **The Bandit Brotherhood** - Bandits (cleavers, lunges), Bandit Archers (keep their distance and loose volleys) and **Bandit Thieves**: a thief's blow snatches your doubloons (or emeralds, diamonds, gold, mana crystals) and it runs off invisible. Catch it to get everything back; let it get 40 blocks away and it's gone. They roam plains, savannas, deserts and badlands, and form a War Table army.
+* **Shadow Assassins** - invisible stalkers (a faint shadow gives them away) that blink behind their prey and backstab, then vanish in a smoke bomb when hurt.
+* **Cultists** - devil summoners who chant rituals to call imps and heal their allies; the devils around them protect them.
+* **The Hive** - Hive Drones that hunt in packs, and Hive Eggs that hatch into drones unless you smash them first. A War Table army too.
+
+### New bosses
+* **The Bandit King** - twin-sabre combos, a whirlwind, thrown knives, smoke bombs, archer volleys and reinforcements; at half health he falls back behind fresh bandits. Desperation: **Last Stand**. Summon him with a **Bandit's Crown**.
+* **The Grimoire Devourer** - a fanged, floating grimoire that **swallows the spells cast near it and casts them back at you**, and roars to **silence grimoires** and seal fruits. Desperation: **Final Chapter**. Summon it with a **Forbidden Tome**.
+* **The Hive Queen** - acid sprays and rain, a screech, **eggs** that hatch into drones, and **burrowing** ambushes. Desperation: **Swarm Mother**. Summon her with **Royal Jelly**.
+
+### Smarter enemies: warbands
+* Hostile spellcasters of a faction now fight as a **warband**: they share a focus (the most vulnerable foe - hurt, alone, or a healer; whoever attacks their Cultist), **surround** it (fighters on flank slots, casters and archers in an arc behind), **call for help** from up to 32 blocks away, and **break and run** when they have lost more than half their number and are outnumbered.
+* Enemies read danger zones too (by skill), and rallied enemies march on a distant target.
+
+### Smarter bosses
+* **Adapting:** every boss watches how it's being hurt. All spells? A spell ward soaks 40% of magic for 10 s. All blades? Iron hide: Resistance II, and blows bounce back. Mix it up!
+* **Healers first:** bosses treat support companions as 30% more threatening.
+* **No clumping:** when three or more of you bunch up, bosses favour area attacks.
+
+### Random events
+* **The event director:** events now **scale** with your level and party (more enemies; the nastiest outcomes need tier 2), never repeat the last two events, come sooner after quiet stretches and later after hard fights, and are written to a **log** in the Handbook (Recent events).
+* **Objectives:** many events now have a goal, a reward - and a consequence.
+* **Six new events:** **Bandit raid** (maybe led by the Bandit King), **Devil ritual** (stop the cultists in 90 seconds or the Grimoire Devourer wakes), **Hive infestation** (smash the eggs or the Hive Queen emerges), **Assassins** (for renowned knights at night), **A thief** (when your purse is full), and the **Mana Eclipse** (+25% spell power for everyone, ×1.5 magic XP, bolder monsters).
+
+### Other changes
+* Three new summoning items with recipes: Bandit's Crown, Forbidden Tome, Royal Jelly.
+* New animations: bandit cast, shoot and taunt; the Bandit King's slash, whirlwind, command and roar; assassin backstab; cultist ritual; drone spit; the Queen's spit, screech, lay, burrow and emerge; the Devourer's chomp, cast and roar; pulsing eggs.
+
 ## v0.6.0 – Early Access (2026-11-18)
 
 **A grimoire and a fruit.** Every companion now fights with its own grimoire **and** an Abyss Fruit, and every grimoire and every fruit gains a new move: 66 new moves in all.

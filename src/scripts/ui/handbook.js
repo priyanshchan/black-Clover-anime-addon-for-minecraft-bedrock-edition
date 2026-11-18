@@ -10,6 +10,7 @@ import { rankTitle, stars } from '../core/ranks.js';
 import { notoriety, notorietyTitle } from '../sea/navy.js';
 import { kingdomPage } from '../living/worldsim.js';
 import { missionSummary } from '../living/missions.js';
+import { eventLog } from '../living/events.js';
 
 const G = DATA.glyphs;
 
@@ -61,6 +62,8 @@ export async function openHandbook(p) {
   actions.push(() => gearPage(p));
   form.button('§lState of the Kingdom\n§r§8Faction power and world news');
   actions.push(() => kingdomPage(p));
+  form.button('§lRecent events\n§r§8Raids, rituals, hives and more');
+  actions.push(() => eventPage(p));
   form.button('§lHow to play\n§r§8Altar, mana, robes, the Devil');
   actions.push(() => guide(p));
   sound(p.dimension, 'bc.grimoire.flip', p.location, 0.8, 1);
@@ -227,9 +230,13 @@ async function livingPage(p) {
     '§l§3The Phantom Galleon§r\n§7Ring a §3Phantom Galleon Bell§7 (phantom membranes, doubloons, a bell). A ghost ship sails the sky, fires broadsides and drops its drowned crew.',
     '§l§bThe Witch Sisters§r\n§7Raise a §bTwin Moon Charm§7 (packed ice, magma blocks, mana crystals, an amethyst block) or meet them on a dark night. The Frost Witch and the Ember Witch blink away from melee and weave §fTwin Spells§7 - an ice prison, then falling fire. Kill one and the other goes berserk: §bAbsolute Winter§7 or §6Inferno Requiem§7.',
     '§l§fThe Bone Dragon§r\n§7Plant a §fBone Totem§7 (bone blocks, a wither skeleton skull, a mana crystal) or look up on a dark night. It circles overhead, breathes withering bone-fire, dives, sweeps its tail, calls skeletons, and ends with §fDeath\'s Wingbeat§7.',
+    '§l§6The Bandit King§r\n§7Raise a §6Bandit\'s Crown§7 (gold, an emerald, a doubloon) or meet him leading a raid. Twin-sabre combos, a whirlwind, thrown knives, smoke bombs, archer volleys and reinforcements; at half health he falls back behind fresh bandits. Desperation: §6Last Stand§7.',
+    '§l§5The Grimoire Devourer§r\n§7Open a §5Forbidden Tome§7 (ancient pages, devil hearts, a book) - or fail to stop a devil ritual. It §fswallows the spells cast near it and casts them back at you§7, and its roar §fsilences grimoires§7 and seals fruits. Desperation: §5Final Chapter§7.',
+    '§l§eThe Hive Queen§r\n§7Offer §eRoyal Jelly§7 (honeycomb, honey, a mana crystal) - or let a hive infestation hatch. Acid sprays, screeches, burrowing ambushes and §feggs that hatch into drones§7. Desperation: §eSwarm Mother§7.',
+    '§l§7Bosses adapt§r\n§7Every boss watches how you hurt it: all spells and it raises a spell ward; all blades and its hide turns to iron. It goes after healers first and punishes squads that bunch up.',
     '§l§5The Soul Puppeteer§r\n§7Weave a §5Cursed Spool§7 (string, devil hearts, phantom membranes, an ender pearl) or hear its music box on a dark night. It lashes with strings, sends marionettes, and §ftakes control of your companions§7 - strike them a few times or have a Warden Cleanse them to cut the strings. Desperation: §5Grand Finale§7.',
     '§l§9The Storm Kraken§r\n§7Throw a §9Storm Kraken Lure§7 (Leviathan scales, lightning rods, a heart of the sea) into deep water. Lightning, whirlpools and tentacle slams.',
-    '§l§eWorld events§r\n§7Every few minutes something happens near a player: mana meteor showers (catch the crystals), Devil Gates (break them!), pirate landings, faction skirmishes, Rogue Mage ambushes, rival squad challenges, Magic Knight patrols, the Travelling Merchant, sky treasure, a Crimson Night, or a giant boss rising. Toggle events at a War Table.',
+    '§l§eWorld events§r\n§7Every few minutes something happens near a player: mana meteor showers (catch the crystals), Devil Gates (break them!), pirate landings, faction skirmishes, Rogue Mage ambushes, bandit raids, devil rituals, hive infestations, assassins, thieves, the Mana Eclipse, rival squad challenges, Magic Knight patrols, the Travelling Merchant, sky treasure, a Crimson Night, or a giant boss rising. Toggle events at a War Table.',
   ].join('\n\n');
   await new MessageFormData().title('Bosses & world events').body(body).button1('Back').button2('Close').show(p).then((r) => {
     if (r.selection === 0) return openHandbook(p);
@@ -244,11 +251,25 @@ async function warPage(p) {
     '§l§6The War Table§r\n§7Craft one (map, iron sword, feather, planks, sticks) and use it: pick two or three armies - ' + Object.values(DATA.factions).map((f) => `${f.mc}${f.name}§7`).join(', ') + ' - their tactics and size, or stage a knight duel, and bet doubloons on the winner. Watch with the cinematic camera.',
     '§l§eSkirmish Horn§r\n§7Blow it (gold and a bone) and two random armies clash in front of you.',
     '§l§7Factions in the wild§r\n§7Knights fight devils and pirates; the Tidewatch hunt pirates and devils; pirates and devils fight knights and the navy. §5Rogue Mages§7 - outlaws with real grimoires and levels 2-8 - prowl at night and attack players and knights alike.',
+    '§l§6Warbands§r\n§7Enemies fight as groups: they pick the weakest or loneliest foe (and healers), surround it, call their kind for help, and break and run when half of them have fallen. §6Bandits§7 (brawlers, archers, thieves who steal your doubloons and run), §5Shadow Assassins§7 (invisible stalkers that backstab), §4Cultists§7 (summoners the devils protect) and the §eHive§7 (drones and eggs).',
   ].join('\n\n');
   await new MessageFormData().title('Knights & the War Table').body(body).button1('Back').button2('Close').show(p).then((r) => {
     if (r.selection === 0) return openHandbook(p);
     return undefined;
   });
+}
+
+async function eventPage(p) {
+  const log = eventLog();
+  const col = { success: '§a', failed: '§c', 'under way': '§e', happened: '§7' };
+  const body = log.length
+    ? log.map((e) => `§8Day ${e.day} §f${e.label}§8 - ${col[e.outcome] ?? '§7'}${e.outcome}`).join('\n')
+    : '§7Nothing has happened yet. Events come every few minutes - they grow tougher as you and your party do.';
+  await new MessageFormData().title('Recent events').body(`${body}\n\n§8Events with an objective (raids, rituals, hives) reward you when you win - and have consequences when you don't.`)
+    .button1('Back').button2('Close').show(p).then((r) => {
+      if (r.selection === 0) return openHandbook(p);
+      return undefined;
+    });
 }
 
 async function missionPage(p) {
