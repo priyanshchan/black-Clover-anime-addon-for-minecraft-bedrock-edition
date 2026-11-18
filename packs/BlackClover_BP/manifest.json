@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "Black Clover: Grimoire Awakening §7(Behavior)",
-    "description": "Early Access v0.3.0 - 32 grimoires with awakened spells, 30 Abyss Fruits, magic brooms, daily missions, amulets, Rogue Mages, the Witch Sisters, the Bone Dragon, a companion party with smart AI, faction battles and world events. Unofficial fan addon.",
+    "description": "Early Access v0.5.0 - the companion update: personalities, specialisations, party tactics, revives, expeditions and a smarter squad AI; 36 grimoires, 30 Abyss Fruits, brooms, missions, the Soul Puppeteer and more. Unofficial fan addon.",
     "uuid": "e31c2aa6-e171-5e62-8d60-e4fb08605627",
     "version": [
       0,
-      3,
+      5,
       0
     ],
     "min_engine_version": [
@@ -21,7 +21,7 @@
       "uuid": "7a204969-4e4b-52ad-86a4-9560f8777441",
       "version": [
         0,
-        3,
+        5,
         0
       ]
     },
@@ -31,7 +31,7 @@
       "uuid": "0f990b2f-059e-5390-9de6-781d9993b2f6",
       "version": [
         0,
-        3,
+        5,
         0
       ],
       "entry": "scripts/main.js"
@@ -42,7 +42,7 @@
       "uuid": "fb6916dc-6965-5317-97d9-c2f0276ce444",
       "version": [
         0,
-        3,
+        5,
         0
       ]
     },

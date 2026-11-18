@@ -19,6 +19,7 @@ from bc import out  # noqa: E402
 from bc.data import (ALTAR_WEIGHTS, AMULETS, ATTR_ORDER, ATTRIBUTES, AWAKENED, BOND, BROOMS, COMPANION_HP, COMPANION_XP,  # noqa: E402
                      ENEMY_KITS, FACTIONS, FRUIT_ORDER, FRUITS, KNIGHT_ROBES, MERCHANT, MISSION_REWARDS, MISSIONS, NOTORIETY, NPC_KITS,
                      PARTY_MAX, RANKS, ROBE_PERKS, ROBES, SHOP, SPELLS, SWORDS, WILL_MAX_LEVEL)
+from bc.data import EXPEDITIONS, MOOD, PERSONALITIES, RESERVE_MAX, SPEC_LEVEL, SPECS, TACTICS_PARTY, TRIALS  # noqa: E402
 from bc.packgen import VERSION  # noqa: E402
 
 ROOT = out.ROOT
@@ -349,6 +350,8 @@ ORIGIN = {
     'bc:raider_gunner': 'battles (Sea Raiders army)',
     'bc:hellhound': 'the Fallen Captain, wounded-knight events, battles (Devil Host)',
     'bc:rogue_mage': 'rogue ambushes, battles (Rogue Mages army)',
+    'bc:puppet': 'the Soul Puppeteer',
+    'bc:training_dummy': 'placed with a Training Dummy item',
 }
 
 
@@ -381,6 +384,7 @@ BOSSES = [
     ('bc:frost_witch', 'Twin Moon Charm (both sisters) or the "witch_sisters" night event', 'One of the **Witch Sisters**. Flies. **Ice shards** (3, slowness), **ice prisons**, a telegraphed **frost nova** up close (slowness), and from phase 2 a **hail storm**. **Blinks away** from anyone in melee. With her sister alive she weaves **Twin Spells**: her ice prison, then the Ember Witch\'s falling fire on the same spot. Desperation: **Absolute Winter** - a freezing field, prisons on up to six foes, then a 24-shard hail.'),
     ('bc:ember_witch', 'Twin Moon Charm (both sisters) or the "witch_sisters" night event', 'The other **Witch Sister**. Flies. **Fire shards** (3, burning), **burning ground** where you stand, a telegraphed **six-way flame wave**, and from phase 2 **fire meteors**. Blinks away from melee and joins the **Twin Spells**. Desperation: **Inferno Requiem** - a 12-meteor storm, then a twelve-way wave of fire. **When one sister dies, the other screams, gains strength and speed and goes straight to her desperation move.**'),
     ('bc:bone_dragon', 'Bone Totem (or the "bone_dragon" night event)', 'Circles ~9 blocks above its prey. **Bone-fire breath** (2-3 beams, wither), a telegraphed **wing gust** that blows everyone away, **bone rain**, a **dive** onto a warning circle (16 / 20 dmg), a **tail sweep** up close, and from phase 2 it calls **skeletons** (wither skeletons in phase 3). Desperation: **Death\'s Wingbeat** - it rises, a 12-block circle appears, then a crushing, withering blast and more skeletons.'),
+    ('bc:soul_puppeteer', 'Cursed Spool (or the "puppet_show" night event)', 'Floats ~4 blocks up and blinks away when crowded. **String lash** (a 22-block beam, slowness), **falling needles** (5 strikes), **marionettes** (3, then 5; up to 8), a telegraphed **dark nova** in phase 2, and **the strings**: it takes control of one companion (two from phase 2) for 10 s - they turn their magic on you and the squad. Strike them a few times (your squad only does a quarter damage to them) or have a Warden **Cleanse** them to cut the strings. With no companions near, the strings drag you towards it instead. Desperation: **Grand Finale** - two companions controlled for 14 s, darkness, and a stage full of marionettes.'),
     ('bc:devil', 'Devil Summoning Contract', 'Hovers and circles you; claws at close range; **dark lightning** under every player (12 dmg, darkness), a **darkness roar** (knockback, weakness), **orb barrages**, summons Dark Disciples. Below 50%: faster, stronger, resistant.'),
     ('bc:leviathan', 'Leviathan Lure (face deep water)', '**Water volleys** (5, then 7 orbs, 7 dmg), a **slam** under you (11 / 15 dmg, also hurts ships), and below 50% a **roar** (mining fatigue, slowness) that calls the Drowned.'),
     ('bc:dungeon_golem', 'guards ancient dungeons', '**Ground slam** within 4.8 blocks (12 / 16 dmg), **thrown boulders** at range (10 dmg). Below 50% it calls Imps and attacks faster.'),
@@ -406,7 +410,7 @@ def page_mobs():
     for ident in sorted(ENTITIES):
         e = ENTITIES[ident]
         fams = e['components'].get('minecraft:type_family', {}).get('family', [])
-        if ident in skip or 'bc_spell' in fams or 'bc_ship' in fams or 'bc_broom' in fams or ident in ('bc:warp_gate', 'bc:devil_gate'):
+        if ident in skip or 'bc_spell' in fams or 'bc_ship' in fams or 'bc_broom' in fams or ident in ('bc:warp_gate', 'bc:devil_gate', 'bc:training_dummy'):
             continue
         hp, atk, speed, fam, loot = stats(ident)
         rows.append([f'**{entity_name(ident)}**<br>`{ident}`', hp, atk, fam, spawning(ident), drops(loot)])
@@ -414,7 +418,7 @@ def page_mobs():
     o += '## Who fights whom\n\n'
     o += table(['Side', 'Members', 'Hunts'], [
         ['Clover Kingdom', 'Magic Knights, Ancient Constructs, the Travelling Merchant', 'all monsters (players only after being attacked)'],
-        ['Devil Host', 'Devils, the Archdevil, Dark Disciples, Imps, Devil Gates', 'players, Magic Knights, the Tidewatch'],
+        ['Devil Host', 'Devils, the Archdevil, Dark Disciples, Imps, Devil Gates, Hellhounds, Mana Wraiths, the Fallen Captain, the Soul Puppeteer and its marionettes', 'players, Magic Knights, the Tidewatch'],
         ['Sea Raiders', 'Sea Raiders, Raider Captains, Phantom Raiders, the Phantom Galleon', 'players, Magic Knights, the Tidewatch'],
         ['Tidewatch Navy', 'Sentinels, Commodores, Marksmen', 'players with a bounty, pirates, devils, Dark Disciples, Rogue Mages'],
         ['Rogue Mages', 'Rogue Mages (outlaws with real grimoires, levels 2-8)', 'players, Magic Knights, the Tidewatch'],
@@ -470,6 +474,10 @@ ITEM_USE = {
     'bc:twin_moon_charm': 'summons the Witch Sisters', 'bc:bone_totem': 'summons the Bone Dragon',
     'bc:mission_board': 'daily missions: claim rewards, deliver items, swap a mission',
     **{f'bc:{k}': f'amulet (hold in off hand): {v[1]}' for k, v in AMULETS.items()},
+    'bc:squad_banner': 'your reserve, expeditions and reserve training ([Companions](companions.md#the-squad-banner))',
+    'bc:training_dummy': 'place a Training Dummy (shows DPS; sneak + use to pick it up)',
+    'bc:clover_leaf': 'revives every fallen companion beside you', 'bc:field_rations': 'food (8); a companion gift: -50 weariness, +10 morale',
+    'bc:companion_tome': 'hold it and talk to a companion (level 10+) to retrain its specialisation', 'bc:cursed_spool': 'summons the Soul Puppeteer',
 }
 
 
@@ -582,7 +590,7 @@ def page_ai():
         ['**Threat**', 'every boss remembers how much damage each attacker dealt (knights and companions fighting in melee count 60% extra, so they can tank) and turns on the biggest threat, only switching when someone out-does its current target by 10%. You are told when it turns on you.'],
         ['**Phases**', 'below 50% health it enrages (roar, Strength, Resistance, new attacks, 25% faster); below 25% it uses its **desperation** move once and attacks faster again'],
         ['**Telegraphs**', 'slams, stomps and waves show a warning circle about a second before they land'],
-        ['**Movement**', 'the Archdevil blinks away when two or more foes crowd it; the Colossus stomps them back; the Kraken submerges and resurfaces by its prey; the Galleon keeps station above you; the Fallen Captain blinks behind you and side-steps spells; the Witch Sisters blink away from melee; the Bone Dragon circles overhead and dives'],
+        ['**Movement**', 'the Archdevil blinks away when two or more foes crowd it; the Colossus stomps them back; the Kraken submerges and resurfaces by its prey; the Galleon keeps station above you; the Fallen Captain blinks behind you and side-steps spells; the Witch Sisters and the Soul Puppeteer blink away from melee; the Bone Dragon circles overhead and dives'],
         ['**Enrage timer**', 'after six minutes of fighting any boss becomes furious: Strength III, Speed II, 40% stronger spells and 30% faster attacks'],
     ])
     o += 'See [Mobs & bosses](mobs-and-bosses.md#bosses) for every boss\'s attacks.\n\n'
@@ -654,19 +662,24 @@ def page_ai():
 
 
 def page_companions():
-    o = (f'Up to **{PARTY_MAX} Magic Knights** travel with you as companions. They are run by the [tactical brain](ai-and-simulation.md#the-tactical-brain-aijs) '
-         'plus a companion layer that knows about you.\n\n'
+    o = (f'Up to **{PARTY_MAX} Magic Knights** travel with you as companions, and **{RESERVE_MAX} more** wait in reserve at a Squad Banner. '
+         'They are run by the [tactical brain](ai-and-simulation.md#the-tactical-brain-aijs) plus a squad layer that knows about you, each other and the fight '
+         '(`src/scripts/living/companions.js`, `squad.js`, `camp.js`, `roster.js`, `rivals.js`).\n\n'
+         '![v0.5.0](images/v050.png)\n\n'
          '## Getting companions\n\n'
          '* Use a **Knight Contract** (emerald ×4, paper ×4, mana crystal) - a level-2 knight joins you.\n'
          '* **Talk** to a wild Magic Knight and recruit it with a Knight Contract or 100 + 25 × level doubloons. It keeps its level.\n'
          '* **Rescue** a wounded knight (world event): it joins you with 150 bond.\n'
-         '* Knights you hired before v0.2.0 join your party automatically.\n\n'
+         '* Knights you hired before v0.2.0 join your party automatically.\n'
+         f'* When your party is full, new recruits go to your **reserve** (up to {RESERVE_MAX}).\n\n'
          '## Your party is saved\n\n'
-         '* Each companion keeps its **name, magic, level, XP, kills, skill, courage, robe and bond** with your player - across sessions and deaths.\n'
-         '* A companion that falls **comes back to your side 60 seconds later** (real time).\n'
+         '* Each companion keeps its **name, magic, level, XP, kills, skill, courage, robe, bond, personality, specialisation, mood, amulet, trials and title** '
+         'with your player - across sessions and deaths.\n'
+         '* A companion that falls **comes back to your side 60 seconds later** (real time) - or sooner, if someone [revives](#revives) it.\n'
          '* **Dismiss** a companion to let it rest, **summon** it again any time. If it is left far behind (48+ blocks or another dimension) it catches up.\n\n'
          '## The Companion Whistle\n\nCraft: ` G / GMG / I` (gold ingot ×3, mana crystal, iron ingot), or buy it from the merchant.\n\n')
     o += table(['Use', 'Effect'], [
+        ['**Hold**', 'a party frame on screen: each companion\'s health, mood and the party tactic'],
         ['**Use**', 'open your party: each companion\'s level, health, bond and status; orders for everyone'],
         ['**Sneak + use** looking at a foe', 'everyone attacks it for 20 s'],
         ['**Sneak + use** looking at nothing', 'regroup: everyone back into formation at once'],
@@ -676,7 +689,11 @@ def page_companions():
         ['Stance', '**aggressive** (hunts any foe, helps with what you attack) · **defensive** (only foes within 10 blocks of you) · **passive** (no fighting)'],
         ['Formation', '**wedge** (two behind you, two further back) · **line** (beside you) · **circle** (around you)'],
         ['Loot gathering', 'after a fight companions bring nearby drops to you'],
-        ['Per companion', 'summon / dismiss, rename, release from the party'],
+        ['Tactic', ' · '.join(f'**{n}** ({d[0].lower() + d[1:-1]})' for n, d in TACTICS_PARTY.values())],
+        ['Camp', 'make camp / break camp (see [Camp](#camp-and-the-night-watch))'],
+        ['Training', 'practise on Training Dummies between fights'],
+        ['Sparring match', 'pick two companions to duel for practice'],
+        ['Per companion', 'summon / dismiss, hold / follow, talk, choose a specialisation, take back an amulet, rename, release'],
     ])
     o += ('## How companions think\n\n'
           '* **Your fight is their fight:** they focus whatever you attack (for 10 s), and rush whoever is hurting you (for 6 s) - that comes first.\n'
@@ -684,8 +701,70 @@ def page_companions():
           '* **They do not get in the way:** a companion standing in your line of fire while you hold a grimoire or fruit power steps aside.\n'
           '* **Formation:** out of combat they drift into their formation slots around you.\n'
           '* **Downtime:** stand still for 30 s and they sit down; they gather loot, chat now and then, and react when a boss shows up or you are hurt.\n'
-          '* **Fighting:** spell choice, aiming, dodging and retreating come from the tactical brain; companions above level 10 cast 3% harder per level.\n\n')
-    o += '## Levels and health\n\nCompanions level up to **20** from kills (10 XP; 18 for this addon\'s creatures; 150 for a boss). More spells at levels 3 and 6.\n\n'
+          '* **Fighting:** spell choice, aiming, dodging and retreating come from the tactical brain; companions above level 10 cast 3% harder per level. '
+          'Personality, specialisation, mood, tactics, combos and danger zones shape all of it - see below.\n\n')
+    o += '## Personalities\n\nEvery companion has one (knights recruited before v0.5.0 get one too). It changes how they fight and what they say.\n\n'
+    o += table(['Personality', 'Effect'], [[f"**{v['name']}**", v['desc']] for v in PERSONALITIES.values()])
+    o += (f'## Specialisations\n\nAt level **{SPEC_LEVEL}** a companion can specialise (open its profile with the whistle). The skills join its spell list and the '
+          'brain uses them when they fit the moment. **Mastery** arrives at level 20, or through the second personal trial. A **Companion Tome** lets them retrain.\n\n')
+    o += table(['Specialisation', 'Role', 'What it does', 'Skills', 'Mastery'], [[f"**{v['name']}**", v['role'], v['desc'], v['skills'], v['mastery']] for v in SPECS.values()])
+    o += ('* **Taunt**: every foe run by the tactical brain within 10 blocks (20 at mastery) turns on the Vanguard for 5 s; bosses add a big chunk of threat.\n'
+          '* **Aegis**: Absorption II (8 s) and Resistance I (6 s) for you and every companion within 14 blocks; the Warden casts it first when you are below 40%.\n'
+          '* **Cleanse**: removes poison, wither, slowness, weakness, blindness, nausea, mining fatigue, darkness, levitation and hunger - and cuts the Soul Puppeteer\'s strings.\n'
+          '* A **Warden** also destroys hostile spells and arrows within 4.5 blocks of you (every 3 s).\n'
+          '* A **Ranger** keeps 10 blocks away from the nearest foe; **Mark** lasts 8 s.\n\n')
+    o += '## Party tactics\n\n'
+    o += table(['Tactic', 'Effect'], [[f'**{n}**', d] for n, d in TACTICS_PARTY.values()])
+    o += ('## Fighting as a squad\n\n'
+          '* **Combos:** a foe held by a prison or a time stop takes **+25%** from the squad\'s spells - strikers go for bound foes, controllers look for fresh ones.\n'
+          '* **Marks:** a Ranger\'s mark adds **+20%** (+35% at mastery) to your squad\'s spells against that foe.\n'
+          '* **Danger:** boss warning circles, spell fields, meteor and rain targets are danger zones; companions step out of them (other NPCs do too, by skill).\n'
+          '* **Bodyguard:** a Vanguard stands between you and the closest foe; Loyal companions stay close.\n'
+          '* **Focus fire** picks the weakest foe within 16 blocks of you (bound or marked foes first) every second.\n\n')
+    o += ('## Revives\n\nA fallen companion leaves a **glowing clover** where it fell, for 60 seconds.\n\n'
+          '* **Sneak** beside it for 3 seconds and they get back up at half health.\n'
+          '* Otherwise a squadmate walks over and **kneels** there (only a Warden does this while foes are within 8 blocks of the spot); a Warden is twice as fast.\n'
+          '* A **Clover Leaf of Return** (emeralds, mana crystals, a golden apple) revives every fallen companion beside you at once.\n\n')
+    o += (f'## Mood\n\nEach companion has **morale** and **weariness** (0-100). Morale rises with victories (+2 for its own kills, +15 for a boss), gifts and food (+5), '
+          'talking (+5 once a day), a Cheerful friend in the party and rest; it drops when it falls (-15) or a friend falls (-5). '
+          'Weariness builds by 2 every 10 s of fighting and falls with rest (8 per 10 s at camp, 3 while you sneak, 1.5 otherwise).\n\n')
+    o += table(['State', 'When', 'Effect'], [
+        ['**Inspired**', f"morale {MOOD['inspired']}+", '+10% spell power, a little braver'],
+        ['**Shaken**', f"morale {MOOD['shaken']} or less", '-10% spell power, retreats sooner'],
+        ['**Exhausted**', f"weariness {MOOD['exhausted']}+", 'casts 30% slower'],
+    ])
+    o += 'Hand them **Field Rations** (bread, cooked beef, an apple, a Mana Cookie → 3): -50 weariness, +10 morale, 10 health.\n\n'
+    o += ('## Camp and the night watch\n\nChoose **Make camp** on the whistle (no monsters within 14 blocks): your companions sit in a circle around a fire, '
+          'heal, lose weariness fast and tell stories. At night one of them (a Loyal or Cautious one if you have one) **keeps watch** - when something comes within 22 blocks '
+          'it raises the alarm and everyone gets up. Camp ends when you walk 16 blocks away or a fight starts.\n\n'
+          'Out of camp, two companions sometimes **banter** with each other between fights.\n\n')
+    o += ('## Talking\n\nOpen a companion\'s profile and choose **Talk**: ask how they feel (it depends on their mood and personality), '
+          'about their hometown and dream, or for advice (gameplay tips). Once a day a talk gives +3 bond and +5 morale.\n\n')
+    o += '## Personal trials\n\nAt bond **Friend** a companion asks for help with a personal trial; at **Sworn Ally** a second one (twice the count). Kills by you or any party member count while they are with you (within 32 blocks).\n\n'
+    o += table(['Trial', 'Kind', 'Count (first / second)'], [[t, k, f'{c} / {c * 2}'] for k, _, c, t in TRIALS])
+    o += ('* **First trial:** their grimoire **awakens** - every page opens, whatever their level - they earn a **title** (e.g. "the Unbroken"), +100 bond and full morale.\n'
+          '* **Second trial:** they master their specialisation (+150 bond).\n\n')
+    o += (f'## The Squad Banner\n\nCraft: `WCW / WGW / ·S·` (green wool, a mana crystal, a gold ingot, a stick). Use it to:\n\n'
+          f'* **Swap** knights between your party ({PARTY_MAX}) and the reserve ({RESERVE_MAX}).\n'
+          '* **Train**: reserve knights gain 3 XP per real minute while they wait (collected at the banner, up to 200 minutes at a time).\n'
+          '* Send reserve knights on **expeditions** - they run in real time, even while you are offline:\n\n')
+    o += table(['Expedition', 'Minutes', 'Min level', 'Danger', 'Spoils', 'XP'], [
+        [f'**{n}**', mi, lv, '!' * dg, ', '.join(f"{i.replace('bc:', '').replace('minecraft:', '').replace('_', ' ')} {lo}-{hi}" + (f' ({int(c * 100)}%)' if c < 1 else '') for i, lo, hi, c in lt), xp]
+        for _, n, mi, lv, dg, _, lt, xp in EXPEDITIONS])
+    o += ('Odds: 55% + 4% per level above the minimum, -4% per danger above 1, +10% for a fitting specialisation (e.g. an Arcanist in the ruins, a Vanguard or Warden on a devil hunt), '
+          '+5% with mastery, ± mood (between 15% and 95%). A failed expedition still comes home - with half the spoils and XP, weary and shaken.\n\n')
+    o += ('## Training and sparring\n\n'
+          '* **Training Dummy** (hay blocks, a target, sticks): place it anywhere; it shows DPS, the last hit and the total. Hitting it gives you 1 magic XP (up to 200 a day). '
+          'With **Training** on, companions practise on dummies near you between fights: 2 XP a hit, up to 400 a day each. Sneak + use to pick it up.\n'
+          '* **Sparring match** (whistle): two companions duel with 60% damage; it ends when one drops below a third of its health (nobody can fall) or after 90 s. '
+          'Winner +40 XP, loser +25 XP, both +4 bond.\n'
+          '* **Rival squads** (world event): another company\'s squad challenges your party. Their spells (and yours against them) do half damage and never kill; '
+          'beaten rivals yield. Win for 40 + 20 per rival doubloons, +80 XP and +15 morale for every companion.\n\n'
+          '## Flying together\n\nWhen you mount a broom, your companions summon brooms of their own (a Swift Broom from level 12) and fly in formation behind you. '
+          'When you land, they land beside you.\n\n'
+          '## Gear\n\nHand a companion an **amulet** to wear (take it back from their profile): Battle Charm +12% power, Swift Sigil and Mana Heart shorter cooldowns '
+          '(12% / 8%).\n\n')
+    o += '## Levels and health\n\nCompanions level up to **20** from kills (10 XP; 18 for this addon\'s creatures; 150 for a boss), training, sparring, rival matches and expeditions (Scholars learn 25% faster). More spells at levels 3, 6 and 15.\n\n'
     hp = {lv: h for lv, h in COMPANION_HP}
     rows = []
     for lv in range(1, 21):
@@ -728,6 +807,8 @@ def page_events():
         ['Fallen Captain (`fallen_captain`)', 2, 'night', 'The Fallen Captain appears 20-26 blocks away.'],
         ['Witch Sisters (`witch_sisters`)', 2, 'night', 'Fog rolls in; after 2 s the Frost Witch and the Ember Witch arrive 20-26 blocks away.'],
         ['Bone Dragon (`bone_dragon`)', 2, 'night, above y 55', 'The Bone Dragon wakes 26-32 blocks away.'],
+        ['Rival squad (`rival_squad`)', 5, 'day, you lead at least one companion', 'A squad of 2-4 knights from another company (levels close to your companions\') challenges your party to a friendly match. See [Companions](companions.md#training-and-sparring).'],
+        ['Puppet show (`puppet_show`)', 2, 'night', 'A music box plays; after 2 s the Soul Puppeteer appears 20-26 blocks away.'],
         ['Colossus (`colossus`)', 3, 'day, above y 55', 'A Stone Colossus rises 26-32 blocks away.'],
         ['Phantom Galleon (`phantom_galleon`)', 3, 'night', 'A ghostly fog rolls in; after 2 s the Phantom Galleon appears.'],
         ['Kraken (`kraken`)', 3, 'deep water within 20 blocks', 'The Storm Kraken rises from the water.'],
@@ -757,8 +838,8 @@ def page_commands():
         o += f'/summon {ident}\n'
     o += '```\n\n## Script events\n\n```\n/scriptevent bc:event                 (a random event)\n'
     for n in ('meteor_shower', 'devil_gate', 'pirate_landing', 'skirmish', 'knight_tournament', 'knight_patrol', 'merchant', 'sky_treasure', 'crimson_night',
-              'wounded_knight', 'mana_storm', 'bounty_hunters', 'rogue_ambush', 'fallen_captain', 'witch_sisters', 'bone_dragon', 'colossus',
-              'phantom_galleon', 'kraken'):
+              'wounded_knight', 'mana_storm', 'bounty_hunters', 'rogue_ambush', 'rival_squad', 'fallen_captain', 'witch_sisters', 'bone_dragon',
+              'puppet_show', 'colossus', 'phantom_galleon', 'kraken'):
         o += f'/scriptevent bc:event {n}\n'
     o += '```\n\nCreative players can also use any grimoire with every spell unlocked and infinite mana, and start events from a War Table.\n'
     return write('commands.md', 'Commands', o)
@@ -784,11 +865,11 @@ def page_getting_started():
 
 * **Get a fruit:** beat a Raider Captain, loot a sunken wreck, or buy one. → [Abyss Fruits](fruits.md)
 * **Sail:** craft a Sailing Ship (wool, planks, iron) and find pirate outposts. Take bounties at a Bounty Board for doubloons.
-* **Build a party:** recruit Magic Knights and command them with a Companion Whistle. → [Companions](companions.md)
+* **Build a squad:** recruit Magic Knights and command them with a Companion Whistle. At level 10 they specialise; at bond Friend they ask for a personal trial. → [Companions](companions.md)
 * **Take missions:** craft a Mission Board (or find a Magic Knight camp) for three daily missions with star rewards. → [Missions](progression.md#daily-missions)
 * **Fly:** craft a Magic Broom (stick, hay, a mana crystal) and ride the sky on your mana. → [Brooms](progression.md#magic-brooms)
 * **Build a War Table** (map, iron sword, feather, planks, sticks) and stage battles. → [Battles](ai-and-simulation.md#battles-battlejs)
-* **Fight bosses:** the Devil, the Leviathan, the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken, the Fallen Captain, the Witch Sisters, the Bone Dragon. → [Bosses](mobs-and-bosses.md#bosses)
+* **Fight bosses:** the Devil, the Leviathan, the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken, the Fallen Captain, the Witch Sisters, the Bone Dragon, the Soul Puppeteer. → [Bosses](mobs-and-bosses.md#bosses)
 * **Watch the world:** events happen every few minutes; the factions rise and fall. → [World events](world-events.md)
 '''
     return write('getting-started.md', 'Getting started', o)
@@ -854,13 +935,16 @@ Everything in `packs/` and `dist/` is generated - edit the generators in `tools/
 | `tools/bc/models/` | 3D models and animations (grimoires, swords, robes, spells, mobs, ships, bosses, knights, the War Table, icons) |
 | `tools/bc/packgen.py` | core items, blocks, entities, recipes, loot, client entities, attachables, manifests (`VERSION`) |
 | `tools/bc/seagen.py`, `grandgen.py`, `wave4gen.py` | the Abyssal Seas, wave 3 and wave 4 content (bosses, knights, War Table, faction team groups) |
+| `tools/bc/v2gen.py`, `v3gen.py`, `v5gen.py` (+ `models/v2.py`, `v3.py`, `v5.py`) | v0.2.0, v0.3.0 and v0.5.0 content: companions, brooms, missions, witches, the Bone Dragon, the Squad Banner, the Training Dummy, the Soul Puppeteer |
 | `tools/bc/tex.py`, `geo.py`, `render.py` | pixel-art material painter, Bedrock geometry builder with UV atlas packing, software preview renderer |
 | `tools/bc/fx.py`, `audio.py`, `icons.py` | particles, synthesised sounds, HUD glyphs and icons |
 | `src/scripts/core/` | data/state, combat helpers (targeting, factions, teams), HUD, effects, ranks |
 | `src/scripts/magic/` | grimoire casting, hand-written spells, anti-magic, projectiles |
 | `src/scripts/sea/` | fruits, Will, ships, bounties, captains, the Leviathan, the Tidewatch, structures |
 | `src/scripts/grand/` | dungeons, treasure maps, pirate weapons |
-| `src/scripts/living/` | `engine.js` spell engine, `ai.js` tactical brain, `knights.js`, `battle.js`, `worldsim.js`, `bosses.js`, `events.js`, `merchant.js`, `wartable.js` |
+| `src/scripts/living/` | `engine.js` spell engine, `ai.js` tactical brain, `danger.js` danger zones, `knights.js`, `battle.js`, `worldsim.js`, `bosses.js`, `events.js`, `merchant.js`, `wartable.js`, `brooms.js`, `missions.js`, `rogues.js`, `camps.js` |
+| `src/scripts/living/` (companions) | `companions.js` saved party, whistle and hooks; `squad.js` specialisations, tactics, combos, revives, broom flight; `camp.js` mood, camp, talk, trials, gear; `roster.js` Squad Banner, expeditions, Training Dummy; `rivals.js` sparring and rival squads; `puppeteer.js` the Soul Puppeteer's strings |
+| `src/scripts/core/bus.js` | a tiny event bus (casts, XP, bosses, crowd control) |
 
 ## Adding a spell or a fruit
 
@@ -908,7 +992,7 @@ def page_home():
 | Grimoires | {len(ATTR_ORDER)} attributes, {n_spells} spells ({len(AWAKENED)} awakened at level 15), the five-leaf Anti-Magic grimoire with 3 demon swords and Black Form |
 | Abyss Fruits | {len(FRUITS)} fruits, {n_ab} abilities, 9 beast forms, the Will system |
 | Creatures | {len([e for e in ENTITIES.values() if 'bc_spell' not in e['components'].get('minecraft:type_family', {}).get('family', [])])} creatures, NPCs and bosses, including {len(BOSSES)} bosses |
-| Companions | a saved party of up to {PARTY_MAX} knights with levels to 20, bonds, orders, formations and a smart support AI |
+| Companions | a saved party of up to {PARTY_MAX} knights plus {RESERVE_MAX} in reserve: personalities, specialisations, party tactics, combos, revives, mood, camps, trials, expeditions, sparring and rival squads |
 | Items | {len(ITEMS)} items and blocks, {len(RECIPES)} recipes |
 | AI & simulation | a tactical brain for spellcasters, battles with tactics, morale and leaders, a world where four factions rise and fall |
 | Adventure | daily missions and the Mission Board, magic brooms, amulets, Magic Knight camps |
@@ -921,7 +1005,7 @@ def page_home():
 | [Getting started](getting-started.md) | install, your first hour, where to go next |
 | [Magic](magic.md) | every attribute, altar odds, all {n_spells} spells with numbers, anti-magic, techniques |
 | [Abyss Fruits](fruits.md) | all {len(FRUITS)} fruits and {n_ab} abilities with numbers, rules, Will |
-| [Companions](companions.md) | your saved party: recruiting, the whistle, orders, stances, formations, bond and its perks, robes, levels to 20 |
+| [Companions](companions.md) | your squad: personalities, specialisations, tactics, combos, revives, mood, camp, talking, trials, the Squad Banner and expeditions, training, sparring, rival squads, bond, robes |
 | [AI & simulation](ai-and-simulation.md) | the tactical brain, enemy and boss brains, battles (tactics, morale, leaders, bets, camera), the world simulation, knights |
 | [World events](world-events.md) | every event, its odds, conditions and rewards |
 | [Mobs & bosses](mobs-and-bosses.md) | every creature: health, attack, spawning, drops; all bosses and their attacks; factions; structures |

@@ -58,7 +58,8 @@
         "seat_count": 1,
         "crouching_skip_interact": true,
         "family_types": [
-          "player"
+          "player",
+          "bc_knight"
         ],
         "interact_text": "action.interact.ride.horse",
         "pull_in_entities": false,

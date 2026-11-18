@@ -698,3 +698,171 @@ BROOMS = {'broom': ('§6Magic Broom', 0.55, 1.5), 'swift_broom': ('§bSwift Broo
 
 FACTIONS['rogues'] = dict(name='Rogue Mages', mc='§5', units=['bc:rogue_mage'], leader='bc:rogue_mage')
 MERCHANT += [('bc:broom', 1, 120, 'Magic Broom'), ('random_amulet', 1, 220, 'Mystery Amulet')]
+
+# ======================================================================================
+# v0.5.0: the companion update (personalities, specialisations, party tactics, mood, trials,
+# the reserve roster and expeditions), four more grimoires and the Soul Puppeteer
+# ======================================================================================
+ATTRIBUTES.update({
+    'gravity': dict(name='Gravity', color='8a6cff', leaves=4, cover=('120c26', '1c1438', '281e4c', '362a62', '46387a', '584894'), trim='silver', mc='§5'),
+    'moon': dict(name='Moon', color='c8d8ff', leaves=4, cover=('0c1226', '141c38', '1e284c', '2a3662', '38467a', '485894'), trim='silver', mc='§9'),
+    'thorn': dict(name='Thorn', color='6a9a3a', leaves=3, cover=('142008', '1e300c', '2a4212', '385618', '486c20', '5a842a'), trim='blackiron', mc='§2'),
+    'ash': dict(name='Ash', color='9a8a80', leaves=3, cover=('1e1a18', '2c2624', '3a3330', '4a423e', '5c524c', '6e645c'), trim='gold', mc='§7'),
+})
+ATTR_ORDER += ['gravity', 'moon', 'thorn', 'ash']
+SPELLS.update({
+    'gravity': [
+        _s('gravity_orb', 'Gravity Orb', 12, 0.8, 1, 'A heavy orb that crushes and slows whatever it hits.', t='bolt', d=5, shape=0, size=2, speed=1.5, aoe=2.4, fx='gravity', eff=[['slowness', 2, 2]]),
+        _s('crushing_field', 'Crushing Field', 28, 8.0, 3, 'Gravity multiplies around your aim, dragging foes to the ground.', t='zone', d=3, r=4, dur=5, pull=0.3, fx='gravity', eff=[['slowness', 2, 3]]),
+        _s('skyward_lift', 'Skyward Lift', 34, 10.0, 6, 'Gravity lets go: foes near your aim float helplessly into the air.', t='nova', at='aim', d=6, r=5, fx='gravity', eff=[['levitation', 2, 2]]),
+        _s('singularity', 'Singularity', 82, 24.0, 10, 'A point of crushing gravity swallows everything nearby.', t='vortex', d=18, r=8, dur=3, fx='gravity'),
+    ],
+    'moon': [
+        _s('moonbeam_darts', 'Moonbeam Darts', 10, 0.6, 1, 'Three darts of pale moonlight.', t='bolt', d=4, n=3, spread=10, shape=1, speed=2.2, fx='moon'),
+        _s('crescent_arc', 'Crescent Arc', 22, 5.0, 3, 'A sweeping crescent of moonlight in front of you.', t='nova', at='front', d=9, r=4, kb=[1.0, 0.3], fx='moon'),
+        _s('lunar_blessing', 'Lunar Blessing', 32, 14.0, 6, 'Moonlight mends you and your allies.', t='heal', heal=8, r=8, regen=5, fx='moon'),
+        _s('moonlight_pillars', 'Moonlight Pillars', 84, 24.0, 10, 'Pillars of moonlight fall on every foe near your aim.', t='strikes', d=11, n=7, r=12, fx='moon', eff=[['blindness', 2, 0]]),
+    ],
+    'thorn': [
+        _s('thorn_needles', 'Thorn Needles', 10, 0.6, 1, 'Four poisoned needles.', t='bolt', d=3, n=4, spread=14, shape=3, speed=2.4, fx='thorn', eff=[['poison', 2, 0]]),
+        _s('bramble_snare', 'Bramble Snare', 26, 8.0, 3, 'Brambles burst up and bind foes near your aim.', t='prison', d=5, r=3, dur=4, fx='thorn', eff=[['poison', 3, 0]]),
+        _s('bramble_armour', 'Bramble Armour', 30, 18.0, 6, 'Armour of thorns: anyone close to you is cut.', t='buff', fx='thorn', self=[['resistance', 10, 1]],
+           then=dict(t='zone', at='self', d=2, r=3, dur=8, fx='thorn')),
+        _s('thorn_forest', 'Thorn Forest', 80, 24.0, 10, 'A forest of thorns erupts in eight directions.', t='wave', d=14, len=14, dirs=8, fx='thorn', eff=[['slowness', 3, 1]]),
+    ],
+    'ash': [
+        _s('cinder_flick', 'Cinder Flick', 10, 0.6, 1, 'Two smouldering cinders.', t='bolt', d=4, n=2, spread=8, shape=0, speed=2.0, fire=2, fx='ash'),
+        _s('ash_cloud', 'Ash Cloud', 26, 9.0, 3, 'A choking cloud of ash settles over your aim.', t='zone', d=1.5, r=5, dur=6, fx='ash', eff=[['blindness', 2, 0], ['wither', 2, 0]]),
+        _s('rekindle', 'Rekindle', 32, 14.0, 6, 'Warm embers mend you and your allies.', t='heal', heal=7, r=7, regen=5, fx='ash'),
+        _s('ashen_storm', 'Ashen Storm', 82, 24.0, 10, 'Burning ash rains over your aim.', t='rain', d=7, n=16, r=7, every=2, fire=3, fx='ash'),
+    ],
+})
+ALTAR_WEIGHTS.update({'gravity': 4, 'moon': 4, 'thorn': 7, 'ash': 7})
+AWAKENED.update({
+    'gravity': _s('event_horizon', 'Event Horizon', 120, 40.0, 15, 'A black star swallows the battlefield, then bursts.', t='vortex', d=22, r=11, dur=4, fx='gravity',
+                  then=dict(t='nova', d=12, r=11, kb=[2.0, 0.8], fx='gravity')),
+    'moon': _s('full_moon_requiem', 'Full Moon Requiem', 115, 38.0, 15, 'The full moon rains silver light on everything around your aim.', t='rain', d=9, n=22, r=9, every=2, fx='moon', eff=[['blindness', 2, 0]]),
+    'thorn': _s('crown_of_thorns', 'Crown of Thorns', 110, 38.0, 15, 'A crown of thorns rises around you, poisoning and slowing every foe inside.', t='zone', at='self', d=5, r=10, dur=8, fx='thorn', eff=[['poison', 2, 1], ['slowness', 2, 2]]),
+    'ash': _s('ashfall_cataclysm', 'Ashfall Cataclysm', 120, 40.0, 15, 'Burning mountains of ash crash down around your aim.', t='meteor', d=16, n=6, r=8, aoe=3.5, fire=6, size=2, fx='ash'),
+})
+for _a in ('gravity', 'moon', 'thorn', 'ash'):
+    SPELLS[_a].append(AWAKENED[_a])
+
+# ----------------------------------------------------------------------------- companions
+# Personalities: how a companion fights and talks. courage/aggro/keep shift its brain; xp/morale are multipliers.
+PERSONALITIES = {
+    'brave': dict(name='Brave', desc='First into every fight and never backs down.', courage=0.35, aggro=1.2, keep=0.8, xp=1.0, morale=1.0, pw=1.0,
+                  lines={'kill': ['Is that all?', 'Who\'s next?'], 'low': ['Stand behind me, {p}!'], 'boss': ['A worthy foe! Let\'s go!'], 'idle': ['I could fight a dragon today.']}),
+    'cautious': dict(name='Cautious', desc='Keeps its distance and falls back early - rarely gets hurt.', courage=-0.3, aggro=0.8, keep=1.5, xp=1.0, morale=1.0, pw=1.0,
+                     lines={'kill': ['Safe... for now.'], 'low': ['{p}, pull back - now!'], 'boss': ['We should be careful with this one.'], 'idle': ['Did you hear something?']}),
+    'loyal': dict(name='Loyal', desc='Sticks to your side and protects you before anything else.', courage=0.2, aggro=1.0, keep=1.0, xp=1.0, morale=1.1, pw=1.0, guard=True,
+                  lines={'kill': ['For you, {p}.'], 'low': ['Nobody touches {p}!'], 'boss': ['I\'m with you, {p}. Always.'], 'idle': ['Wherever you go, I go.']}),
+    'hothead': dict(name='Hothead', desc='Charges the strongest foe and hits harder, but takes risks.', courage=0.5, aggro=1.4, keep=0.6, xp=1.0, morale=0.9, pw=1.08,
+                    lines={'kill': ['HA! Got it!', 'Too slow!'], 'low': ['Who did that?! I\'ll burn them!'], 'boss': ['That one\'s MINE!'], 'idle': ['I\'m bored. Let\'s find a fight.']}),
+    'cheerful': dict(name='Cheerful', desc='Lifts the whole party\'s spirits - morale recovers faster around them.', courage=0.1, aggro=1.0, keep=1.0, xp=1.0, morale=1.6, pw=1.0,
+                     lines={'kill': ['Yay! We did it!', 'Teamwork!'], 'low': ['Don\'t give up, {p}! I\'ve got you!'], 'boss': ['Big, scary... we\'ve got this!'], 'idle': ['What a lovely day!', 'Shall I sing something?']}),
+    'scholar': dict(name='Scholar', desc='Studies every fight: learns 25% faster and picks spells more cleverly.', courage=0.0, aggro=1.0, keep=1.2, xp=1.25, morale=1.0, pw=1.0, skill=0.1,
+                    lines={'kill': ['As predicted.', 'Fascinating technique.'], 'low': ['{p}, your vitals are failing - retreat!'], 'boss': ['I\'ve read about creatures like this...'], 'idle': ['Did you know mana flows like water?']}),
+}
+# Specialisations: chosen once a companion reaches level 10. 'mastery' arrives at level 20 (or through its second trial).
+SPECS = {
+    'vanguard': dict(name='Vanguard', role='brawler', desc='A front-line guardian: resistance in battle, taunts foes onto itself and shield-bashes them.',
+                     skills='Taunt (pull every nearby foe and boss onto itself), Shield Bash (a stunning blow up close)',
+                     mastery='Bulwark: Resistance II while taunting, and Taunt reaches twice as far.'),
+    'arcanist': dict(name='Arcanist', role='striker', desc='A spell master: +15% spell power, cooldowns 15% shorter, and an arcane barrage.',
+                     skills='Arcane Barrage (five homing darts of its own magic)',
+                     mastery='Spell Echo: a quarter of its spells are cast again at half power.'),
+    'warden': dict(name='Warden', role='support', desc='A protector: shields the party, cleanses curses, cuts down arrows aimed at you and revives fallen friends quickly.',
+                   skills='Aegis (absorption and resistance for you and the party), Cleanse (removes poison, wither, slowness, blindness - and breaks mind control)',
+                   mastery='Sanctuary: Aegis also heals and cleanses.'),
+    'ranger': dict(name='Ranger', role='striker', desc='A sharpshooter: fights from 10-16 blocks away, fires piercing volleys and marks targets for the party.',
+                   skills='Volley (three piercing long-range bolts), Mark (the party deals +20% damage to the target)',
+                   mastery='Hawk Eye: marked foes take +35% damage, and Volley fires five bolts.'),
+}
+SPEC_LEVEL = 10
+# Party tactics, chosen with the whistle
+TACTICS_PARTY = {
+    'balanced': ('Balanced', 'Each companion fights its own way.'),
+    'focus': ('Focus fire', 'Everyone attacks the same foe - your target, or the weakest enemy near you.'),
+    'protect': ('Protect me', 'Stay within six blocks of you and only fight what comes close to you.'),
+    'spread': ('Spread out', 'Keep apart from each other - best against big area attacks.'),
+    'kite': ('Hit and run', 'Strike, then back off; ranged companions keep their distance.'),
+}
+# Mood: morale (0-100) and fatigue (0-100)
+MOOD = dict(start_morale=70, inspired=80, shaken=30, exhausted=80)
+# Personal trials: offered at bond 'Friend' (stage 1: awakens their fifth spell) and 'Sworn Ally' (stage 2: mastery)
+TRIALS = [
+    ('kill', 'monster', 25, 'Help me prove myself - defeat 25 monsters with me at your side.'),
+    ('kill', 'bc_devil', 10, 'Devils burned my village. Help me banish 10 of them.'),
+    ('kill', 'bc_pirate', 10, 'Sea raiders took everything my family had. Ten of them will answer for it.'),
+    ('kill', 'bc:rogue_mage', 4, 'A rogue mage stole my master\'s grimoire. Help me bring four rogues to justice.'),
+    ('boss', '', 1, 'I want to stand against a great foe with you. Any of the giants will do.'),
+    ('cast', '', 60, 'Train with me: cast 60 spells while I watch your back.'),
+    ('kill', 'undead', 20, 'The restless dead frighten me. Help me face 20 of them.'),
+]
+TRIAL_TITLES = ['the Unbroken', 'the Steadfast', 'the Bright', 'the Relentless', 'Stormheart', 'the Unyielding', 'Dawnbringer', 'the Watchful']
+# Roster & expeditions: (id, name, real minutes, min level, danger 1-5, description, loot [(item, lo, hi, chance)], xp)
+RESERVE_MAX = 6
+EXPEDITIONS = [
+    ('patrol', 'Border Patrol', 8, 1, 1, 'Walk the kingdom border and chase off bandits.', [('bc:doubloon', 10, 25, 1.0), ('bc:mana_crystal', 1, 3, 0.8), ('minecraft:bread', 2, 5, 0.6)], 120),
+    ('escort', 'Merchant Escort', 15, 4, 2, 'Guard a merchant caravan through the hills.', [('bc:doubloon', 30, 60, 1.0), ('bc:mana_cookie', 2, 4, 0.7), ('bc:treasure_map', 1, 1, 0.25)], 220),
+    ('ruins', 'Ancient Ruins', 20, 6, 2, 'Search a ruined temple for lost grimoire pages.', [('bc:ancient_page', 1, 3, 0.9), ('bc:mana_crystal', 2, 5, 0.8), ('minecraft:gold_ingot', 2, 5, 0.6), ('robe', 1, 1, 0.08)], 320),
+    ('devil_hunt', 'Devil Hunt', 30, 10, 3, 'Track down a nest of devils and seal it.', [('bc:mana_crystal', 4, 8, 1.0), ('bc:devil_heart', 1, 1, 0.2), ('bc:ancient_page', 1, 2, 0.6), ('amulet', 1, 1, 0.15)], 600),
+    ('witch_woods', 'The Witch Woods', 40, 14, 4, 'Brave the woods where the Witch Sisters were last seen.', [('bc:mana_crystal', 6, 10, 1.0), ('amulet', 1, 1, 0.35), ('minecraft:blaze_rod', 2, 5, 0.6), ('bc:clover_leaf', 1, 1, 0.15)], 900),
+    ('graveyard', "Dragon's Graveyard", 60, 18, 5, 'Climb into the bone valley where dragons go to die.', [('minecraft:bone_block', 6, 14, 1.0), ('minecraft:netherite_scrap', 1, 2, 0.4), ('bc:clover_charm', 1, 1, 0.08), ('amulet', 1, 1, 0.4), ('bc:clover_leaf', 1, 1, 0.25)], 1400),
+]
+# Things to say when you talk to them
+HOMETOWNS = ['Willowmere', 'Ashford', 'Saltcrest', 'Thornvale', 'Brightwater', 'Kestrel Point', 'Duskholm', 'Emberglen', 'Frostmere', 'Oakhollow']
+DREAMS = ['to lead my own squad one day', 'to protect my little brother', 'to master every page of my grimoire', 'to see the sea beyond the kingdom',
+          'to become the strongest mage in the kingdom', 'to pay back the knight who saved my life', 'to write a book about every kind of magic', 'to never lose a friend again']
+TIPS = ['Sneak and use the Companion Whistle while looking at a foe - the whole party will attack it.',
+        'A Warden companion can break the Soul Puppeteer\'s strings with Cleanse.',
+        'Spread out when a boss draws warning circles - we can\'t all dodge in the same direction.',
+        'Field Rations take the weariness out of a long day of fighting.',
+        'Rest near a camp and our spirits recover faster.',
+        'Mana Cookies are the best gift. Just saying.',
+        'At level 10 we can specialise: Vanguard, Arcanist, Warden or Ranger.',
+        'A Squad Banner lets you keep more of us in reserve and send us on expeditions.',
+        'Hit the Training Dummy with us around and we\'ll practise on it too.',
+        'Union Magic needs a Soulbound companion. Keep giving gifts!',
+        'Flying a broom? We\'ll grab ours and follow you.',
+        'If one of us falls, stand by the glowing clover and we\'ll pull them back up.']
+COMPANION_LINES.update({
+    'camp': ['Finally, a rest.', 'I\'ll get the fire going.', 'My feet thank you, {p}.'],
+    'watch': ['I\'ll keep watch tonight.', 'Sleep, {p}. I\'ve got the first watch.'],
+    'alarm': ['Movement in the dark - get up!', 'We\'ve got company!', 'Something\'s coming, {p}!'],
+    'revive': ['Hold on - I\'ve got you!', 'Come on, get up!', 'Not today. Up you get.'],
+    'revived': ['Thanks... I owe you one.', 'I thought that was the end of me.', 'Back in the fight!'],
+    'taunt': ['Over here, you brute!', 'Face ME!', 'Come on then!'],
+    'combo': ['Now! Hit it while it\'s stuck!', 'It\'s bound - finish it!', 'Combo!'],
+    'mark': ['Target marked!', 'Hit the marked one!'],
+    'aegis': ['Shields up!', 'I\'ll protect you all!'],
+    'controlled': ['My body... won\'t listen...', 'Strings... in my head...', 'Run, {p}! I can\'t stop myself!'],
+    'freed': ['I\'m free! Sorry, {p}...', 'The strings are gone - let\'s get that puppeteer!'],
+    'tired': ['I need a rest...', 'My mana feels so heavy.'],
+    'inspired': ['I feel like I could take on anything!', 'Nothing can stop us now!'],
+    'broom': ['Brooms out!', 'Race you, {p}!', 'I love flying!'],
+    'trial': ['{p}, can I ask you something? There\'s a trial I have to face...'],
+    'trial_done': ['We did it! I can feel my grimoire awakening!', 'Thank you, {p}. I won\'t forget this.'],
+    'spar_win': ['Good match!', 'Better luck next time!'],
+    'spar_lose': ['You got me this time.', 'I need more training...'],
+    'expedition': ['We\'re back! You won\'t believe what we found.', 'The road was long, but we made it.'],
+})
+BANTER = [
+    ('Do you ever wonder what the Wizard King eats for breakfast?', 'Probably mana crystals. Raw.'),
+    ('Your spell nearly singed my cape back there.', 'Your cape was in the way of my spell.'),
+    ('I counted. I got more kills than you today.', 'You counted the imps twice.'),
+    ('When this is over, I\'m sleeping for a week.', 'You said that last week.'),
+    ('Nice work back there.', 'You too. Don\'t let it go to your head.'),
+    ('Is it just me, or is {p} getting stronger?', 'It\'s not just you.'),
+    ('I miss home sometimes.', 'Me too. But this squad is a kind of home now, isn\'t it?'),
+    ('Race you to the next hill!', 'You\'re on!'),
+    ('What\'s the scariest thing you\'ve ever fought?', 'That cooking you made last night.'),
+    ('If I fall, tell my grimoire I loved it.', 'You\'re not falling on my watch.'),
+]
+# New items
+PUPPET_ITEMS = {
+    'squad_banner': 'Squad Banner', 'training_dummy': 'Training Dummy', 'clover_leaf': 'Clover Leaf of Return', 'field_rations': 'Field Rations',
+    'companion_tome': 'Companion Tome', 'cursed_spool': 'Cursed Spool',
+}
+MERCHANT += [('bc:field_rations', 4, 40, 'Field Rations x4'), ('bc:clover_leaf', 1, 260, 'Clover Leaf of Return'), ('bc:companion_tome', 1, 150, 'Companion Tome')]

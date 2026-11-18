@@ -1,5 +1,63 @@
 # Changelog
 
+## v0.5.0 – Early Access (2026-11-18)
+
+**The companion update.** Your Magic Knights become a real squad: personalities, specialisations, party tactics, combos, revives, mood, camps, personal trials, a reserve with expeditions, sparring and rival squads - and they fly brooms beside you. Plus four new grimoires and a boss that turns your own companions against you.
+
+> v0.2.0 and v0.3.0 were never published as releases, so this build also contains both: the saved companion party, smarter enemies and bosses, the Fallen Captain, 16 grimoires and 8 Abyss Fruits (v0.2.0), and magic brooms, daily missions, amulets, awakened spells, Rogue Mages, the Witch Sisters, the Bone Dragon and Magic Knight camps (v0.3.0). See [CHANGELOG.md](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/blob/ccr-62b3f23b-74ycbu/CHANGELOG.md) for everything.
+
+### Download
+* **`BlackClover_GrimoireAwakening_v0.5.0.mcaddon`** – open it and Minecraft imports both packs (it replaces earlier versions; your grimoire, levels and party are kept, and existing companions get a personality).
+* `BlackClover_BP_v0.5.0.mcpack` / `BlackClover_RP_v0.5.0.mcpack` – the packs separately.
+
+### Companions: who they are
+* **Personalities** – Brave, Cautious, Loyal, Hothead, Cheerful, Scholar. They change courage, skill, spell power, casting pace, where a companion stands in a fight and what it says (Scholars learn 25% faster, Cheerful companions lift the party's morale, Loyal ones stay at your side).
+* **Specialisations at level 10** – **Vanguard** (resistance, Taunt pulls every foe and boss onto itself, Shield Bash, stands between you and danger), **Arcanist** (+15% power, 15% shorter cooldowns, Arcane Barrage), **Warden** (Aegis shields the party, Cleanse removes curses, cuts down arrows and spells aimed at you, revives twice as fast), **Ranger** (fights from 10+ blocks, piercing Volley, Mark for +20% squad damage). **Mastery** at level 20 or through a trial: Bulwark, Spell Echo, Sanctuary, Hawk Eye. A **Companion Tome** retrains them.
+* **Mood** – morale and weariness. Inspired companions hit 10% harder; shaken ones lose their nerve; exhausted ones cast slower. Victories, gifts, talks, rest and **Field Rations** keep them going.
+* **Talk** – ask how they feel, about their hometown and dream, or for advice.
+* **Personal trials** – at bond Friend a companion asks for help with a trial (hunt devils, rogues, the dead, face a giant...). Finishing it **awakens their grimoire** early and earns them a title; a second trial at Sworn Ally grants mastery.
+
+### Companions: how they fight (AI)
+* **Party tactics** on the whistle: Balanced, Focus fire, Protect me, Spread out, Hit and run.
+* **Combos** – foes held by a prison or a time stop take +25% from the squad; strikers go for bound foes while controllers look for fresh ones. **Marks** add +20% (+35% at mastery).
+* **Danger awareness** – boss warning circles, spell fields, meteor and rain targets are danger zones; companions step out of them (other NPCs do too, by skill).
+* **Revives** – a fallen companion leaves a glowing clover for 60 s. Sneak beside it, or a squadmate kneels there (a Warden first, and twice as fast), and they get up at half health. **Clover Leaf of Return** revives everyone at once.
+* **Smarter positioning** – Vanguards bodyguard you, Rangers and cautious companions keep their distance, Protect me keeps everyone close, Spread out keeps them apart.
+* **Flying together** – mount a broom and your companions summon their own and fly in formation behind you; land and they land with you.
+* The brain itself gained taunts (forced targets), extra skill actions, target preferences, spell echo and personality-driven courage and skill.
+
+### Companions: squad life
+* **Make camp** with the whistle: they sit around a fire, heal, shed weariness and tell stories. At night one keeps **watch** and raises the alarm when something creeps up. Between fights they **banter** with each other.
+* **Squad Banner** block: a **reserve** of 6 more knights (new recruits wait there when your party of 4 is full), swap knights in and out, reserve knights train while they wait, and **expeditions** - 6 timed missions from 8 to 60 real minutes (they run even while you are offline) that bring back doubloons, pages, amulets, rare loot and XP. Odds depend on level, specialisation, mastery and mood.
+* **Training Dummy** – shows your DPS; switch training on and your companions practise on it between fights.
+* **Sparring matches** – two companions duel, non-lethally, for XP.
+* **Rival squads** (world event) – another company's squad challenges your party to a friendly match: beaten rivals yield, nobody dies, the winner takes doubloons and glory.
+* Hold the **Companion Whistle** to see your party's health and mood on screen. Hand a companion an **amulet** to wear.
+
+### New boss: the Soul Puppeteer
+* A floating marionette master with a porcelain mask (600 HP). String lashes, falling needles, marionette minions - and **the strings**: it takes control of your companions, who turn their magic on you. Strike them a few times or have a Warden Cleanse them to cut the strings. Desperation: **Grand Finale**.
+* Summon it with a **Cursed Spool**, or meet it in the new night event.
+
+### More content
+* **4 new grimoires, 20 spells:** Gravity, Moon, Thorn and Ash, each with an awakened spell (36 grimoires and 179 spells in total).
+* **New items:** Squad Banner, Training Dummy, Clover Leaf of Return, Field Rations, Companion Tome, Cursed Spool. The merchant sells rations, clover leaves and tomes.
+* **New creature:** the Marionette.
+* **New events:** rival squad, puppet show.
+
+### Animations & models
+* Companions: kneel (reviving), point (marking), guard, victory, wave, taunt, eat, sleep, and a riding pose for brooms.
+* The Soul Puppeteer (float, cast, control, summon, roar), the Marionette (idle, jerky walk, attack), the Training Dummy (hit wobble), the Squad Banner block.
+
+### Fixes & changes
+* Friendly fights (sparring, rival squads) can never kill.
+* The companion loop now runs on aligned ticks, so periodic checks (bond over time, saving) fire reliably.
+* Knight Contracts and recruiting count the reserve: you can lead up to 10 knights.
+
+### Known issues
+* Companions on brooms are steered by script; in tight caves they may clip through leaves or ceilings until you land.
+* Expedition timers use real time; changing your device clock changes them too.
+* Balance is still a first pass: please report anything too strong or too weak.
+
 ## v0.3.0 – Early Access (2026-11-17)
 
 A big content drop: take to the sky on **magic brooms**, earn rewards with **daily missions**, wear **amulets**, awaken a **fifth spell** in every grimoire, and face **Rogue Mages**, the **Witch Sisters** and the **Bone Dragon**.

@@ -12,6 +12,11 @@ from .tex import P, rgb
 
 GLYPH_PAGE = 'E7'  # characters U+E700 - U+E7FF
 ATTR_GLYPH0 = 0xA0   # attribute icons: 0xA0 - 0xBF
+ATTR_GLYPH1 = 0x80   # attribute icons 33-48: 0x80 - 0x8F
+
+
+def attr_glyph_index(i):
+    return ATTR_GLYPH0 + i if i < 32 else ATTR_GLYPH1 + i - 32
 FRUIT_GLYPH0 = 0xC0  # fruit icons: 0xC0 - 0xDF
 
 
@@ -250,6 +255,27 @@ def _attr_glyph(attr):
             d.polygon([(4 * s, 9 * s), (8 * s, 0.5 * s), (12 * s, 9 * s)], fill=c)
             d.ellipse([5.5 * s, 8 * s, 7.3 * s, 10 * s], fill=(20, 60, 60, 255))
             d.ellipse([8.7 * s, 8 * s, 10.5 * s, 10 * s], fill=(20, 60, 60, 255))
+        elif attr == 'gravity':
+            d.ellipse([2 * s, 2 * s, 14 * s, 14 * s], outline=c, width=int(1.3 * s))
+            d.ellipse([5 * s, 5 * s, 11 * s, 11 * s], outline=c, width=int(1.1 * s))
+            d.ellipse([6.8 * s, 6.8 * s, 9.2 * s, 9.2 * s], fill=c)
+            d.polygon([(8 * s, 15.5 * s), (6 * s, 12.5 * s), (10 * s, 12.5 * s)], fill=c)
+        elif attr == 'moon':
+            d.ellipse([1.5 * s, 1.5 * s, 14.5 * s, 14.5 * s], fill=c)
+            d.ellipse([5 * s, 0 * s, 17 * s, 12 * s], fill=(0, 0, 0, 0))
+            d.ellipse([4 * s, 9 * s, 5.6 * s, 10.6 * s], fill=(255, 255, 255, 255))
+        elif attr == 'thorn':
+            d.line([(3 * s, 14 * s), (13 * s, 2 * s)], fill=c, width=int(2.0 * s))
+            for k in range(4):
+                x = 4.5 + k * 2.5
+                y = 12.2 - k * 3
+                d.polygon([(x * s, y * s), ((x - 2.6) * s, (y - 1.6) * s), ((x - 0.4) * s, (y - 0.8) * s)], fill=c)
+                d.polygon([((x + 0.6) * s, (y + 0.4) * s), ((x + 3) * s, (y + 1.4) * s), ((x + 1.2) * s, (y - 0.4) * s)], fill=c)
+        elif attr == 'ash':
+            for k, (x, y, r) in enumerate(((5, 11, 3.4), (10, 10, 3.6), (7.5, 6, 3))):
+                d.ellipse([(x - r) * s, (y - r) * s, (x + r) * s, (y + r) * s], fill=tuple(int(v * (0.75 + k * 0.1)) for v in c[:3]) + (255,))
+            for x, y in ((4, 3), (12, 4.5), (9, 1.5)):
+                d.ellipse([(x - 0.9) * s, (y - 0.9) * s, (x + 0.9) * s, (y + 0.9) * s], fill=(255, 150, 60, 255))
         elif attr == 'rune':
             d.ellipse([1.5 * s, 1.5 * s, 14.5 * s, 14.5 * s], outline=c, width=int(1.4 * s))
             d.line([(8 * s, 3 * s), (8 * s, 13 * s)], fill=c, width=int(1.4 * s))
@@ -302,7 +328,7 @@ def glyph_page():
         r, c = divmod(idx, 16)
         page[r * 16:(r + 1) * 16, c * 16:(c + 1) * 16] = cell
     for i, attr in enumerate(ATTR_ORDER):
-        put(ATTR_GLYPH0 + i, _attr_glyph(attr))
+        put(attr_glyph_index(i), _attr_glyph(attr))
     mana = (rgb('3ca8ff'), rgb('c8ecff'), rgb('16243a'), rgb('0a0f18'))
     anti = (rgb('d0202a'), rgb('ff7a7a'), rgb('1a0a0c'), rgb('050505'))
     put(0x10, _cap('left', rgb('c9d4e6')))

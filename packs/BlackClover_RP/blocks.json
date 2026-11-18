@@ -15,5 +15,8 @@
   },
   "bc:mission_board": {
     "sound": "wood"
+  },
+  "bc:squad_banner": {
+    "sound": "wood"
   }
 }

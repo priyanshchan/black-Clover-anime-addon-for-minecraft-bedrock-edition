@@ -44,8 +44,14 @@
     "bc_clover_charm": {
       "textures": "textures/items/bc/clover_charm"
     },
+    "bc_clover_leaf": {
+      "textures": "textures/items/bc/clover_leaf"
+    },
     "bc_colossus_core": {
       "textures": "textures/items/bc/colossus_core"
+    },
+    "bc_companion_tome": {
+      "textures": "textures/items/bc/companion_tome"
     },
     "bc_companion_whistle": {
       "textures": "textures/items/bc/companion_whistle"
@@ -55,6 +61,9 @@
     },
     "bc_crimson_lion_robe": {
       "textures": "textures/items/bc/crimson_lion_robe"
+    },
+    "bc_cursed_spool": {
+      "textures": "textures/items/bc/cursed_spool"
     },
     "bc_cutlass": {
       "textures": "textures/items/bc/cutlass"
@@ -79,6 +88,9 @@
     },
     "bc_fallen_seal": {
       "textures": "textures/items/bc/fallen_seal"
+    },
+    "bc_field_rations": {
+      "textures": "textures/items/bc/field_rations"
     },
     "bc_flintlock": {
       "textures": "textures/items/bc/flintlock"
@@ -185,6 +197,9 @@
     "bc_grimoire_anti": {
       "textures": "textures/items/bc/grimoire_anti"
     },
+    "bc_grimoire_ash": {
+      "textures": "textures/items/bc/grimoire_ash"
+    },
     "bc_grimoire_beast": {
       "textures": "textures/items/bc/grimoire_beast"
     },
@@ -218,6 +233,9 @@
     "bc_grimoire_gold": {
       "textures": "textures/items/bc/grimoire_gold"
     },
+    "bc_grimoire_gravity": {
+      "textures": "textures/items/bc/grimoire_gravity"
+    },
     "bc_grimoire_ice": {
       "textures": "textures/items/bc/grimoire_ice"
     },
@@ -235,6 +253,9 @@
     },
     "bc_grimoire_mist": {
       "textures": "textures/items/bc/grimoire_mist"
+    },
+    "bc_grimoire_moon": {
+      "textures": "textures/items/bc/grimoire_moon"
     },
     "bc_grimoire_paper": {
       "textures": "textures/items/bc/grimoire_paper"
@@ -268,6 +289,9 @@
     },
     "bc_grimoire_steel": {
       "textures": "textures/items/bc/grimoire_steel"
+    },
+    "bc_grimoire_thorn": {
+      "textures": "textures/items/bc/grimoire_thorn"
     },
     "bc_grimoire_time": {
       "textures": "textures/items/bc/grimoire_time"
@@ -412,6 +436,9 @@
     },
     "bc_swift_broom": {
       "textures": "textures/items/bc/swift_broom"
+    },
+    "bc_training_dummy": {
+      "textures": "textures/items/bc/training_dummy"
     },
     "bc_treasure_map": {
       "textures": "textures/items/bc/treasure_map"

@@ -532,9 +532,38 @@ def v3_sheet():
     img.convert('RGB').save(os.path.join(OUT, 'items030.png'), optimize=True)
 
 
+def v5_sheet():
+    """v0.5.0: companion emotes and riding, the Squad Banner, the Training Dummy, the Soul Puppeteer and its marionettes."""
+    from bc.data import ATTR_ORDER, KNIGHT_ROBES
+    from bc.models import v5, wave4
+    entries = []
+    ka = v5.knight_v5_animations()
+    for i, (nm, label) in enumerate((('kneel', 'Reviving a friend'), ('taunt', 'Vanguard: taunt'), ('guard', 'Warden: guard'),
+                                     ('point', 'Ranger: mark'), ('victory', 'Victory'), ('sleep', 'Camp: sleeping'))):
+        pose = {}
+        render.pose_from_anim(ka[f'animation.bc.magic_knight.{nm}'], 0.5, pose=pose)
+        g = model(wave4.knight_geo(KNIGHT_ROBES[i % len(KNIGHT_ROBES)], i % len(KNIGHT_ROBES)))
+        entries.append((label, g, pose, 35, 10, 1.4))
+    entries.append(('Squad Banner', model(v5.squad_banner_geo()), {}, 25, 10, 1.1))
+    entries.append(('Training Dummy', model(v5.training_dummy_geo()), {}, 25, 10, 1.3))
+    pa = v5.puppeteer_animations()
+    pose = {}
+    render.pose_from_anim(pa['animation.bc.soul_puppeteer.float'], 0.3, pose=pose)
+    entries.append(('The Soul Puppeteer', model(v5.puppeteer_geo()), pose, 25, 10, 1.0))
+    pose = {}
+    render.pose_from_anim(v5.puppet_animations()['animation.bc.puppet.walk'], 0.1, env={'q.anim_time': 0.1}, pose=pose)
+    entries.append(('Marionette', model(v5.puppet_geo()), pose, 30, 10, 1.6))
+    grid(entries, 5, 280, 'v050.png', 'v0.5.0: the companion update & the Soul Puppeteer')
+    ims = [items.grimoire_icon(a) for a in ATTR_ORDER[32:]] + list(v5.v5_icons().values())
+    img = background(len(ims) * 76 + 20, 96, '22222c', '101016', ring=False)
+    for i, a in enumerate(ims):
+        img.alpha_composite(tex.to_image(a).resize((64, 64), Image.NEAREST), (16 + i * 76, 16))
+    img.convert('RGB').save(os.path.join(OUT, 'items050.png'), optimize=True)
+
+
 if __name__ == '__main__':
     names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
-                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet']
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet']
     for n in names:
         print('rendering', n)
         globals()[n]()

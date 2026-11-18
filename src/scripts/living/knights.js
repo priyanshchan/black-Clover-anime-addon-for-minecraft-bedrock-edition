@@ -15,12 +15,14 @@ const ATTRS = DATA.order.filter((a) => a !== 'anti');
 const XP_AT = [0, 0, 20, 60, 120, 200, 320, 480, 700, 1000, 1400];
 export const RANK = ['', 'Junior', 'Junior', 'Intermediate', 'Intermediate', 'Senior', 'Senior', 'First Class', 'First Class', 'Vice-Captain', 'Captain',
   'Captain', 'Captain', 'Captain', 'Captain', 'Champion', 'Champion', 'Champion', 'Champion', 'Champion', 'Royal Champion'];
-const MAX_HIRED = DATA.companion.partyMax;
+/** active party plus the reserve kept at a Squad Banner */
+const MAX_HIRED = DATA.companion.partyMax + DATA.companion.reserveMax;
 
 /** companions.js plugs in here (knights.js must not import it) */
 const hooks = {
   /** @type {(e: any, p: any) => void} */ onEnlist: () => {},
   /** @type {(p: any) => number} */ partySize: (p) => hiredBy(p).length,
+  /** @type {(e: any) => number} */ xpMul: () => 1,
   /** @type {((p: any, e: any, item: any) => Promise<void> | void) | undefined} */ talk: undefined,
 };
 export function setCompanionHooks(h) {
@@ -100,7 +102,7 @@ export function onKnightLevel(fn) {
 
 export function giveKnightXp(e, amount) {
   if (!alive(e) || e.typeId !== 'bc:magic_knight') return;
-  const xp = (safe(() => e.getDynamicProperty('bc:kxp')) ?? 0) + amount;
+  const xp = (safe(() => e.getDynamicProperty('bc:kxp')) ?? 0) + Math.round(amount * (safe(() => hooks.xpMul(e)) ?? 1));
   safe(() => e.setDynamicProperty('bc:kxp', xp));
   const table = isCompanion(e) ? DATA.companion.xp : XP_AT;
   const cap = table.length - 1;
@@ -152,7 +154,7 @@ function enlist(e, p) {
 /** Use a Knight Contract: a Magic Knight joins you as a companion. */
 export function hireKnight(p) {
   if (hooks.partySize(p) >= MAX_HIRED) {
-    safe(() => p.sendMessage(`§7You already lead ${MAX_HIRED} knights. Release one before hiring another.`));
+    safe(() => p.sendMessage(`§7Your roster is full (${MAX_HIRED} knights, counting the reserve). Release one before hiring another.`));
     return false;
   }
   const dir = V.flat(p.getViewDirection());
@@ -246,7 +248,7 @@ async function talk(p, e) {
     const price = 100 + knightLevel(e) * 25;
     form.button(`§lRecruit\n§r§8A Knight Contract, or ${price} doubloons`);
     acts.push(() => {
-      if (hooks.partySize(p) >= MAX_HIRED) return `cannot join - you already lead ${MAX_HIRED} companions`;
+      if (hooks.partySize(p) >= MAX_HIRED) return `cannot join - your roster of ${MAX_HIRED} knights is full`;
       const inv = p.getComponent('minecraft:inventory')?.container;
       let paid = false;
       for (let i = 0; inv && i < inv.size && !paid; i++) {

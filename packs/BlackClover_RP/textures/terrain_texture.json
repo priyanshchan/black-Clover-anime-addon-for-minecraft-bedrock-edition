@@ -13,6 +13,9 @@
     "bc_mission_board": {
       "textures": "textures/blocks/bc/mission_board"
     },
+    "bc_squad_banner": {
+      "textures": "textures/blocks/bc/squad_banner"
+    },
     "bc_war_table": {
       "textures": "textures/blocks/bc/war_table"
     }

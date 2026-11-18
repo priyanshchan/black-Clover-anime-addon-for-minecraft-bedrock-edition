@@ -23,6 +23,7 @@ function tierOf(e) {
 
 function track(e) {
   if (e.typeId !== 'bc:broom' || brooms.has(e.id)) return;
+  if (typeof safe(() => e.getDynamicProperty('bc:cbroom')) === 'string') return; // a companion's broom (squad.js steers it)
   const owner = safe(() => e.getDynamicProperty('bc:owner'));
   brooms.set(e.id, { tier: tierOf(e), speed: 0, yaw: safe(() => e.getRotation().y) ?? 0, empty: 0, rider: '', owner: typeof owner === 'string' ? owner : '', warned: 0 });
 }

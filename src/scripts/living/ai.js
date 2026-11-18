@@ -19,6 +19,7 @@ import { castAbility, isSealed } from '../sea/fruits.js';
 import { unitInfo } from './battle.js';
 import { castSpec, friends } from './engine.js';
 import { kitFor, knightAttr, knightLevel, onKnightLevel, setRoleProvider } from './knights.js';
+import { escape } from './danger.js';
 
 const KITTED = Object.keys(DATA.enemyKits);
 const MANAGED = new Set(['bc:magic_knight', 'bc:raider_captain', 'bc:rogue_mage', ...KITTED]);
@@ -41,13 +42,26 @@ const AIM_ANIM = { 'bc:raider_gunner': 'animation.bc.raider_gunner.aim', 'bc:tid
 const PACK = new Set(['bc:hellhound']);
 
 /**
- * @typedef {{ id: string, name: string, spec?: Record<string, any>, cd: number, cast: (target: any, aim: any, pwMul: number) => any }} Action
+ * @typedef {{ id: string, name: string, spec?: Record<string, any>, cd: number, cast: (target: any, aim: any, pwMul: number) => any,
+ *             score?: (ctx: any, target: any) => number }} Action
  * @typedef {{ role: string, skill: number, courage: number, next: number, castAt: number, dodgeAt: number, cds: Map<string, number>,
- *             target: string, retreatUntil: number, buffUntil: number, lastHitBy: string, lastHitAt: number, aimUntil: number, orbit: number }} Brain
- * @typedef {{ focus?: string, passive?: boolean, ownerLow?: boolean, pwMul?: number, cdMul?: number }} CompanionInfo
+ *             target: string, retreatUntil: number, buffUntil: number, lastHitBy: string, lastHitAt: number, aimUntil: number, orbit: number,
+ *             skillNow?: number }} Brain
+ * @typedef {{ focus?: string, passive?: boolean, ownerLow?: boolean, pwMul?: number, cdMul?: number, castMul?: number, role?: string,
+ *             skill?: number, courage?: number, extra?: Action[], bonus?: (foe: any, dist: number) => number, echo?: number }} CompanionInfo
  */
 /** @type {Map<string, Brain>} */
 const brains = new Map();
+/** @type {Map<string, {id: string, until: number}>} taunts and other forced targets */
+const forced = new Map();
+/** Make an NPC fight `target` for a while (a Vanguard's taunt). */
+export function forceTarget(e, target, ticks) {
+  forced.set(e.id, { id: target.id, until: system.currentTick + ticks });
+}
+/** Is this entity run by the tactical brain? */
+export function hasBrain(e) {
+  return brains.has(e.id);
+}
 /** @type {(e: any) => CompanionInfo | undefined} */
 let companionInfo = () => undefined;
 /** companions.js tells the brain about focus targets, stances and robe perks */
@@ -89,7 +103,9 @@ function actionsOf(e) {
     const lvl = knightLevel(e);
     const pw = 0.8 + lvl * 0.05;
     const spells = DATA.spells[attr] ?? [];
-    kitFor(attr, lvl).forEach((spec, i) => {
+    // a companion who finished its first trial has an awakened grimoire: every page is open
+    const awake = safe(() => e.getDynamicProperty('bc:awake')) === true;
+    kitFor(attr, awake ? Math.max(lvl, 15) : lvl).forEach((spec, i) => {
       const sp = spells.find((x) => x.spec === spec || JSON.stringify(x.spec) === JSON.stringify(spec));
       out.push({ id: `k${i}`, name: sp?.name ?? spec.t, spec, cd: Math.max(30, Math.round((sp ? sp.cooldown * 20 * 1.5 : CD[spec.t] ?? 100))),
         cast: (t, aim, mul) => castSpec(e, spec, `a:${attr}`, pw * mul, t, { aim }) });
@@ -196,7 +212,7 @@ function tryDodge(e, b, t) {
     if (along <= 0 || along / speed > 14) continue;
     const miss = V.len(V.sub(to, V.mul(dir, along)));
     if (miss > 1.8) continue;
-    if (Math.random() > b.skill * 0.75) {
+    if (Math.random() > (b.skillNow ?? b.skill) * 0.75) {
       b.dodgeAt = t + 20;
       return;
     }
@@ -211,6 +227,11 @@ function tryDodge(e, b, t) {
 }
 
 function pickTarget(e, b, foes, info, cinfo) {
+  const f0 = forced.get(e.id);
+  if (f0 && f0.until > system.currentTick) {
+    const ft = world.getEntity(f0.id);
+    if (ft && alive(ft) && V.dist(ft.location, e.location) < 28) return ft;
+  } else if (f0) forced.delete(e.id);
   const owner = ownerOf(e);
   const ownerEnt = owner ? world.getEntity(owner) : undefined;
   const defensive = ownerEnt && safe(() => e.getDynamicProperty('bc:stance')) === 'defensive';
@@ -225,6 +246,7 @@ function pickTarget(e, b, foes, info, cinfo) {
     if (f.id === b.target) s += 5;
     if (f.id === b.lastHitBy && system.currentTick - b.lastHitAt < 100) s += 6;
     if (info && f.id === info.enemyLeader) s += 3;
+    if (cinfo?.bonus) s += cinfo.bonus(f, d);
     if (s > bs) {
       bs = s;
       best = f;
@@ -279,7 +301,7 @@ function castAnim(e, a) {
 }
 
 function decide(e, b, target, foes, t, cinfo) {
-  const acts = actionsOf(e);
+  const acts = cinfo?.extra ? actionsOf(e).concat(cinfo.extra) : actionsOf(e);
   if (!acts.length) return;
   const d = V.dist(target.location, e.location);
   const tl = target.location;
@@ -289,12 +311,14 @@ function decide(e, b, target, foes, t, cinfo) {
   for (const f of friends(e, e.location, 10)) if (f.id !== e.id) ally = Math.max(ally, 1 - hpFrac(f));
   const summons = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 24, type: 'bc:construct' })
     .filter((x) => ownerOf(x) === e.id).length) ?? 0;
-  const ctx = { d, cluster, near, hp: hpFrac(e), ally, role: b.role, now: t, buffUntil: b.buffUntil, summons, ownerLow: !!cinfo?.ownerLow };
+  const skill = b.skillNow ?? b.skill;
+  const ctx = { d, cluster, near, hp: hpFrac(e), ally, role: cinfo?.role ?? b.role, now: t, buffUntil: b.buffUntil, summons, ownerLow: !!cinfo?.ownerLow,
+    foes, target };
   let best;
   let bs = 2.5;
   for (const a of acts) {
     if ((b.cds.get(a.id) ?? 0) > t) continue;
-    const s = score(a, ctx) + rand(0, (1 - b.skill) * 4);
+    const s = (a.score ? a.score(ctx, target) : score(a, ctx)) + rand(0, (1 - skill) * 4);
     if (s > bs) {
       bs = s;
       best = a;
@@ -308,7 +332,7 @@ function decide(e, b, target, foes, t, cinfo) {
     b.castAt = t + 10;
     return;
   }
-  let aim = lead(e, target, best, b.skill);
+  let aim = lead(e, target, best, skill);
   if (best.spec?.t === 'leap' && best.spec.mode === 'blink' && b.role !== 'brawler') {
     aim = V.add(e.location, V.mul(V.flat(V.sub(e.location, target.location)), 10)); // blink away
   }
@@ -321,8 +345,15 @@ function decide(e, b, target, foes, t, cinfo) {
   }
   b.cds.set(best.id, t + Math.round(best.cd * (cinfo?.cdMul ?? 1)));
   if (best.spec?.t === 'buff') b.buffUntil = t + 240;
+  // an Arcanist's Spell Echo: the spell rings out once more at half power
+  if (cinfo?.echo && best.spec && !best.score && Math.random() < cinfo.echo) {
+    const again = best;
+    system.runTimeout(() => {
+      if (alive(e) && alive(target)) safe(() => again.cast(target, lead(e, target, again, skill), (cinfo.pwMul ?? 1) * 0.5), 'ai-echo');
+    }, 12);
+  }
   const enemy = !!DATA.enemyKits[e.typeId];
-  b.castAt = t + Math.round((enemy ? 40 : 26) + (1 - b.skill) * 40 + rand(0, 14));
+  b.castAt = t + Math.round(((enemy ? 40 : 26) + (1 - skill) * 40 + rand(0, 14)) * (cinfo?.castMul ?? 1));
 }
 
 // ------------------------------------------------------------------------------- movement
@@ -356,7 +387,10 @@ function think(e, b, t) {
   const info = unitInfo(e.id);
   if (info?.routing) return;
   const cinfo = companionInfo(e);
+  b.skillNow = cinfo?.skill !== undefined ? Math.max(0.1, Math.min(1, cinfo.skill)) : b.skill;
   if (b.dodgeAt <= t) tryDodge(e, b, t);
+  // step out of telegraphed blows and spell fields (companions always read them, others by skill)
+  if (cinfo || Math.random() < b.skill * 0.6) escape(e, cinfo ? 0.5 : 0.35);
   if (cinfo?.passive) {
     holdPosition(e);
     return;
@@ -370,7 +404,8 @@ function think(e, b, t) {
   b.target = target.id;
   const hp = hpFrac(e);
   // cowards fall back to their friends when badly hurt
-  if (hp < 0.3 && b.courage < 0.6 && b.retreatUntil < t - 200) {
+  const courage = cinfo?.courage ?? b.courage;
+  if (hp < 0.3 && courage < 0.6 && b.retreatUntil < t - 200) {
     b.retreatUntil = t + 60;
     particle(e.dimension, 'bc:dust_burst', e.location, { color: rgb('a0a0a0'), scale: 0.5 });
   }

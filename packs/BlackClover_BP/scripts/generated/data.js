@@ -224,6 +224,34 @@ export const DATA = {
       "leaves": 4,
       "mc": "\u00a75",
       "glyph": "\ue7bf"
+    },
+    "gravity": {
+      "name": "Gravity",
+      "color": "8a6cff",
+      "leaves": 4,
+      "mc": "\u00a75",
+      "glyph": "\ue780"
+    },
+    "moon": {
+      "name": "Moon",
+      "color": "c8d8ff",
+      "leaves": 4,
+      "mc": "\u00a79",
+      "glyph": "\ue781"
+    },
+    "thorn": {
+      "name": "Thorn",
+      "color": "6a9a3a",
+      "leaves": 3,
+      "mc": "\u00a72",
+      "glyph": "\ue782"
+    },
+    "ash": {
+      "name": "Ash",
+      "color": "9a8a80",
+      "leaves": 3,
+      "mc": "\u00a77",
+      "glyph": "\ue783"
     }
   },
   "order": [
@@ -258,7 +286,11 @@ export const DATA = {
     "gold",
     "beast",
     "spirit",
-    "rune"
+    "rune",
+    "gravity",
+    "moon",
+    "thorn",
+    "ash"
   ],
   "spells": {
     "wind": [
@@ -3058,6 +3090,437 @@ export const DATA = {
           ]
         }
       }
+    ],
+    "gravity": [
+      {
+        "id": "gravity_orb",
+        "name": "Gravity Orb",
+        "mana": 12,
+        "cooldown": 0.8,
+        "level": 1,
+        "desc": "A heavy orb that crushes and slows whatever it hits.",
+        "spec": {
+          "t": "bolt",
+          "d": 5,
+          "shape": 0,
+          "size": 2,
+          "speed": 1.5,
+          "aoe": 2.4,
+          "fx": "gravity",
+          "eff": [
+            [
+              "slowness",
+              2,
+              2
+            ]
+          ]
+        }
+      },
+      {
+        "id": "crushing_field",
+        "name": "Crushing Field",
+        "mana": 28,
+        "cooldown": 8.0,
+        "level": 3,
+        "desc": "Gravity multiplies around your aim, dragging foes to the ground.",
+        "spec": {
+          "t": "zone",
+          "d": 3,
+          "r": 4,
+          "dur": 5,
+          "pull": 0.3,
+          "fx": "gravity",
+          "eff": [
+            [
+              "slowness",
+              2,
+              3
+            ]
+          ]
+        }
+      },
+      {
+        "id": "skyward_lift",
+        "name": "Skyward Lift",
+        "mana": 34,
+        "cooldown": 10.0,
+        "level": 6,
+        "desc": "Gravity lets go: foes near your aim float helplessly into the air.",
+        "spec": {
+          "t": "nova",
+          "at": "aim",
+          "d": 6,
+          "r": 5,
+          "fx": "gravity",
+          "eff": [
+            [
+              "levitation",
+              2,
+              2
+            ]
+          ]
+        }
+      },
+      {
+        "id": "singularity",
+        "name": "Singularity",
+        "mana": 82,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "A point of crushing gravity swallows everything nearby.",
+        "spec": {
+          "t": "vortex",
+          "d": 18,
+          "r": 8,
+          "dur": 3,
+          "fx": "gravity"
+        }
+      },
+      {
+        "id": "event_horizon",
+        "name": "Event Horizon",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "A black star swallows the battlefield, then bursts.",
+        "spec": {
+          "t": "vortex",
+          "d": 22,
+          "r": 11,
+          "dur": 4,
+          "fx": "gravity",
+          "then": {
+            "t": "nova",
+            "d": 12,
+            "r": 11,
+            "kb": [
+              2.0,
+              0.8
+            ],
+            "fx": "gravity"
+          }
+        }
+      }
+    ],
+    "moon": [
+      {
+        "id": "moonbeam_darts",
+        "name": "Moonbeam Darts",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "Three darts of pale moonlight.",
+        "spec": {
+          "t": "bolt",
+          "d": 4,
+          "n": 3,
+          "spread": 10,
+          "shape": 1,
+          "speed": 2.2,
+          "fx": "moon"
+        }
+      },
+      {
+        "id": "crescent_arc",
+        "name": "Crescent Arc",
+        "mana": 22,
+        "cooldown": 5.0,
+        "level": 3,
+        "desc": "A sweeping crescent of moonlight in front of you.",
+        "spec": {
+          "t": "nova",
+          "at": "front",
+          "d": 9,
+          "r": 4,
+          "kb": [
+            1.0,
+            0.3
+          ],
+          "fx": "moon"
+        }
+      },
+      {
+        "id": "lunar_blessing",
+        "name": "Lunar Blessing",
+        "mana": 32,
+        "cooldown": 14.0,
+        "level": 6,
+        "desc": "Moonlight mends you and your allies.",
+        "spec": {
+          "t": "heal",
+          "heal": 8,
+          "r": 8,
+          "regen": 5,
+          "fx": "moon"
+        }
+      },
+      {
+        "id": "moonlight_pillars",
+        "name": "Moonlight Pillars",
+        "mana": 84,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "Pillars of moonlight fall on every foe near your aim.",
+        "spec": {
+          "t": "strikes",
+          "d": 11,
+          "n": 7,
+          "r": 12,
+          "fx": "moon",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "full_moon_requiem",
+        "name": "Full Moon Requiem",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "The full moon rains silver light on everything around your aim.",
+        "spec": {
+          "t": "rain",
+          "d": 9,
+          "n": 22,
+          "r": 9,
+          "every": 2,
+          "fx": "moon",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ]
+          ]
+        }
+      }
+    ],
+    "thorn": [
+      {
+        "id": "thorn_needles",
+        "name": "Thorn Needles",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "Four poisoned needles.",
+        "spec": {
+          "t": "bolt",
+          "d": 3,
+          "n": 4,
+          "spread": 14,
+          "shape": 3,
+          "speed": 2.4,
+          "fx": "thorn",
+          "eff": [
+            [
+              "poison",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "bramble_snare",
+        "name": "Bramble Snare",
+        "mana": 26,
+        "cooldown": 8.0,
+        "level": 3,
+        "desc": "Brambles burst up and bind foes near your aim.",
+        "spec": {
+          "t": "prison",
+          "d": 5,
+          "r": 3,
+          "dur": 4,
+          "fx": "thorn",
+          "eff": [
+            [
+              "poison",
+              3,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "bramble_armour",
+        "name": "Bramble Armour",
+        "mana": 30,
+        "cooldown": 18.0,
+        "level": 6,
+        "desc": "Armour of thorns: anyone close to you is cut.",
+        "spec": {
+          "t": "buff",
+          "fx": "thorn",
+          "self": [
+            [
+              "resistance",
+              10,
+              1
+            ]
+          ],
+          "then": {
+            "t": "zone",
+            "at": "self",
+            "d": 2,
+            "r": 3,
+            "dur": 8,
+            "fx": "thorn"
+          }
+        }
+      },
+      {
+        "id": "thorn_forest",
+        "name": "Thorn Forest",
+        "mana": 80,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "A forest of thorns erupts in eight directions.",
+        "spec": {
+          "t": "wave",
+          "d": 14,
+          "len": 14,
+          "dirs": 8,
+          "fx": "thorn",
+          "eff": [
+            [
+              "slowness",
+              3,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "crown_of_thorns",
+        "name": "Crown of Thorns",
+        "mana": 110,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "A crown of thorns rises around you, poisoning and slowing every foe inside.",
+        "spec": {
+          "t": "zone",
+          "at": "self",
+          "d": 5,
+          "r": 10,
+          "dur": 8,
+          "fx": "thorn",
+          "eff": [
+            [
+              "poison",
+              2,
+              1
+            ],
+            [
+              "slowness",
+              2,
+              2
+            ]
+          ]
+        }
+      }
+    ],
+    "ash": [
+      {
+        "id": "cinder_flick",
+        "name": "Cinder Flick",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "Two smouldering cinders.",
+        "spec": {
+          "t": "bolt",
+          "d": 4,
+          "n": 2,
+          "spread": 8,
+          "shape": 0,
+          "speed": 2.0,
+          "fire": 2,
+          "fx": "ash"
+        }
+      },
+      {
+        "id": "ash_cloud",
+        "name": "Ash Cloud",
+        "mana": 26,
+        "cooldown": 9.0,
+        "level": 3,
+        "desc": "A choking cloud of ash settles over your aim.",
+        "spec": {
+          "t": "zone",
+          "d": 1.5,
+          "r": 5,
+          "dur": 6,
+          "fx": "ash",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ],
+            [
+              "wither",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "rekindle",
+        "name": "Rekindle",
+        "mana": 32,
+        "cooldown": 14.0,
+        "level": 6,
+        "desc": "Warm embers mend you and your allies.",
+        "spec": {
+          "t": "heal",
+          "heal": 7,
+          "r": 7,
+          "regen": 5,
+          "fx": "ash"
+        }
+      },
+      {
+        "id": "ashen_storm",
+        "name": "Ashen Storm",
+        "mana": 82,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "Burning ash rains over your aim.",
+        "spec": {
+          "t": "rain",
+          "d": 7,
+          "n": 16,
+          "r": 7,
+          "every": 2,
+          "fire": 3,
+          "fx": "ash"
+        }
+      },
+      {
+        "id": "ashfall_cataclysm",
+        "name": "Ashfall Cataclysm",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "Burning mountains of ash crash down around your aim.",
+        "spec": {
+          "t": "meteor",
+          "d": 16,
+          "n": 6,
+          "r": 8,
+          "aoe": 3.5,
+          "fire": 6,
+          "size": 2,
+          "fx": "ash"
+        }
+      }
     ]
   },
   "swords": {
@@ -4863,36 +5326,40 @@ export const DATA = {
     "a:beast": 29,
     "a:spirit": 30,
     "a:rune": 31,
-    "f:ember": 32,
-    "f:stone": 33,
-    "f:gravity": 34,
-    "f:shadow": 35,
-    "f:bloom": 36,
-    "f:quicksilver": 37,
-    "f:frost": 38,
-    "f:barrier": 39,
-    "f:wolf": 40,
-    "f:hawk": 41,
-    "f:lava": 42,
-    "f:ash": 43,
-    "f:prism": 44,
-    "f:bounce": 45,
-    "f:blast": 46,
-    "f:acid": 47,
-    "f:lodestone": 48,
-    "f:cloud": 49,
-    "f:ink": 50,
-    "f:bear": 51,
-    "f:tiger": 52,
-    "f:wyvern": 53,
-    "f:spore": 54,
-    "f:thread": 55,
-    "f:slime": 56,
-    "f:chain": 57,
-    "f:lion": 58,
-    "f:shark": 59,
-    "f:phoenix": 60,
-    "f:spider": 61
+    "a:gravity": 32,
+    "a:moon": 33,
+    "a:thorn": 34,
+    "a:ash": 35,
+    "f:ember": 36,
+    "f:stone": 37,
+    "f:gravity": 38,
+    "f:shadow": 39,
+    "f:bloom": 40,
+    "f:quicksilver": 41,
+    "f:frost": 42,
+    "f:barrier": 43,
+    "f:wolf": 44,
+    "f:hawk": 45,
+    "f:lava": 46,
+    "f:ash": 47,
+    "f:prism": 48,
+    "f:bounce": 49,
+    "f:blast": 50,
+    "f:acid": 51,
+    "f:lodestone": 52,
+    "f:cloud": 53,
+    "f:ink": 54,
+    "f:bear": 55,
+    "f:tiger": 56,
+    "f:wyvern": 57,
+    "f:spore": 58,
+    "f:thread": 59,
+    "f:slime": 60,
+    "f:chain": 61,
+    "f:lion": 62,
+    "f:shark": 63,
+    "f:phoenix": 64,
+    "f:spider": 65
   },
   "altarWeights": {
     "wind": 11,
@@ -4926,7 +5393,11 @@ export const DATA = {
     "gold": 4,
     "beast": 7,
     "spirit": 4,
-    "rune": 4
+    "rune": 4,
+    "gravity": 4,
+    "moon": 4,
+    "thorn": 7,
+    "ash": 7
   },
   "npcKits": {
     "wind": [
@@ -5278,6 +5749,24 @@ export const DATA = {
       "count": 1,
       "price": 220,
       "label": "Mystery Amulet"
+    },
+    {
+      "item": "bc:field_rations",
+      "count": 4,
+      "price": 40,
+      "label": "Field Rations x4"
+    },
+    {
+      "item": "bc:clover_leaf",
+      "count": 1,
+      "price": 260,
+      "label": "Clover Leaf of Return"
+    },
+    {
+      "item": "bc:companion_tome",
+      "count": 1,
+      "price": 150,
+      "label": "Companion Tome"
     }
   ],
   "factions": {
@@ -5792,7 +6281,641 @@ export const DATA = {
       "loot": [
         "I picked these up for you.",
         "Don't forget your loot!"
+      ],
+      "camp": [
+        "Finally, a rest.",
+        "I'll get the fire going.",
+        "My feet thank you, {p}."
+      ],
+      "watch": [
+        "I'll keep watch tonight.",
+        "Sleep, {p}. I've got the first watch."
+      ],
+      "alarm": [
+        "Movement in the dark - get up!",
+        "We've got company!",
+        "Something's coming, {p}!"
+      ],
+      "revive": [
+        "Hold on - I've got you!",
+        "Come on, get up!",
+        "Not today. Up you get."
+      ],
+      "revived": [
+        "Thanks... I owe you one.",
+        "I thought that was the end of me.",
+        "Back in the fight!"
+      ],
+      "taunt": [
+        "Over here, you brute!",
+        "Face ME!",
+        "Come on then!"
+      ],
+      "combo": [
+        "Now! Hit it while it's stuck!",
+        "It's bound - finish it!",
+        "Combo!"
+      ],
+      "mark": [
+        "Target marked!",
+        "Hit the marked one!"
+      ],
+      "aegis": [
+        "Shields up!",
+        "I'll protect you all!"
+      ],
+      "controlled": [
+        "My body... won't listen...",
+        "Strings... in my head...",
+        "Run, {p}! I can't stop myself!"
+      ],
+      "freed": [
+        "I'm free! Sorry, {p}...",
+        "The strings are gone - let's get that puppeteer!"
+      ],
+      "tired": [
+        "I need a rest...",
+        "My mana feels so heavy."
+      ],
+      "inspired": [
+        "I feel like I could take on anything!",
+        "Nothing can stop us now!"
+      ],
+      "broom": [
+        "Brooms out!",
+        "Race you, {p}!",
+        "I love flying!"
+      ],
+      "trial": [
+        "{p}, can I ask you something? There's a trial I have to face..."
+      ],
+      "trial_done": [
+        "We did it! I can feel my grimoire awakening!",
+        "Thank you, {p}. I won't forget this."
+      ],
+      "spar_win": [
+        "Good match!",
+        "Better luck next time!"
+      ],
+      "spar_lose": [
+        "You got me this time.",
+        "I need more training..."
+      ],
+      "expedition": [
+        "We're back! You won't believe what we found.",
+        "The road was long, but we made it."
       ]
-    }
+    },
+    "personalities": {
+      "brave": {
+        "name": "Brave",
+        "desc": "First into every fight and never backs down.",
+        "courage": 0.35,
+        "aggro": 1.2,
+        "keep": 0.8,
+        "xp": 1.0,
+        "morale": 1.0,
+        "pw": 1.0,
+        "lines": {
+          "kill": [
+            "Is that all?",
+            "Who's next?"
+          ],
+          "low": [
+            "Stand behind me, {p}!"
+          ],
+          "boss": [
+            "A worthy foe! Let's go!"
+          ],
+          "idle": [
+            "I could fight a dragon today."
+          ]
+        }
+      },
+      "cautious": {
+        "name": "Cautious",
+        "desc": "Keeps its distance and falls back early - rarely gets hurt.",
+        "courage": -0.3,
+        "aggro": 0.8,
+        "keep": 1.5,
+        "xp": 1.0,
+        "morale": 1.0,
+        "pw": 1.0,
+        "lines": {
+          "kill": [
+            "Safe... for now."
+          ],
+          "low": [
+            "{p}, pull back - now!"
+          ],
+          "boss": [
+            "We should be careful with this one."
+          ],
+          "idle": [
+            "Did you hear something?"
+          ]
+        }
+      },
+      "loyal": {
+        "name": "Loyal",
+        "desc": "Sticks to your side and protects you before anything else.",
+        "courage": 0.2,
+        "aggro": 1.0,
+        "keep": 1.0,
+        "xp": 1.0,
+        "morale": 1.1,
+        "pw": 1.0,
+        "guard": true,
+        "lines": {
+          "kill": [
+            "For you, {p}."
+          ],
+          "low": [
+            "Nobody touches {p}!"
+          ],
+          "boss": [
+            "I'm with you, {p}. Always."
+          ],
+          "idle": [
+            "Wherever you go, I go."
+          ]
+        }
+      },
+      "hothead": {
+        "name": "Hothead",
+        "desc": "Charges the strongest foe and hits harder, but takes risks.",
+        "courage": 0.5,
+        "aggro": 1.4,
+        "keep": 0.6,
+        "xp": 1.0,
+        "morale": 0.9,
+        "pw": 1.08,
+        "lines": {
+          "kill": [
+            "HA! Got it!",
+            "Too slow!"
+          ],
+          "low": [
+            "Who did that?! I'll burn them!"
+          ],
+          "boss": [
+            "That one's MINE!"
+          ],
+          "idle": [
+            "I'm bored. Let's find a fight."
+          ]
+        }
+      },
+      "cheerful": {
+        "name": "Cheerful",
+        "desc": "Lifts the whole party's spirits - morale recovers faster around them.",
+        "courage": 0.1,
+        "aggro": 1.0,
+        "keep": 1.0,
+        "xp": 1.0,
+        "morale": 1.6,
+        "pw": 1.0,
+        "lines": {
+          "kill": [
+            "Yay! We did it!",
+            "Teamwork!"
+          ],
+          "low": [
+            "Don't give up, {p}! I've got you!"
+          ],
+          "boss": [
+            "Big, scary... we've got this!"
+          ],
+          "idle": [
+            "What a lovely day!",
+            "Shall I sing something?"
+          ]
+        }
+      },
+      "scholar": {
+        "name": "Scholar",
+        "desc": "Studies every fight: learns 25% faster and picks spells more cleverly.",
+        "courage": 0.0,
+        "aggro": 1.0,
+        "keep": 1.2,
+        "xp": 1.25,
+        "morale": 1.0,
+        "pw": 1.0,
+        "skill": 0.1,
+        "lines": {
+          "kill": [
+            "As predicted.",
+            "Fascinating technique."
+          ],
+          "low": [
+            "{p}, your vitals are failing - retreat!"
+          ],
+          "boss": [
+            "I've read about creatures like this..."
+          ],
+          "idle": [
+            "Did you know mana flows like water?"
+          ]
+        }
+      }
+    },
+    "specs": {
+      "vanguard": {
+        "name": "Vanguard",
+        "role": "brawler",
+        "desc": "A front-line guardian: resistance in battle, taunts foes onto itself and shield-bashes them.",
+        "skills": "Taunt (pull every nearby foe and boss onto itself), Shield Bash (a stunning blow up close)",
+        "mastery": "Bulwark: Resistance II while taunting, and Taunt reaches twice as far."
+      },
+      "arcanist": {
+        "name": "Arcanist",
+        "role": "striker",
+        "desc": "A spell master: +15% spell power, cooldowns 15% shorter, and an arcane barrage.",
+        "skills": "Arcane Barrage (five homing darts of its own magic)",
+        "mastery": "Spell Echo: a quarter of its spells are cast again at half power."
+      },
+      "warden": {
+        "name": "Warden",
+        "role": "support",
+        "desc": "A protector: shields the party, cleanses curses, cuts down arrows aimed at you and revives fallen friends quickly.",
+        "skills": "Aegis (absorption and resistance for you and the party), Cleanse (removes poison, wither, slowness, blindness - and breaks mind control)",
+        "mastery": "Sanctuary: Aegis also heals and cleanses."
+      },
+      "ranger": {
+        "name": "Ranger",
+        "role": "striker",
+        "desc": "A sharpshooter: fights from 10-16 blocks away, fires piercing volleys and marks targets for the party.",
+        "skills": "Volley (three piercing long-range bolts), Mark (the party deals +20% damage to the target)",
+        "mastery": "Hawk Eye: marked foes take +35% damage, and Volley fires five bolts."
+      }
+    },
+    "specLevel": 10,
+    "tactics": {
+      "balanced": {
+        "name": "Balanced",
+        "desc": "Each companion fights its own way."
+      },
+      "focus": {
+        "name": "Focus fire",
+        "desc": "Everyone attacks the same foe - your target, or the weakest enemy near you."
+      },
+      "protect": {
+        "name": "Protect me",
+        "desc": "Stay within six blocks of you and only fight what comes close to you."
+      },
+      "spread": {
+        "name": "Spread out",
+        "desc": "Keep apart from each other - best against big area attacks."
+      },
+      "kite": {
+        "name": "Hit and run",
+        "desc": "Strike, then back off; ranged companions keep their distance."
+      }
+    },
+    "mood": {
+      "start_morale": 70,
+      "inspired": 80,
+      "shaken": 30,
+      "exhausted": 80
+    },
+    "trials": [
+      {
+        "kind": "kill",
+        "target": "monster",
+        "count": 25,
+        "text": "Help me prove myself - defeat 25 monsters with me at your side."
+      },
+      {
+        "kind": "kill",
+        "target": "bc_devil",
+        "count": 10,
+        "text": "Devils burned my village. Help me banish 10 of them."
+      },
+      {
+        "kind": "kill",
+        "target": "bc_pirate",
+        "count": 10,
+        "text": "Sea raiders took everything my family had. Ten of them will answer for it."
+      },
+      {
+        "kind": "kill",
+        "target": "bc:rogue_mage",
+        "count": 4,
+        "text": "A rogue mage stole my master's grimoire. Help me bring four rogues to justice."
+      },
+      {
+        "kind": "boss",
+        "target": "",
+        "count": 1,
+        "text": "I want to stand against a great foe with you. Any of the giants will do."
+      },
+      {
+        "kind": "cast",
+        "target": "",
+        "count": 60,
+        "text": "Train with me: cast 60 spells while I watch your back."
+      },
+      {
+        "kind": "kill",
+        "target": "undead",
+        "count": 20,
+        "text": "The restless dead frighten me. Help me face 20 of them."
+      }
+    ],
+    "trialTitles": [
+      "the Unbroken",
+      "the Steadfast",
+      "the Bright",
+      "the Relentless",
+      "Stormheart",
+      "the Unyielding",
+      "Dawnbringer",
+      "the Watchful"
+    ],
+    "reserveMax": 6,
+    "hometowns": [
+      "Willowmere",
+      "Ashford",
+      "Saltcrest",
+      "Thornvale",
+      "Brightwater",
+      "Kestrel Point",
+      "Duskholm",
+      "Emberglen",
+      "Frostmere",
+      "Oakhollow"
+    ],
+    "dreams": [
+      "to lead my own squad one day",
+      "to protect my little brother",
+      "to master every page of my grimoire",
+      "to see the sea beyond the kingdom",
+      "to become the strongest mage in the kingdom",
+      "to pay back the knight who saved my life",
+      "to write a book about every kind of magic",
+      "to never lose a friend again"
+    ],
+    "tips": [
+      "Sneak and use the Companion Whistle while looking at a foe - the whole party will attack it.",
+      "A Warden companion can break the Soul Puppeteer's strings with Cleanse.",
+      "Spread out when a boss draws warning circles - we can't all dodge in the same direction.",
+      "Field Rations take the weariness out of a long day of fighting.",
+      "Rest near a camp and our spirits recover faster.",
+      "Mana Cookies are the best gift. Just saying.",
+      "At level 10 we can specialise: Vanguard, Arcanist, Warden or Ranger.",
+      "A Squad Banner lets you keep more of us in reserve and send us on expeditions.",
+      "Hit the Training Dummy with us around and we'll practise on it too.",
+      "Union Magic needs a Soulbound companion. Keep giving gifts!",
+      "Flying a broom? We'll grab ours and follow you.",
+      "If one of us falls, stand by the glowing clover and we'll pull them back up."
+    ],
+    "banter": [
+      [
+        "Do you ever wonder what the Wizard King eats for breakfast?",
+        "Probably mana crystals. Raw."
+      ],
+      [
+        "Your spell nearly singed my cape back there.",
+        "Your cape was in the way of my spell."
+      ],
+      [
+        "I counted. I got more kills than you today.",
+        "You counted the imps twice."
+      ],
+      [
+        "When this is over, I'm sleeping for a week.",
+        "You said that last week."
+      ],
+      [
+        "Nice work back there.",
+        "You too. Don't let it go to your head."
+      ],
+      [
+        "Is it just me, or is {p} getting stronger?",
+        "It's not just you."
+      ],
+      [
+        "I miss home sometimes.",
+        "Me too. But this squad is a kind of home now, isn't it?"
+      ],
+      [
+        "Race you to the next hill!",
+        "You're on!"
+      ],
+      [
+        "What's the scariest thing you've ever fought?",
+        "That cooking you made last night."
+      ],
+      [
+        "If I fall, tell my grimoire I loved it.",
+        "You're not falling on my watch."
+      ]
+    ],
+    "expeditions": [
+      {
+        "id": "patrol",
+        "name": "Border Patrol",
+        "minutes": 8,
+        "level": 1,
+        "danger": 1,
+        "desc": "Walk the kingdom border and chase off bandits.",
+        "loot": [
+          [
+            "bc:doubloon",
+            10,
+            25,
+            1.0
+          ],
+          [
+            "bc:mana_crystal",
+            1,
+            3,
+            0.8
+          ],
+          [
+            "minecraft:bread",
+            2,
+            5,
+            0.6
+          ]
+        ],
+        "xp": 120
+      },
+      {
+        "id": "escort",
+        "name": "Merchant Escort",
+        "minutes": 15,
+        "level": 4,
+        "danger": 2,
+        "desc": "Guard a merchant caravan through the hills.",
+        "loot": [
+          [
+            "bc:doubloon",
+            30,
+            60,
+            1.0
+          ],
+          [
+            "bc:mana_cookie",
+            2,
+            4,
+            0.7
+          ],
+          [
+            "bc:treasure_map",
+            1,
+            1,
+            0.25
+          ]
+        ],
+        "xp": 220
+      },
+      {
+        "id": "ruins",
+        "name": "Ancient Ruins",
+        "minutes": 20,
+        "level": 6,
+        "danger": 2,
+        "desc": "Search a ruined temple for lost grimoire pages.",
+        "loot": [
+          [
+            "bc:ancient_page",
+            1,
+            3,
+            0.9
+          ],
+          [
+            "bc:mana_crystal",
+            2,
+            5,
+            0.8
+          ],
+          [
+            "minecraft:gold_ingot",
+            2,
+            5,
+            0.6
+          ],
+          [
+            "robe",
+            1,
+            1,
+            0.08
+          ]
+        ],
+        "xp": 320
+      },
+      {
+        "id": "devil_hunt",
+        "name": "Devil Hunt",
+        "minutes": 30,
+        "level": 10,
+        "danger": 3,
+        "desc": "Track down a nest of devils and seal it.",
+        "loot": [
+          [
+            "bc:mana_crystal",
+            4,
+            8,
+            1.0
+          ],
+          [
+            "bc:devil_heart",
+            1,
+            1,
+            0.2
+          ],
+          [
+            "bc:ancient_page",
+            1,
+            2,
+            0.6
+          ],
+          [
+            "amulet",
+            1,
+            1,
+            0.15
+          ]
+        ],
+        "xp": 600
+      },
+      {
+        "id": "witch_woods",
+        "name": "The Witch Woods",
+        "minutes": 40,
+        "level": 14,
+        "danger": 4,
+        "desc": "Brave the woods where the Witch Sisters were last seen.",
+        "loot": [
+          [
+            "bc:mana_crystal",
+            6,
+            10,
+            1.0
+          ],
+          [
+            "amulet",
+            1,
+            1,
+            0.35
+          ],
+          [
+            "minecraft:blaze_rod",
+            2,
+            5,
+            0.6
+          ],
+          [
+            "bc:clover_leaf",
+            1,
+            1,
+            0.15
+          ]
+        ],
+        "xp": 900
+      },
+      {
+        "id": "graveyard",
+        "name": "Dragon's Graveyard",
+        "minutes": 60,
+        "level": 18,
+        "danger": 5,
+        "desc": "Climb into the bone valley where dragons go to die.",
+        "loot": [
+          [
+            "minecraft:bone_block",
+            6,
+            14,
+            1.0
+          ],
+          [
+            "minecraft:netherite_scrap",
+            1,
+            2,
+            0.4
+          ],
+          [
+            "bc:clover_charm",
+            1,
+            1,
+            0.08
+          ],
+          [
+            "amulet",
+            1,
+            1,
+            0.4
+          ],
+          [
+            "bc:clover_leaf",
+            1,
+            1,
+            0.25
+          ]
+        ],
+        "xp": 1400
+      }
+    ]
   }
 };

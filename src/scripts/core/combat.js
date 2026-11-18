@@ -21,6 +21,7 @@ const FACTION = {
   'bc:tidewatch_sentinel': 'navy', 'bc:tidewatch_commodore': 'navy',
   'bc:raider_gunner': 'pirate', 'bc:tidewatch_marksman': 'navy', 'bc:hellhound': 'devil', 'bc:mana_wraith': 'devil', 'bc:fallen_captain': 'devil',
   'bc:rogue_mage': 'rogue', 'bc:frost_witch': 'witch', 'bc:ember_witch': 'witch', 'bc:bone_dragon': 'undead',
+  'bc:soul_puppeteer': 'devil', 'bc:puppet': 'devil',
 };
 /** NPCs that only harm a player who attacked them first. */
 const PEACEFUL = new Set(['bc:magic_knight', 'bc:construct', 'bc:magic_merchant', 'bc:shade_soldier', 'bc:earth_golem', 'bc:mirror_clone']);
@@ -60,6 +61,27 @@ const HUNTS = {
 };
 export const TEAMS = ['a', 'b', 'c'];
 
+// ---------------------------------------------------------------------------- hooks
+// Other systems (sparring, rival squads, the Soul Puppeteer's strings, training dummies) bend the normal sides:
+/** @type {((attacker: any, target: any) => boolean | undefined)[]} */
+const relations = [];
+/** @type {((e: any, range: number) => any[])[]} */
+const extraFoes = [];
+/** @type {((target: any, attacker: any, amount: number) => number)[]} */
+const damageMods = [];
+/** A rule that can force `attacker` to be hostile (true) or friendly (false) to `target`; undefined = no opinion. */
+export function addRelation(fn) {
+  relations.push(fn);
+}
+/** Extra candidates an NPC may fight (still filtered by canHit). */
+export function addFoes(fn) {
+  extraFoes.push(fn);
+}
+/** Scale script damage (combos, marks, sparring). */
+export function addDamageMod(fn) {
+  damageMods.push(fn);
+}
+
 /**
  * The nearest enemy an NPC should fight: the other armies in a battle, otherwise its faction's foes and players.
  * @returns {import('@minecraft/server').Entity | undefined}
@@ -92,6 +114,7 @@ export function foesOf(e, range = 18) {
         if (gm !== 'Creative' && gm !== 'Spectator') list.push(p);
       }
     }
+    for (const fn of extraFoes) list.push(...(fn(e, range) ?? []));
   });
   const seen = new Set();
   return list.filter((x) => {
@@ -105,6 +128,12 @@ export function foesOf(e, range = 18) {
 export function canHit(attacker, target) {
   if (!alive(target) || target === attacker) return false;
   if (attacker && target.id === attacker.id) return false;
+  if (attacker) {
+    for (const fn of relations) {
+      const r = fn(attacker, target);
+      if (r !== undefined) return r && (!(target instanceof Player) || safe(() => target.getGameMode()) !== 'Creative');
+    }
+  }
   if (attacker && !(attacker instanceof Player)) {
     const ta = teamOf(attacker);
     if (ta) {
@@ -182,7 +211,9 @@ export function hurt(target, amount, attacker, cause = 'entityAttack') {
   return !!safe(() => {
     const opts = { cause: /** @type {any} */ (cause) };
     if (attacker && alive(attacker)) opts.damagingEntity = attacker;
-    return target.applyDamage(Math.max(0, amount), opts);
+    let dmg = amount;
+    for (const fn of damageMods) dmg = fn(target, attacker, dmg);
+    return target.applyDamage(Math.max(0, dmg), opts);
   }, 'hurt');
 }
 

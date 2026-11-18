@@ -1,11 +1,15 @@
-// Companions: your party of Magic Knights (up to 4).
+// Companions: your party of Magic Knights (up to 4 at your side, 6 more in reserve at a Squad Banner).
 //
-// * The party is saved with you: companions keep their name, magic, level (up to 20), robe and bond across sessions,
-//   come back 60 seconds after they fall, and can be dismissed and summoned again with the Companion Whistle.
+// * The party is saved with you: companions keep their name, magic, level (up to 20), robe, bond, personality,
+//   specialisation, mood and trials across sessions, come back 60 seconds after they fall (or sooner, if someone
+//   revives them), and can be dismissed and summoned again with the Companion Whistle.
 // * They fight with the tactical brain (ai.js) plus what this module tells it: your focus target ("attack what I'm
 //   looking at"), whoever is hurting you, whether you are in danger (healers prioritise you), their stance and robe perks.
 // * Out of combat they walk in formation, keep out of your line of fire, gather loot, sit down when you rest, and talk.
 // * Bond grows with time together, victories and gifts, and unlocks Mana Link, Guardian and Union Magic.
+// * This module is the core (saving, spawning, the whistle). squad.js (fighting as a squad), camp.js (mood, camp,
+//   talk, trials), roster.js (reserve, expeditions, training) and rivals.js (sparring, rival squads) plug in through
+//   the hooks below.
 import { ItemStack, Player, system, world } from '@minecraft/server';
 import { ActionFormData, MessageFormData, ModalFormData } from '@minecraft/server-ui';
 import { DATA } from '../generated/data.js';
@@ -38,9 +42,12 @@ const ROBE_PERK = {
 
 /**
  * @typedef {{cid: string, name: string, attr: string, robe: number, gear: string, level: number, xp: number, kills: number, skill: number,
- *            courage: number, bond: number, active: boolean, fallenAt: number, eid: string}} Member
- * @typedef {{formation: string, stance: string, loot: boolean, unionAt: number}} Cfg
- * @typedef {{m: Member[], cfg: Cfg}} Party
+ *            courage: number, bond: number, active: boolean, fallenAt: number, eid: string, personality: string, spec: string,
+ *            mastery: boolean, awakened: boolean, morale: number, fatigue: number, amulet: string, trial: any, trialStage: number,
+ *            title: string, fallenLoc: any, talkDay: number, home: string, dream: string, xpDay: number, xpToday: number, away: string,
+ *            specNoted?: boolean}} Member
+ * @typedef {{formation: string, stance: string, loot: boolean, unionAt: number, tactic: string, train: boolean, trainAt?: number}} Cfg
+ * @typedef {{m: Member[], r: Member[], ex: any[], cfg: Cfg}} Party
  */
 /** @type {Map<string, Party>} */
 const parties = new Map();
@@ -57,8 +64,61 @@ const barkCd = new Map();
 const perkCd = new Map();
 const bossesSeen = new Set();
 
+// ------------------------------------------------------------------------------- hooks for the other companion modules
+/** @type {((p: any, pt: Party, active: Member[], t: number, fighting: boolean) => void)[]} */
+const partyHooks = [];
+/** @type {((p: any, m: Member, e: any, i: number, pt: Party, t: number, fighting: boolean) => void)[]} */
+const memberHooks = [];
+/** @type {((p: any, pt: Party) => {label: string, act: () => any}[])[]} */
+const whistleHooks = [];
+/** @type {((p: any, m: Member) => {label: string, act: () => any}[])[]} */
+const memberMenuHooks = [];
+/** @type {((e: any, p: any, m: Member, info: any) => void)[]} */
+const infoHooks = [];
+/** @type {((p: any, e: any, m: Member, id: string) => boolean | Promise<boolean>)[]} */
+const talkHooks = [];
+/** @type {((p: any, m: Member) => void)[]} */
+const fallHooks = [];
+/** @type {((m: Member) => string[])[]} */
+const profileHooks = [];
+export const onPartyTick = (fn) => partyHooks.push(fn);
+export const onMemberTick = (fn) => memberHooks.push(fn);
+export const addWhistleButtons = (fn) => whistleHooks.push(fn);
+export const addMemberButtons = (fn) => memberMenuHooks.push(fn);
+export const addInfo = (fn) => infoHooks.push(fn);
+export const addTalkHandler = (fn) => talkHooks.push(fn);
+export const onMemberFall = (fn) => fallHooks.push(fn);
+export const addProfileLines = (fn) => profileHooks.push(fn);
+
 // ------------------------------------------------------------------------------- the saved party
-function party(p) {
+function hash(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619);
+  return h >>> 0;
+}
+const PERSONALITY_IDS = Object.keys(C.personalities);
+/** Fill in fields added by newer versions (companions recruited in v0.2/v0.3 get a personality, a hometown and a dream). */
+export function ensure(m) {
+  const h = hash(m.cid);
+  m.personality = C.personalities[m.personality] ? m.personality : PERSONALITY_IDS[h % PERSONALITY_IDS.length];
+  m.spec = C.specs[m.spec] ? m.spec : '';
+  m.mastery = !!m.mastery;
+  m.awakened = !!m.awakened;
+  m.morale = typeof m.morale === 'number' ? m.morale : C.mood.start_morale;
+  m.fatigue = typeof m.fatigue === 'number' ? m.fatigue : 0;
+  m.amulet = typeof m.amulet === 'string' ? m.amulet : '';
+  m.trialStage = typeof m.trialStage === 'number' ? m.trialStage : 0;
+  m.trial = m.trial ?? null;
+  m.title = typeof m.title === 'string' ? m.title : '';
+  m.talkDay = typeof m.talkDay === 'number' ? m.talkDay : -1;
+  m.home = m.home || C.hometowns[(h >>> 3) % C.hometowns.length];
+  m.dream = m.dream || C.dreams[(h >>> 7) % C.dreams.length];
+  m.xpDay = typeof m.xpDay === 'number' ? m.xpDay : -1;
+  m.xpToday = typeof m.xpToday === 'number' ? m.xpToday : 0;
+  m.away = typeof m.away === 'string' ? m.away : '';
+  return m;
+}
+export function party(p) {
   let pt = parties.get(p.id);
   if (pt) return pt;
   const raw = safe(() => p.getDynamicProperty('bc:party'));
@@ -67,18 +127,32 @@ function party(p) {
   } catch {
     pt = undefined;
   }
-  pt = pt ?? { m: [], cfg: { formation: 'wedge', stance: 'aggressive', loot: true, unionAt: 0 } };
-  pt.cfg = { formation: 'wedge', stance: 'aggressive', loot: true, unionAt: 0, ...pt.cfg };
+  pt = pt ?? /** @type {Party} */ (/** @type {any} */ ({ m: [], r: [], ex: [], cfg: {} }));
+  pt.m = Array.isArray(pt.m) ? pt.m : [];
+  pt.r = Array.isArray(pt.r) ? pt.r : [];
+  pt.ex = Array.isArray(pt.ex) ? pt.ex : [];
+  pt.cfg = { formation: 'wedge', stance: 'aggressive', loot: true, unionAt: 0, tactic: 'balanced', train: false, ...pt.cfg };
+  if (!C.tactics[pt.cfg.tactic]) pt.cfg.tactic = 'balanced';
+  for (const m of [...pt.m, ...pt.r]) ensure(m);
+  while (pt.m.length > C.partyMax) {
+    const extra = pt.m.pop();
+    extra.active = false;
+    pt.r.push(extra);
+  }
   parties.set(p.id, pt);
   return pt;
 }
-function save(p) {
+export function save(p) {
   safe(() => p.setDynamicProperty('bc:party', JSON.stringify(party(p))));
 }
 export function partySize(p) {
   return party(p).m.length;
 }
-function bondRank(bond) {
+/** Everyone you lead, the reserve included. */
+export function rosterSize(p) {
+  return party(p).m.length + party(p).r.length;
+}
+export function bondRank(bond) {
   let r = 0;
   C.bond.forEach((b, i) => {
     if (bond >= b.at) r = i;
@@ -92,27 +166,30 @@ function hpTier(level) {
   });
   return tier;
 }
-function memberOf(e) {
+export function memberOf(e) {
   const cid = safe(() => e.getDynamicProperty('bc:cid'));
   const owner = world.getEntity(ownerOf(e));
   if (typeof cid !== 'string' || !(owner instanceof Player)) return undefined;
   const m = party(owner).m.find((x) => x.cid === cid);
   return m ? { p: owner, m } : undefined;
 }
-function hpFrac(e) {
+export function hpFrac(e) {
   const h = safe(() => e.getComponent('minecraft:health'));
   return h ? h.currentValue / Math.max(1, h.effectiveMax) : 1;
 }
 
 // ------------------------------------------------------------------------------- talking
-function bark(m, p, kind, force = false) {
+export function bark(m, p, kind, force = false) {
   const t = system.currentTick;
   if (!force && (barkCd.get(m.cid) ?? 0) > t) return;
-  barkCd.set(m.cid, t + 400 + Math.floor(rand(0, 400)));
-  const lines = C.lines[kind];
+  const chatty = m.personality === 'cheerful' ? 0.6 : m.personality === 'cautious' ? 1.3 : 1;
+  barkCd.set(m.cid, t + Math.round((400 + rand(0, 400)) * chatty));
+  const own = C.personalities[m.personality]?.lines?.[kind];
+  const lines = own && Math.random() < 0.6 ? own : C.lines[kind];
   if (!lines) return;
   safe(() => p.sendMessage(`§b${m.name}§f: ${pick(lines).replace(/\{p\}/g, p.name)}`));
 }
+export { bark as say };
 
 // ------------------------------------------------------------------------------- entity <-> member
 function applyTo(e, m, p) {
@@ -127,6 +204,7 @@ function applyTo(e, m, p) {
     e.setDynamicProperty('bc:courage', m.courage);
     e.setDynamicProperty('bc:owner', p.id);
     e.setDynamicProperty('bc:prefix', '§b');
+    e.setDynamicProperty('bc:awake', !!m.awakened);
     if (typeof e.getDynamicProperty('bc:order') !== 'string') e.setDynamicProperty('bc:order', 'follow');
     e.setProperty('bc:robe', m.robe);
     e.getComponent('minecraft:tameable')?.tame(p);
@@ -165,10 +243,14 @@ function slotFor(p, index, formation) {
   return V.add(p.location, off);
 }
 
-function spawnMember(p, m, returning) {
+/**
+ * Bring a member into the world beside you (or at `opts.at`, with `opts.hp` of its health when revived).
+ * @param {{at?: any, hp?: number, quiet?: boolean}} [opts]
+ */
+export function spawnMember(p, m, returning, opts = {}) {
   const idx = party(p).m.filter((x) => x.active).indexOf(m);
-  const loc = slotFor(p, Math.max(0, idx), party(p).cfg.formation);
-  loc.y = p.location.y + 0.2;
+  const loc = opts.at ? { ...opts.at } : slotFor(p, Math.max(0, idx), party(p).cfg.formation);
+  if (!opts.at) loc.y = p.location.y + 0.2;
   const e = safe(() => p.dimension.spawnEntity('bc:magic_knight', loc, { spawnEvent: 'bc:hire' }));
   if (!e) return undefined;
   applyTo(e, m, p);
@@ -178,12 +260,18 @@ function spawnMember(p, m, returning) {
   particle(p.dimension, 'bc:pillar', loc, { color: colorOf(`a:${m.attr}`), scale: 0.8 });
   sound(p.dimension, 'bc.portal', loc, 0.7, 1.4);
   system.runTimeout(() => alive(e) && anim(e, 'animation.bc.magic_knight.salute'), 10);
-  bark(m, p, returning ? 'return' : 'summon', true);
+  if (opts.hp !== undefined) {
+    system.runTimeout(() => safe(() => {
+      const h = e.getComponent('minecraft:health');
+      if (h) h.setCurrentValue(Math.max(1, h.effectiveMax * opts.hp));
+    }), 2);
+  }
+  if (!opts.quiet) bark(m, p, returning ? 'return' : 'summon', true);
   save(p);
   return e;
 }
 
-function entityOf(m) {
+export function entityOf(m) {
   if (!m.eid) return undefined;
   const e = world.getEntity(m.eid);
   return e && alive(e) ? e : undefined;
@@ -194,7 +282,7 @@ function adopt(e, p) {
   if (typeof safe(() => e.getDynamicProperty('bc:cid')) === 'string') return;
   const pt = party(p);
   const bond0 = safe(() => e.getDynamicProperty('bc:bond0'));
-  /** @type {Member} */
+  /** @type {any} */
   const m = {
     cid: `${Date.now().toString(36)}${Math.floor(Math.random() * 1e6).toString(36)}`,
     name: /** @type {string} */ (safe(() => e.getDynamicProperty('bc:kname')) ?? 'Knight'),
@@ -205,14 +293,26 @@ function adopt(e, p) {
     courage: /** @type {number} */ (safe(() => e.getDynamicProperty('bc:courage')) ?? rand(0.3, 1)),
     bond: typeof bond0 === 'number' ? bond0 : 0, active: true, fallenAt: 0, eid: e.id,
   };
+  ensure(m);
+  if (pt.m.length >= C.partyMax) {
+    // the party is full: the new knight waits at your Squad Banner
+    m.active = false;
+    m.eid = '';
+    pt.r.push(m);
+    save(p);
+    particle(e.dimension, 'bc:clover_leaves', center(e), { scale: 0.8 });
+    safe(() => e.remove());
+    safe(() => p.sendMessage(`§b${m.name}§7 (${C.personalities[m.personality].name}) joins your §2reserve§7 - ${pt.r.length}/${C.reserveMax}. Swap them in at a §2Squad Banner§7.`));
+    return;
+  }
   pt.m.push(m);
   applyTo(e, m, p);
   save(p);
   bark(m, p, 'join', true);
-  safe(() => p.sendMessage(`§7(${m.name} joined your party - ${pt.m.length}/${C.partyMax}. Use a §bCompanion Whistle§7 to command your party.)`));
+  safe(() => p.sendMessage(`§7(${m.name} joined your party - ${pt.m.length}/${C.partyMax}. ${C.personalities[m.personality].name}: ${C.personalities[m.personality].desc} Use a §bCompanion Whistle§7 to command your party.)`));
 }
 
-function addBond(p, m, n, why) {
+export function addBond(p, m, n, why) {
   const before = bondRank(m.bond);
   m.bond = Math.min(99999, m.bond + n);
   const after = bondRank(m.bond);
@@ -244,16 +344,18 @@ setCompanionProvider((e) => {
   const focus = pick_(orderFocus) ?? pick_(ownerThreat) ?? (cfg.stance === 'aggressive' ? pick_(ownerTarget) : undefined);
   const hp = hpFrac(e);
   const perk = m.gear ? ROBE_PERK[m.gear.slice(3)]?.(e, m, hp) ?? {} : {};
-  return {
+  const info = {
     focus,
     passive: cfg.stance === 'passive',
     ownerLow: hpFrac(p) < 0.4,
     pwMul: (bondRank(m.bond) >= 1 ? 1.1 : 1) * (perk.pw ?? 1) * (1 + Math.max(0, m.level - 10) * 0.03),
     cdMul: perk.cd ?? 1,
   };
+  for (const fn of infoHooks) safe(() => fn(e, p, m, info), 'companionInfo');
+  return info;
 });
 
-setCompanionHooks({ onEnlist: adopt, partySize, talk: companionTalk });
+setCompanionHooks({ onEnlist: adopt, partySize: rosterSize, talk: companionTalk });
 
 onKnightLevel((e) => {
   const mo = memberOf(e);
@@ -278,9 +380,11 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
         readFrom(dead, m);
         m.eid = '';
         m.fallenAt = Date.now();
+        m.fallenLoc = { x: dead.location.x, y: dead.location.y, z: dead.location.z, dim: dead.dimension.id };
         save(owner);
-        safe(() => owner.sendMessage(`§c✝ §b${m.name}§c has fallen! §7They will rejoin you in 60 seconds.`));
+        safe(() => owner.sendMessage(`§c✝ §b${m.name}§c has fallen! §7They rejoin you in 60 seconds - or stand by their glowing clover to revive them sooner.`));
         sound(owner.dimension, 'bc.mana.empty', owner.location, 1, 0.6);
+        for (const fn of fallHooks) safe(() => fn(owner, m), 'companionFall');
       }
     }
   }
@@ -413,7 +517,7 @@ function line(a, b, color) {
   for (let s = 0; s <= d; s += 0.6) particle(a.dimension, 'bc:beam_dot', V.lerp(p0, p1, s / Math.max(0.1, d)), { color, size: 0.35, life: 0.5 });
 }
 
-system.runInterval(() => {
+function partyLoop() {
   const t = system.currentTick;
   for (const p of world.getAllPlayers()) {
     const pt = party(p);
@@ -438,6 +542,7 @@ system.runInterval(() => {
         return;
       }
       careFor(p, m, e, i, pt.cfg, t, fighting);
+      for (const fn of memberHooks) safe(() => fn(p, m, e, i, pt, t, fighting), 'memberTick');
       // a rest: companions sit down when you stand still for a while
       if (!fighting && t - pres.at > 600 && t % 200 === 0) safe(() => e.playAnimation('animation.bc.magic_knight.sit', { stopExpression: 'q.modified_move_speed > 0.02' }));
       if (!fighting && t % 2400 === 0 && Math.random() < 0.25) bark(m, p, 'idle');
@@ -461,6 +566,8 @@ system.runInterval(() => {
       const m = active.find((x) => entityOf(x));
       if (m) bark(m, p, 'boss', true);
     }
+    for (const fn of partyHooks) safe(() => fn(p, pt, active, t, fighting), 'partyTick');
+    if (t % 20 === 0 && heldId(p) === 'bc:companion_whistle') safe(() => p.onScreenDisplay.setActionBar(partyHud(pt)));
     // time together
     if (t % 1200 === 0) {
       for (const m of active) {
@@ -478,10 +585,35 @@ system.runInterval(() => {
       if (changed) save(p);
     }
   }
-}, 10);
+}
+// run on ticks that are multiples of 10, so the "every N ticks" checks in here and in the hooks line up
+system.runTimeout(() => system.runInterval(partyLoop, 10), 10 - (system.currentTick % 10));
+
+function heldId(p) {
+  return safe(() => p.getComponent('minecraft:inventory')?.container?.getItem(p.selectedSlotIndex)?.typeId) ?? '';
+}
+
+/** A compact party frame for the actionbar while you hold the whistle. */
+export function partyHud(pt) {
+  const parts = [];
+  for (const m of pt.m.filter((x) => x.active)) {
+    const e = entityOf(m);
+    if (!e) {
+      const left = m.fallenAt ? Math.max(0, Math.ceil((RESPAWN_MS - (Date.now() - m.fallenAt)) / 1000)) : 0;
+      parts.push(`§8${m.name.split(' ')[0]} ${m.fallenAt ? `§c✝${left}s` : '§7...'}`);
+      continue;
+    }
+    const f = hpFrac(e);
+    const n = Math.max(0, Math.min(5, Math.round(f * 5)));
+    const col = f > 0.6 ? '§a' : f > 0.3 ? '§e' : '§c';
+    const mood = m.fatigue >= C.mood.exhausted ? '§8z' : m.morale >= C.mood.inspired ? '§d+' : m.morale <= C.mood.shaken ? '§9-' : '';
+    parts.push(`§b${m.name.split(' ')[0]} ${col}${'|'.repeat(n)}§8${'|'.repeat(5 - n)}${mood}`);
+  }
+  return `${parts.join(' §7· ')}  §8[${C.tactics[pt.cfg.tactic].name}]`;
+}
 
 // ------------------------------------------------------------------------------- the whistle
-function statusOf(m) {
+export function statusOf(m) {
   if (!m.active) return '§8resting';
   if (m.fallenAt && !entityOf(m)) return `§creturning in ${Math.max(0, Math.ceil((RESPAWN_MS - (Date.now() - m.fallenAt)) / 1000))}s`;
   const e = entityOf(m);
@@ -490,24 +622,29 @@ function statusOf(m) {
   return h ? `§a${Math.ceil(h.currentValue)}/${h.effectiveMax} HP` : '§a';
 }
 
-function profile(m) {
+export function profile(m) {
   const a = DATA.attributes[m.attr];
   const b = C.bond[bondRank(m.bond)];
   const next = C.bond[bondRank(m.bond) + 1];
   const spells = kitFor(m.attr, m.level).length;
+  const pers = C.personalities[m.personality];
+  const spec = C.specs[m.spec];
   const lines = [
-    `${a.glyph} ${a.mc}§l${m.name}§r - ${RANK[m.level] ?? ''} Magic Knight, level §e${m.level}§r`,
-    `§7Magic: ${a.mc}${a.name}§7 (${spells} spell${spells > 1 ? 's' : ''})   Kills: §f${m.kills}`,
+    `${a.glyph} ${a.mc}§l${m.name}${m.title ? ` ${m.title}` : ''}§r - ${RANK[m.level] ?? ''} Magic Knight, level §e${m.level}§r`,
+    `§7Magic: ${a.mc}${a.name}§7 (${spells} spell${spells > 1 ? 's' : ''}${m.awakened ? ', §dawakened§7' : ''})   Kills: §f${m.kills}`,
+    `§7Personality: §f${pers.name}§7 - ${pers.desc}`,
+    `§7Specialisation: ${spec ? `§6${spec.name}${m.mastery ? ' §e(Mastery)' : ''}§7 - ${spec.desc}` : m.level >= C.specLevel ? '§ehas not chosen one yet - choose it below!' : `§8chosen at level ${C.specLevel}`}`,
     `§7Bond: §d${b.name}§7 (${m.bond}${next ? `/${next.at}` : ''}) - ${b.perk}`,
     `§7Robe: §f${m.gear ? DATA.robes[m.gear.slice(3)] : 'their own'}${m.gear ? `§7 - ${DATA.robePerks[m.gear.slice(3)]}` : ''}`,
     `§7Status: ${statusOf(m)}`,
+    ...profileHooks.flatMap((fn) => safe(() => fn(m)) ?? []),
     '',
     '§8Gifts (hold them and talk): Mana Cookies, mana crystals, cooked food. Hand them a squad robe to dress them.',
   ];
   return lines.join('\n');
 }
 
-async function memberMenu(p, m) {
+export async function memberMenu(p, m) {
   const form = new ActionFormData().title(m.name).body(profile(m));
   const acts = [];
   if (m.active) {
@@ -544,6 +681,12 @@ async function memberMenu(p, m) {
       m.fallenAt = 0;
       spawnMember(p, m, false);
     });
+  }
+  for (const fn of memberMenuHooks) {
+    for (const b of safe(() => fn(p, m)) ?? []) {
+      form.button(b.label);
+      acts.push(b.act);
+    }
   }
   form.button('§lRename');
   acts.push(async () => {
@@ -601,7 +744,7 @@ function orderAll(p, order) {
   }
 }
 
-function regroup(p) {
+export function regroup(p) {
   const pt = party(p);
   pt.m.filter((m) => m.active).forEach((m, i) => {
     const e = entityOf(m);
@@ -661,7 +804,7 @@ export async function openWhistle(p) {
   const cfg = pt.cfg;
   sound(p.dimension, 'bc.ship.bell', p.location, 0.5, 2);
   const form = new ActionFormData().title('§lCompanions').body(pt.m.length
-    ? `§7Party ${pt.m.length}/${C.partyMax} · formation §f${cfg.formation}§7 · stance §f${cfg.stance}§7 · loot gathering ${cfg.loot ? '§aon' : '§coff'}\n§8Sneak + use the whistle: attack what you look at (or regroup).`
+    ? `§7Party ${pt.m.length}/${C.partyMax} (reserve ${pt.r.length}/${C.reserveMax}) · tactic §f${C.tactics[cfg.tactic].name}§7 · formation §f${cfg.formation}§7 · stance §f${cfg.stance}§7 · loot ${cfg.loot ? '§aon' : '§coff'}\n§8Sneak + use the whistle: attack what you look at (or regroup).`
     : '§7You have no companions yet.\n\n§fRecruit a Magic Knight: talk to one in the wild (a Knight Contract or doubloons), use a §aKnight Contract§f, or rescue a wounded knight.');
   const acts = [];
   for (const m of pt.m) {
@@ -688,6 +831,12 @@ export async function openWhistle(p) {
       cfg.loot = !cfg.loot;
       save(p);
     });
+    for (const fn of whistleHooks) {
+      for (const b of safe(() => fn(p, pt)) ?? []) {
+        form.button(b.label);
+        acts.push(b.act);
+      }
+    }
     if (pt.m.some((m) => bondRank(m.bond) >= 4)) {
       form.button('§d§lUnion Magic\n§r§8A combined spell with your Soulbound companion');
       acts.push(() => unionMagic(p));
@@ -724,7 +873,11 @@ async function companionTalk(p, e, item) {
   if (!mo) return;
   const { m } = mo;
   const id = item?.typeId ?? '';
+  for (const fn of talkHooks) {
+    if (await fn(p, e, m, id)) return;
+  }
   if (GIFTS[id]) {
+    m.morale = Math.min(100, (m.morale ?? 70) + 5);
     addBond(p, m, GIFTS[id], 'gift');
     heal(e, 6);
     particle(e.dimension, 'bc:heal', center(e), { scale: 1 });
@@ -749,7 +902,7 @@ async function companionTalk(p, e, item) {
   await memberMenu(p, m);
 }
 
-function consumeHeld(p, id) {
+export function consumeHeld(p, id) {
   const inv = p.getComponent('minecraft:inventory')?.container;
   const it = inv?.getItem(p.selectedSlotIndex);
   if (it?.typeId !== id) return;
@@ -758,14 +911,14 @@ function consumeHeld(p, id) {
     inv.setItem(p.selectedSlotIndex, it);
   } else inv.setItem(p.selectedSlotIndex, undefined);
 }
-function giveItem(p, item) {
+export function giveItem(p, item) {
   const left = p.getComponent('minecraft:inventory')?.container?.addItem(item);
   if (left) p.dimension.spawnItem(left, p.location);
 }
 
 /** Wounded-knight rescue and other sources: hand a knight to a player as a companion. */
 export function joinParty(e, p, bond = 0) {
-  if (partySize(p) >= C.partyMax) return false;
+  if (rosterSize(p) >= C.partyMax + C.reserveMax) return false;
   safe(() => e.setDynamicProperty('bc:bond0', bond));
   safe(() => {
     e.triggerEvent('bc:hire');
@@ -775,4 +928,4 @@ export function joinParty(e, p, bond = 0) {
   return true;
 }
 
-export { setupKnight };
+export { setupKnight, line, slotFor, readFrom, applyTo, RESPAWN_MS, GIFTS };

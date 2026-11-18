@@ -1,5 +1,5 @@
 // Giant bosses: the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken, the Fallen Captain,
-// the Witch Sisters (the Frost Witch and the Ember Witch) and the Bone Dragon.
+// the Witch Sisters (the Frost Witch and the Ember Witch), the Bone Dragon and the Soul Puppeteer.
 //
 // One framework drives them all:
 // * THREAT: every boss remembers who hurt it most (players, knights, companions) and turns on the biggest threat -
@@ -10,6 +10,7 @@
 //   stomps foes away, the Galleon keeps station above you and rams in its last phase, the Captain blinks behind you,
 //   the Witches blink away from melee, the Bone Dragon circles above and dives.
 // * TWINS: the Witch Sisters weave Twin Spells together; when one falls, the other goes straight to her desperation move.
+// * STRINGS: the Soul Puppeteer takes control of companions and turns them on their own squad (puppeteer.js).
 // * ENRAGE TIMER: after six minutes any boss grows stronger and faster.
 import { Player, WeatherType, system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
@@ -18,6 +19,8 @@ import { anim, particle, rgb, shakeArea, shockwave, sound, title } from '../core
 import { addXp } from '../core/progress.js';
 import { addStars } from '../core/ranks.js';
 import { emit } from '../core/bus.js';
+import { addDanger } from './danger.js';
+import { pullStrings } from './puppeteer.js';
 import { V, alive, isCreative, pick, rand, repeat, safe, timer } from '../core/util.js';
 import { castSpec } from './engine.js';
 import { face, kitFor } from './knights.js';
@@ -135,6 +138,19 @@ DEF['bc:bone_dragon'] = {
     { w: 1, phase: 2, fn: 'bones', anim: 'animation.bc.bone_dragon.roar' },
   ],
 };
+DEF['bc:soul_puppeteer'] = {
+  name: '§5The Soul Puppeteer', src: 'a:dark', every: [28, 46], range: 40, stars: 8, desperation: 'grand_finale', roar: 'animation.bc.soul_puppeteer.roar',
+  intro: ['§5§lTHE SOUL PUPPETEER', '§7Every knight is a puppet - if you hold the strings'],
+  rage: ['§5§lThe Puppeteer pulls harder', '§7More strings fall from the dark'],
+  last: ['§5§lGRAND FINALE', '§7The curtain falls'],
+  attacks: [
+    { w: 3, spec: { t: 'beam', d: 9, range: 22, width: 1.2, fx: 'dark', eff: [['slowness', 2, 1]] }, anim: 'animation.bc.soul_puppeteer.cast' },
+    { w: 3, fn: 'strings' },
+    { w: 2, fn: 'marionettes', anim: 'animation.bc.soul_puppeteer.summon' },
+    { w: 2, spec: { t: 'strikes', d: 9, n: 5, r: 10, fx: 'dark' }, anim: 'animation.bc.soul_puppeteer.cast' },
+    { w: 2, phase: 2, max: 8, tele: 14, spec: { t: 'nova', d: 12, r: 6, kb: [1.8, 0.6], fx: 'dark' }, anim: 'animation.bc.soul_puppeteer.roar' },
+  ],
+};
 const WITCHES = { 'bc:frost_witch': 'bc:ember_witch', 'bc:ember_witch': 'bc:frost_witch' };
 const CAPTAIN_ATTRS = ['flame', 'lightning', 'dark', 'ice', 'blood', 'glass', 'rune', 'spirit', 'star', 'gold', 'smoke', 'magma'];
 
@@ -156,6 +172,18 @@ world.afterEvents.entitySpawn.subscribe((ev) => safe(() => track(ev.entity)));
 world.afterEvents.entityLoad.subscribe((ev) => safe(() => track(ev.entity)));
 
 // ------------------------------------------------------------------------------- threat
+/** Add threat on a boss (a Vanguard's taunt). Returns false when `boss` is not a tracked boss. */
+export function addThreat(boss, src, amount) {
+  const st = bosses.get(boss.id);
+  if (!st) return false;
+  st.threat.set(src.id, (st.threat.get(src.id) ?? 0) + amount);
+  return true;
+}
+/** Is this one of the giant bosses? */
+export function isBoss(e) {
+  return !!DEF[safe(() => e.typeId) ?? ''];
+}
+
 world.afterEvents.entityHurt.subscribe((ev) => {
   const st = bosses.get(ev.hurtEntity.id);
   const src = ev.damageSource.damagingEntity;
@@ -212,6 +240,7 @@ function bossTarget(e, st, def) {
 
 // ------------------------------------------------------------------------------- special moves
 function telegraph(e, at, r, ticks) {
+  addDanger(e.dimension, at, r, ticks + 6, e);
   particle(e.dimension, 'bc:warning_circle', V.add(at, { x: 0, y: 0.1, z: 0 }), { size: r, life: ticks / 20 + 0.2 });
   sound(e.dimension, 'random.click', at, 1.2, 0.6);
 }
@@ -415,6 +444,19 @@ const MOVES = {
       timer(15, () => safe(() => e.dimension.spawnEntity(st.phase > 2 && i === 0 ? 'minecraft:wither_skeleton' : 'minecraft:skeleton', at)));
     }
   },
+  strings(e, target, st) {
+    pullStrings(e, target, st.phase, st.phase > 1 ? 2 : 1);
+  },
+  marionettes(e, target, st) {
+    const count = safe(() => e.dimension.getEntities({ location: e.location, maxDistance: 40, type: 'bc:puppet' }).length) ?? 0;
+    if (count >= 8) return;
+    sound(e.dimension, 'bc.chord', e.location, 1.2, 0.6);
+    for (let i = 0; i < (st.phase > 1 ? 5 : 3); i++) {
+      const at = V.add(target.location, { x: rand(-5, 5), y: 0.5, z: rand(-5, 5) });
+      particle(e.dimension, 'bc:magic_circle_dark', at, { size: 1.6, life: 1, color: rgb('6a40c0') });
+      timer(10, () => safe(() => e.dimension.spawnEntity('bc:puppet', at)));
+    }
+  },
   hounds(e, target, st) {
     sound(e.dimension, 'bc.howl', e.location, 2, 0.6);
     for (let i = 0; i < 2; i++) {
@@ -505,6 +547,13 @@ const DESPERATION = {
       }
       MOVES.bones(e, target, { phase: 3 });
     });
+  },
+  grand_finale(e, target) {
+    if (!alive(target)) return;
+    pullStrings(e, target, 3, 2);
+    for (const p of e.dimension.getPlayers({ location: e.location, maxDistance: 40 })) effect(p, 'darkness', 6, 0, false);
+    MOVES.marionettes(e, target, { phase: 3 });
+    timer(30, () => alive(e) && MOVES.marionettes(e, target, { phase: 3 }));
   },
   final_form(e, target) {
     effect(e, 'strength', 600, 1, false);
@@ -622,7 +671,7 @@ system.runInterval(() => {
       if (e.typeId === 'bc:fallen_captain') captainDodge(e, st, t);
       if (target && t > st.moveAt) {
         const crowd = targetsAround(e.dimension, e.location, 5, e).length;
-        if (WITCHES[e.typeId] && crowd >= 1) {
+        if ((WITCHES[e.typeId] && crowd >= 1) || (e.typeId === 'bc:soul_puppeteer' && crowd >= 2)) {
           st.moveAt = t + 200;
           particle(e.dimension, 'bc:burst_dark', center(e), { scale: 1.2, color: rgb(COLORS[e.typeId]) });
           sound(e.dimension, 'bc.portal', e.location, 1, 1.4);
@@ -728,8 +777,8 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
 
 // ------------------------------------------------------------------------------- summoning
 const COLORS = { 'bc:archdevil': 'd01a34', 'bc:stone_colossus': 'ff8a2a', 'bc:phantom_galleon': '96ffdc', 'bc:storm_kraken': '9ae8ff', 'bc:fallen_captain': 'b0101a',
-  'bc:frost_witch': '9ae8ff', 'bc:ember_witch': 'ff7a2a', 'bc:bone_dragon': 'e8e0c8' };
-const FLYERS = { 'bc:phantom_galleon': 10, 'bc:bone_dragon': 7, 'bc:frost_witch': 2, 'bc:ember_witch': 2 };
+  'bc:frost_witch': '9ae8ff', 'bc:ember_witch': 'ff7a2a', 'bc:bone_dragon': 'e8e0c8', 'bc:soul_puppeteer': '6a40c0' };
+const FLYERS = { 'bc:phantom_galleon': 10, 'bc:bone_dragon': 7, 'bc:frost_witch': 2, 'bc:ember_witch': 2, 'bc:soul_puppeteer': 3 };
 
 /** Raise a boss in front of a location with a short ceremony. */
 export function summonBoss(type, dim, loc, players = [], opts = {}) {
@@ -759,7 +808,8 @@ export function summonBoss(type, dim, loc, players = [], opts = {}) {
     track(e);
     shockwave(dim, loc, 'flame', 8);
     if (def.roar) anim(e, def.roar);
-    const roar = { 'bc:storm_kraken': 'bc.leviathan.roar', 'bc:stone_colossus': 'bc.golem.slam', 'bc:bone_dragon': 'mob.enderdragon.growl', 'bc:frost_witch': 'bc.ice.form', 'bc:ember_witch': 'bc.chord' };
+    const roar = { 'bc:storm_kraken': 'bc.leviathan.roar', 'bc:stone_colossus': 'bc.golem.slam', 'bc:bone_dragon': 'mob.enderdragon.growl', 'bc:frost_witch': 'bc.ice.form',
+      'bc:ember_witch': 'bc.chord', 'bc:soul_puppeteer': 'bc.chord' };
     sound(dim, roar[type] ?? 'bc.devil.roar', loc, 3, 0.5);
     if (!opts.quiet) for (const p of dim.getPlayers({ location: loc, maxDistance: 64 })) title(p, def.intro[0], def.intro[1], 60);
     if (type === 'bc:archdevil' || type === 'bc:fallen_captain') for (const p of players) effect(p, 'darkness', 4, 0, false);
@@ -789,6 +839,7 @@ const ITEMS = {
   'bc:fallen_seal': 'bc:fallen_captain',
   'bc:twin_moon_charm': 'twins',
   'bc:bone_totem': 'bc:bone_dragon',
+  'bc:cursed_spool': 'bc:soul_puppeteer',
 };
 
 /** @returns {boolean} true when the item was a boss summon */

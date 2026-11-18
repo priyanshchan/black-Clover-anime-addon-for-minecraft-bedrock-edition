@@ -188,9 +188,21 @@ async function seaGuide(p) {
 }
 
 async function companionPage(p) {
+  const C = DATA.companion;
   const body = [
+    '§l§6New in v0.5.0§r\n§7Personalities, specialisations, party tactics, combos, revives, mood, camps, personal trials, a reserve with expeditions, sparring, rival squads - and they fly brooms with you.',
+    '§l§bPersonalities§r\n' + Object.values(C.personalities).map((x) => `§f${x.name}§7: ${x.desc}`).join('\n'),
+    `§l§6Specialisations (level ${C.specLevel})§r\n` + Object.values(C.specs).map((x) => `§6${x.name}§7: ${x.desc} §8Mastery: ${x.mastery}`).join('\n'),
+    '§l§bParty tactics (whistle)§r\n' + Object.values(C.tactics).map((x) => `§f${x.name}§7: ${x.desc}`).join('\n'),
+    '§l§bFighting as a squad§r\n§7Foes caught in a prison or a time stop take +25% from the squad (Combo!). A Ranger\'s mark adds +20%. Companions step out of warning circles and spell fields, keep out of your line of fire, and a Vanguard stands between you and danger.',
+    '§l§aRevives§r\n§7A fallen companion leaves a glowing clover for 60 seconds. Sneak beside it, or let a squadmate kneel there (a Warden is twice as fast), and they get up at half health. A §aClover Leaf of Return§7 revives everyone at once.',
+    '§l§dMood§r\n§7Morale rises with victories, gifts, talks and a cheerful friend; weariness builds in long fights. Inspired: +10% power. Shaken: less nerve. Exhausted: slower casting. Make camp with the whistle, or hand them §6Field Rations§7.',
+    '§l§dCamp & night watch§r\n§7"Make camp": they sit around a fire, recover fast and chat. At night one of them keeps watch and raises the alarm if something sneaks up.',
+    '§l§dTrials§r\n§7At bond Friend a companion asks for help with a personal trial - finishing it awakens their fifth spell early and earns a title. At Sworn Ally a second trial grants their specialisation\'s mastery.',
+    '§l§2Squad Banner§r\n§7Keep up to ' + C.reserveMax + ' more knights in reserve. Swap them into the party, and send reserve knights on expeditions (real-time, from 8 to 60 minutes) for loot and XP. Reserve knights train while they wait.',
+    '§l§6Training & sparring§r\n§7Place a §6Training Dummy§7 (it shows your DPS) and switch training on: companions practise on it between fights. Pick two companions for a sparring match - non-lethal, and both learn.',
     '§l§bYour party§r\n§7Up to ' + DATA.companion.partyMax + ' Magic Knights travel with you. Recruit them with a §aKnight Contract§7, by talking to a wild knight (contract or doubloons), or by rescuing a wounded knight. Your party is saved with you: companions level up to 20, keep their robe and bond, and come back 60 seconds after they fall.',
-    '§l§bThe Companion Whistle§r\n§7Use it to open your party: summon or dismiss, rename, give orders, change formation (wedge, line, circle) and stance (aggressive, defensive, passive), and switch loot gathering. §fSneak + use§7 while looking at a foe: everyone attacks it. Looking at nothing: regroup.',
+    '§l§bThe Companion Whistle§r\n§7Hold it to see your party\'s health on screen. Use it to open your party: summon or dismiss, rename, give orders, change formation (wedge, line, circle) and stance (aggressive, defensive, passive), and switch loot gathering. §fSneak + use§7 while looking at a foe: everyone attacks it. Looking at nothing: regroup.',
     '§l§bHow they think§r\n§7Companions attack what you attack, rush whoever hurts you, heal you first when you are low, dodge spells, keep out of your line of fire, walk in formation, gather loot after a fight and sit down when you rest.',
     '§l§dBond§r\n' + DATA.companion.bond.map((b) => `§d${b.name}§7 (${b.at}): ${b.perk}`).join('\n') + '\n§7Bond grows with time together, victories, level-ups and gifts (hold a Mana Cookie, mana crystal or cooked food and talk to them).',
     '§l§6Robes§r\n§7Hand a companion a squad robe to dress them in it and give them its perk.',
@@ -209,8 +221,9 @@ async function livingPage(p) {
     '§l§3The Phantom Galleon§r\n§7Ring a §3Phantom Galleon Bell§7 (phantom membranes, doubloons, a bell). A ghost ship sails the sky, fires broadsides and drops its drowned crew.',
     '§l§bThe Witch Sisters§r\n§7Raise a §bTwin Moon Charm§7 (packed ice, magma blocks, mana crystals, an amethyst block) or meet them on a dark night. The Frost Witch and the Ember Witch blink away from melee and weave §fTwin Spells§7 - an ice prison, then falling fire. Kill one and the other goes berserk: §bAbsolute Winter§7 or §6Inferno Requiem§7.',
     '§l§fThe Bone Dragon§r\n§7Plant a §fBone Totem§7 (bone blocks, a wither skeleton skull, a mana crystal) or look up on a dark night. It circles overhead, breathes withering bone-fire, dives, sweeps its tail, calls skeletons, and ends with §fDeath\'s Wingbeat§7.',
+    '§l§5The Soul Puppeteer§r\n§7Weave a §5Cursed Spool§7 (string, devil hearts, phantom membranes, an ender pearl) or hear its music box on a dark night. It lashes with strings, sends marionettes, and §ftakes control of your companions§7 - strike them a few times or have a Warden Cleanse them to cut the strings. Desperation: §5Grand Finale§7.',
     '§l§9The Storm Kraken§r\n§7Throw a §9Storm Kraken Lure§7 (Leviathan scales, lightning rods, a heart of the sea) into deep water. Lightning, whirlpools and tentacle slams.',
-    '§l§eWorld events§r\n§7Every few minutes something happens near a player: mana meteor showers (catch the crystals), Devil Gates (break them!), pirate landings, faction skirmishes, Rogue Mage ambushes, Magic Knight patrols, the Travelling Merchant, sky treasure, a Crimson Night, or a giant boss rising. Toggle events at a War Table.',
+    '§l§eWorld events§r\n§7Every few minutes something happens near a player: mana meteor showers (catch the crystals), Devil Gates (break them!), pirate landings, faction skirmishes, Rogue Mage ambushes, rival squad challenges, Magic Knight patrols, the Travelling Merchant, sky treasure, a Crimson Night, or a giant boss rising. Toggle events at a War Table.',
   ].join('\n\n');
   await new MessageFormData().title('Bosses & world events').body(body).button1('Back').button2('Close').show(p).then((r) => {
     if (r.selection === 0) return openHandbook(p);

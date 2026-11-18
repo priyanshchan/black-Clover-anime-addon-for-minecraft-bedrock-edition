@@ -1,6 +1,6 @@
 // Random world events: every few minutes something happens near a player - meteor showers, devil gates,
 // pirate landings, faction skirmishes, a travelling merchant, sky treasure, a crimson night, a Rogue Mage ambush,
-// or a giant boss (the Witch Sisters and the Bone Dragon walk at night).
+// a rival squad's challenge, or a giant boss (the Witch Sisters, the Bone Dragon and the Soul Puppeteer walk at night).
 // Toggle them at a War Table, or trigger one with:  /scriptevent bc:event <name>
 import { ItemStack, Player, system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
@@ -16,6 +16,8 @@ import { summonBoss } from './bosses.js';
 import { boltFrom } from './engine.js';
 import { setupKnight } from './knights.js';
 import { setupRogue } from './rogues.js';
+import { startRivalMatch } from './rivals.js';
+import { partySize } from './companions.js';
 import { spawnMerchant } from './merchant.js';
 import { joinParty } from './companions.js';
 import { addMana } from '../core/data.js';
@@ -351,6 +353,25 @@ export const EVENTS = {
           if (k) setupKnight(k, { level: 3 + Math.floor(Math.random() * 4) });
         }
       }
+    },
+  },
+  rival_squad: {
+    w: 5,
+    ok: (p) => !night() && partySize(p) > 0,
+    run(p) {
+      const at = spotNear(p, rand(14, 18));
+      if (!at) return false;
+      return startRivalMatch(p, at);
+    },
+  },
+  puppet_show: {
+    w: 2,
+    ok: () => night(),
+    run(p) {
+      const at = spotNear(p, rand(20, 26));
+      if (!at) return false;
+      announce(p, '§5§lTHE CURTAIN RISES', '§7Somewhere in the dark, strings are pulled taut', '§5☠ You hear a music box... §dthe Soul Puppeteer§5 has come to play.');
+      timer(40, () => summonBoss('bc:soul_puppeteer', p.dimension, at));
     },
   },
   witch_sisters: {

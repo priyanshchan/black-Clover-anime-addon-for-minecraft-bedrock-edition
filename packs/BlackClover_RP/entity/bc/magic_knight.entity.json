@@ -33,7 +33,16 @@
         "flinch": "animation.bc.magic_knight.flinch",
         "salute": "animation.bc.magic_knight.salute",
         "cheer": "animation.bc.magic_knight.cheer",
-        "sit": "animation.bc.magic_knight.sit"
+        "sit": "animation.bc.magic_knight.sit",
+        "kneel": "animation.bc.magic_knight.kneel",
+        "point": "animation.bc.magic_knight.point",
+        "guard": "animation.bc.magic_knight.guard",
+        "victory": "animation.bc.magic_knight.victory",
+        "wave": "animation.bc.magic_knight.wave",
+        "ride": "animation.bc.magic_knight.ride",
+        "sleep": "animation.bc.magic_knight.sleep",
+        "eat": "animation.bc.magic_knight.eat",
+        "taunt": "animation.bc.magic_knight.taunt"
       },
       "scripts": {
         "animate": [
@@ -41,7 +50,10 @@
           {
             "walk": "q.modified_move_speed > 0.01"
           },
-          "look"
+          "look",
+          {
+            "ride": "q.is_riding"
+          }
         ]
       },
       "render_controllers": [

@@ -1,5 +1,6 @@
 // Living world entry point: spell engine, tactical AI, knights, battles, world simulation, bosses, events, merchant, War Table,
-// and the v0.3.0 systems: brooms, missions, amulets, Rogue Mages and Magic Knight camps.
+// the v0.3.0 systems (brooms, missions, amulets, Rogue Mages, Magic Knight camps) and the v0.5.0 companion update
+// (squad.js, camp.js, roster.js, rivals.js, puppeteer.js).
 import { safe } from '../core/util.js';
 import './engine.js';
 import './passives.js';
@@ -15,6 +16,12 @@ import './rogues.js';
 import './missions.js';
 import './amulets.js';
 import './camps.js';
+import './squad.js';
+import './camp.js';
+import './roster.js';
+import './rivals.js';
+import { useCloverLeaf } from './squad.js';
+import { placeDummy } from './roster.js';
 import { useBroom } from './brooms.js';
 import { useBossItem } from './bosses.js';
 import { hireKnight } from './knights.js';
@@ -44,6 +51,12 @@ export function useLivingItem(p, item) {
     safe(() => useWhistle(p));
   } else if (id === 'bc:broom' || id === 'bc:swift_broom') {
     safe(() => useBroom(p, id));
+  } else if (id === 'bc:training_dummy') {
+    safe(() => placeDummy(p));
+  } else if (id === 'bc:clover_leaf') {
+    safe(() => useCloverLeaf(p));
+  } else if (id === 'bc:companion_tome') {
+    safe(() => p.onScreenDisplay.setActionBar('§bTalk to a companion (level 10+) while holding the tome to retrain their specialisation.'));
   } else return false;
   return true;
 }

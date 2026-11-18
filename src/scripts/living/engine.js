@@ -7,6 +7,8 @@ import { aimEntity, aimPoint, blinkDestination, canHit, center, effect, groundBe
 import { particle, rgb, shakeArea, sound, title } from '../core/fx.js';
 import { V, alive, rand, repeat, safe, timer } from '../core/util.js';
 import { registerHandler } from '../magic/projectiles.js';
+import { emit } from '../core/bus.js';
+import { addDanger } from './danger.js';
 
 /**
  * @typedef {Record<string, any>} Spec
@@ -65,6 +67,9 @@ STYLE.gold = (d, l, c, s) => { particle(d, 'bc:burst_spark', l, { color: c, scal
 STYLE.beast = (d, l, c, s) => { particle(d, 'bc:shard_burst', l, { color: c, scale: s }); particle(d, 'bc:dust_burst', l, { color: c, scale: s * 0.6 }); };
 STYLE.spirit = (d, l, c, s) => { particle(d, 'bc:burst', l, { color: c, scale: s }); particle(d, 'bc:heal', l, { scale: s * 0.4 }); };
 STYLE.rune = (d, l, c, s) => { particle(d, 'bc:magic_circle_ground', l, { color: c, size: 1.4 * s, life: 0.6 }); particle(d, 'bc:burst_spark', l, { color: c, scale: s * 0.7 }); };
+STYLE.gravity = (d, l, c, s) => { particle(d, 'bc:shockwave', l, { color: c, radius: 1.4 * s }); particle(d, 'bc:burst_dark', l, { color: c, scale: s * 0.7 }); };
+STYLE.moon = (d, l, c, s) => { particle(d, 'bc:light_burst', l, { scale: s * 0.7 }); particle(d, 'bc:burst_spark', l, { color: c, scale: s }); };
+STYLE.thorn = (d, l, c, s) => { particle(d, 'bc:leaf_burst', l, { scale: s * 0.7 }); particle(d, 'bc:shard_burst', l, { color: c, scale: s }); };
 STYLE.gun = (d, l, c, s) => { particle(d, 'bc:smoke_burst', l, { scale: s * 0.5 }); particle(d, 'bc:burst_spark', l, { color: rgb('ffd08a'), scale: s * 0.6 }); };
 STYLE.steel = STYLE.metal;
 STYLE.spatial = STYLE.time;
@@ -282,6 +287,7 @@ const T = {
     const at0 = self ? x.c.location : ground(x.dim, x.aim);
     castSound(x, s, at0);
     const ticks = Math.round((s.dur ?? 5) * 2);
+    if (!self && (s.d || s.eff)) addDanger(x.dim, at0, r, ticks * 10, x.c);
     repeat(ticks, 10, (i) => {
       if (self && !alive(x.c)) return false;
       const at = self ? x.c.location : at0;
@@ -318,6 +324,7 @@ const T = {
     const r = s.r ?? 4;
     const at = ground(x.dim, x.aim);
     castSound(x, s, at);
+    addDanger(x.dim, at, r + 1, n * (s.every ?? 3) + 4, x.c);
     particle(x.dim, 'bc:warning_circle', V.add(at, { x: 0, y: 0.1, z: 0 }), { size: r + 1, life: (n * (s.every ?? 3)) / 20 + 0.4 });
     repeat(n, s.every ?? 3, () => {
       const a = Math.random() * Math.PI * 2;
@@ -339,6 +346,7 @@ const T = {
       const rr = Math.sqrt(Math.random()) * r;
       const p = ground(x.dim, V.add(at, { x: Math.cos(a) * rr, y: 0, z: Math.sin(a) * rr }));
       particle(x.dim, 'bc:warning_circle', V.add(p, { x: 0, y: 0.1, z: 0 }), { size: s.aoe ?? 3, life: 1.0 });
+      addDanger(x.dim, p, (s.aoe ?? 3) + 0.5, 24, x.c);
       const o = V.add(p, { x: rand(-5, 5), y: 20, z: rand(-5, 5) });
       if (alive(x.c)) shoot(x, { ...s, shape: 0, size: s.size ?? 2 }, o, V.sub(p, o), 1.8);
     });
@@ -379,6 +387,7 @@ const T = {
       return true;
     }
     const dur = s.dur ?? 3;
+    for (const v of victims) emit('cc', v, Math.round(dur * 20), x.c);
     for (const v of victims) {
       effect(v, 'slowness', dur, 8, false);
       effect(v, 'weakness', dur, 2, false);
@@ -457,6 +466,7 @@ const T = {
       }
     });
     const ticks = Math.round((s.dur ?? 4) * 10);
+    for (const { v } of victims) emit('cc', v, ticks * 2, x.c);
     repeat(ticks, 2, (i) => {
       for (const { v, loc } of victims) {
         if (!alive(v)) continue;
@@ -509,6 +519,7 @@ const T = {
     const r = s.r ?? 6;
     castSound(x, s, at);
     const ticks = Math.max(2, Math.round(((s.dur ?? 2) * 20) / 3));
+    addDanger(x.dim, at, r, ticks * 3 + 4, x.c);
     repeat(ticks, 3, (i) => {
       particle(x.dim, 'bc:shockwave', at, { color: x.col, radius: r * (1 - (i % 6) / 7) });
       if (i % 2 === 0) fx(x, s, V.add(at, { x: rand(-r, r) * 0.5, y: rand(0, 2), z: rand(-r, r) * 0.5 }), 0.5);
