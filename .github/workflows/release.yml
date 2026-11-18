@@ -1,6 +1,7 @@
 # Publishes a GitHub release with the .mcaddon / .mcpack downloads for a version tag (v*).
 # Works both when a tag is pushed and when a release is published on the website: in that case it just
-# attaches the files. Release notes are the matching section of CHANGELOG.md. 0.x versions are pre-releases.
+# attaches the files. Release notes come from docs/releases/<tag>.md if it exists, otherwise the matching section of
+# CHANGELOG.md (a release made on the website with an empty description gets them). 0.x versions are pre-releases.
 name: Release
 
 on:
@@ -28,7 +29,9 @@ jobs:
           cp dist/BlackClover_GrimoireAwakening.mcaddon "out/BlackClover_GrimoireAwakening_${V}.mcaddon"
           cp dist/BlackClover_BP.mcpack "out/BlackClover_BP_${V}.mcpack"
           cp dist/BlackClover_RP.mcpack "out/BlackClover_RP_${V}.mcpack"
-          awk -v v="## ${V}" 'index($0, "## ") == 1 { p = (index($0, v) == 1) } p' CHANGELOG.md > notes.md
+          # hand-written release notes win; otherwise the matching section of the changelog
+          if [ -f "docs/releases/${V}.md" ]; then cp "docs/releases/${V}.md" notes.md
+          else awk -v v="## ${V}" 'index($0, "## ") == 1 { p = (index($0, v) == 1) } p' CHANGELOG.md > notes.md; fi
           test -s notes.md || echo "Black Clover: Grimoire Awakening ${V}" > notes.md
 
       - name: Publish the release
