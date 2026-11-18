@@ -592,6 +592,41 @@ def v7_sheet():
     grid(e, 5, 280, 'v070.png', 'v0.7.0: bandits, assassins, cultists, the Hive & three new bosses')
 
 
+def v8_sheet():
+    """v0.8.0: the eight armour sets on a player, with the materials, runes and the Magic Forge."""
+    from bc.data import ARMOR_SETS, ARMOR_SLOTS
+    from bc.models import v8
+    cell = 300
+    sets = list(ARMOR_SETS)
+    cols = 4
+    rows = (len(sets) + cols - 1) // cols
+    top = 60
+    strip = 110
+    W, H = cols * cell, top + rows * cell + strip
+    img = background(W, H, '22222c', '101016', ring=False)
+    draw = ImageDraw.Draw(img)
+    draw.text((20, 14), 'v0.8.0: eight armour sets, the Magic Forge, runes & materials', font=font(30), fill=(235, 235, 235, 255))
+    env = {'c.item_slot': 'chest', 'q.modified_move_speed': 0.35, 'q.life_time': 0.4, 'q.is_sneaking': 0.0}
+    for i, sid in enumerate(sets):
+        sc = render.Scene(cell, cell, ss=2)
+        pose = {'rightarm': {'rotation': [-25, 0, 8]}, 'leftarm': {'rotation': [15, 0, -8]},
+                'rightleg': {'rotation': [12, 0, 0]}, 'leftleg': {'rotation': [-12, 0, 0]}}
+        for slot in ARMOR_SLOTS:
+            render.pose_from_anim(v8.armor_animation(sid, slot)[f'animation.bc.armor.{sid}_{slot}'], 0.3, env=env, pose=pose)
+        sc.add(ref_player(), pose)
+        for slot in ARMOR_SLOTS:
+            sc.add(model(v8.armor_geo(sid, slot)), pose)
+        sc.render(render.orbit_eye((0, 18, 0), 62, 28 if i % 2 else -28, 8), (0, 18, 0), fov=40)
+        x, y = (i % cols) * cell, top + (i // cols) * cell
+        img.alpha_composite(sc.image(), (x, y))
+        draw.text((x + 12, y + cell - 34), ARMOR_SETS[sid]['name'], font=font(18), fill=(225, 225, 225, 255))
+    ims = list(v8.material_icons().values()) + list(v8.rune_icons().values()) + [v8.forge_icon()]
+    step = W // len(ims)
+    for i, a in enumerate(ims):
+        img.alpha_composite(tex.to_image(a).resize((64, 64), Image.NEAREST), (i * step + (step - 64) // 2, top + rows * cell + 22))
+    img.convert('RGB').save(os.path.join(OUT, 'v080.png'), optimize=True)
+
+
 BLOCK_RGB = {
     'coarse_dirt': (122, 88, 60), 'gravel': (134, 128, 126), 'spruce_log': (70, 48, 26), 'spruce_fence': (112, 82, 48), 'spruce_planks': (114, 84, 50),
     'dark_oak_planks': (68, 45, 22), 'campfire': (230, 120, 40), 'chest': (168, 116, 44), 'barrel': (120, 86, 48), 'red_wool': (170, 40, 40),
@@ -687,7 +722,7 @@ def strip_codes(t):
 
 if __name__ == '__main__':
     names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
-                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet']
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet']
     for n in names:
         print('rendering', n)
         globals()[n]()

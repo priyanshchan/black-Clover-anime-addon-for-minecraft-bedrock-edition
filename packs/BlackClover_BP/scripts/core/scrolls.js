@@ -20,8 +20,25 @@ export function makeScroll(attr, id) {
   const choice = (attr && all.find((x) => x.attr === attr && x.sp.id === id)) || pick(all);
   const item = new ItemStack('bc:spell_scroll', 1);
   const a = DATA.attributes[choice.attr];
-  safe(() => item.setLore([`${a.mc}${choice.sp.name} §7(${a.name} magic)`, `§7${choice.sp.desc}`, `§8spell:${choice.attr}:${choice.sp.id}`]));
+  // lore lines must stay within 50 characters, so the description is wrapped
+  const lines = [`${a.mc}${choice.sp.name} §7(${a.name} magic)`.slice(0, 50), ...wrap(choice.sp.desc, 46).slice(0, 6).map((l) => `§7${l}`),
+    `§8spell:${choice.attr}:${choice.sp.id}`];
+  safe(() => item.setLore(lines));
   return item;
+}
+
+/** Word-wrap text into lines of at most `width` characters. */
+export function wrap(text, width) {
+  const out = [];
+  let cur = '';
+  for (const w of String(text).split(/\s+/)) {
+    if (cur && cur.length + 1 + w.length > width) {
+      out.push(cur);
+      cur = w.slice(0, width);
+    } else cur = cur ? `${cur} ${w}` : w.slice(0, width);
+  }
+  if (cur) out.push(cur);
+  return out;
 }
 
 /** The spell written on a scroll, or undefined for a blank one. */

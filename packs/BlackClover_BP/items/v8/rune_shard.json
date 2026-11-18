@@ -1,0 +1,24 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:rune_shard",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_rune_shard"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§9Rune Shard"
+      },
+      "minecraft:max_stack_size": {
+        "value": 64
+      }
+    }
+  }
+}

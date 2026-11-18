@@ -18,5 +18,8 @@
   },
   "bc:squad_banner": {
     "sound": "wood"
+  },
+  "bc:magic_forge": {
+    "sound": "metal"
   }
 }

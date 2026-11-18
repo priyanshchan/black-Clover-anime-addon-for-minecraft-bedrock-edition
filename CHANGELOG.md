@@ -1,5 +1,37 @@
 # Changelog
 
+## v0.8.0 – Early Access (2026-11-18)
+
+**The armour update.** Eight 3D armour sets with set bonuses, materials from the foes that suit them, and the Magic Forge to forge, reinforce, inscribe and tailor your armour - for you and your companions.
+
+### Eight armour sets
+* 32 pieces (helmet, chestplate, leggings, boots), each a 3D model in its own style, worn over your skin and robe. Wear two pieces of a set for its first bonus and four for the second:
+  * **Mana-Steel** - +25 max mana / +25% mana regeneration and 10% cheaper spells.
+  * **Royal Knight** (Senior Magic Knights only) - +10% spell power / the **Royal Aegis** below 30% health, and companions within 16 blocks fight 10% harder.
+  * **Devilhide** - Fire Resistance / spells heal you for 8% of their damage and hit 20% harder below 30% health.
+  * **Abyssal Scale** - Water Breathing and Conduit Power in water / the sea no longer drains Abyss Fruit users, and fruit powers recharge 15% faster.
+  * **Shadowweave** - Speed / 20% evasion against melee; crouch still to vanish, and your first blow from hiding lands twice.
+  * **Hive Chitin** - poison immunity / barbs (3 damage and poison for melee attackers) and Regeneration below half health.
+  * **Runeplate** (First Class Senior Magic Knights only) - 40% less from explosions and falls / Resistance, 20% less from spells and rune pulses that hurl foes back.
+  * **Archmage** - 10% shorter spell and fruit cooldowns / +20% spell power and +40 max mana.
+* Pieces are enchantable and repairable with their material.
+
+### Materials
+* New: **Mana-Steel Ingot** (craft: an iron ingot and two mana crystals), **Devil Hide**, **Shadow Silk**, **Chitin Plate**, **Rune Shard** and **Arcane Thread**; the Abyssal set uses **Leviathan Scales**, now also dropped by raider captains and sea raiders.
+* Materials drop from the foes that suit them when you or your companions defeat them; bosses drop plenty. Lair chests, dungeon and camp chests carry them, elites have a 30% chance to, and the merchant sells ingots and rune shards.
+
+### The Magic Forge
+* A new block (craft it, or find one in any Magic Knight camp). **Forge** any piece; **reinforce** the piece in your hand up to +5 (1.5% less damage from everything per level); **inscribe** one of six **runes** (Vitality, Warding, Mana, Swiftness, Thorns, Focus); **sew a squad robe** onto a chestplate as a mantle so you keep the robe's perk; or **salvage** a piece for half its materials.
+* **The Armoury** (at the forge and in the Handbook): what you wear, your active bonuses, how much damage you shrug off, every set and where its materials drop.
+
+### Companions in armour
+* Hand a companion a piece of armour and they wear it - it shows on them, and its bonuses, runes and reinforcement work for them too. Take it back from their profile, upgrades intact.
+
+### Other changes
+* Five armour feats: Fully Armoured, Armour Collector, Forgemaster, Master Smith, Runesmith.
+* The Handbook shows the armour you wear.
+* Fixed: lore lines longer than the game allows (50 characters) were rejected, so spell scrolls with long descriptions could lose their written spell, and Abyss Fruit power items had no description. Long lines are now wrapped.
+
 ## v0.7.5 – Early Access (2026-11-18)
 
 **Places to raid, foes worth hunting, and something to show for it.** Three kinds of lairs, elite enemies with seven traits, potions, elixirs, smoke bombs and spell scrolls, and 22 feats with titles.

@@ -1,0 +1,54 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:shadow_boots",
+      "menu_category": {
+        "category": "equipment",
+        "group": "minecraft:itemGroup.name.boots"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_shadow_boots"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§8Shadowweave Wraps"
+      },
+      "minecraft:max_stack_size": {
+        "value": 1
+      },
+      "minecraft:wearable": {
+        "slot": "slot.armor.feet",
+        "protection": 2
+      },
+      "minecraft:durability": {
+        "max_durability": 194
+      },
+      "minecraft:enchantable": {
+        "slot": "armor_feet",
+        "value": 12
+      },
+      "minecraft:repairable": {
+        "repair_items": [
+          {
+            "items": [
+              "bc:shadow_silk",
+              "bc:mana_steel_ingot"
+            ],
+            "repair_amount": 48
+          }
+        ]
+      },
+      "minecraft:tags": {
+        "tags": [
+          "minecraft:is_armor",
+          "bc:armor",
+          "bc:armor_shadow"
+        ]
+      }
+    }
+  }
+}

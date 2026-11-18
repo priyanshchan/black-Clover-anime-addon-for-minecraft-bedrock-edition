@@ -114,3 +114,4 @@ entity.bc:hive_queen.name=§e§lThe Hive Queen
 item.spawn_egg.entity.bc:hive_queen.name=Hive Queen Spawn Egg
 entity.bc:grimoire_devourer.name=§5§lThe Grimoire Devourer
 item.spawn_egg.entity.bc:grimoire_devourer.name=Grimoire Devourer Spawn Egg
+tile.bc:magic_forge.name=§bMagic Forge

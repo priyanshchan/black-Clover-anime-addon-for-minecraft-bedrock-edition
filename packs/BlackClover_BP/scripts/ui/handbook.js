@@ -12,6 +12,8 @@ import { kingdomPage } from '../living/worldsim.js';
 import { missionSummary } from '../living/missions.js';
 import { eventLog } from '../living/events.js';
 import { featsPage } from '../living/feats.js';
+import { armoryPage } from '../living/forge.js';
+import { gearOf } from '../core/armor.js';
 
 const G = DATA.glyphs;
 
@@ -30,7 +32,9 @@ function statusBody(p) {
   if (s.attr === 'anti') body += `§cAnti-Magic gauge: ${Math.floor(s.anti)}%%\n`.replace('%%', '%');
   else body += `§bMana ${Math.floor(s.mana)}/${maxMana(p, s)}§7  (+${regenPerSecond(p, s).toFixed(1)}/s)\n`;
   body += `§7Spell power: §fx${spellPower(p, s).toFixed(2)}\n`;
-  body += `§7Robe: §f${r ? DATA.robes[r] : 'none'}\n\n`;
+  body += `§7Robe: §f${r ? DATA.robes[r] : 'none'}\n`;
+  const sets = Object.entries(gearOf(p).sets).sort((x, y) => y[1] - x[1]);
+  body += sets.length ? `§7Armour: ${sets.map(([sid, n]) => `${DATA.armor.sets[sid].mc}${DATA.armor.sets[sid].name} ${n}/4`).join('§7, ')}\n\n` : '\n';
   body += '§8Use your grimoire to cast. Sneak + use to flip to the next spell.';
   return body;
 }
@@ -67,6 +71,8 @@ export async function openHandbook(p) {
   actions.push(() => eventPage(p));
   form.button('§lFeats & titles\n§r§8Lifetime achievements');
   actions.push(() => featsPage(p, () => openHandbook(p)));
+  form.button('§lThe Armoury\n§r§8Armour sets, runes, the Magic Forge');
+  actions.push(() => armoryPage(p, () => openHandbook(p)));
   form.button('§lHow to play\n§r§8Altar, mana, robes, the Devil');
   actions.push(() => guide(p));
   sound(p.dimension, 'bc.grimoire.flip', p.location, 0.8, 1);

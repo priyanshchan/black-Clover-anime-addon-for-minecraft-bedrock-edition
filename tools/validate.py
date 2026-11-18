@@ -138,7 +138,8 @@ VANILLA_SOUNDS = {'mob.blaze.shoot', 'mob.blaze.breathe', 'mob.ghast.fireball', 
                   'beacon.activate', 'mob.wither.shoot', 'mob.wither.spawn', 'mob.endermen.portal', 'mob.warden.sonic_boom', 'random.glass',
                   'random.explode', 'random.orb', 'random.anvil_land', 'mob.evocation_illager.cast_spell', 'mob.evocation_illager.prepare_summon',
                   'mob.ravager.bite', 'random.click', 'item.trident.throw', 'random.burp', 'mob.skeleton.say', 'mob.enderdragon.flap',
-                  'mob.enderdragon.growl', 'random.pop', 'random.fizz', 'random.levelup', 'fire.ignite', 'dig.wood', 'mob.slime.big', 'random.fuse'}
+                  'mob.enderdragon.growl', 'random.pop', 'random.fizz', 'random.levelup', 'fire.ignite', 'dig.wood', 'mob.slime.big', 'random.fuse',
+                  'armor.equip_iron', 'random.break', 'random.anvil_use'}
 js = ''
 for p in walk(os.path.join(BP, 'scripts'), '.js'):
     js += open(p, encoding='utf-8').read()

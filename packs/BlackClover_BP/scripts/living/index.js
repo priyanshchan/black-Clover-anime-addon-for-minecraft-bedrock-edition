@@ -25,6 +25,8 @@ import './foes.js';
 import './lairs.js';
 import './elites.js';
 import './feats.js';
+import './armor.js';
+import './forge.js';
 import { useScroll, useSmokeBomb } from './consumables.js';
 import { useCloverLeaf } from './squad.js';
 import { placeDummy } from './roster.js';

@@ -10,6 +10,9 @@
     "bc_grimoire_altar": {
       "textures": "textures/blocks/bc/grimoire_altar"
     },
+    "bc_magic_forge": {
+      "textures": "textures/blocks/bc/magic_forge"
+    },
     "bc_mission_board": {
       "textures": "textures/blocks/bc/mission_board"
     },

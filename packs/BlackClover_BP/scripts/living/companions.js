@@ -45,7 +45,7 @@ const ROBE_PERK = {
  *            courage: number, bond: number, active: boolean, fallenAt: number, eid: string, personality: string, spec: string,
  *            mastery: boolean, awakened: boolean, morale: number, fatigue: number, amulet: string, trial: any, trialStage: number,
  *            title: string, fallenLoc: any, talkDay: number, home: string, dream: string, xpDay: number, xpToday: number, away: string,
- *            specNoted?: boolean, fruit: string}} Member
+ *            specNoted?: boolean, fruit: string, armor?: Record<string, {id: string, plus: number, rune: string, mantle: string, dmg?: number}>}} Member
  * @typedef {{formation: string, stance: string, loot: boolean, unionAt: number, tactic: string, train: boolean, trainAt?: number}} Cfg
  * @typedef {{m: Member[], r: Member[], ex: any[], cfg: Cfg}} Party
  */

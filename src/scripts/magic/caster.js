@@ -13,6 +13,7 @@ import { zoneBonus } from './techniques.js';
 import { castSpec } from '../living/engine.js';
 import { emit } from '../core/bus.js';
 import { amuletOf } from '../core/data.js';
+import { armorCdMul, armorCostMul } from '../core/armor.js';
 
 const IMPL = { ...SPELLS, ...SPELLS2, ...ANTI_SPELLS };
 
@@ -61,6 +62,7 @@ export function useGrimoire(p, item) {
   }
   let cost = sp.mana;
   if (attr === 'flame' && robe(p) === 'crimson_lion_robe') cost = Math.round(cost * 0.85);
+  cost = Math.round(cost * armorCostMul(p));
   if (!creative && s.mana < cost) {
     sound(p.dimension, 'bc.mana.empty', p.location, 0.8, 1);
     safe(() => p.onScreenDisplay.setActionBar(`§9Not enough mana §7(${Math.floor(s.mana)}/${cost})`));
@@ -73,7 +75,7 @@ export function useGrimoire(p, item) {
   const zone = zoneBonus(p);
   const haste = p.getDynamicProperty('bc:haste_until');
   const cdMul = (robe(p) === 'green_mantis_robe' ? 0.85 : 1) * zone.cd * (amuletOf(p) === 'amulet_swift' ? 0.88 : 1)
-    * (typeof haste === 'number' && haste > t ? 0.75 : 1);
+    * (typeof haste === 'number' && haste > t ? 0.75 : 1) * armorCdMul(p);
   s.cd.set(sp.id, t + Math.round(sp.cooldown * 20 * cdMul));
   if (!creative && cost > 0 && robe(p) === 'coral_peacock_robe' && Math.random() < 0.2) {
     s.mana += cost;

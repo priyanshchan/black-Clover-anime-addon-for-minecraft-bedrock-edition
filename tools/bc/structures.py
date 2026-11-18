@@ -298,6 +298,7 @@ def knight_camp():
         b.put(x, 1, z, 'minecraft:oak_log', {'pillar_axis': axis})
     # mission board, supplies, a lantern post
     b.put(3, 1, -2, 'bc:mission_board', {'minecraft:cardinal_direction': 'west'})
+    b.put(4, 1, 3, 'bc:magic_forge', {'minecraft:cardinal_direction': 'west'})   # v0.8.0
     b.put(-3, 1, 3, 'minecraft:chest', {'minecraft:cardinal_direction': 'east'})
     b.chests.append([-3, 1, 3, 'camp'])
     b.put(-4, 1, 3, 'minecraft:crafting_table')

@@ -1,0 +1,32 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shapeless": {
+    "description": {
+      "identifier": "bc:rune_swiftness"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "ingredients": [
+      {
+        "item": "bc:rune_shard"
+      },
+      {
+        "item": "bc:rune_shard"
+      },
+      {
+        "item": "bc:mana_crystal"
+      },
+      {
+        "item": "minecraft:rabbit_foot"
+      }
+    ],
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:rune_swiftness",
+      "count": 1
+    }
+  }
+}

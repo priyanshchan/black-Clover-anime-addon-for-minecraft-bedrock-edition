@@ -12,6 +12,8 @@ import { registerHandler } from '../magic/projectiles.js';
 import { addWill, sea } from './state.js';
 import { castSpec } from '../living/engine.js';
 import { emit } from '../core/bus.js';
+import { fruitCdMul, seaWard } from '../core/armor.js';
+import { wrap } from '../core/scrolls.js';
 
 const F = DATA.fruits;
 export const FRUIT_IDS = DATA.fruitOrder;
@@ -388,7 +390,7 @@ registerHandler('bc:metal_blade', {
 function powerItem(p, fid) {
   const f = F[fid];
   const item = new ItemStack(`bc:power_${fid}`, 1);
-  safe(() => item.setLore([`§7${f.passive}`, `§8Owner: §f${p.name}`, '§8Use: §7ability   §8Sneak + Use: §7switch']));
+  safe(() => item.setLore([...wrap(f.passive, 46).map((l) => `§7${l}`), `§8Owner: §f${p.name}`, '§8Use: §7ability   §8Sneak + Use: §7switch']));
   return item;
 }
 
@@ -479,7 +481,7 @@ export function usePower(p, item) {
     s.lastUse = t;
     return;
   }
-  s.cd.set(ab.id, t + Math.round(ab.cooldown * 20));
+  s.cd.set(ab.id, t + Math.round(ab.cooldown * 20 * fruitCdMul(p)));
   s.lastUse = t;
   anim(p, s.ability >= 2 ? 'animation.bc.player.cast_raise' : 'animation.bc.player.cast_forward');
   const ok = castAbility(p, fid, ab.id);
@@ -494,6 +496,7 @@ export function usePower(p, item) {
 export function drained(p) {
   if (!p.isInWater) return false;
   if (sea(p).fruit === 'shark') return false; // the Shark Fruit belongs to the sea
+  if (seaWard(p)) return false; // Abyssal Scale (4)
   const h = p.getHeadLocation();
   const b = safe(() => p.dimension.getBlock({ x: Math.floor(h.x), y: Math.floor(h.y), z: Math.floor(h.z) }));
   return !!b && (b.typeId === 'minecraft:water' || b.typeId === 'minecraft:flowing_water');

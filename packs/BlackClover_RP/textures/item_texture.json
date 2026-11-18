@@ -2,6 +2,18 @@
   "resource_pack_name": "black_clover",
   "texture_name": "atlas.items",
   "texture_data": {
+    "bc_abyssal_boots": {
+      "textures": "textures/items/bc/abyssal_boots"
+    },
+    "bc_abyssal_chestplate": {
+      "textures": "textures/items/bc/abyssal_chestplate"
+    },
+    "bc_abyssal_helmet": {
+      "textures": "textures/items/bc/abyssal_helmet"
+    },
+    "bc_abyssal_leggings": {
+      "textures": "textures/items/bc/abyssal_leggings"
+    },
     "bc_amulet_guard": {
       "textures": "textures/items/bc/amulet_guard"
     },
@@ -23,8 +35,23 @@
     "bc_aqua_deer_robe": {
       "textures": "textures/items/bc/aqua_deer_robe"
     },
+    "bc_arcane_thread": {
+      "textures": "textures/items/bc/arcane_thread"
+    },
     "bc_archdevil_sigil": {
       "textures": "textures/items/bc/archdevil_sigil"
+    },
+    "bc_archmage_boots": {
+      "textures": "textures/items/bc/archmage_boots"
+    },
+    "bc_archmage_chestplate": {
+      "textures": "textures/items/bc/archmage_chestplate"
+    },
+    "bc_archmage_helmet": {
+      "textures": "textures/items/bc/archmage_helmet"
+    },
+    "bc_archmage_leggings": {
+      "textures": "textures/items/bc/archmage_leggings"
     },
     "bc_bandit_crown": {
       "textures": "textures/items/bc/bandit_crown"
@@ -43,6 +70,21 @@
     },
     "bc_cannonball": {
       "textures": "textures/items/bc/cannonball"
+    },
+    "bc_chitin_boots": {
+      "textures": "textures/items/bc/chitin_boots"
+    },
+    "bc_chitin_chestplate": {
+      "textures": "textures/items/bc/chitin_chestplate"
+    },
+    "bc_chitin_helmet": {
+      "textures": "textures/items/bc/chitin_helmet"
+    },
+    "bc_chitin_leggings": {
+      "textures": "textures/items/bc/chitin_leggings"
+    },
+    "bc_chitin_plate": {
+      "textures": "textures/items/bc/chitin_plate"
     },
     "bc_clover_charm": {
       "textures": "textures/items/bc/clover_charm"
@@ -85,6 +127,21 @@
     },
     "bc_devil_heart": {
       "textures": "textures/items/bc/devil_heart"
+    },
+    "bc_devil_hide": {
+      "textures": "textures/items/bc/devil_hide"
+    },
+    "bc_devilhide_boots": {
+      "textures": "textures/items/bc/devilhide_boots"
+    },
+    "bc_devilhide_chestplate": {
+      "textures": "textures/items/bc/devilhide_chestplate"
+    },
+    "bc_devilhide_helmet": {
+      "textures": "textures/items/bc/devilhide_helmet"
+    },
+    "bc_devilhide_leggings": {
+      "textures": "textures/items/bc/devilhide_leggings"
     },
     "bc_doubloon": {
       "textures": "textures/items/bc/doubloon"
@@ -341,6 +398,9 @@
     "bc_leviathan_scale": {
       "textures": "textures/items/bc/leviathan_scale"
     },
+    "bc_magic_forge": {
+      "textures": "textures/items/bc/magic_forge"
+    },
     "bc_mana_cookie": {
       "textures": "textures/items/bc/mana_cookie"
     },
@@ -349,6 +409,21 @@
     },
     "bc_mana_potion": {
       "textures": "textures/items/bc/mana_potion"
+    },
+    "bc_mana_steel_ingot": {
+      "textures": "textures/items/bc/mana_steel_ingot"
+    },
+    "bc_manasteel_boots": {
+      "textures": "textures/items/bc/manasteel_boots"
+    },
+    "bc_manasteel_chestplate": {
+      "textures": "textures/items/bc/manasteel_chestplate"
+    },
+    "bc_manasteel_helmet": {
+      "textures": "textures/items/bc/manasteel_helmet"
+    },
+    "bc_manasteel_leggings": {
+      "textures": "textures/items/bc/manasteel_leggings"
     },
     "bc_power_acid": {
       "textures": "textures/items/bc/power_acid"
@@ -443,8 +518,68 @@
     "bc_purple_orca_robe": {
       "textures": "textures/items/bc/purple_orca_robe"
     },
+    "bc_royal_boots": {
+      "textures": "textures/items/bc/royal_boots"
+    },
+    "bc_royal_chestplate": {
+      "textures": "textures/items/bc/royal_chestplate"
+    },
+    "bc_royal_helmet": {
+      "textures": "textures/items/bc/royal_helmet"
+    },
     "bc_royal_jelly": {
       "textures": "textures/items/bc/royal_jelly"
+    },
+    "bc_royal_leggings": {
+      "textures": "textures/items/bc/royal_leggings"
+    },
+    "bc_rune_focus": {
+      "textures": "textures/items/bc/rune_focus"
+    },
+    "bc_rune_mana": {
+      "textures": "textures/items/bc/rune_mana"
+    },
+    "bc_rune_shard": {
+      "textures": "textures/items/bc/rune_shard"
+    },
+    "bc_rune_swiftness": {
+      "textures": "textures/items/bc/rune_swiftness"
+    },
+    "bc_rune_thorns": {
+      "textures": "textures/items/bc/rune_thorns"
+    },
+    "bc_rune_vitality": {
+      "textures": "textures/items/bc/rune_vitality"
+    },
+    "bc_rune_warding": {
+      "textures": "textures/items/bc/rune_warding"
+    },
+    "bc_runeplate_boots": {
+      "textures": "textures/items/bc/runeplate_boots"
+    },
+    "bc_runeplate_chestplate": {
+      "textures": "textures/items/bc/runeplate_chestplate"
+    },
+    "bc_runeplate_helmet": {
+      "textures": "textures/items/bc/runeplate_helmet"
+    },
+    "bc_runeplate_leggings": {
+      "textures": "textures/items/bc/runeplate_leggings"
+    },
+    "bc_shadow_boots": {
+      "textures": "textures/items/bc/shadow_boots"
+    },
+    "bc_shadow_chestplate": {
+      "textures": "textures/items/bc/shadow_chestplate"
+    },
+    "bc_shadow_helmet": {
+      "textures": "textures/items/bc/shadow_helmet"
+    },
+    "bc_shadow_leggings": {
+      "textures": "textures/items/bc/shadow_leggings"
+    },
+    "bc_shadow_silk": {
+      "textures": "textures/items/bc/shadow_silk"
     },
     "bc_ship_kit": {
       "textures": "textures/items/bc/ship_kit"

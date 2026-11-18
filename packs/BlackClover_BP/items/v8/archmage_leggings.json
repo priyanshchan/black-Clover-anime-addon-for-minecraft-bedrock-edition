@@ -1,0 +1,54 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:archmage_leggings",
+      "menu_category": {
+        "category": "equipment",
+        "group": "minecraft:itemGroup.name.leggings"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_archmage_leggings"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§dArchmage Skirts"
+      },
+      "minecraft:max_stack_size": {
+        "value": 1
+      },
+      "minecraft:wearable": {
+        "slot": "slot.armor.legs",
+        "protection": 4
+      },
+      "minecraft:durability": {
+        "max_durability": 263
+      },
+      "minecraft:enchantable": {
+        "slot": "armor_legs",
+        "value": 15
+      },
+      "minecraft:repairable": {
+        "repair_items": [
+          {
+            "items": [
+              "bc:arcane_thread",
+              "bc:mana_steel_ingot"
+            ],
+            "repair_amount": 65
+          }
+        ]
+      },
+      "minecraft:tags": {
+        "tags": [
+          "minecraft:is_armor",
+          "bc:armor",
+          "bc:armor_archmage"
+        ]
+      }
+    }
+  }
+}

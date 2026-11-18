@@ -7090,6 +7090,18 @@ export const DATA = {
       "count": 1,
       "price": 70,
       "label": "Spell Scroll"
+    },
+    {
+      "item": "bc:mana_steel_ingot",
+      "count": 4,
+      "price": 40,
+      "label": "Mana-Steel Ingots x4"
+    },
+    {
+      "item": "bc:rune_shard",
+      "count": 2,
+      "price": 55,
+      "label": "Rune Shards x2"
     }
   ],
   "factions": {
@@ -7917,8 +7929,538 @@ export const DATA = {
       "stars": 2,
       "coins": 120,
       "title": "the Raider"
+    },
+    {
+      "id": "armoured",
+      "name": "Fully Armoured",
+      "desc": "Wear all four pieces of an armour set.",
+      "counter": "fullset",
+      "goal": 1,
+      "stars": 1,
+      "coins": 60,
+      "title": "the Armoured"
+    },
+    {
+      "id": "collector",
+      "name": "Armour Collector",
+      "desc": "Wear four different full armour sets.",
+      "counter": "set_kinds",
+      "goal": 4,
+      "stars": 3,
+      "coins": 300,
+      "title": "the Collector"
+    },
+    {
+      "id": "forgemaster",
+      "name": "Forgemaster",
+      "desc": "Forge 20 pieces of armour.",
+      "counter": "forged",
+      "goal": 20,
+      "stars": 2,
+      "coins": 150,
+      "title": "Forgemaster"
+    },
+    {
+      "id": "master_smith",
+      "name": "Master Smith",
+      "desc": "Reinforce a piece of armour to +5.",
+      "counter": "reinforce5",
+      "goal": 1,
+      "stars": 2,
+      "coins": 150,
+      "title": "Master Smith"
+    },
+    {
+      "id": "runesmith",
+      "name": "Runesmith",
+      "desc": "Inscribe 8 runes.",
+      "counter": "runes",
+      "goal": 8,
+      "stars": 1,
+      "coins": 100,
+      "title": "the Runesmith"
     }
   ],
+  "armor": {
+    "slots": [
+      "head",
+      "chest",
+      "legs",
+      "feet"
+    ],
+    "sets": {
+      "manasteel": {
+        "name": "Mana-Steel",
+        "pieces": [
+          "Mana-Steel Helm",
+          "Mana-Steel Cuirass",
+          "Mana-Steel Greaves",
+          "Mana-Steel Boots"
+        ],
+        "prot": [
+          2,
+          6,
+          5,
+          2
+        ],
+        "material": "mana_steel_ingot",
+        "stars": 0,
+        "mc": "\u00a7b",
+        "glow": "7cc8ff",
+        "b2": "+25 max mana",
+        "b4": "+25% mana regeneration, and spells cost 10% less mana"
+      },
+      "royal": {
+        "name": "Royal Knight",
+        "pieces": [
+          "Royal Knight Helm",
+          "Royal Knight Plate",
+          "Royal Knight Tassets",
+          "Royal Knight Sabatons"
+        ],
+        "prot": [
+          3,
+          8,
+          6,
+          3
+        ],
+        "material": "mana_steel_ingot",
+        "stars": 8,
+        "mc": "\u00a7e",
+        "glow": "ffe58a",
+        "b2": "+10% spell power",
+        "b4": "Royal Aegis: falling below 30% health grants Absorption III and Resistance II for 6 s (once a minute); companions within 16 blocks fight 10% harder"
+      },
+      "devilhide": {
+        "name": "Devilhide",
+        "pieces": [
+          "Horned Devilhide Hood",
+          "Devilhide Jerkin",
+          "Devilhide Breeches",
+          "Devilhide Boots"
+        ],
+        "prot": [
+          3,
+          7,
+          6,
+          3
+        ],
+        "material": "devil_hide",
+        "stars": 0,
+        "mc": "\u00a74",
+        "glow": "ff4a4a",
+        "b2": "Fire Resistance",
+        "b4": "Your spells heal you for 8% of the damage they deal, and hit 20% harder while you are below 30% health"
+      },
+      "abyssal": {
+        "name": "Abyssal Scale",
+        "pieces": [
+          "Abyssal Scale Crown",
+          "Abyssal Scale Mail",
+          "Abyssal Scale Leggings",
+          "Abyssal Scale Treads"
+        ],
+        "prot": [
+          3,
+          7,
+          5,
+          3
+        ],
+        "material": "leviathan_scale",
+        "stars": 0,
+        "mc": "\u00a73",
+        "glow": "7cf0ff",
+        "b2": "Water Breathing, and Conduit Power while in water",
+        "b4": "The sea no longer drains Abyss Fruit users, and fruit powers recharge 15% faster"
+      },
+      "shadow": {
+        "name": "Shadowweave",
+        "pieces": [
+          "Shadowweave Cowl",
+          "Shadowweave Vest",
+          "Shadowweave Trousers",
+          "Shadowweave Wraps"
+        ],
+        "prot": [
+          2,
+          4,
+          3,
+          2
+        ],
+        "material": "shadow_silk",
+        "stars": 0,
+        "mc": "\u00a78",
+        "glow": "a060ff",
+        "b2": "Speed I",
+        "b4": "Evasion: a 20% chance to shrug off a melee blow; sneak still for 2 s to vanish, and your first blow from hiding deals double damage"
+      },
+      "chitin": {
+        "name": "Hive Chitin",
+        "pieces": [
+          "Chitin Helm",
+          "Chitin Carapace",
+          "Chitin Leg Plates",
+          "Chitin Boots"
+        ],
+        "prot": [
+          2,
+          6,
+          5,
+          2
+        ],
+        "material": "chitin_plate",
+        "stars": 0,
+        "mc": "\u00a76",
+        "glow": "ffc030",
+        "b2": "Immune to poison (the Hive's acid included)",
+        "b4": "Barbed: melee attackers take 3 damage and are poisoned; Regeneration I while you are below half health"
+      },
+      "runeplate": {
+        "name": "Runeplate",
+        "pieces": [
+          "Runeplate Greathelm",
+          "Runeplate Breastplate",
+          "Runeplate Cuisses",
+          "Runeplate Stompers"
+        ],
+        "prot": [
+          3,
+          8,
+          6,
+          3
+        ],
+        "material": "rune_shard",
+        "stars": 15,
+        "mc": "\u00a79",
+        "glow": "60e0ff",
+        "b2": "Explosions and falls hurt you 40% less",
+        "b4": "Resistance I; spells hurt you 20% less; when struck, a 15% chance of a rune pulse that hurls foes back (4 damage)"
+      },
+      "archmage": {
+        "name": "Archmage",
+        "pieces": [
+          "Archmage Hood",
+          "Archmage Regalia",
+          "Archmage Skirts",
+          "Archmage Slippers"
+        ],
+        "prot": [
+          2,
+          5,
+          4,
+          2
+        ],
+        "material": "arcane_thread",
+        "stars": 0,
+        "mc": "\u00a7d",
+        "glow": "ff9cff",
+        "b2": "Spell and fruit power cooldowns 10% shorter",
+        "b4": "+20% spell power and +40 max mana"
+      }
+    },
+    "cost": {
+      "head": [
+        3,
+        1,
+        2
+      ],
+      "chest": [
+        5,
+        2,
+        4
+      ],
+      "legs": [
+        4,
+        2,
+        3
+      ],
+      "feet": [
+        2,
+        1,
+        2
+      ]
+    },
+    "extra": {
+      "royal": {
+        "head": [
+          [
+            "minecraft:gold_ingot",
+            2
+          ],
+          [
+            "minecraft:diamond",
+            1
+          ]
+        ],
+        "chest": [
+          [
+            "minecraft:gold_ingot",
+            4
+          ],
+          [
+            "minecraft:diamond",
+            2
+          ]
+        ],
+        "legs": [
+          [
+            "minecraft:gold_ingot",
+            3
+          ],
+          [
+            "minecraft:diamond",
+            2
+          ]
+        ],
+        "feet": [
+          [
+            "minecraft:gold_ingot",
+            2
+          ],
+          [
+            "minecraft:diamond",
+            1
+          ]
+        ]
+      }
+    },
+    "materials": {
+      "mana_steel_ingot": {
+        "name": "\u00a7bMana-Steel Ingot",
+        "desc": "Iron steeped in mana. Craft: an iron ingot and two mana crystals (any crafting grid).",
+        "drops": {}
+      },
+      "devil_hide": {
+        "name": "\u00a74Devil Hide",
+        "desc": "Tough, ember-warm hide from the Devil Host.",
+        "drops": {
+          "bc:devil": [
+            1.0,
+            3,
+            5
+          ],
+          "bc:archdevil": [
+            1.0,
+            6,
+            10
+          ],
+          "bc:hellhound": [
+            0.4,
+            1,
+            2
+          ],
+          "bc:imp": [
+            0.25,
+            1,
+            1
+          ],
+          "bc:cultist": [
+            0.2,
+            1,
+            1
+          ],
+          "bc:dark_disciple": [
+            0.15,
+            1,
+            1
+          ],
+          "bc:fallen_captain": [
+            1.0,
+            3,
+            6
+          ]
+        }
+      },
+      "shadow_silk": {
+        "name": "\u00a78Shadow Silk",
+        "desc": "Silk that drinks the light, worn by thieves and assassins.",
+        "drops": {
+          "bc:shadow_assassin": [
+            0.6,
+            1,
+            2
+          ],
+          "bc:bandit_thief": [
+            0.35,
+            1,
+            1
+          ],
+          "bc:bandit": [
+            0.08,
+            1,
+            1
+          ],
+          "bc:bandit_king": [
+            1.0,
+            4,
+            6
+          ]
+        }
+      },
+      "chitin_plate": {
+        "name": "\u00a76Chitin Plate",
+        "desc": "A plate of hive armour, light and hard as iron.",
+        "drops": {
+          "bc:hive_drone": [
+            0.4,
+            1,
+            1
+          ],
+          "bc:hive_egg": [
+            0.25,
+            1,
+            1
+          ],
+          "bc:hive_queen": [
+            1.0,
+            6,
+            10
+          ]
+        }
+      },
+      "rune_shard": {
+        "name": "\u00a79Rune Shard",
+        "desc": "A shard of ancient rune-stone that still hums with old magic.",
+        "drops": {
+          "bc:construct": [
+            0.5,
+            1,
+            2
+          ],
+          "bc:dungeon_golem": [
+            1.0,
+            3,
+            5
+          ],
+          "bc:stone_colossus": [
+            1.0,
+            6,
+            10
+          ],
+          "bc:mana_wraith": [
+            0.25,
+            1,
+            1
+          ]
+        }
+      },
+      "arcane_thread": {
+        "name": "\u00a7dArcane Thread",
+        "desc": "Thread spun from loose spellwork.",
+        "drops": {
+          "bc:rogue_mage": [
+            0.35,
+            1,
+            1
+          ],
+          "bc:grimoire_devourer": [
+            1.0,
+            6,
+            10
+          ],
+          "bc:frost_witch": [
+            1.0,
+            2,
+            4
+          ],
+          "bc:ember_witch": [
+            1.0,
+            2,
+            4
+          ],
+          "bc:soul_puppeteer": [
+            1.0,
+            3,
+            5
+          ]
+        }
+      }
+    },
+    "scaleDrops": {
+      "bc:raider_captain": [
+        0.5,
+        1,
+        2
+      ],
+      "bc:phantom_raider": [
+        0.15,
+        1,
+        1
+      ],
+      "bc:sea_raider": [
+        0.06,
+        1,
+        1
+      ]
+    },
+    "runes": {
+      "vitality": {
+        "name": "Rune of Vitality",
+        "color": "ff5a6a",
+        "desc": "+2 max health per rune",
+        "item": "minecraft:glistering_melon_slice"
+      },
+      "warding": {
+        "name": "Rune of Warding",
+        "color": "7cc8ff",
+        "desc": "spells hurt you 6% less per rune",
+        "item": "minecraft:amethyst_shard"
+      },
+      "mana": {
+        "name": "Rune of Mana",
+        "color": "4a7cff",
+        "desc": "+15 max mana per rune",
+        "item": "minecraft:lapis_block"
+      },
+      "swiftness": {
+        "name": "Rune of Swiftness",
+        "color": "80ff9a",
+        "desc": "Speed I with two runes, Speed II with four",
+        "item": "minecraft:rabbit_foot"
+      },
+      "thorns": {
+        "name": "Rune of Thorns",
+        "color": "6ad040",
+        "desc": "melee attackers take 1 damage per rune",
+        "item": "minecraft:cactus"
+      },
+      "focus": {
+        "name": "Rune of Focus",
+        "color": "ffd060",
+        "desc": "spell cooldowns 4% shorter per rune",
+        "item": "minecraft:clock"
+      }
+    },
+    "reinforceMax": 5,
+    "reinforcePct": 1.5,
+    "reinforceCost": {
+      "1": [
+        1,
+        3,
+        0
+      ],
+      "2": [
+        2,
+        6,
+        0
+      ],
+      "3": [
+        3,
+        9,
+        0
+      ],
+      "4": [
+        4,
+        12,
+        1
+      ],
+      "5": [
+        5,
+        15,
+        2
+      ]
+    }
+  },
   "companion": {
     "xp": [
       0,

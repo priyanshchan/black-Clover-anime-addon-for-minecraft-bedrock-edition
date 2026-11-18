@@ -1,6 +1,6 @@
 # Black Clover: Grimoire Awakening
 
-> **Early Access – v0.7.5.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
+> **Early Access – v0.8.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
 **An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 36 magic attributes, lead a squad of Magic Knight companions with their own personalities and specialisations, draw anti-magic demon swords, wear squad robes, fly brooms, and fight devils, pirates, bandits, assassins, rogue mages, insect swarms and fifteen giant bosses.
 
@@ -26,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v0.8.0 – the armour update:** eight 3D armour sets (Mana-Steel, Royal Knight, Devilhide, Abyssal Scale, Shadowweave, Hive Chitin, Runeplate, Archmage) with bonuses for two and four pieces, materials dropped by the foes that suit them, and the **Magic Forge**: forge pieces, reinforce them to +5, inscribe six kinds of runes, sew a squad robe on as a mantle, salvage; companions wear armour too.
 * **v0.7.5 – lairs, elites & feats:** bandit hideouts, hive nests and cultist shrines to raid; **elite enemies** with seven traits (Vampiric, Shielded, Swift, Explosive, Summoner, Arcane, Frenzied) and better loot; Mana Potions, elixirs, Smoke Bombs and **spell scrolls** that cast a spell from any grimoire; and **22 feats** that pay stars and doubloons and unlock a title shown under your name.
 * **v0.7.0 – foes that fight together:** the Bandit Brotherhood (thieves steal your doubloons and run), Shadow Assassins, Cultists and the Hive; three new bosses (the Bandit King, the spell-stealing Grimoire Devourer, the egg-laying Hive Queen); enemy warbands that focus, surround, call for help and break; bosses that adapt to how you fight; and an event director with scaling, objectives, an event log and six new events.
 * **v0.6.0 – a grimoire and a fruit:** every companion fights with a grimoire **and** an Abyss Fruit (feed them any fruit to change it), and every grimoire and fruit gains a new move - 35 level-12 spells, Black Hurricane for Anti-Magic, and a fourth power for all 30 fruits (awakens at Will 2): 215 spells and 120 fruit powers in all.
@@ -345,6 +346,17 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 
 ---
 
+## v0.8.0: the armour update
+
+![v0.8.0](docs/images/v080.png)
+
+* **Eight armour sets** - 32 pieces, each a 3D model: **Mana-Steel** (+mana, cheaper spells), **Royal Knight** (spell power, the Royal Aegis, inspires your companions; for Senior Magic Knights), **Devilhide** (fire resistance, spells that drain life), **Abyssal Scale** (breathe underwater, and the sea no longer drains fruit users), **Shadowweave** (speed, evasion, vanish and strike twice), **Hive Chitin** (poison immunity, barbs), **Runeplate** (shrugs off explosions, falls and magic, rune pulses) and **Archmage** (shorter cooldowns, +20% power). Two pieces give a set's first bonus, four its second. → [Armour](docs/armour.md)
+* **Materials from the foes that suit them** - Devil Hide from the Devil Host, Shadow Silk from assassins and thieves, Chitin Plates from the Hive, Rune Shards from constructs and colossi, Arcane Thread from rogue mages and witches, Leviathan Scales from the deep, and craftable Mana-Steel Ingots. Lairs and elites carry them too. → [Materials](docs/armour.md#materials)
+* **The Magic Forge** - craft one or find one in a Magic Knight camp. Forge pieces, **reinforce** them to +5, **inscribe runes** (Vitality, Warding, Mana, Swiftness, Thorns, Focus), sew a squad robe on as a **mantle** to keep its perk, or salvage. → [The Magic Forge](docs/armour.md#the-magic-forge)
+* **Companions in armour** - hand them a piece and they wear it, bonuses and all. Plus five armour feats and the Armoury page in the Handbook.
+
+---
+
 ## v0.7.5: lairs, elites & feats
 
 ![v0.7.5](docs/images/v075.png)
@@ -648,7 +660,7 @@ python3 tools/docs.py         # regenerates the reference pages in docs/
 
 The scripts are type-checked against the official `@minecraft/server` 2.0.0 typings (`tsc --checkJs`).
 
-**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.7.5`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
+**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.8.0`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
 
 **Tuning held items:** third/first-person poses live in `grimoire_animations()` and `sword_animations()` in `tools/bc/models/items.py`. First-person poses are solved from a target screen position by `tools/bc/fpsolve.py`, so moving an item on screen means changing one target point.
 

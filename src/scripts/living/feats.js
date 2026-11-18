@@ -13,7 +13,7 @@ import { sea } from '../sea/state.js';
 import { bondRank, party } from './companions.js';
 
 const KEY = 'bc:feats';
-/** @type {Map<string, {c: Record<string, number>, done: string[], kinds: string[], title: string}>} */
+/** @type {Map<string, {c: Record<string, number>, done: string[], kinds: string[], sets: string[], title: string}>} */
 const cache = new Map();
 
 function feats(p) {
@@ -25,7 +25,7 @@ function feats(p) {
   } catch {
     f = undefined;
   }
-  f = { c: {}, done: [], kinds: [], title: '', ...(f ?? {}) };
+  f = { c: {}, done: [], kinds: [], sets: [], title: '', ...(f ?? {}) };
   cache.set(p.id, f);
   return f;
 }
@@ -90,6 +90,20 @@ on('elite', (p) => bump(p, 'elites'));
 on('thief', (p) => bump(p, 'thieves'));
 on('scroll', (p) => bump(p, 'scrolls'));
 on('lair', (p) => bump(p, 'lairs'));
+// v0.8.0: armour
+on('forge', (p) => bump(p, 'forged'));
+on('rune', (p) => bump(p, 'runes'));
+on('reinforce', (p, level) => {
+  if (level >= 5) atLeast(p, 'reinforce5', 1);
+});
+on('armor_set', (p, sid) => {
+  const f = feats(p);
+  atLeast(p, 'fullset', 1);
+  if (!f.sets.includes(sid)) {
+    f.sets.push(sid);
+    atLeast(p, 'set_kinds', f.sets.length);
+  }
+});
 
 // slow checks: level, party, bonds, fruit, brooms
 system.runInterval(() => {

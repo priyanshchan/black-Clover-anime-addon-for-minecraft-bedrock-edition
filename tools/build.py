@@ -27,6 +27,8 @@ from bc.data import (ALTAR_WEIGHTS, ATTR_ORDER, ATTRIBUTES, BOND, CAPTAIN_FIRST,
 from bc.data import (BANTER, DREAMS, EXPEDITIONS, HOMETOWNS, MOOD, PERSONALITIES, RESERVE_MAX, SPEC_LEVEL, SPECS, TACTICS_PARTY,  # noqa: E402
                      TIPS, TRIAL_TITLES, TRIALS, COMPANION_FRUIT_LEVEL)
 from bc.data import CONSUMABLES, ELITE_AFFIXES, ELITE_CHANCE, FEATS  # noqa: E402
+from bc.data import (ARMOR_COST, ARMOR_EXTRA, ARMOR_MATERIALS, ARMOR_SETS, ARMOR_SLOTS, REINFORCE_COST, REINFORCE_MAX,  # noqa: E402
+                     REINFORCE_PCT, RUNES, SCALE_DROPS)
 from bc.models import wave4  # noqa: E402
 
 ROOT = out.ROOT
@@ -92,6 +94,17 @@ def gen_script_data():
         'eliteChance': ELITE_CHANCE,
         'consumables': {k: dict(name=n, desc=d) for k, (n, d) in CONSUMABLES.items()},
         'feats': [dict(id=i, name=n, desc=d, counter=c, goal=g, stars=st, coins=co, title=t) for i, n, d, c, g, st, co, t in FEATS],
+        'armor': {
+            'slots': list(ARMOR_SLOTS),
+            'sets': {k: dict(name=v['name'], pieces=list(v['pieces']), prot=list(v['prot']), material=v['material'], stars=v['stars'], mc=v['mc'],
+                             glow=v['glow'], b2=v['b2'], b4=v['b4']) for k, v in ARMOR_SETS.items()},
+            'cost': {k: list(v) for k, v in ARMOR_COST.items()},
+            'extra': {k: {sl: [list(x) for x in lst] for sl, lst in v.items()} for k, v in ARMOR_EXTRA.items()},
+            'materials': {k: dict(name=n, desc=d, drops={e: list(c) for e, c in dr.items()}) for k, (n, d, dr) in ARMOR_MATERIALS.items()},
+            'scaleDrops': {e: list(c) for e, c in SCALE_DROPS.items()},
+            'runes': {k: dict(name=n, color=c, desc=d, item=x) for k, (n, c, d, x) in RUNES.items()},
+            'reinforceMax': REINFORCE_MAX, 'reinforcePct': REINFORCE_PCT, 'reinforceCost': {str(k): list(v) for k, v in REINFORCE_COST.items()},
+        },
         'companion': {'xp': COMPANION_XP, 'hp': COMPANION_HP, 'bond': [dict(at=a, name=n, perk=k) for a, n, k in BOND],
                       'partyMax': PARTY_MAX, 'lines': COMPANION_LINES, 'personalities': PERSONALITIES, 'specs': SPECS, 'specLevel': SPEC_LEVEL,
                       'tactics': {k: dict(name=n, desc=d) for k, (n, d) in TACTICS_PARTY.items()}, 'mood': MOOD,

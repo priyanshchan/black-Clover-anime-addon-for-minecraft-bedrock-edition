@@ -1034,3 +1034,98 @@ FEATS = [
 ]
 MERCHANT += [('bc:mana_potion', 3, 45, 'Mana Potions x3'), ('bc:elixir_iron', 1, 60, 'Elixir of Iron'), ('bc:smoke_bomb', 3, 30, 'Smoke Bombs x3'),
              ('bc:spell_scroll', 1, 70, 'Spell Scroll')]
+
+# ======================================================================================
+# v0.8.0: armour - eight sets of four pieces with set bonuses, materials dropped by the foes that suit them,
+# runes, reinforcement and squad mantles at the Magic Forge.
+# ======================================================================================
+ARMOR_SLOTS = ('head', 'chest', 'legs', 'feet')
+# piece share of a set's durability (like vanilla armour)
+ARMOR_DUR = {'head': 0.69, 'chest': 1.0, 'legs': 0.94, 'feet': 0.81}
+# Armour sets: id -> dict(name, pieces (helmet, chest, legs, boots names), prot (h, c, l, b), dur (chest durability),
+#   material, style (for the models), colours, stars (rank needed to forge), b2/b4 (set bonus texts; implemented in scripts))
+ARMOR_SETS = {
+    'manasteel': dict(name='Mana-Steel', pieces=('Mana-Steel Helm', 'Mana-Steel Cuirass', 'Mana-Steel Greaves', 'Mana-Steel Boots'),
+                      prot=(2, 6, 5, 2), dur=300, material='mana_steel_ingot', stars=0, mc='§b',
+                      style='knight', base='steel', accent='water', glow='7cc8ff',
+                      b2='+25 max mana', b4='+25% mana regeneration, and spells cost 10% less mana'),
+    'royal': dict(name='Royal Knight', pieces=('Royal Knight Helm', 'Royal Knight Plate', 'Royal Knight Tassets', 'Royal Knight Sabatons'),
+                  prot=(3, 8, 6, 3), dur=460, material='mana_steel_ingot', stars=8, mc='§e',
+                  style='royal', base='white_cloth', accent='gold', glow='ffe58a',
+                  b2='+10% spell power',
+                  b4='Royal Aegis: falling below 30% health grants Absorption III and Resistance II for 6 s (once a minute); companions within 16 blocks fight 10% harder'),
+    'devilhide': dict(name='Devilhide', pieces=('Horned Devilhide Hood', 'Devilhide Jerkin', 'Devilhide Breeches', 'Devilhide Boots'),
+                      prot=(3, 7, 6, 3), dur=400, material='devil_hide', stars=0, mc='§4',
+                      style='devil', base='devil_skin', accent='anti', glow='ff4a4a',
+                      b2='Fire Resistance',
+                      b4='Your spells heal you for 8% of the damage they deal, and hit 20% harder while you are below 30% health'),
+    'abyssal': dict(name='Abyssal Scale', pieces=('Abyssal Scale Crown', 'Abyssal Scale Mail', 'Abyssal Scale Leggings', 'Abyssal Scale Treads'),
+                    prot=(3, 7, 5, 3), dur=380, material='leviathan_scale', stars=0, mc='§3',
+                    style='abyssal', base='aqua_cloth', accent='water', glow='7cf0ff',
+                    b2='Water Breathing, and Conduit Power while in water',
+                    b4='The sea no longer drains Abyss Fruit users, and fruit powers recharge 15% faster'),
+    'shadow': dict(name='Shadowweave', pieces=('Shadowweave Cowl', 'Shadowweave Vest', 'Shadowweave Trousers', 'Shadowweave Wraps'),
+                   prot=(2, 4, 3, 2), dur=240, material='shadow_silk', stars=0, mc='§8',
+                   style='shadow', base='black_cloth', accent='purple_cloth', glow='a060ff',
+                   b2='Speed I',
+                   b4='Evasion: a 20% chance to shrug off a melee blow; sneak still for 2 s to vanish, and your first blow from hiding deals double damage'),
+    'chitin': dict(name='Hive Chitin', pieces=('Chitin Helm', 'Chitin Carapace', 'Chitin Leg Plates', 'Chitin Boots'),
+                   prot=(2, 6, 5, 2), dur=340, material='chitin_plate', stars=0, mc='§6',
+                   style='chitin', base='leather', accent='gold', glow='ffc030',
+                   b2='Immune to poison (the Hive\'s acid included)',
+                   b4='Barbed: melee attackers take 3 damage and are poisoned; Regeneration I while you are below half health'),
+    'runeplate': dict(name='Runeplate', pieces=('Runeplate Greathelm', 'Runeplate Breastplate', 'Runeplate Cuisses', 'Runeplate Stompers'),
+                      prot=(3, 8, 6, 3), dur=560, material='rune_shard', stars=15, mc='§9',
+                      style='rune', base='stone', accent='mossstone', glow='60e0ff',
+                      b2='Explosions and falls hurt you 40% less',
+                      b4='Resistance I; spells hurt you 20% less; when struck, a 15% chance of a rune pulse that hurls foes back (4 damage)'),
+    'archmage': dict(name='Archmage', pieces=('Archmage Hood', 'Archmage Regalia', 'Archmage Skirts', 'Archmage Slippers'),
+                     prot=(2, 5, 4, 2), dur=280, material='arcane_thread', stars=0, mc='§d',
+                     style='mage', base='navy', accent='gold', glow='ff9cff',
+                     b2='Spell and fruit power cooldowns 10% shorter', b4='+20% spell power and +40 max mana'),
+}
+# what each piece costs at the Magic Forge: (set material, mana-steel ingots, mana crystals) per slot
+ARMOR_COST = {'head': (3, 1, 2), 'chest': (5, 2, 4), 'legs': (4, 2, 3), 'feet': (2, 1, 2)}
+# special costs: the Mana-Steel set is made of ingots only; the Royal set adds gold and diamonds
+ARMOR_EXTRA = {'royal': {'head': [('minecraft:gold_ingot', 2), ('minecraft:diamond', 1)], 'chest': [('minecraft:gold_ingot', 4), ('minecraft:diamond', 2)],
+                         'legs': [('minecraft:gold_ingot', 3), ('minecraft:diamond', 2)], 'feet': [('minecraft:gold_ingot', 2), ('minecraft:diamond', 1)]}}
+# Materials: id -> (name, description, {entity: (chance, min, max)})
+ARMOR_MATERIALS = {
+    'mana_steel_ingot': ('§bMana-Steel Ingot', 'Iron steeped in mana. Craft: an iron ingot and two mana crystals (any crafting grid).', {}),
+    'devil_hide': ('§4Devil Hide', 'Tough, ember-warm hide from the Devil Host.', {
+        'bc:devil': (1.0, 3, 5), 'bc:archdevil': (1.0, 6, 10), 'bc:hellhound': (0.4, 1, 2), 'bc:imp': (0.25, 1, 1),
+        'bc:cultist': (0.2, 1, 1), 'bc:dark_disciple': (0.15, 1, 1), 'bc:fallen_captain': (1.0, 3, 6)}),
+    'shadow_silk': ('§8Shadow Silk', 'Silk that drinks the light, worn by thieves and assassins.', {
+        'bc:shadow_assassin': (0.6, 1, 2), 'bc:bandit_thief': (0.35, 1, 1), 'bc:bandit': (0.08, 1, 1), 'bc:bandit_king': (1.0, 4, 6)}),
+    'chitin_plate': ('§6Chitin Plate', 'A plate of hive armour, light and hard as iron.', {
+        'bc:hive_drone': (0.4, 1, 1), 'bc:hive_egg': (0.25, 1, 1), 'bc:hive_queen': (1.0, 6, 10)}),
+    'rune_shard': ('§9Rune Shard', 'A shard of ancient rune-stone that still hums with old magic.', {
+        'bc:construct': (0.5, 1, 2), 'bc:dungeon_golem': (1.0, 3, 5), 'bc:stone_colossus': (1.0, 6, 10), 'bc:mana_wraith': (0.25, 1, 1)}),
+    'arcane_thread': ('§dArcane Thread', 'Thread spun from loose spellwork.', {
+        'bc:rogue_mage': (0.35, 1, 1), 'bc:grimoire_devourer': (1.0, 6, 10), 'bc:frost_witch': (1.0, 2, 4), 'bc:ember_witch': (1.0, 2, 4),
+        'bc:soul_puppeteer': (1.0, 3, 5)}),
+}
+# the Abyssal set is made from Leviathan Scales (an existing item); these foes now drop them too
+SCALE_DROPS = {'bc:raider_captain': (0.5, 1, 2), 'bc:phantom_raider': (0.15, 1, 1), 'bc:sea_raider': (0.06, 1, 1)}
+# Runes: id -> (name, colour, effect per rune, the item that gives it its nature)
+RUNES = {
+    'vitality': ('Rune of Vitality', 'ff5a6a', '+2 max health per rune', 'minecraft:glistering_melon_slice'),
+    'warding': ('Rune of Warding', '7cc8ff', 'spells hurt you 6% less per rune', 'minecraft:amethyst_shard'),
+    'mana': ('Rune of Mana', '4a7cff', '+15 max mana per rune', 'minecraft:lapis_block'),
+    'swiftness': ('Rune of Swiftness', '80ff9a', 'Speed I with two runes, Speed II with four', 'minecraft:rabbit_foot'),
+    'thorns': ('Rune of Thorns', '6ad040', 'melee attackers take 1 damage per rune', 'minecraft:cactus'),
+    'focus': ('Rune of Focus', 'ffd060', 'spell cooldowns 4% shorter per rune', 'minecraft:clock'),
+}
+# Reinforcement: +1 to +5 per piece; each level cuts all damage you take by 1.5% (a full +5 set: 30%)
+REINFORCE_MAX = 5
+REINFORCE_PCT = 1.5
+# cost of reaching level n: (mana-steel ingots, mana crystals, diamonds)
+REINFORCE_COST = {1: (1, 3, 0), 2: (2, 6, 0), 3: (3, 9, 0), 4: (4, 12, 1), 5: (5, 15, 2)}
+FEATS += [
+    ('armoured', 'Fully Armoured', 'Wear all four pieces of an armour set.', 'fullset', 1, 1, 60, 'the Armoured'),
+    ('collector', 'Armour Collector', 'Wear four different full armour sets.', 'set_kinds', 4, 3, 300, 'the Collector'),
+    ('forgemaster', 'Forgemaster', 'Forge 20 pieces of armour.', 'forged', 20, 2, 150, 'Forgemaster'),
+    ('master_smith', 'Master Smith', 'Reinforce a piece of armour to +5.', 'reinforce5', 1, 2, 150, 'Master Smith'),
+    ('runesmith', 'Runesmith', 'Inscribe 8 runes.', 'runes', 8, 1, 100, 'the Runesmith'),
+]
+MERCHANT += [('bc:mana_steel_ingot', 4, 40, 'Mana-Steel Ingots x4'), ('bc:rune_shard', 2, 55, 'Rune Shards x2')]
