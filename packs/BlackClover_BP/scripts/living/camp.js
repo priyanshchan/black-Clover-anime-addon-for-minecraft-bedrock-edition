@@ -14,9 +14,10 @@ import { ActionFormData, MessageFormData } from '@minecraft/server-ui';
 import { DATA } from '../generated/data.js';
 import { on } from '../core/bus.js';
 import { anim, particle, rgb, sound, title } from '../core/fx.js';
-import { foesOf } from '../core/combat.js';
+import { center, foesOf } from '../core/combat.js';
 import { V, clamp, isCreative, pick, safe } from '../core/util.js';
 import { rethink } from './ai.js';
+import { nameKnight } from './knights.js';
 import { isBoss } from './bosses.js';
 import { heal } from './engine.js';
 import {
@@ -164,7 +165,7 @@ onPartyTick((p, pt, active, t, fighting) => {
     particle(p.dimension, 'bc:smoke_burst', V.add(c.at, { x: 0, y: 1.0, z: 0 }), { scale: 0.3 });
   }
   // the night watch
-  if (c.watch && t % 40 === 0) {
+  if (c.watch) {
     const w = active.find((m) => m.cid === c.watch);
     const we = w ? entityOf(w) : undefined;
     const prowl = safe(() => p.dimension.getEntities({ location: c.at, maxDistance: 22, families: ['monster'] })) ?? [];
@@ -425,6 +426,29 @@ addTalkHandler(async (p, e, m, id) => {
       m.spec = old;
       m.mastery = !!old && (m.level >= 20 || m.trialStage >= 2);
     }
+    save(p);
+    return true;
+  }
+  if (id.startsWith('bc:fruit_') && DATA.fruits[id.slice(9)]) {
+    // v0.6.0: feed them an Abyss Fruit - its power replaces the one they had
+    const fid = id.slice(9);
+    if (fid === m.fruit) {
+      say(p, m, 'I already carry that power!');
+      return true;
+    }
+    const old = DATA.fruits[m.fruit];
+    m.fruit = fid;
+    if (!isCreative(p)) consumeHeld(p, id);
+    const f = DATA.fruits[fid];
+    safe(() => e.setDynamicProperty('bc:fruit', fid));
+    nameKnight(e);
+    rethink(e);
+    anim(e, 'animation.bc.magic_knight.eat');
+    particle(e.dimension, 'bc:burst', center(e), { color: rgb(f.color), scale: 1 });
+    particle(e.dimension, 'bc:magic_circle_ground', e.location, { color: rgb(f.color), size: 2.5, life: 1.2 });
+    sound(e.dimension, 'bc.fruit.eat', e.location, 1, 1);
+    say(p, m, `${f.mc}${f.name}§f... ${old ? `the ${old.name} fades, and ` : ''}a new power answers me!`);
+    safe(() => p.sendMessage(`§7${m.name} now fights with the ${f.mc}${f.power}§7: ${f.abilities.map((a) => a.name).join(', ')}.`));
     save(p);
     return true;
   }

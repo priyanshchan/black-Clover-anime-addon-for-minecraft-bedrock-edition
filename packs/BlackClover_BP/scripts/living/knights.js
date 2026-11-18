@@ -50,7 +50,9 @@ export function nameKnight(e) {
   safe(() => {
     const prefix = safe(() => e.getDynamicProperty('bc:prefix')) ?? '§a';
     const lv = knightLevel(e);
-    e.nameTag = `${prefix}${knightName(e)} §7${RANK[lv]} §r${DATA.attributes[knightAttr(e)].glyph}`;
+    const fruit = safe(() => e.getDynamicProperty('bc:fruit'));
+    const fg = typeof fruit === 'string' && DATA.fruits[fruit] ? DATA.fruits[fruit].glyph : '';
+    e.nameTag = `${prefix}${knightName(e)} §7${RANK[lv]} §r${DATA.attributes[knightAttr(e)].glyph}${fg}`;
   });
 }
 
@@ -78,14 +80,17 @@ world.afterEvents.entityLoad.subscribe((ev) => safe(() => track(ev.entity)));
 
 /**
  * The spells a knight of this attribute and level knows (engine recipes only).
- * Level 1: two spells, level 3: three, level 6: the grimoire's ultimate.
+ * Level 1: two spells, level 3: three, level 6: four, level 12: the grimoire's new move (v0.6.0), level 15: the awakened spell.
  */
 export function kitFor(attr, level = 1) {
-  const awakened = DATA.spells[attr]?.find((sp) => sp.level >= 15)?.spec;
-  if (DATA.npcKits[attr]) return level >= 15 && awakened ? [...DATA.npcKits[attr], awakened] : DATA.npcKits[attr];
-  const specs = DATA.spells[attr]?.map((sp) => sp.spec).filter(Boolean) ?? [];
-  const n = level >= 15 ? 5 : level >= 6 ? 4 : level >= 3 ? 3 : 2;
-  const kit = specs.slice(0, n).filter((s) => s.t !== 'wall');
+  const all = DATA.spells[attr] ?? [];
+  const awakened = all.find((sp) => sp.level >= 15)?.spec;
+  const fresh = all.find((sp) => sp.level === 12)?.spec;
+  const late = [...(level >= 12 && fresh ? [fresh] : []), ...(level >= 15 && awakened ? [awakened] : [])];
+  if (DATA.npcKits[attr]) return [...DATA.npcKits[attr], ...late];
+  const specs = all.filter((sp) => sp.spec && sp.level < 12).map((sp) => sp.spec);
+  const n = level >= 6 ? 4 : level >= 3 ? 3 : 2;
+  const kit = [...specs.slice(0, n).filter((s) => s.t !== 'wall'), ...late];
   return kit.length ? kit : DATA.npcKits.wind;
 }
 
@@ -118,7 +123,8 @@ export function giveKnightXp(e, amount) {
   for (const fn of levelHooks) safe(() => fn(e));
   const owner = world.getEntity(/** @type {string} */ (safe(() => e.getDynamicProperty('bc:owner')) ?? ''));
   if (owner instanceof Player) {
-    const extra = lv === 3 ? ' and learned a third spell' : lv === 6 ? ' and mastered their grimoire' : lv === 15 ? ' - their grimoire has AWAKENED' : '';
+    const extra = lv === 3 ? ' and learned a third spell' : lv === 6 ? ' and mastered their grimoire' : lv === 10 ? ' - their fruit\'s fourth move awakens'
+      : lv === 12 ? ' and learned a new grimoire move' : lv === 15 ? ' - their grimoire has AWAKENED' : '';
     safe(() => owner.sendMessage(`§b${knightName(e)}§f is now a §e${RANK[lv]}§f knight (level ${lv})${extra}!`));
   }
 }

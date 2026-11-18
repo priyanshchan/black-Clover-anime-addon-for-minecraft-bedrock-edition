@@ -92,7 +92,7 @@ async function spellPicker(p) {
 }
 
 async function attributeList(p) {
-  const form = new ActionFormData().title('Attributes').body('§7Each grimoire holds four spells (levels 1, 3, 6 and 10), and every grimoire but Anti-Magic awakens a fifth at level 15.');
+  const form = new ActionFormData().title('Attributes').body('§7Each grimoire holds spells for levels 1, 3, 6, 10 and 12, and every grimoire but Anti-Magic awakens one more at level 15.');
   for (const k of DATA.order) {
     const a = DATA.attributes[k];
     form.button(`${a.glyph} ${a.mc}§l${a.name}§r\n§8${{ 3: 'Three', 4: 'Four', 5: 'Five' }[a.leaves]}-leaf grimoire`);
@@ -112,7 +112,7 @@ async function guide(p) {
   const body = [
     '§l§dGrimoire Altar§r\n§7Craft one (or use the one you received on your first day). Interact with it to receive your grimoire. Lost it? The altar returns it.',
     '§l§bMana§r\n§7Spells cost mana, which regenerates over time. Mana Crystals restore it instantly (craft: amethyst + lapis + glowstone).',
-    '§l§eLevels§r\n§7Casting and defeating monsters grants magic XP. New spells unlock at levels 3, 6 and 10, and your grimoire §dawakens§7 a fifth spell at level 15. Spell power grows every level.',
+    '§l§eLevels§r\n§7Casting and defeating monsters grants magic XP. New spells unlock at levels 3, 6, 10 and 12, and your grimoire §dawakens§7 its strongest spell at level 15. Spell power grows every level.',
     '§l§0Anti-Magic§r\n§7Five-leaf grimoires hold demon swords instead of spells. Sword hits fill the gauge; at 100% unleash Black Form. Sneak with a sword to cut down incoming spells.',
     '§l§6Robes§r\n§7Black Bull: faster mana, stronger when near death. Golden Dawn: +40 mana, +10% power. Crimson Lion: cheaper and stronger flame spells.',
     '§l§4The Devil§r\n§7Dark Disciples roam at night. A Devil Summoning Contract (crying obsidian, mana crystals, book) calls the Devil itself. Its heart crafts a Wishing Clover Charm, which lets you seek a new grimoire.',
@@ -129,13 +129,17 @@ async function fruitPage(p) {
   if (w.fruit) {
     const f = DATA.fruits[w.fruit];
     body += `${f.glyph} ${f.mc}§l${f.name}§r\n§7Passive: §f${f.passive}\n\n`;
-    for (const [i, a] of f.abilities.entries()) body += `${i === w.ability ? '§e> ' : '§8- '}§f${a.name} §8(${a.cooldown}s)\n§7${a.desc}\n`;
+    for (const [i, a] of f.abilities.entries()) {
+      const lock = a.will && w.willLv < a.will ? ` §5(awakens at Will ${a.will})` : '';
+      body += `${i === w.ability ? '§e> ' : '§8- '}§f${a.name} §8(${a.cooldown}s)${lock}\n§7${a.desc}\n`;
+    }
     body += '\n§9Weakness: §7deep water drains you, and anti-magic seals your power for a while.';
   } else {
     body += '§7You have not eaten an Abyss Fruit. Raider Captains, sunken wrecks, the Leviathan and the Bounty Board shop can give you one.\n§cYou can only ever hold one fruit.';
   }
   body += `\n\n§5${G.will} Will level ${w.willLv}§7 - ${Math.floor(w.willXp)}/${willToNext(w.willLv)} XP, gauge ${Math.floor(w.will)}%%\n`.replace('%%', '%');
   body += `${w.willLv >= 1 ? '§d' : '§8'}Lv 1 Iron Will: melee hits spend Will for extra damage\n`;
+  body += `${w.willLv >= 2 ? '§d' : '§8'}Lv 2 Fruit awakening: your fruit's fourth move\n`;
   body += `${w.willLv >= 3 ? '§d' : '§8'}Lv 3 Keen Will: a chance to sidestep blows and arrows\n`;
   body += `${w.willLv >= 8 ? '§d' : '§8'}Lv 8 Sovereign Will: Sneak + Jump at full Will to floor weak foes\n`;
   body += '§7Train Will by fighting. Leviathan Scales strengthen it.';
@@ -143,6 +147,7 @@ async function fruitPage(p) {
   const acts = [];
   if (w.fruit) {
     for (const [i, a] of DATA.fruits[w.fruit].abilities.entries()) {
+      if (a.will && w.willLv < a.will && !isCreative(p)) continue;
       form.button(`Use §l${a.name}`);
       acts.push(() => {
         w.ability = i;
@@ -190,6 +195,7 @@ async function seaGuide(p) {
 async function companionPage(p) {
   const C = DATA.companion;
   const body = [
+    '§l§6A grimoire and a fruit§r\n§7Every companion fights with its own grimoire §fand§7 an Abyss Fruit (shown after its name). Spells come with its level (3, 6, 12, 15); the fruit\'s fourth move opens at level ' + C.fruitLevel + '. Hold any Abyss Fruit and talk to a companion to feed it to them - its power replaces the old one.',
     '§l§6New in v0.5.0§r\n§7Personalities, specialisations, party tactics, combos, revives, mood, camps, personal trials, a reserve with expeditions, sparring, rival squads - and they fly brooms with you.',
     '§l§bPersonalities§r\n' + Object.values(C.personalities).map((x) => `§f${x.name}§7: ${x.desc}`).join('\n'),
     `§l§6Specialisations (level ${C.specLevel})§r\n` + Object.values(C.specs).map((x) => `§6${x.name}§7: ${x.desc} §8Mastery: ${x.mastery}`).join('\n'),
@@ -198,7 +204,7 @@ async function companionPage(p) {
     '§l§aRevives§r\n§7A fallen companion leaves a glowing clover for 60 seconds. Sneak beside it, or let a squadmate kneel there (a Warden is twice as fast), and they get up at half health. A §aClover Leaf of Return§7 revives everyone at once.',
     '§l§dMood§r\n§7Morale rises with victories, gifts, talks and a cheerful friend; weariness builds in long fights. Inspired: +10% power. Shaken: less nerve. Exhausted: slower casting. Make camp with the whistle, or hand them §6Field Rations§7.',
     '§l§dCamp & night watch§r\n§7"Make camp": they sit around a fire, recover fast and chat. At night one of them keeps watch and raises the alarm if something sneaks up.',
-    '§l§dTrials§r\n§7At bond Friend a companion asks for help with a personal trial - finishing it awakens their fifth spell early and earns a title. At Sworn Ally a second trial grants their specialisation\'s mastery.',
+    '§l§dTrials§r\n§7At bond Friend a companion asks for help with a personal trial - finishing it awakens their grimoire early (every spell open) and earns a title. At Sworn Ally a second trial grants their specialisation\'s mastery.',
     '§l§2Squad Banner§r\n§7Keep up to ' + C.reserveMax + ' more knights in reserve. Swap them into the party, and send reserve knights on expeditions (real-time, from 8 to 60 minutes) for loot and XP. Reserve knights train while they wait.',
     '§l§6Training & sparring§r\n§7Place a §6Training Dummy§7 (it shows your DPS) and switch training on: companions practise on it between fights. Pick two companions for a sparring match - non-lethal, and both learn.',
     '§l§bYour party§r\n§7Up to ' + DATA.companion.partyMax + ' Magic Knights travel with you. Recruit them with a §aKnight Contract§7, by talking to a wild knight (contract or doubloons), or by rescuing a wounded knight. Your party is saved with you: companions level up to 20, keep their robe and bond, and come back 60 seconds after they fall.',
@@ -265,7 +271,7 @@ async function gearPage(p) {
     '§l§6Magic Brooms§r\n' + brooms + '\n§7Use a broom to mount it. Look where you want to go and hold forward (look up to climb), hold back to brake, let go to hover, sneak to step off - the broom returns to your pack. Flying drains mana; when you run dry it only glides. Without a grimoire a broom can only glide, and Anti-Magic smothers it entirely.',
     '§l§dAmulets§r\n' + amulets + '\n§7Hold an amulet in your §foff hand§7. Craft them from gold nuggets, string, a mana crystal and a focus (lapis block, emerald, redstone block, iron block or golden apple), buy a Mystery Amulet from the merchant, or find one in camp chests.',
     '§l§aMagic Knight camps§r\n§7Tents around a campfire on open grassland, with knights on watch, a supply chest and a Mission Board.',
-    '§l§5Awakening§r\n§7At magic level 15 every grimoire (except Anti-Magic) awakens a fifth spell - its strongest. Knights and companions learn theirs at level 15 too.',
+    '§l§5New moves & awakening§r\n§7Every grimoire has a new move at magic level 12 (Anti-Magic: Black Hurricane), and every grimoire but Anti-Magic awakens its strongest spell at 15. Every Abyss Fruit has a fourth move that awakens at Will 2. Knights and companions learn theirs at levels 12 and 15 too.',
   ].join('\n\n');
   await new MessageFormData().title('Brooms & amulets').body(body).button1('Back').button2('Close').show(p).then((res) => {
     if (res.selection === 0) return openHandbook(p);

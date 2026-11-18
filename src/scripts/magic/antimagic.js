@@ -58,6 +58,58 @@ export const ANTI_SPELLS = {
     particle(c.dim, 'bc:magic_circle_dark', c.p.location, { size: 6, life: 2 });
     for (let i = 0; i < 6; i++) particle(c.dim, 'bc:dark_lightning', V.add(c.p.location, { x: rand(-4, 4), y: 0, z: rand(-4, 4) }));
   },
+  black_hurricane(c) {
+    // v0.6.0: spin with your swords - cut every spell nearby, slash and seal everyone close
+    const s = state(c.p);
+    const free = isCreative(c.p) || inBlackForm(c.p);
+    if (s.anti < 25 && !free) {
+      safe(() => c.p.onScreenDisplay.setActionBar(`§cBlack Hurricane needs 25% Anti-Magic §7(you have ${Math.floor(s.anti)}%)`));
+      sound(c.dim, 'bc.mana.empty', c.p.location);
+      return false;
+    }
+    if (!free) {
+      s.anti -= 25;
+      s.dirty = true;
+    }
+    const p = c.p;
+    anim(p, 'animation.bc.player.cast_raise');
+    sound(c.dim, 'bc.anti.slash', p.location, 1.4, 0.7);
+    shockwave(c.dim, p.location, 'anti', 6);
+    const hit = new Set();
+    repeat(10, 2, (i) => {
+      if (!alive(p)) return false;
+      const at = V.add(p.location, { x: 0, y: 1, z: 0 });
+      for (let k = 0; k < 4; k++) {
+        const a = (i * 0.6 + k * Math.PI / 2);
+        particle(c.dim, 'bc:slash_fx', V.add(at, { x: Math.cos(a) * 2.6, y: 0, z: Math.sin(a) * 2.6 }), { size: 2.4, rot: (a * 180) / Math.PI });
+      }
+      particle(c.dim, 'bc:anti_crackle', at, { radius: 3 });
+      // hostile spells and projectiles are cut out of the air
+      safe(() => {
+        for (const x of c.dim.getEntities({ location: at, maxDistance: 7 })) {
+          const m = projectiles.get(x.id);
+          const hostile = (m && m.owner !== p.id) || HOSTILE_PROJECTILES.includes(x.typeId);
+          if (!hostile) continue;
+          particle(c.dim, 'bc:anti_burst', x.location, { scale: 0.5 });
+          projectiles.delete(x.id);
+          x.remove();
+        }
+      });
+      for (const t of c.dim.getEntities({ location: at, maxDistance: 4.5 })) {
+        if (t.id === p.id || hit.has(t.id) || !canHit(p, t)) continue;
+        hit.add(t.id);
+        const magical = safe(() => t.matches({ families: ['bc_magic'] }));
+        hurt(t, (inBlackForm(p) ? 14 : 10) * (magical ? 1.4 : 1), p);
+        knock(t, V.sub(t.location, p.location), 1.3, 0.4);
+        if (fruitOf(t)) sealFruit(t, 160);
+        for (const ef of safe(() => t.getEffects()) ?? []) {
+          if (['strength', 'resistance', 'speed', 'regeneration', 'absorption', 'invisibility'].includes(ef.typeId.replace('minecraft:', ''))) safe(() => t.removeEffect(ef.typeId));
+        }
+      }
+    });
+    shake(p, 0.35, 0.5);
+    return true;
+  },
 };
 
 function drawSword(p, typeId) {

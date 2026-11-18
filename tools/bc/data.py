@@ -866,3 +866,93 @@ PUPPET_ITEMS = {
     'companion_tome': 'Companion Tome', 'cursed_spool': 'Cursed Spool',
 }
 MERCHANT += [('bc:field_rations', 4, 40, 'Field Rations x4'), ('bc:clover_leaf', 1, 260, 'Clover Leaf of Return'), ('bc:companion_tome', 1, 150, 'Companion Tome')]
+
+# ======================================================================================
+# v0.6.0: a new move for every grimoire (level 12) and every Abyss Fruit (Will 2), and
+# companions who fight with a grimoire and a fruit
+# ======================================================================================
+NEW_MOVE_LEVEL = 12
+NEW_FRUIT_WILL = 2
+COMPANION_FRUIT_LEVEL = 10   # companions use their fruit's fourth move from this level
+NEW_MOVES = {
+    'wind': _s('vacuum_cutter', 'Vacuum Cutter', 60, 16.0, 12, 'Three lanes of vacuum blades rip along the ground.', t='wave', d=12, len=16, lanes=3, fx='wind', kb=[1.2, 0.4]),
+    'flame': _s('flame_emperor_ring', "Flame Emperor's Ring", 64, 18.0, 12, 'Two rings of fireballs burst out from you.', t='radial', d=8, n=16, rings=2, shape=0, speed=1.6, fire=4, fx='flame'),
+    'water': _s('riptide_whirlpool', 'Riptide Whirlpool', 60, 18.0, 12, 'A whirlpool drags foes into its crushing heart.', t='vortex', d=14, r=7, dur=3, fx='water'),
+    'lightning': _s('chain_storm', 'Chain Storm', 62, 16.0, 12, 'Lightning leaps from foe to foe near your aim.', t='strikes', d=12, n=6, r=12, fx='lightning', eff=[['slowness', 2, 1]]),
+    'light': _s('sacred_cage', 'Sacred Cage', 64, 18.0, 12, 'Cages of light bind foes near your aim, then burst.', t='prison', d=12, r=4, dur=3, fx='light', eff=[['blindness', 2, 0]]),
+    'dark': _s('night_fangs', 'Night Fangs', 62, 16.0, 12, 'Fangs of darkness tear out in four directions.', t='wave', d=12, len=14, dirs=4, fx='dark', eff=[['weakness', 4, 1]]),
+    'ice': _s('frost_barrage', 'Frost Barrage', 60, 18.0, 12, 'Icicles rain over your aim.', t='rain', d=7, n=16, r=6, every=2, fx='ice', eff=[['slowness', 2, 1]]),
+    'anti': _s('black_hurricane', 'Black Hurricane', 0, 14.0, 12, 'Spin with your swords: cut every spell around you out of the air, slash and seal everyone close. Costs 25% of the Anti-Magic gauge.'),
+    'spatial': _s('folding_strike', 'Folding Strike', 58, 14.0, 12, 'Fold space to appear among your foes and blast them apart.', t='leap', mode='blink', d=10, dist=10, fx='spatial',
+                  then=dict(t='nova', d=10, r=4, kb=[1.4, 0.5], fx='spatial')),
+    'earth': _s('stone_fist_rain', 'Stone Fist Rain', 62, 18.0, 12, 'Giant stone fists fall from the sky around your aim.', t='meteor', d=12, n=4, r=6, aoe=3, size=2, fx='earth'),
+    'steel': _s('blade_cage', 'Blade Cage', 60, 18.0, 12, 'A cage of swords closes around foes near your aim.', t='prison', d=12, r=4, dur=3, fx='metal'),
+    'mirror': _s('prism_beam', 'Prism Beam', 60, 14.0, 12, 'A beam of light bounced through a hundred mirrors.', t='beam', d=14, range=24, width=1.2, fx='mirror'),
+    'sand': _s('sand_spear_barrage', 'Sand Spear Barrage', 58, 14.0, 12, 'Six spears of packed sand.', t='bolt', d=6, n=6, spread=24, shape=3, speed=2.4, pierce=1, fx='sand'),
+    'bubble': _s('bubble_armour', 'Bubble Armour', 56, 22.0, 12, 'Bubbles armour you and your allies.', t='buff', allies=8, fx='bubble', self=[['absorption', 10, 1], ['resistance', 8, 0]]),
+    'plant': _s('strangler_vines', 'Strangler Vines', 60, 16.0, 12, 'Vines erupt and strangle everything near your aim.', t='zone', d=3, r=5, dur=6, pull=0.3, fx='leaf', eff=[['slowness', 2, 2], ['poison', 2, 0]]),
+    'poison': _s('toxic_rain', 'Toxic Rain', 60, 16.0, 12, 'Venom rains down over your aim.', t='rain', d=4, n=16, r=6, every=2, fx='poison', eff=[['poison', 3, 1]]),
+    'blood': _s('crimson_scythe', 'Crimson Scythe', 50, 12.0, 12, 'A scythe of blood sweeps in front of you and feeds you.', t='nova', at='front', d=12, r=5, ls=0.4, kb=[1.0, 0.3], fx='blood'),
+    'star': _s('polaris_beam', 'Polaris Beam', 64, 16.0, 12, 'A beam of starlight from the north star.', t='beam', d=16, range=28, width=1.4, fx='star'),
+    'sound': _s('echo_field', 'Echo Field', 58, 16.0, 12, 'A field of endless echoes that dizzies and weakens foes near your aim.', t='zone', d=3, r=6, dur=6, fx='sound', eff=[['nausea', 3, 0], ['weakness', 3, 1]]),
+    'mist': _s('mist_bind', 'Mist Bind', 56, 16.0, 12, 'Thick mist solidifies around foes near your aim.', t='prison', d=6, r=4, dur=4, fx='mist', eff=[['blindness', 3, 0]]),
+    'crystal': _s('crystal_prison', 'Crystal Prison', 62, 18.0, 12, 'Encase foes in crystal, then shatter it.', t='prison', d=12, r=3.5, dur=3, fx='crystal'),
+    'bone': _s('bone_rain', 'Bone Rain', 60, 16.0, 12, 'A storm of bone spears falls over your aim.', t='rain', d=8, n=14, r=6, every=2, fx='bone'),
+    'magma': _s('magma_serpent', 'Magma Serpent', 66, 18.0, 12, 'A serpent of magma burns through everything in its path.', t='bolt', d=14, shape=2, size=3, speed=1.3, pierce=5, fire=5, fx='magma'),
+    'time': _s('quickened_hour', 'Quickened Hour', 60, 24.0, 12, 'Speed up time for you and your allies.', t='buff', allies=8, fx='time', self=[['speed', 8, 2], ['haste', 8, 1], ['jump_boost', 8, 1]]),
+    'cotton': _s('cotton_cannon', 'Cotton Cannon', 54, 12.0, 12, 'A huge ball of packed cotton that bowls foes over.', t='bolt', d=8, size=3, shape=0, speed=1.2, aoe=3.5, kb=[1.6, 0.8], fx='cotton', eff=[['slowness', 3, 1]]),
+    'paper': _s('paper_prison', 'Paper Prison', 56, 16.0, 12, 'Sheets of paper wrap foes near your aim into tight bundles.', t='prison', d=8, r=4, dur=4, fx='paper'),
+    'smoke': _s('smog_vortex', 'Smog Vortex', 58, 16.0, 12, 'A choking whirl of smoke drags foes together.', t='vortex', d=10, r=6, dur=3, fx='smoke', eff=[['blindness', 2, 0]]),
+    'glass': _s('glass_lances', 'Glass Lances', 60, 16.0, 12, 'Glass spikes erupt in three directions.', t='wave', d=12, len=14, dirs=3, fx='glass'),
+    'gold': _s('golden_barrage', 'Golden Barrage', 62, 16.0, 12, 'Two rings of heavy gold coins burst out from you.', t='radial', d=6, n=20, rings=2, shape=0, speed=1.8, fx='gold'),
+    'beast': _s('beast_spirit_pounce', 'Beast Spirit Pounce', 56, 12.0, 12, 'Leap like a beast and crash down on your target.', t='dive', d=14, r=4, fx='beast'),
+    'spirit': _s('soul_lance', 'Soul Lance', 60, 14.0, 12, 'A lance of spirit light that feeds on the life it pierces.', t='beam', d=13, range=24, width=1.0, ls=0.3, fx='spirit'),
+    'rune': _s('rune_barrier', 'Rune Barrier', 60, 24.0, 12, 'A barrier of runes guards you and your allies.', t='buff', allies=8, fx='rune', self=[['resistance', 10, 1], ['absorption', 10, 1]]),
+    'gravity': _s('meteor_pull', 'Meteor Pull', 64, 18.0, 12, 'Gravity drags rocks down from the sky around your aim.', t='meteor', d=14, n=3, r=5, aoe=3.5, size=2, fx='gravity'),
+    'moon': _s('moonlit_prison', 'Moonlit Prison', 60, 18.0, 12, 'Moonlight freezes foes near your aim in place.', t='prison', d=10, r=4, dur=3, fx='moon', eff=[['blindness', 2, 0]]),
+    'thorn': _s('thorn_barrage', 'Thorn Barrage', 58, 16.0, 12, 'Two rings of poisoned thorns burst out from you.', t='radial', d=5, n=24, rings=2, shape=3, speed=2.0, fx='thorn', eff=[['poison', 2, 0]]),
+    'ash': _s('ash_phoenix', 'Ash Phoenix', 58, 14.0, 12, 'Burst into burning ash and crash down on your foes.', t='dive', d=14, r=4, fire=4, fx='ash'),
+}
+for _a, _sp in NEW_MOVES.items():
+    _lst = SPELLS[_a]
+    _i = next((i for i, x in enumerate(_lst) if x[4] >= 15), len(_lst))
+    _lst.insert(_i, _sp)
+
+# (id, name, cooldown, description, engine recipe, Will level)
+NEW_FRUIT_MOVES = {
+    'ember': ('ember_storm', 'Ember Storm', 16.0, 'Burning embers rain over your aim.', dict(t='rain', d=6, n=14, r=6, every=2, fire=4, fx='flame')),
+    'stone': ('landslide', 'Landslide', 16.0, 'Three lanes of crashing rock.', dict(t='wave', d=12, len=14, lanes=3, fx='earth', kb=[1.2, 0.5])),
+    'gravity': ('black_star', 'Black Star', 18.0, 'A tiny black star swallows everything around it.', dict(t='vortex', d=16, r=7, dur=3, fx='gravity')),
+    'shadow': ('night_parade', 'Night Parade', 16.0, 'Shadows rise under every foe near your aim.', dict(t='strikes', d=10, n=6, r=12, fx='dark', eff=[['blindness', 2, 0]])),
+    'bloom': ('pollen_storm', 'Pollen Storm', 16.0, 'A storm of stinging pollen over your aim.', dict(t='zone', d=2, r=6, dur=6, fx='leaf', eff=[['poison', 2, 0], ['slowness', 2, 1]])),
+    'quicksilver': ('mercury_rain', 'Mercury Rain', 16.0, 'Blades of liquid metal rain down.', dict(t='rain', d=7, n=16, r=6, every=2, fx='metal')),
+    'frost': ('glacier_crash', 'Glacier Crash', 18.0, 'Blocks of glacier ice crash down around your aim.', dict(t='meteor', d=13, n=3, r=5, aoe=3.5, size=2, fx='ice', eff=[['slowness', 3, 2]])),
+    'barrier': ('barrier_prison', 'Barrier Prison', 16.0, 'Seal foes near your aim inside barrier cubes.', dict(t='prison', d=8, r=4, dur=4, fx='glass')),
+    'wolf': ('moon_fang', 'Moon Fang', 14.0, 'Three savage bites in a row.', dict(t='repeat', n=3, every=6, fx='beast', spec=dict(t='nova', at='front', d=8, r=3, kb=[0.6, 0.2], fx='beast'))),
+    'hawk': ('gale_feathers', 'Gale Feathers', 14.0, 'A ring of razor feathers bursts out from you.', dict(t='radial', d=6, n=16, shape=2, speed=2.0, fx='wind')),
+    'lava': ('lava_serpent', 'Lava Serpent', 18.0, 'A serpent of lava burns through everything in its path.', dict(t='bolt', d=13, shape=2, size=3, speed=1.3, pierce=5, fire=5, fx='magma')),
+    'ash': ('cinder_phoenix', 'Cinder Phoenix', 16.0, 'Burst into cinders and crash down on your foes.', dict(t='dive', d=14, r=4, fire=4, fx='ash')),
+    'prism': ('spectrum_prison', 'Spectrum Prison', 16.0, 'Foes near your aim are trapped in prisms of light.', dict(t='prison', d=9, r=4, dur=3, fx='crystal')),
+    'bounce': ('rubber_barrage', 'Rubber Barrage', 12.0, 'Six bouncing balls that knock foes flying.', dict(t='bolt', d=4, n=6, spread=30, shape=0, size=1, speed=1.8, kb=[1.2, 0.6], fx='gold')),
+    'blast': ('chain_blast', 'Chain Blast', 16.0, 'Explosions ripple across every foe near your aim.', dict(t='strikes', d=12, n=6, r=10, fx='flame')),
+    'acid': ('acid_flood', 'Acid Flood', 16.0, 'Waves of acid surge out in six directions.', dict(t='wave', d=10, len=14, dirs=6, fx='acid', eff=[['poison', 2, 1]])),
+    'lodestone': ('iron_maiden', 'Iron Maiden', 18.0, 'Pull scrap metal into a crushing cage around foes near your aim.', dict(t='prison', d=12, r=3.5, dur=3, fx='metal')),
+    'cloud': ('hailstorm', 'Hailstorm', 16.0, 'A thundercloud pours hail over your aim.', dict(t='rain', d=6, n=18, r=7, every=2, fx='ice')),
+    'ink': ('ink_prison', 'Ink Prison', 16.0, 'Drown foes near your aim in a bubble of ink.', dict(t='prison', d=7, r=4, dur=4, fx='ink', eff=[['blindness', 3, 0]])),
+    'bear': ('avalanche_charge', 'Avalanche Charge', 14.0, 'Charge like an avalanche, then slam the ground.', dict(t='leap', mode='dash', d=10, dist=10, fx='beast', kb=[1.6, 0.5],
+                                                                                                                     then=dict(t='nova', d=8, r=4, kb=[1.4, 0.6], fx='earth'))),
+    'tiger': ('tiger_strike', 'Tiger Strike', 14.0, 'Pounce high and land claws-first on your prey.', dict(t='dive', d=14, r=3.5, fx='beast')),
+    'wyvern': ('dragon_rain', 'Dragon Rain', 18.0, 'Fireballs rain from the sky around your aim.', dict(t='meteor', d=12, n=4, r=6, aoe=3, fire=4, size=1, fx='flame')),
+    'spore': ('fairy_ring', 'Fairy Ring', 16.0, 'A ring of toxic mushrooms bursts up around you.', dict(t='zone', at='self', d=3, r=6, dur=6, fx='poison', eff=[['poison', 2, 1], ['slowness', 2, 0]])),
+    'thread': ('thousand_threads', 'Thousand Threads', 16.0, 'Two rings of razor threads lash out from you.', dict(t='radial', d=5, n=24, rings=2, shape=3, speed=2.2, fx='paper')),
+    'slime': ('slime_rain', 'Slime Rain', 16.0, 'Sticky slime rains over your aim.', dict(t='rain', d=5, n=14, r=6, every=2, fx='acid', eff=[['slowness', 3, 2]])),
+    'chain': ('chain_storm_fruit', 'Chain Storm', 16.0, 'Chains whip down on every foe near your aim.', dict(t='strikes', d=10, n=6, r=10, fx='metal', eff=[['slowness', 2, 1]])),
+    'lion': ('kings_charge', "King's Charge", 14.0, 'A royal charge that ends in a thunderous roar.', dict(t='leap', mode='dash', d=11, dist=12, fx='beast', kb=[1.6, 0.5],
+                                                                                                         then=dict(t='nova', d=6, r=5, kb=[1.8, 0.6], fx='beast', eff=[['weakness', 4, 1]]))),
+    'shark': ('feeding_frenzy', 'Feeding Frenzy', 14.0, 'Four bites in a row, each one feeding you.', dict(t='repeat', n=4, every=6, fx='water', spec=dict(t='nova', at='front', d=7, r=3, ls=0.25, fx='water'))),
+    'phoenix': ('phoenix_halo', 'Phoenix Halo', 22.0, 'A halo of healing fire for you and your allies, and a burst of flame for your foes.', dict(t='buff', allies=8, fx='flame',
+                                                                                                         self=[['regeneration', 8, 1], ['fire_resistance', 12, 0]], then=dict(t='nova', d=8, r=5, fire=4, fx='flame'))),
+    'spider': ('venom_rain', 'Venom Rain', 16.0, 'Venom drips from webs strung over your aim.', dict(t='rain', d=4, n=14, r=6, every=2, fx='poison', eff=[['poison', 3, 1]])),
+}
+for _f, (_id, _n, _cd, _desc, _spec) in NEW_FRUIT_MOVES.items():
+    FRUITS[_f]['abilities'].append((_id, _n, _cd, _desc, _spec, NEW_FRUIT_WILL))

@@ -21,6 +21,8 @@ export function addWillXp(p, amount) {
     s.willXp -= willToNext(s.willLv);
     s.willLv++;
     const unlocks = { 1: 'Iron Will - your strikes carry your spirit', 3: 'Keen Will - you sense blows before they land', 8: 'Sovereign Will - Sneak + Jump at full Will' };
+    const fourth = s.fruit ? DATA.fruits[s.fruit]?.abilities.find((a) => a.will === s.willLv) : undefined;
+    if (fourth) unlocks[s.willLv] = `Fruit awakening - ${fourth.name} (your fruit's fourth move)`;
     title(p, `§5${DATA.glyphs.will} Will ${s.willLv}`, unlocks[s.willLv] ? `§d${unlocks[s.willLv]}` : '§7Your spirit hardens', 50);
     sound(p.dimension, 'bc.will.pulse', p.location, 0.8, 1.2);
     particle(p.dimension, 'bc:will_spark', V.add(p.location, { x: 0, y: 1, z: 0 }), { scale: 1 });

@@ -327,6 +327,25 @@ export const DATA = {
         "desc": "Erupt into the sky with a devastating wind burst."
       },
       {
+        "id": "vacuum_cutter",
+        "name": "Vacuum Cutter",
+        "mana": 60,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Three lanes of vacuum blades rip along the ground.",
+        "spec": {
+          "t": "wave",
+          "d": 12,
+          "len": 16,
+          "lanes": 3,
+          "fx": "wind",
+          "kb": [
+            1.2,
+            0.4
+          ]
+        }
+      },
+      {
         "id": "gale_emperor",
         "name": "Gale Emperor",
         "mana": 110,
@@ -378,6 +397,24 @@ export const DATA = {
         "cooldown": 22.0,
         "level": 10,
         "desc": "An expanding ring of solar fire around you."
+      },
+      {
+        "id": "flame_emperor_ring",
+        "name": "Flame Emperor's Ring",
+        "mana": 64,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "Two rings of fireballs burst out from you.",
+        "spec": {
+          "t": "radial",
+          "d": 8,
+          "n": 16,
+          "rings": 2,
+          "shape": 0,
+          "speed": 1.6,
+          "fire": 4,
+          "fx": "flame"
+        }
       },
       {
         "id": "crown_of_suns",
@@ -432,6 +469,21 @@ export const DATA = {
         "desc": "Traps all nearby enemies in crushing water bubbles."
       },
       {
+        "id": "riptide_whirlpool",
+        "name": "Riptide Whirlpool",
+        "mana": 60,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "A whirlpool drags foes into its crushing heart.",
+        "spec": {
+          "t": "vortex",
+          "d": 14,
+          "r": 7,
+          "dur": 3,
+          "fx": "water"
+        }
+      },
+      {
         "id": "ocean_sovereign",
         "name": "Ocean Sovereign",
         "mana": 110,
@@ -483,6 +535,28 @@ export const DATA = {
         "cooldown": 24.0,
         "level": 10,
         "desc": "Call down a storm of judgment bolts on all foes."
+      },
+      {
+        "id": "chain_storm",
+        "name": "Chain Storm",
+        "mana": 62,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Lightning leaps from foe to foe near your aim.",
+        "spec": {
+          "t": "strikes",
+          "d": 12,
+          "n": 6,
+          "r": 12,
+          "fx": "lightning",
+          "eff": [
+            [
+              "slowness",
+              2,
+              1
+            ]
+          ]
+        }
       },
       {
         "id": "thousand_bolts",
@@ -540,6 +614,28 @@ export const DATA = {
         "desc": "A rain of light swords over the battlefield."
       },
       {
+        "id": "sacred_cage",
+        "name": "Sacred Cage",
+        "mana": 64,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "Cages of light bind foes near your aim, then burst.",
+        "spec": {
+          "t": "prison",
+          "d": 12,
+          "r": 4,
+          "dur": 3,
+          "fx": "light",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
         "id": "judgment_day",
         "name": "Judgment Day",
         "mana": 120,
@@ -587,6 +683,28 @@ export const DATA = {
         "cooldown": 26.0,
         "level": 10,
         "desc": "A slash that cuts through space itself."
+      },
+      {
+        "id": "night_fangs",
+        "name": "Night Fangs",
+        "mana": 62,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Fangs of darkness tear out in four directions.",
+        "spec": {
+          "t": "wave",
+          "d": 12,
+          "len": 14,
+          "dirs": 4,
+          "fx": "dark",
+          "eff": [
+            [
+              "weakness",
+              4,
+              1
+            ]
+          ]
+        }
       },
       {
         "id": "void_eclipse",
@@ -645,6 +763,29 @@ export const DATA = {
         "desc": "A blizzard that freezes everything around you."
       },
       {
+        "id": "frost_barrage",
+        "name": "Frost Barrage",
+        "mana": 60,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "Icicles rain over your aim.",
+        "spec": {
+          "t": "rain",
+          "d": 7,
+          "n": 16,
+          "r": 6,
+          "every": 2,
+          "fx": "ice",
+          "eff": [
+            [
+              "slowness",
+              2,
+              1
+            ]
+          ]
+        }
+      },
+      {
         "id": "eternal_winter",
         "name": "Eternal Winter",
         "mana": 120,
@@ -692,6 +833,15 @@ export const DATA = {
         "cooldown": 45.0,
         "level": 10,
         "desc": "Unleash the devil within. Requires a full Anti-Magic gauge."
+      },
+      {
+        "id": "black_hurricane",
+        "name": "Black Hurricane",
+        "mana": 0,
+        "cooldown": 14.0,
+        "level": 12,
+        "desc": "Spin with your swords: cut every spell around you out of the air, slash and seal everyone close. Costs 25% of the Anti-Magic gauge.",
+        "spec": {}
       }
     ],
     "spatial": [
@@ -726,6 +876,31 @@ export const DATA = {
         "cooldown": 22.0,
         "level": 10,
         "desc": "Portals surround your target and fire from every side."
+      },
+      {
+        "id": "folding_strike",
+        "name": "Folding Strike",
+        "mana": 58,
+        "cooldown": 14.0,
+        "level": 12,
+        "desc": "Fold space to appear among your foes and blast them apart.",
+        "spec": {
+          "t": "leap",
+          "mode": "blink",
+          "d": 10,
+          "dist": 10,
+          "fx": "spatial",
+          "then": {
+            "t": "nova",
+            "d": 10,
+            "r": 4,
+            "kb": [
+              1.4,
+              0.5
+            ],
+            "fx": "spatial"
+          }
+        }
       },
       {
         "id": "dimension_collapse",
@@ -775,6 +950,23 @@ export const DATA = {
         "cooldown": 24.0,
         "level": 10,
         "desc": "Rings of shattering earth roll out from you."
+      },
+      {
+        "id": "stone_fist_rain",
+        "name": "Stone Fist Rain",
+        "mana": 62,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "Giant stone fists fall from the sky around your aim.",
+        "spec": {
+          "t": "meteor",
+          "d": 12,
+          "n": 4,
+          "r": 6,
+          "aoe": 3,
+          "size": 2,
+          "fx": "earth"
+        }
       },
       {
         "id": "world_splitter",
@@ -830,6 +1022,21 @@ export const DATA = {
         "desc": "A whirlwind of orbiting blades shreds everything near you."
       },
       {
+        "id": "blade_cage",
+        "name": "Blade Cage",
+        "mana": 60,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "A cage of swords closes around foes near your aim.",
+        "spec": {
+          "t": "prison",
+          "d": 12,
+          "r": 4,
+          "dur": 3,
+          "fx": "metal"
+        }
+      },
+      {
         "id": "iron_tempest_grand",
         "name": "Iron Tempest",
         "mana": 110,
@@ -879,6 +1086,21 @@ export const DATA = {
         "cooldown": 25.0,
         "level": 10,
         "desc": "Mirror panes surround your aim and burn it from every angle."
+      },
+      {
+        "id": "prism_beam",
+        "name": "Prism Beam",
+        "mana": 60,
+        "cooldown": 14.0,
+        "level": 12,
+        "desc": "A beam of light bounced through a hundred mirrors.",
+        "spec": {
+          "t": "beam",
+          "d": 14,
+          "range": 24,
+          "width": 1.2,
+          "fx": "mirror"
+        }
       },
       {
         "id": "hall_of_mirrors",
@@ -985,6 +1207,24 @@ export const DATA = {
               1
             ]
           ]
+        }
+      },
+      {
+        "id": "sand_spear_barrage",
+        "name": "Sand Spear Barrage",
+        "mana": 58,
+        "cooldown": 14.0,
+        "level": 12,
+        "desc": "Six spears of packed sand.",
+        "spec": {
+          "t": "bolt",
+          "d": 6,
+          "n": 6,
+          "spread": 24,
+          "shape": 3,
+          "speed": 2.4,
+          "pierce": 1,
+          "fx": "sand"
         }
       },
       {
@@ -1102,6 +1342,31 @@ export const DATA = {
         }
       },
       {
+        "id": "bubble_armour",
+        "name": "Bubble Armour",
+        "mana": 56,
+        "cooldown": 22.0,
+        "level": 12,
+        "desc": "Bubbles armour you and your allies.",
+        "spec": {
+          "t": "buff",
+          "allies": 8,
+          "fx": "bubble",
+          "self": [
+            [
+              "absorption",
+              10,
+              1
+            ],
+            [
+              "resistance",
+              8,
+              0
+            ]
+          ]
+        }
+      },
+      {
         "id": "bubble_cataclysm",
         "name": "Bubble Cataclysm",
         "mana": 110,
@@ -1193,6 +1458,34 @@ export const DATA = {
               "slowness",
               4,
               2
+            ]
+          ]
+        }
+      },
+      {
+        "id": "strangler_vines",
+        "name": "Strangler Vines",
+        "mana": 60,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Vines erupt and strangle everything near your aim.",
+        "spec": {
+          "t": "zone",
+          "d": 3,
+          "r": 5,
+          "dur": 6,
+          "pull": 0.3,
+          "fx": "leaf",
+          "eff": [
+            [
+              "slowness",
+              2,
+              2
+            ],
+            [
+              "poison",
+              2,
+              0
             ]
           ]
         }
@@ -1326,6 +1619,29 @@ export const DATA = {
         }
       },
       {
+        "id": "toxic_rain",
+        "name": "Toxic Rain",
+        "mana": 60,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Venom rains down over your aim.",
+        "spec": {
+          "t": "rain",
+          "d": 4,
+          "n": 16,
+          "r": 6,
+          "every": 2,
+          "fx": "poison",
+          "eff": [
+            [
+              "poison",
+              3,
+              1
+            ]
+          ]
+        }
+      },
+      {
         "id": "venom_kingdom",
         "name": "Venom Kingdom",
         "mana": 110,
@@ -1436,6 +1752,26 @@ export const DATA = {
         }
       },
       {
+        "id": "crimson_scythe",
+        "name": "Crimson Scythe",
+        "mana": 50,
+        "cooldown": 12.0,
+        "level": 12,
+        "desc": "A scythe of blood sweeps in front of you and feeds you.",
+        "spec": {
+          "t": "nova",
+          "at": "front",
+          "d": 12,
+          "r": 5,
+          "ls": 0.4,
+          "kb": [
+            1.0,
+            0.3
+          ],
+          "fx": "blood"
+        }
+      },
+      {
         "id": "crimson_feast",
         "name": "Crimson Feast",
         "mana": 90,
@@ -1525,6 +1861,21 @@ export const DATA = {
               0
             ]
           ]
+        }
+      },
+      {
+        "id": "polaris_beam",
+        "name": "Polaris Beam",
+        "mana": 64,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "A beam of starlight from the north star.",
+        "spec": {
+          "t": "beam",
+          "d": 16,
+          "range": 28,
+          "width": 1.4,
+          "fx": "star"
         }
       },
       {
@@ -1637,6 +1988,33 @@ export const DATA = {
           "kb": [
             2.5,
             0.8
+          ]
+        }
+      },
+      {
+        "id": "echo_field",
+        "name": "Echo Field",
+        "mana": 58,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "A field of endless echoes that dizzies and weakens foes near your aim.",
+        "spec": {
+          "t": "zone",
+          "d": 3,
+          "r": 6,
+          "dur": 6,
+          "fx": "sound",
+          "eff": [
+            [
+              "nausea",
+              3,
+              0
+            ],
+            [
+              "weakness",
+              3,
+              1
+            ]
           ]
         }
       },
@@ -1784,6 +2162,28 @@ export const DATA = {
         }
       },
       {
+        "id": "mist_bind",
+        "name": "Mist Bind",
+        "mana": 56,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Thick mist solidifies around foes near your aim.",
+        "spec": {
+          "t": "prison",
+          "d": 6,
+          "r": 4,
+          "dur": 4,
+          "fx": "mist",
+          "eff": [
+            [
+              "blindness",
+              3,
+              0
+            ]
+          ]
+        }
+      },
+      {
         "id": "phantom_realm",
         "name": "Phantom Realm",
         "mana": 115,
@@ -1885,6 +2285,21 @@ export const DATA = {
         }
       },
       {
+        "id": "crystal_prison",
+        "name": "Crystal Prison",
+        "mana": 62,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "Encase foes in crystal, then shatter it.",
+        "spec": {
+          "t": "prison",
+          "d": 12,
+          "r": 3.5,
+          "dur": 3,
+          "fx": "crystal"
+        }
+      },
+      {
         "id": "crystal_cathedral",
         "name": "Crystal Cathedral",
         "mana": 115,
@@ -1970,6 +2385,22 @@ export const DATA = {
             0.2,
             0.8
           ]
+        }
+      },
+      {
+        "id": "bone_rain",
+        "name": "Bone Rain",
+        "mana": 60,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "A storm of bone spears falls over your aim.",
+        "spec": {
+          "t": "rain",
+          "d": 8,
+          "n": 14,
+          "r": 6,
+          "every": 2,
+          "fx": "bone"
         }
       },
       {
@@ -2061,6 +2492,24 @@ export const DATA = {
           "aoe": 3,
           "fire": 6,
           "size": 1,
+          "fx": "magma"
+        }
+      },
+      {
+        "id": "magma_serpent",
+        "name": "Magma Serpent",
+        "mana": 66,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "A serpent of magma burns through everything in its path.",
+        "spec": {
+          "t": "bolt",
+          "d": 14,
+          "shape": 2,
+          "size": 3,
+          "speed": 1.3,
+          "pierce": 5,
+          "fire": 5,
           "fx": "magma"
         }
       },
@@ -2166,6 +2615,36 @@ export const DATA = {
           "r": 12,
           "dur": 5,
           "fx": "time"
+        }
+      },
+      {
+        "id": "quickened_hour",
+        "name": "Quickened Hour",
+        "mana": 60,
+        "cooldown": 24.0,
+        "level": 12,
+        "desc": "Speed up time for you and your allies.",
+        "spec": {
+          "t": "buff",
+          "allies": 8,
+          "fx": "time",
+          "self": [
+            [
+              "speed",
+              8,
+              2
+            ],
+            [
+              "haste",
+              8,
+              1
+            ],
+            [
+              "jump_boost",
+              8,
+              1
+            ]
+          ]
         }
       },
       {
@@ -2286,6 +2765,34 @@ export const DATA = {
         }
       },
       {
+        "id": "cotton_cannon",
+        "name": "Cotton Cannon",
+        "mana": 54,
+        "cooldown": 12.0,
+        "level": 12,
+        "desc": "A huge ball of packed cotton that bowls foes over.",
+        "spec": {
+          "t": "bolt",
+          "d": 8,
+          "size": 3,
+          "shape": 0,
+          "speed": 1.2,
+          "aoe": 3.5,
+          "kb": [
+            1.6,
+            0.8
+          ],
+          "fx": "cotton",
+          "eff": [
+            [
+              "slowness",
+              3,
+              1
+            ]
+          ]
+        }
+      },
+      {
         "id": "cloud_kingdom",
         "name": "Cloud Kingdom",
         "mana": 110,
@@ -2394,6 +2901,21 @@ export const DATA = {
           "rings": 2,
           "shape": 2,
           "speed": 1.8,
+          "fx": "paper"
+        }
+      },
+      {
+        "id": "paper_prison",
+        "name": "Paper Prison",
+        "mana": 56,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Sheets of paper wrap foes near your aim into tight bundles.",
+        "spec": {
+          "t": "prison",
+          "d": 8,
+          "r": 4,
+          "dur": 4,
           "fx": "paper"
         }
       },
@@ -2535,6 +3057,28 @@ export const DATA = {
         }
       },
       {
+        "id": "smog_vortex",
+        "name": "Smog Vortex",
+        "mana": 58,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "A choking whirl of smoke drags foes together.",
+        "spec": {
+          "t": "vortex",
+          "d": 10,
+          "r": 6,
+          "dur": 3,
+          "fx": "smoke",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
         "id": "smoke_kingdom",
         "name": "Smoke Kingdom",
         "mana": 110,
@@ -2633,6 +3177,21 @@ export const DATA = {
         }
       },
       {
+        "id": "glass_lances",
+        "name": "Glass Lances",
+        "mana": 60,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Glass spikes erupt in three directions.",
+        "spec": {
+          "t": "wave",
+          "d": 12,
+          "len": 14,
+          "dirs": 3,
+          "fx": "glass"
+        }
+      },
+      {
         "id": "shattered_sky",
         "name": "Shattered Sky",
         "mana": 115,
@@ -2725,6 +3284,23 @@ export const DATA = {
           "r": 0,
           "aoe": 6,
           "size": 3,
+          "fx": "gold"
+        }
+      },
+      {
+        "id": "golden_barrage",
+        "name": "Golden Barrage",
+        "mana": 62,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Two rings of heavy gold coins burst out from you.",
+        "spec": {
+          "t": "radial",
+          "d": 6,
+          "n": 20,
+          "rings": 2,
+          "shape": 0,
+          "speed": 1.8,
           "fx": "gold"
         }
       },
@@ -2866,6 +3442,20 @@ export const DATA = {
         }
       },
       {
+        "id": "beast_spirit_pounce",
+        "name": "Beast Spirit Pounce",
+        "mana": 56,
+        "cooldown": 12.0,
+        "level": 12,
+        "desc": "Leap like a beast and crash down on your target.",
+        "spec": {
+          "t": "dive",
+          "d": 14,
+          "r": 4,
+          "fx": "beast"
+        }
+      },
+      {
         "id": "beast_king",
         "name": "Beast King",
         "mana": 110,
@@ -2960,6 +3550,22 @@ export const DATA = {
           "n": 8,
           "r": 12,
           "ls": 0.2,
+          "fx": "spirit"
+        }
+      },
+      {
+        "id": "soul_lance",
+        "name": "Soul Lance",
+        "mana": 60,
+        "cooldown": 14.0,
+        "level": 12,
+        "desc": "A lance of spirit light that feeds on the life it pierces.",
+        "spec": {
+          "t": "beam",
+          "d": 13,
+          "range": 24,
+          "width": 1.0,
+          "ls": 0.3,
           "fx": "spirit"
         }
       },
@@ -3065,6 +3671,31 @@ export const DATA = {
           "kb": [
             0.2,
             0.9
+          ]
+        }
+      },
+      {
+        "id": "rune_barrier",
+        "name": "Rune Barrier",
+        "mana": 60,
+        "cooldown": 24.0,
+        "level": 12,
+        "desc": "A barrier of runes guards you and your allies.",
+        "spec": {
+          "t": "buff",
+          "allies": 8,
+          "fx": "rune",
+          "self": [
+            [
+              "resistance",
+              10,
+              1
+            ],
+            [
+              "absorption",
+              10,
+              1
+            ]
           ]
         }
       },
@@ -3177,6 +3808,23 @@ export const DATA = {
         }
       },
       {
+        "id": "meteor_pull",
+        "name": "Meteor Pull",
+        "mana": 64,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "Gravity drags rocks down from the sky around your aim.",
+        "spec": {
+          "t": "meteor",
+          "d": 14,
+          "n": 3,
+          "r": 5,
+          "aoe": 3.5,
+          "size": 2,
+          "fx": "gravity"
+        }
+      },
+      {
         "id": "event_horizon",
         "name": "Event Horizon",
         "mana": 120,
@@ -3266,6 +3914,28 @@ export const DATA = {
           "d": 11,
           "n": 7,
           "r": 12,
+          "fx": "moon",
+          "eff": [
+            [
+              "blindness",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "moonlit_prison",
+        "name": "Moonlit Prison",
+        "mana": 60,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "Moonlight freezes foes near your aim in place.",
+        "spec": {
+          "t": "prison",
+          "d": 10,
+          "r": 4,
+          "dur": 3,
           "fx": "moon",
           "eff": [
             [
@@ -3397,6 +4067,30 @@ export const DATA = {
         }
       },
       {
+        "id": "thorn_barrage",
+        "name": "Thorn Barrage",
+        "mana": 58,
+        "cooldown": 16.0,
+        "level": 12,
+        "desc": "Two rings of poisoned thorns burst out from you.",
+        "spec": {
+          "t": "radial",
+          "d": 5,
+          "n": 24,
+          "rings": 2,
+          "shape": 3,
+          "speed": 2.0,
+          "fx": "thorn",
+          "eff": [
+            [
+              "poison",
+              2,
+              0
+            ]
+          ]
+        }
+      },
+      {
         "id": "crown_of_thorns",
         "name": "Crown of Thorns",
         "mana": 110,
@@ -3504,6 +4198,21 @@ export const DATA = {
         }
       },
       {
+        "id": "ash_phoenix",
+        "name": "Ash Phoenix",
+        "mana": 58,
+        "cooldown": 14.0,
+        "level": 12,
+        "desc": "Burst into burning ash and crash down on your foes.",
+        "spec": {
+          "t": "dive",
+          "d": 14,
+          "r": 4,
+          "fire": 4,
+          "fx": "ash"
+        }
+      },
+      {
         "id": "ashfall_cataclysm",
         "name": "Ashfall Cataclysm",
         "mana": 120,
@@ -3594,6 +4303,22 @@ export const DATA = {
           "name": "Cinder Nova",
           "cooldown": 14.0,
           "desc": "Detonate in a ring of white-hot flame."
+        },
+        {
+          "id": "ember_storm",
+          "name": "Ember Storm",
+          "cooldown": 16.0,
+          "desc": "Burning embers rain over your aim.",
+          "spec": {
+            "t": "rain",
+            "d": 6,
+            "n": 14,
+            "r": 6,
+            "every": 2,
+            "fire": 4,
+            "fx": "flame"
+          },
+          "will": 2
         }
       ]
     },
@@ -3623,6 +4348,24 @@ export const DATA = {
           "name": "Fortress Skin",
           "cooldown": 20.0,
           "desc": "Turn to granite: huge resistance, slower steps."
+        },
+        {
+          "id": "landslide",
+          "name": "Landslide",
+          "cooldown": 16.0,
+          "desc": "Three lanes of crashing rock.",
+          "spec": {
+            "t": "wave",
+            "d": 12,
+            "len": 14,
+            "lanes": 3,
+            "fx": "earth",
+            "kb": [
+              1.2,
+              0.5
+            ]
+          },
+          "will": 2
         }
       ]
     },
@@ -3652,6 +4395,20 @@ export const DATA = {
           "name": "Falling Star",
           "cooldown": 18.0,
           "desc": "Pull a burning meteor down onto your aim."
+        },
+        {
+          "id": "black_star",
+          "name": "Black Star",
+          "cooldown": 18.0,
+          "desc": "A tiny black star swallows everything around it.",
+          "spec": {
+            "t": "vortex",
+            "d": 16,
+            "r": 7,
+            "dur": 3,
+            "fx": "gravity"
+          },
+          "will": 2
         }
       ]
     },
@@ -3681,6 +4438,27 @@ export const DATA = {
           "name": "Umbral Legion",
           "cooldown": 30.0,
           "desc": "Raise three shade soldiers to fight for you."
+        },
+        {
+          "id": "night_parade",
+          "name": "Night Parade",
+          "cooldown": 16.0,
+          "desc": "Shadows rise under every foe near your aim.",
+          "spec": {
+            "t": "strikes",
+            "d": 10,
+            "n": 6,
+            "r": 12,
+            "fx": "dark",
+            "eff": [
+              [
+                "blindness",
+                2,
+                0
+              ]
+            ]
+          },
+          "will": 2
         }
       ]
     },
@@ -3710,6 +4488,32 @@ export const DATA = {
           "name": "Rooting Grove",
           "cooldown": 18.0,
           "desc": "Roots seize and crush every enemy around you."
+        },
+        {
+          "id": "pollen_storm",
+          "name": "Pollen Storm",
+          "cooldown": 16.0,
+          "desc": "A storm of stinging pollen over your aim.",
+          "spec": {
+            "t": "zone",
+            "d": 2,
+            "r": 6,
+            "dur": 6,
+            "fx": "leaf",
+            "eff": [
+              [
+                "poison",
+                2,
+                0
+              ],
+              [
+                "slowness",
+                2,
+                1
+              ]
+            ]
+          },
+          "will": 2
         }
       ]
     },
@@ -3739,6 +4543,21 @@ export const DATA = {
           "name": "Silver Storm",
           "cooldown": 16.0,
           "desc": "A storm of spinning blades surrounds you."
+        },
+        {
+          "id": "mercury_rain",
+          "name": "Mercury Rain",
+          "cooldown": 16.0,
+          "desc": "Blades of liquid metal rain down.",
+          "spec": {
+            "t": "rain",
+            "d": 7,
+            "n": 16,
+            "r": 6,
+            "every": 2,
+            "fx": "metal"
+          },
+          "will": 2
         }
       ]
     },
@@ -3768,6 +4587,29 @@ export const DATA = {
           "name": "Ice Age",
           "cooldown": 20.0,
           "desc": "Freeze everything around you solid."
+        },
+        {
+          "id": "glacier_crash",
+          "name": "Glacier Crash",
+          "cooldown": 18.0,
+          "desc": "Blocks of glacier ice crash down around your aim.",
+          "spec": {
+            "t": "meteor",
+            "d": 13,
+            "n": 3,
+            "r": 5,
+            "aoe": 3.5,
+            "size": 2,
+            "fx": "ice",
+            "eff": [
+              [
+                "slowness",
+                3,
+                2
+              ]
+            ]
+          },
+          "will": 2
         }
       ]
     },
@@ -3797,6 +4639,20 @@ export const DATA = {
           "name": "Barrier Crash",
           "cooldown": 5.0,
           "desc": "Shove a barrier forward, crushing enemies."
+        },
+        {
+          "id": "barrier_prison",
+          "name": "Barrier Prison",
+          "cooldown": 16.0,
+          "desc": "Seal foes near your aim inside barrier cubes.",
+          "spec": {
+            "t": "prison",
+            "d": 8,
+            "r": 4,
+            "dur": 4,
+            "fx": "glass"
+          },
+          "will": 2
         }
       ]
     },
@@ -3826,6 +4682,30 @@ export const DATA = {
           "name": "Rending Frenzy",
           "cooldown": 10.0,
           "desc": "A flurry of claw strikes in front of you."
+        },
+        {
+          "id": "moon_fang",
+          "name": "Moon Fang",
+          "cooldown": 14.0,
+          "desc": "Three savage bites in a row.",
+          "spec": {
+            "t": "repeat",
+            "n": 3,
+            "every": 6,
+            "fx": "beast",
+            "spec": {
+              "t": "nova",
+              "at": "front",
+              "d": 8,
+              "r": 3,
+              "kb": [
+                0.6,
+                0.2
+              ],
+              "fx": "beast"
+            }
+          },
+          "will": 2
         }
       ]
     },
@@ -3855,6 +4735,21 @@ export const DATA = {
           "name": "Feather Storm",
           "cooldown": 2.4,
           "desc": "A fan of razor feathers."
+        },
+        {
+          "id": "gale_feathers",
+          "name": "Gale Feathers",
+          "cooldown": 14.0,
+          "desc": "A ring of razor feathers bursts out from you.",
+          "spec": {
+            "t": "radial",
+            "d": 6,
+            "n": 16,
+            "shape": 2,
+            "speed": 2.0,
+            "fx": "wind"
+          },
+          "will": 2
         }
       ]
     },
@@ -3913,6 +4808,23 @@ export const DATA = {
             "size": 1,
             "fx": "magma"
           }
+        },
+        {
+          "id": "lava_serpent",
+          "name": "Lava Serpent",
+          "cooldown": 18.0,
+          "desc": "A serpent of lava burns through everything in its path.",
+          "spec": {
+            "t": "bolt",
+            "d": 13,
+            "shape": 2,
+            "size": 3,
+            "speed": 1.3,
+            "pierce": 5,
+            "fire": 5,
+            "fx": "magma"
+          },
+          "will": 2
         }
       ]
     },
@@ -3978,6 +4890,20 @@ export const DATA = {
             "fire": 3,
             "fx": "ash"
           }
+        },
+        {
+          "id": "cinder_phoenix",
+          "name": "Cinder Phoenix",
+          "cooldown": 16.0,
+          "desc": "Burst into cinders and crash down on your foes.",
+          "spec": {
+            "t": "dive",
+            "d": 14,
+            "r": 4,
+            "fire": 4,
+            "fx": "ash"
+          },
+          "will": 2
         }
       ]
     },
@@ -4028,6 +4954,20 @@ export const DATA = {
             "mode": "blink",
             "fx": "light"
           }
+        },
+        {
+          "id": "spectrum_prison",
+          "name": "Spectrum Prison",
+          "cooldown": 16.0,
+          "desc": "Foes near your aim are trapped in prisms of light.",
+          "spec": {
+            "t": "prison",
+            "d": 9,
+            "r": 4,
+            "dur": 3,
+            "fx": "crystal"
+          },
+          "will": 2
         }
       ]
     },
@@ -4080,6 +5020,27 @@ export const DATA = {
             "r": 4,
             "fx": "sound"
           }
+        },
+        {
+          "id": "rubber_barrage",
+          "name": "Rubber Barrage",
+          "cooldown": 12.0,
+          "desc": "Six bouncing balls that knock foes flying.",
+          "spec": {
+            "t": "bolt",
+            "d": 4,
+            "n": 6,
+            "spread": 30,
+            "shape": 0,
+            "size": 1,
+            "speed": 1.8,
+            "kb": [
+              1.2,
+              0.6
+            ],
+            "fx": "gold"
+          },
+          "will": 2
         }
       ]
     },
@@ -4135,6 +5096,20 @@ export const DATA = {
             ],
             "fx": "flame"
           }
+        },
+        {
+          "id": "chain_blast",
+          "name": "Chain Blast",
+          "cooldown": 16.0,
+          "desc": "Explosions ripple across every foe near your aim.",
+          "spec": {
+            "t": "strikes",
+            "d": 12,
+            "n": 6,
+            "r": 10,
+            "fx": "flame"
+          },
+          "will": 2
         }
       ]
     },
@@ -4218,6 +5193,27 @@ export const DATA = {
               ]
             ]
           }
+        },
+        {
+          "id": "acid_flood",
+          "name": "Acid Flood",
+          "cooldown": 16.0,
+          "desc": "Waves of acid surge out in six directions.",
+          "spec": {
+            "t": "wave",
+            "d": 10,
+            "len": 14,
+            "dirs": 6,
+            "fx": "acid",
+            "eff": [
+              [
+                "poison",
+                2,
+                1
+              ]
+            ]
+          },
+          "will": 2
         }
       ]
     },
@@ -4272,6 +5268,20 @@ export const DATA = {
             "speed": 1.6,
             "fx": "metal"
           }
+        },
+        {
+          "id": "iron_maiden",
+          "name": "Iron Maiden",
+          "cooldown": 18.0,
+          "desc": "Pull scrap metal into a crushing cage around foes near your aim.",
+          "spec": {
+            "t": "prison",
+            "d": 12,
+            "r": 3.5,
+            "dur": 3,
+            "fx": "metal"
+          },
+          "will": 2
         }
       ]
     },
@@ -4343,6 +5353,21 @@ export const DATA = {
               ]
             ]
           }
+        },
+        {
+          "id": "hailstorm",
+          "name": "Hailstorm",
+          "cooldown": 16.0,
+          "desc": "A thundercloud pours hail over your aim.",
+          "spec": {
+            "t": "rain",
+            "d": 6,
+            "n": 18,
+            "r": 7,
+            "every": 2,
+            "fx": "ice"
+          },
+          "will": 2
         }
       ]
     },
@@ -4417,6 +5442,27 @@ export const DATA = {
               ]
             ]
           }
+        },
+        {
+          "id": "ink_prison",
+          "name": "Ink Prison",
+          "cooldown": 16.0,
+          "desc": "Drown foes near your aim in a bubble of ink.",
+          "spec": {
+            "t": "prison",
+            "d": 7,
+            "r": 4,
+            "dur": 4,
+            "fx": "ink",
+            "eff": [
+              [
+                "blindness",
+                3,
+                0
+              ]
+            ]
+          },
+          "will": 2
         }
       ]
     },
@@ -4492,6 +5538,34 @@ export const DATA = {
             "r": 5,
             "fx": "earth"
           }
+        },
+        {
+          "id": "avalanche_charge",
+          "name": "Avalanche Charge",
+          "cooldown": 14.0,
+          "desc": "Charge like an avalanche, then slam the ground.",
+          "spec": {
+            "t": "leap",
+            "mode": "dash",
+            "d": 10,
+            "dist": 10,
+            "fx": "beast",
+            "kb": [
+              1.6,
+              0.5
+            ],
+            "then": {
+              "t": "nova",
+              "d": 8,
+              "r": 4,
+              "kb": [
+                1.4,
+                0.6
+              ],
+              "fx": "earth"
+            }
+          },
+          "will": 2
         }
       ]
     },
@@ -4565,6 +5639,19 @@ export const DATA = {
               ]
             ]
           }
+        },
+        {
+          "id": "tiger_strike",
+          "name": "Tiger Strike",
+          "cooldown": 14.0,
+          "desc": "Pounce high and land claws-first on your prey.",
+          "spec": {
+            "t": "dive",
+            "d": 14,
+            "r": 3.5,
+            "fx": "beast"
+          },
+          "will": 2
         }
       ]
     },
@@ -4619,6 +5706,23 @@ export const DATA = {
             "fire": 4,
             "fx": "flame"
           }
+        },
+        {
+          "id": "dragon_rain",
+          "name": "Dragon Rain",
+          "cooldown": 18.0,
+          "desc": "Fireballs rain from the sky around your aim.",
+          "spec": {
+            "t": "meteor",
+            "d": 12,
+            "n": 4,
+            "r": 6,
+            "aoe": 3,
+            "fire": 4,
+            "size": 1,
+            "fx": "flame"
+          },
+          "will": 2
         }
       ]
     },
@@ -4686,6 +5790,33 @@ export const DATA = {
             "regen": 5,
             "fx": "leaf"
           }
+        },
+        {
+          "id": "fairy_ring",
+          "name": "Fairy Ring",
+          "cooldown": 16.0,
+          "desc": "A ring of toxic mushrooms bursts up around you.",
+          "spec": {
+            "t": "zone",
+            "at": "self",
+            "d": 3,
+            "r": 6,
+            "dur": 6,
+            "fx": "poison",
+            "eff": [
+              [
+                "poison",
+                2,
+                1
+              ],
+              [
+                "slowness",
+                2,
+                0
+              ]
+            ]
+          },
+          "will": 2
         }
       ]
     },
@@ -4736,6 +5867,22 @@ export const DATA = {
             "dur": 2,
             "fx": "paper"
           }
+        },
+        {
+          "id": "thousand_threads",
+          "name": "Thousand Threads",
+          "cooldown": 16.0,
+          "desc": "Two rings of razor threads lash out from you.",
+          "spec": {
+            "t": "radial",
+            "d": 5,
+            "n": 24,
+            "rings": 2,
+            "shape": 3,
+            "speed": 2.2,
+            "fx": "paper"
+          },
+          "will": 2
         }
       ]
     },
@@ -4802,6 +5949,28 @@ export const DATA = {
             "r": 5,
             "fx": "acid"
           }
+        },
+        {
+          "id": "slime_rain",
+          "name": "Slime Rain",
+          "cooldown": 16.0,
+          "desc": "Sticky slime rains over your aim.",
+          "spec": {
+            "t": "rain",
+            "d": 5,
+            "n": 14,
+            "r": 6,
+            "every": 2,
+            "fx": "acid",
+            "eff": [
+              [
+                "slowness",
+                3,
+                2
+              ]
+            ]
+          },
+          "will": 2
         }
       ]
     },
@@ -4861,6 +6030,27 @@ export const DATA = {
             "dur": 4,
             "fx": "metal"
           }
+        },
+        {
+          "id": "chain_storm_fruit",
+          "name": "Chain Storm",
+          "cooldown": 16.0,
+          "desc": "Chains whip down on every foe near your aim.",
+          "spec": {
+            "t": "strikes",
+            "d": 10,
+            "n": 6,
+            "r": 10,
+            "fx": "metal",
+            "eff": [
+              [
+                "slowness",
+                2,
+                1
+              ]
+            ]
+          },
+          "will": 2
         }
       ]
     },
@@ -4946,6 +6136,41 @@ export const DATA = {
               ]
             ]
           }
+        },
+        {
+          "id": "kings_charge",
+          "name": "King's Charge",
+          "cooldown": 14.0,
+          "desc": "A royal charge that ends in a thunderous roar.",
+          "spec": {
+            "t": "leap",
+            "mode": "dash",
+            "d": 11,
+            "dist": 12,
+            "fx": "beast",
+            "kb": [
+              1.6,
+              0.5
+            ],
+            "then": {
+              "t": "nova",
+              "d": 6,
+              "r": 5,
+              "kb": [
+                1.8,
+                0.6
+              ],
+              "fx": "beast",
+              "eff": [
+                [
+                  "weakness",
+                  4,
+                  1
+                ]
+              ]
+            }
+          },
+          "will": 2
         }
       ]
     },
@@ -5000,6 +6225,27 @@ export const DATA = {
             "dur": 2,
             "fx": "water"
           }
+        },
+        {
+          "id": "feeding_frenzy",
+          "name": "Feeding Frenzy",
+          "cooldown": 14.0,
+          "desc": "Four bites in a row, each one feeding you.",
+          "spec": {
+            "t": "repeat",
+            "n": 4,
+            "every": 6,
+            "fx": "water",
+            "spec": {
+              "t": "nova",
+              "at": "front",
+              "d": 7,
+              "r": 3,
+              "ls": 0.25,
+              "fx": "water"
+            }
+          },
+          "will": 2
         }
       ]
     },
@@ -5053,6 +6299,37 @@ export const DATA = {
             "regen": 6,
             "fx": "spirit"
           }
+        },
+        {
+          "id": "phoenix_halo",
+          "name": "Phoenix Halo",
+          "cooldown": 22.0,
+          "desc": "A halo of healing fire for you and your allies, and a burst of flame for your foes.",
+          "spec": {
+            "t": "buff",
+            "allies": 8,
+            "fx": "flame",
+            "self": [
+              [
+                "regeneration",
+                8,
+                1
+              ],
+              [
+                "fire_resistance",
+                12,
+                0
+              ]
+            ],
+            "then": {
+              "t": "nova",
+              "d": 8,
+              "r": 5,
+              "fire": 4,
+              "fx": "flame"
+            }
+          },
+          "will": 2
         }
       ]
     },
@@ -5119,6 +6396,28 @@ export const DATA = {
             "dur": 5,
             "fx": "paper"
           }
+        },
+        {
+          "id": "venom_rain",
+          "name": "Venom Rain",
+          "cooldown": 16.0,
+          "desc": "Venom drips from webs strung over your aim.",
+          "spec": {
+            "t": "rain",
+            "d": 4,
+            "n": 14,
+            "r": 6,
+            "every": 2,
+            "fx": "poison",
+            "eff": [
+              [
+                "poison",
+                3,
+                1
+              ]
+            ]
+          },
+          "will": 2
         }
       ]
     }
@@ -6633,6 +7932,7 @@ export const DATA = {
       "the Watchful"
     ],
     "reserveMax": 6,
+    "fruitLevel": 10,
     "hometowns": [
       "Willowmere",
       "Ashford",

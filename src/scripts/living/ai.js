@@ -58,6 +58,8 @@ const forced = new Map();
 export function forceTarget(e, target, ticks) {
   forced.set(e.id, { id: target.id, until: system.currentTick + ticks });
 }
+/** How many spells and fruit powers the brain has cast (for reports and tests). */
+export const castStats = { spells: 0, fruit: 0, skills: 0 };
 /** Is this entity run by the tactical brain? */
 export function hasBrain(e) {
   return brains.has(e.id);
@@ -110,6 +112,17 @@ function actionsOf(e) {
       out.push({ id: `k${i}`, name: sp?.name ?? spec.t, spec, cd: Math.max(30, Math.round((sp ? sp.cooldown * 20 * 1.5 : CD[spec.t] ?? 100))),
         cast: (t, aim, mul) => castSpec(e, spec, `a:${attr}`, pw * mul, t, { aim }) });
     });
+    // v0.6.0: knights who carry an Abyss Fruit (your companions) fight with its powers too
+    const fruit = safe(() => e.getDynamicProperty('bc:fruit'));
+    const f = typeof fruit === 'string' ? DATA.fruits[fruit] : undefined;
+    const wet = fruit !== 'shark' && !!safe(() => e.isInWater);
+    if (f && !isSealed(e) && !wet) {
+      f.abilities.forEach((ab) => {
+        if (ab.will && !awake && lvl < (DATA.companion.fruitLevel ?? 10)) return;
+        out.push({ id: `f:${ab.id}`, name: ab.name, spec: ab.spec, cd: Math.max(40, Math.round(ab.cooldown * 20 * 1.4)),
+          cast: (t, aim, mul) => castAbility(e, fruit, ab.id, t, (0.8 + lvl * 0.03) * mul / 0.8) });
+      });
+    }
   } else if (e.typeId === 'bc:raider_captain') {
     const fruit = safe(() => e.getDynamicProperty('bc:fruit'));
     const f = typeof fruit === 'string' ? DATA.fruits[fruit] : undefined;
@@ -344,6 +357,9 @@ function decide(e, b, target, foes, t, cinfo) {
     return;
   }
   b.cds.set(best.id, t + Math.round(best.cd * (cinfo?.cdMul ?? 1)));
+  if (best.id.startsWith('f:')) castStats.fruit++;
+  else if (best.score) castStats.skills++;
+  else castStats.spells++;
   if (best.spec?.t === 'buff') b.buffUntil = t + 240;
   // an Arcanist's Spell Echo: the spell rings out once more at half power
   if (cinfo?.echo && best.spec && !best.score && Math.random() < cinfo.echo) {

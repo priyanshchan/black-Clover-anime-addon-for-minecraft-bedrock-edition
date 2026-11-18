@@ -1,5 +1,35 @@
 # Changelog
 
+## v0.6.0 – Early Access (2026-11-18)
+
+**A grimoire and a fruit.** Every companion now fights with its own grimoire **and** an Abyss Fruit, and every grimoire and every fruit gains a new move: 66 new moves in all.
+
+> v0.2.0, v0.3.0 and v0.5.0 were never published as releases, so this build also contains all of them: the companion party and its squad AI, smarter enemies and bosses, brooms, missions, amulets, awakened spells, Rogue Mages, the Witch Sisters, the Bone Dragon, the Soul Puppeteer and 20 more grimoires and fruits. See [CHANGELOG.md](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/blob/ccr-62b3f23b-74ycbu/CHANGELOG.md) for everything.
+
+### Download
+* **`BlackClover_GrimoireAwakening_v0.6.0.mcaddon`** – open it and Minecraft imports both packs (it replaces earlier versions; your grimoire, fruit, levels and party are kept).
+* `BlackClover_BP_v0.6.0.mcpack` / `BlackClover_RP_v0.6.0.mcpack` – the packs separately.
+
+### Companions: a grimoire and a fruit
+* Every companion carries an **Abyss Fruit** next to its grimoire. Companions you already lead get one automatically; its glyph follows their name and their profile lists its moves.
+* The tactical brain weighs **every spell and every fruit power together** and casts whatever fits the moment - a prison from the grimoire, then a fruit volley into the bound foe.
+* Fruit powers follow the usual rules: no fruit in water (the Shark Fruit excepted), and anti-magic seals them.
+* The fruit's fourth move opens at companion level 10 (or after their first personal trial); the grimoire's new move at level 12, the awakened spell at 15.
+* **Change a companion's fruit:** hold any Abyss Fruit and talk to them - they eat it and its power replaces the old one.
+
+### A new move for every grimoire (level 12)
+* **35 new spells** for the spell engine - Vacuum Cutter (Wind), Flame Emperor's Ring (Flame), Riptide Whirlpool (Water), Chain Storm (Lightning), Sacred Cage (Light), Night Fangs (Dark), Frost Barrage (Ice), Folding Strike (Spatial), Stone Fist Rain (Earth), Blade Cage (Steel), Prism Beam (Mirror), Sand Spear Barrage, Bubble Armour, Strangler Vines, Toxic Rain, Crimson Scythe, Polaris Beam, Echo Field, Mist Bind, Crystal Prison, Bone Rain, Magma Serpent, Quickened Hour, Cotton Cannon, Paper Prison, Smog Vortex, Glass Lances, Golden Barrage, Beast Spirit Pounce, Soul Lance, Rune Barrier, Meteor Pull, Moonlit Prison, Thorn Barrage and Ash Phoenix.
+* **Anti-Magic: Black Hurricane** - spin with your swords: every hostile spell and projectile within 7 blocks is cut out of the air, everyone close is slashed, knocked back, stripped of buffs and fruit users are sealed. Costs 25% of the Anti-Magic gauge (free in Black Form).
+* Grimoires now hold six spells (levels 1, 3, 6, 10, 12, 15): **215 spells** in total. Magic Knights and companions learn the new move at level 12 too.
+
+### A fourth move for every fruit (Will 2)
+* **30 new fruit powers** - Ember Storm, Landslide, Black Star, Night Parade, Pollen Storm, Mercury Rain, Glacier Crash, Barrier Prison, Moon Fang, Gale Feathers, Lava Serpent, Cinder Phoenix, Spectrum Prison, Rubber Barrage, Chain Blast, Acid Flood, Iron Maiden, Hailstorm, Ink Prison, Avalanche Charge, Tiger Strike, Dragon Rain, Fairy Ring, Thousand Threads, Slime Rain, Chain Storm, King's Charge, Feeding Frenzy, Phoenix Halo and Venom Rain.
+* The fourth move **awakens at Will 2**: until then switching skips it, and the HUD and Handbook show it locked. Reaching Will 2 announces it. **120 fruit powers** in total.
+
+### Other changes
+* The night watch at camp now spots intruders twice a second instead of every two seconds.
+* The tactical brain now keeps count of the spells, fruit powers and skills it casts (used by the automated tests).
+
 ## v0.5.0 – Early Access (2026-11-18)
 
 **The companion update.** Your Magic Knights become a real squad: personalities, specialisations, party tactics, combos, revives, mood, camps, personal trials, a reserve with expeditions, sparring and rival squads - and they fly brooms beside you. Plus four new grimoires and a boss that turns your own companions against you.

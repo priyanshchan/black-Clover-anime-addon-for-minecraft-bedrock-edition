@@ -50,7 +50,8 @@ function powerText(player) {
   const ab = f.abilities[w.ability] ?? f.abilities[0];
   const ready = w.cd.get(ab.id) ?? 0;
   const t = now();
-  const part = ready > t ? `§7${ab.name} §c${((ready - t) / 20).toFixed(1)}s` : `${f.mc}§l${ab.name}§r`;
+  const locked = ab.will && w.willLv < ab.will && !isCreative(player);
+  const part = locked ? `${G.lock} §8${ab.name} §7(Will ${ab.will})` : ready > t ? `§7${ab.name} §c${((ready - t) / 20).toFixed(1)}s` : `${f.mc}§l${ab.name}§r`;
   return `${f.glyph} ${part} §8[${w.ability + 1}/${f.abilities.length}]${willPart(player)}`;
 }
 

@@ -328,11 +328,18 @@ export const ABILITIES = {
   },
 };
 
-/** Cast an ability with any entity (used by players and Raider Captains). */
-export function castAbility(caster, fid, abilityId, target) {
+/** Is this ability open to the player yet? (A fruit's fourth move needs Will.) */
+export function abilityOpen(p, ab) {
+  if (!ab?.will || isCreative(p)) return true;
+  return sea(p).willLv >= ab.will;
+}
+
+/** Cast an ability with any entity (used by players, Raider Captains and companions). */
+export function castAbility(caster, fid, abilityId, target, pwMul = 1) {
   if (isSealed(caster)) return false;
   const fn = ABILITIES[abilityId];
   const x = ctxFor(caster, fid, target);
+  x.pw *= pwMul;
   if (!fn) {
     // wave 4 fruits are recipes for the spell engine
     const spec = F[fid]?.abilities.find((a) => a.id === abilityId)?.spec;
@@ -443,7 +450,10 @@ export function usePower(p, item) {
   const f = F[fid];
   if (!f) return;
   if (p.isSneaking) {
-    s.ability = (s.ability + 1) % f.abilities.length;
+    for (let k = 1; k <= f.abilities.length; k++) {
+      s.ability = (s.ability + 1) % f.abilities.length;
+      if (abilityOpen(p, f.abilities[s.ability])) break;
+    }
     s.dirty = true;
     s.lastUse = system.currentTick;
     const ab = f.abilities[s.ability];
@@ -461,13 +471,17 @@ export function usePower(p, item) {
   }
   const ab = f.abilities[s.ability] ?? f.abilities[0];
   const t = system.currentTick;
+  if (!abilityOpen(p, ab)) {
+    safe(() => p.onScreenDisplay.setActionBar(`${DATA.glyphs.lock} §8${ab.name} §7awakens at §5Will ${ab.will}`));
+    return;
+  }
   if ((s.cd.get(ab.id) ?? 0) > t) {
     s.lastUse = t;
     return;
   }
   s.cd.set(ab.id, t + Math.round(ab.cooldown * 20));
   s.lastUse = t;
-  anim(p, s.ability === 2 ? 'animation.bc.player.cast_raise' : 'animation.bc.player.cast_forward');
+  anim(p, s.ability >= 2 ? 'animation.bc.player.cast_raise' : 'animation.bc.player.cast_forward');
   const ok = castAbility(p, fid, ab.id);
   if (ok === false) s.cd.delete(ab.id);
   else {

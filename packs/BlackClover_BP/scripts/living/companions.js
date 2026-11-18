@@ -45,7 +45,7 @@ const ROBE_PERK = {
  *            courage: number, bond: number, active: boolean, fallenAt: number, eid: string, personality: string, spec: string,
  *            mastery: boolean, awakened: boolean, morale: number, fatigue: number, amulet: string, trial: any, trialStage: number,
  *            title: string, fallenLoc: any, talkDay: number, home: string, dream: string, xpDay: number, xpToday: number, away: string,
- *            specNoted?: boolean}} Member
+ *            specNoted?: boolean, fruit: string}} Member
  * @typedef {{formation: string, stance: string, loot: boolean, unionAt: number, tactic: string, train: boolean, trainAt?: number}} Cfg
  * @typedef {{m: Member[], r: Member[], ex: any[], cfg: Cfg}} Party
  */
@@ -116,6 +116,8 @@ export function ensure(m) {
   m.xpDay = typeof m.xpDay === 'number' ? m.xpDay : -1;
   m.xpToday = typeof m.xpToday === 'number' ? m.xpToday : 0;
   m.away = typeof m.away === 'string' ? m.away : '';
+  // v0.6.0: every companion fights with a grimoire and an Abyss Fruit
+  if (!DATA.fruits[m.fruit]) m.fruit = DATA.fruitOrder[(h >>> 11) % DATA.fruitOrder.length];
   return m;
 }
 export function party(p) {
@@ -205,6 +207,7 @@ function applyTo(e, m, p) {
     e.setDynamicProperty('bc:owner', p.id);
     e.setDynamicProperty('bc:prefix', '§b');
     e.setDynamicProperty('bc:awake', !!m.awakened);
+    e.setDynamicProperty('bc:fruit', m.fruit);
     if (typeof e.getDynamicProperty('bc:order') !== 'string') e.setDynamicProperty('bc:order', 'follow');
     e.setProperty('bc:robe', m.robe);
     e.getComponent('minecraft:tameable')?.tame(p);
@@ -622,6 +625,14 @@ export function statusOf(m) {
   return h ? `§a${Math.ceil(h.currentValue)}/${h.effectiveMax} HP` : '§a';
 }
 
+function fruitLine(m) {
+  const f = DATA.fruits[m.fruit];
+  if (!f) return '§7Fruit: §8none';
+  const open = m.level >= C.fruitLevel || m.awakened;
+  const moves = f.abilities.map((ab) => (ab.will && !open ? `§8${ab.name} (Lv ${C.fruitLevel})` : `§f${ab.name}`)).join('§7, ');
+  return `§7Fruit: ${f.glyph} ${f.mc}${f.name}§7 - ${moves}`;
+}
+
 export function profile(m) {
   const a = DATA.attributes[m.attr];
   const b = C.bond[bondRank(m.bond)];
@@ -632,6 +643,7 @@ export function profile(m) {
   const lines = [
     `${a.glyph} ${a.mc}§l${m.name}${m.title ? ` ${m.title}` : ''}§r - ${RANK[m.level] ?? ''} Magic Knight, level §e${m.level}§r`,
     `§7Magic: ${a.mc}${a.name}§7 (${spells} spell${spells > 1 ? 's' : ''}${m.awakened ? ', §dawakened§7' : ''})   Kills: §f${m.kills}`,
+    fruitLine(m),
     `§7Personality: §f${pers.name}§7 - ${pers.desc}`,
     `§7Specialisation: ${spec ? `§6${spec.name}${m.mastery ? ' §e(Mastery)' : ''}§7 - ${spec.desc}` : m.level >= C.specLevel ? '§ehas not chosen one yet - choose it below!' : `§8chosen at level ${C.specLevel}`}`,
     `§7Bond: §d${b.name}§7 (${m.bond}${next ? `/${next.at}` : ''}) - ${b.perk}`,

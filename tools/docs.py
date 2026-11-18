@@ -20,6 +20,7 @@ from bc.data import (ALTAR_WEIGHTS, AMULETS, ATTR_ORDER, ATTRIBUTES, AWAKENED, B
                      ENEMY_KITS, FACTIONS, FRUIT_ORDER, FRUITS, KNIGHT_ROBES, MERCHANT, MISSION_REWARDS, MISSIONS, NOTORIETY, NPC_KITS,
                      PARTY_MAX, RANKS, ROBE_PERKS, ROBES, SHOP, SPELLS, SWORDS, WILL_MAX_LEVEL)
 from bc.data import EXPEDITIONS, MOOD, PERSONALITIES, RESERVE_MAX, SPEC_LEVEL, SPECS, TACTICS_PARTY, TRIALS  # noqa: E402
+from bc.data import COMPANION_FRUIT_LEVEL  # noqa: E402
 from bc.packgen import VERSION  # noqa: E402
 
 ROOT = out.ROOT
@@ -232,8 +233,8 @@ def write(name, title, body):
 def page_magic():
     total = sum(ALTAR_WEIGHTS.values())
     o = ('Every player can hold **one grimoire**. The Grimoire Altar picks its attribute at random (odds below). '
-         'Each grimoire has four spells, unlocked at magic levels **1, 3, 6 and 10** - and at level **15** every grimoire except Anti-Magic **awakens** '
-         f'a fifth, strongest spell ({len(AWAKENED)} awakened spells; knights and companions learn theirs at level 15 too). '
+         'Each grimoire has spells unlocked at magic levels **1, 3, 6 and 10**, a **new move at level 12** (added in v0.6.0), and at level **15** every grimoire except Anti-Magic **awakens** '
+         f'its strongest spell ({len(AWAKENED)} awakened spells; knights and companions learn the level-12 and level-15 spells at the same levels). '
          'Spell power grows 5% per level (max level 20).\n\n'
          '**Casting:** hold your grimoire and **Use** to cast the selected spell, **Sneak + Use** to flip to the next unlocked spell '
          '(or choose one in the Handbook). Spells cost mana and have cooldowns; the HUD shows both. Creative players may use any grimoire, '
@@ -264,6 +265,9 @@ def page_magic():
     o += ('* Sword hits fill the **Anti-Magic gauge** (so do taking hits and killing magical enemies). At 100% cast **Black Form**: 30 s of strength, '
           'speed, resistance, a black-lightning aura and stronger sword abilities.\n'
           '* **Sneak** while holding a demon sword to cut down incoming spells and projectiles automatically.\n'
+          '* **Black Hurricane** (level 12, v0.6.0): spin with your swords for a second - every hostile spell and projectile within 7 blocks is cut out of the air, '
+          'everyone within 4.5 blocks takes 10 damage (14 in Black Form, ×1.4 against magical foes), is knocked back, loses strength, resistance, speed, regeneration, '
+          'absorption and invisibility, and fruit users are sealed for 8 s. Costs 25% of the Anti-Magic gauge (free in Black Form).\n'
           '* Demon swords deal bonus damage to magical enemies and strip their buffs; hits and Black Meteorite slashes **seal Abyss Fruit powers** for a few seconds.\n\n')
     o += '## Techniques\n\n'
     o += ('* **Mana Skin** (magic level 12): a coat of mana soaks a quarter of every hit, paid for with mana.\n'
@@ -275,6 +279,7 @@ def page_magic():
 def page_fruits():
     o = ('Eat an **Abyss Fruit** (hold Use) to gain its power for good, plus a bound **power item**: hold it and **Use** to cast the selected ability, '
          '**Sneak + Use** to switch abilities. Beast fruits show their animal form while you hold the power.\n\n'
+         '* **Four moves.** Every fruit has three moves from the start and a **fourth that awakens at Will 2** (added in v0.6.0).\n'
          '* **One fruit only.** Eating a second fruit hurts you badly (14 damage, nausea, wither) and does nothing else.\n'
          '* **The sea rejects you.** With your head under water your powers stop working, you are slowed, weakened and slowly sink.\n'
          '* **Anti-magic seals you.** Demon-sword hits and anti-magic slashes switch your powers off for a few seconds.\n'
@@ -287,13 +292,14 @@ def page_fruits():
         o += f"### {d['name']}{' (beast)' if d.get('beast') else ''}\n\n**Passive:** {d['passive']}  \n**Power item:** {d['power']} · `bc:fruit_{f}` / `bc:power_{f}`\n\n"
         rows = []
         for a in d['abilities']:
-            rows.append([f'**{a[1]}**', f'{a[2]:g}s', a[3], describe(a[4]) if len(a) > 4 else ''])
-        o += table(['Ability', 'Cooldown', 'Description', 'How it works'], rows)
+            rows.append([f'**{a[1]}**', f'Will {a[5]}' if len(a) > 5 else '–', f'{a[2]:g}s', a[3], describe(a[4]) if len(a) > 4 else ''])
+        o += table(['Ability', 'Unlock', 'Cooldown', 'Description', 'How it works'], rows)
     o += '## Will\n\n'
     o += (f'Everyone has **Will**, a fighting-spirit stat trained by fighting (melee hits, taking hits, kills, bounties, Leviathan Scales). '
           f'Will levels go up to **{WILL_MAX_LEVEL}** (level *n* needs 25 + 20·*n* Will XP); the Will gauge refills over time.\n\n')
     o += table(['Will level', 'Unlock'], [
         [1, '**Iron Will** - melee hits spend Will for 2 + level bonus damage'],
+        [2, '**Fruit awakening** - your fruit\'s fourth move'],
         [3, '**Keen Will** - a 5% + 2% per level chance (+10% with the Quicksilver Fruit) to sidestep a hit; the damage is undone'],
         [8, '**Sovereign Will** - Sneak + Jump at full Will: a pulse that floors weak enemies and staggers the rest'],
     ])
@@ -514,7 +520,7 @@ def page_progression():
           '* XP: casting (2 + mana/10), monsters (6), Dark Disciples (16), the Devil (260), ancient pages (60), sealing a Devil Gate (120), bosses (400 killer / 200 helpers), crimson-night devils (+25).\n'
           '* **Max mana** = 100 + 12 per level above 1, +40 Golden Dawn, +15 Blue Rose, +5 per Magic Knight rank, +30 Mana Heart amulet.\n'
           '* **Mana regeneration** = 3 + 0.3 per level per second (Black Bull ×1.25, Aqua Deer ×1.3 while moving, Mana Heart ×1.2). It pauses while you fly a broom.\n'
-          '* **Level 15** awakens your grimoire\'s fifth spell (except Anti-Magic).\n'
+          '* **Level 12** opens your grimoire\'s new move (v0.6.0); **level 15** awakens its strongest spell (except Anti-Magic).\n'
           '* **Spell power** = +5% per level above 1, with robe bonuses.\n\n')
     o += '## Magic Knight ranks (stars)\n\n'
     o += 'Stars come from great deeds: Devil +5, Leviathan +5, Dungeon Guardian +3, Tidewatch Commodore +2, Raider Captain +1, every 5 magic levels +1, sealing a Devil Gate +1, the giant bosses +5 to +9 (half for helpers), missions +1 to +3. Each rank adds +5 max mana.\n\n'
@@ -703,6 +709,14 @@ def page_companions():
           '* **Downtime:** stand still for 30 s and they sit down; they gather loot, chat now and then, and react when a boss shows up or you are hurt.\n'
           '* **Fighting:** spell choice, aiming, dodging and retreating come from the tactical brain; companions above level 10 cast 3% harder per level. '
           'Personality, specialisation, mood, tactics, combos and danger zones shape all of it - see below.\n\n')
+    o += (f'## A grimoire and a fruit\n\nEvery companion fights with **one grimoire and one Abyss Fruit** (v0.6.0). Companions recruited earlier get a fruit automatically; '
+          'its glyph follows their name and their profile lists its moves.\n\n'
+          '* **Grimoire spells** grow with level: two at level 1, a third at 3, a fourth at 6, the new move at 12 and the awakened spell at 15 '
+          '(the eleven classic grimoires - Wind to Mirror - use a fixed pair of spells until 12). A finished first trial opens the level-12 and awakened spells at once.\n'
+          f'* **Fruit powers:** the first three moves from the start, the fourth from level **{COMPANION_FRUIT_LEVEL}** (or after their first trial). '
+          'Like any fruit user they cannot use their fruit in water (the Shark Fruit excepted) or while anti-magic has sealed it.\n'
+          '* The tactical brain weighs every spell and every fruit power together and casts whatever fits the moment best.\n'
+          '* **Change their fruit:** hold any Abyss Fruit and talk to them - they eat it and its power replaces the old one.\n\n')
     o += '## Personalities\n\nEvery companion has one (knights recruited before v0.5.0 get one too). It changes how they fight and what they say.\n\n'
     o += table(['Personality', 'Effect'], [[f"**{v['name']}**", v['desc']] for v in PERSONALITIES.values()])
     o += (f'## Specialisations\n\nAt level **{SPEC_LEVEL}** a companion can specialise (open its profile with the whistle). The skills join its spell list and the '
@@ -857,7 +871,7 @@ def page_getting_started():
 1. On your first spawn you get a **Grimoire Altar** and the **Magic Knight's Handbook**.
 2. Place the altar and **interact** with it. After a short ceremony a grimoire chooses you - one of {len(ATTR_ORDER)} attributes ([odds](magic.md#attributes-and-altar-odds)).
 3. Hold the grimoire: **Use** casts, **Sneak + Use** flips to the next spell. The HUD shows the spell, its cooldown, your mana and level.
-4. Cast, fight monsters and read ancient pages to level up. New spells at levels 3, 6 and 10, and your grimoire awakens a fifth spell at 15. Craft **Mana Crystals** (amethyst + lapis + glowstone) to refill mana.
+4. Cast, fight monsters and read ancient pages to level up. New spells at levels 3, 6, 10 and 12, and your grimoire awakens its strongest spell at 15. Craft **Mana Crystals** (amethyst + lapis + glowstone) to refill mana.
 5. Lost your grimoire? Any altar gives it back. Want another? A **Wishing Clover Charm** (from the Devil's heart) lets you roll again.
 6. Open the **Handbook** any time: your stats, the spell picker, every attribute, fruits and Will, the seas, ranks and robes, bosses and events, knights and the War Table, and the State of the Kingdom.
 
@@ -992,7 +1006,7 @@ def page_home():
 | Grimoires | {len(ATTR_ORDER)} attributes, {n_spells} spells ({len(AWAKENED)} awakened at level 15), the five-leaf Anti-Magic grimoire with 3 demon swords and Black Form |
 | Abyss Fruits | {len(FRUITS)} fruits, {n_ab} abilities, 9 beast forms, the Will system |
 | Creatures | {len([e for e in ENTITIES.values() if 'bc_spell' not in e['components'].get('minecraft:type_family', {}).get('family', [])])} creatures, NPCs and bosses, including {len(BOSSES)} bosses |
-| Companions | a saved party of up to {PARTY_MAX} knights plus {RESERVE_MAX} in reserve: personalities, specialisations, party tactics, combos, revives, mood, camps, trials, expeditions, sparring and rival squads |
+| Companions | a saved party of up to {PARTY_MAX} knights plus {RESERVE_MAX} in reserve, each with a grimoire and an Abyss Fruit: personalities, specialisations, party tactics, combos, revives, mood, camps, trials, expeditions, sparring and rival squads |
 | Items | {len(ITEMS)} items and blocks, {len(RECIPES)} recipes |
 | AI & simulation | a tactical brain for spellcasters, battles with tactics, morale and leaders, a world where four factions rise and fall |
 | Adventure | daily missions and the Mission Board, magic brooms, amulets, Magic Knight camps |
