@@ -681,6 +681,17 @@ def effects():
         **life('0.9 + v.particle_random_1 * 0.6'), 'minecraft:particle_initial_speed': '0.5 + v.particle_random_2 * 0.8', **dyn((0, 0.9, 0), 1.6),
         'minecraft:particle_appearance_billboard': bb('glyph', ['0.15'] * 2, pick=(1, 8, 32, 32)),
         'minecraft:particle_appearance_tinting': col(alpha=INOUT, white='0.5')}))
+    # ---------------------------------------------------------------- v1.0.0: signs on the horizon (where an incident is)
+    out.append(P('bc:fx_signal_beam', 'soft', add, {**INIT, **once(36),
+        'minecraft:emitter_shape_box': {'offset': [0, 16, 0], 'half_dimensions': [0.35, 16, 0.35], 'direction': [0, 1, 0]},
+        **life('2.2 + v.particle_random_1 * 0.6'), 'minecraft:particle_initial_speed': '0.6 + v.particle_random_2 * 0.8', **dyn((0, 0, 0), 0.4),
+        'minecraft:particle_appearance_billboard': bb('soft', ['1.1 + v.particle_random_3 * 0.5'] * 2),
+        'minecraft:particle_appearance_tinting': col(alpha=f'0.55 * {INOUT}', white='0.8')}))
+    out.append(P('bc:fx_signal_smoke', 'smoke', blend, {**INIT, **once(18), **disc('1.2', [0, 1, 0]),
+        **life('4.0 + v.particle_random_1 * 1.5'), 'minecraft:particle_initial_speed': '5.0 + v.particle_random_2 * 2.5', **dyn((0, 0.4, 0), 0.25),
+        **spin('math.random(-20, 20)'),
+        'minecraft:particle_appearance_billboard': bb('smoke', [f'1.4 + {T_} * 2.6'] * 2, frames=8),
+        'minecraft:particle_appearance_tinting': col('0.3, 0.28, 0.26', alpha=f'0.55 * {INOUT}', mul='0.6')}))
     return out
 
 

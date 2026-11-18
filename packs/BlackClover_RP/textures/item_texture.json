@@ -191,11 +191,17 @@
     "bc_fruit_cloud": {
       "textures": "textures/items/bc/fruit_cloud"
     },
+    "bc_fruit_echo": {
+      "textures": "textures/items/bc/fruit_echo"
+    },
     "bc_fruit_ember": {
       "textures": "textures/items/bc/fruit_ember"
     },
     "bc_fruit_frost": {
       "textures": "textures/items/bc/fruit_frost"
+    },
+    "bc_fruit_gale": {
+      "textures": "textures/items/bc/fruit_gale"
     },
     "bc_fruit_gravity": {
       "textures": "textures/items/bc/fruit_gravity"
@@ -224,6 +230,9 @@
     "bc_fruit_quicksilver": {
       "textures": "textures/items/bc/fruit_quicksilver"
     },
+    "bc_fruit_sand": {
+      "textures": "textures/items/bc/fruit_sand"
+    },
     "bc_fruit_shadow": {
       "textures": "textures/items/bc/fruit_shadow"
     },
@@ -232,6 +241,9 @@
     },
     "bc_fruit_slime": {
       "textures": "textures/items/bc/fruit_slime"
+    },
+    "bc_fruit_spark": {
+      "textures": "textures/items/bc/fruit_spark"
     },
     "bc_fruit_spider": {
       "textures": "textures/items/bc/fruit_spider"
@@ -278,11 +290,17 @@
     "bc_grimoire_blood": {
       "textures": "textures/items/bc/grimoire_blood"
     },
+    "bc_grimoire_blossom": {
+      "textures": "textures/items/bc/grimoire_blossom"
+    },
     "bc_grimoire_bone": {
       "textures": "textures/items/bc/grimoire_bone"
     },
     "bc_grimoire_bubble": {
       "textures": "textures/items/bc/grimoire_bubble"
+    },
+    "bc_grimoire_coral": {
+      "textures": "textures/items/bc/grimoire_coral"
     },
     "bc_grimoire_cotton": {
       "textures": "textures/items/bc/grimoire_cotton"
@@ -292,6 +310,9 @@
     },
     "bc_grimoire_dark": {
       "textures": "textures/items/bc/grimoire_dark"
+    },
+    "bc_grimoire_dream": {
+      "textures": "textures/items/bc/grimoire_dream"
     },
     "bc_grimoire_earth": {
       "textures": "textures/items/bc/grimoire_earth"
@@ -361,6 +382,9 @@
     },
     "bc_grimoire_steel": {
       "textures": "textures/items/bc/grimoire_steel"
+    },
+    "bc_grimoire_storm": {
+      "textures": "textures/items/bc/grimoire_storm"
     },
     "bc_grimoire_thorn": {
       "textures": "textures/items/bc/grimoire_thorn"
@@ -452,11 +476,17 @@
     "bc_power_cloud": {
       "textures": "textures/items/bc/power_cloud"
     },
+    "bc_power_echo": {
+      "textures": "textures/items/bc/power_echo"
+    },
     "bc_power_ember": {
       "textures": "textures/items/bc/power_ember"
     },
     "bc_power_frost": {
       "textures": "textures/items/bc/power_frost"
+    },
+    "bc_power_gale": {
+      "textures": "textures/items/bc/power_gale"
     },
     "bc_power_gravity": {
       "textures": "textures/items/bc/power_gravity"
@@ -485,6 +515,9 @@
     "bc_power_quicksilver": {
       "textures": "textures/items/bc/power_quicksilver"
     },
+    "bc_power_sand": {
+      "textures": "textures/items/bc/power_sand"
+    },
     "bc_power_shadow": {
       "textures": "textures/items/bc/power_shadow"
     },
@@ -493,6 +526,9 @@
     },
     "bc_power_slime": {
       "textures": "textures/items/bc/power_slime"
+    },
+    "bc_power_spark": {
+      "textures": "textures/items/bc/power_spark"
     },
     "bc_power_spider": {
       "textures": "textures/items/bc/power_spider"
@@ -613,6 +649,9 @@
     },
     "bc_war_table": {
       "textures": "textures/items/bc/war_table"
+    },
+    "bc_waygate": {
+      "textures": "textures/items/bc/waygate"
     }
   }
 }

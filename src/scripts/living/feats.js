@@ -90,6 +90,9 @@ on('elite', (p) => bump(p, 'elites'));
 on('thief', (p) => bump(p, 'thieves'));
 on('scroll', (p) => bump(p, 'scrolls'));
 on('lair', (p) => bump(p, 'lairs'));
+// v1.0.0
+on('gate', (p) => bump(p, 'gates'));
+on('waygate', (p) => bump(p, 'waygate'));
 // v0.8.0: armour
 on('forge', (p) => bump(p, 'forged'));
 on('rune', (p) => bump(p, 'runes'));
@@ -113,6 +116,7 @@ system.runInterval(() => {
     atLeast(p, 'party', pt.m.length);
     if (pt.m.some((m) => bondRank(m.bond) >= 4) || pt.r.some((m) => bondRank(m.bond) >= 4)) atLeast(p, 'soulbound', 1);
     if (sea(p).fruit) atLeast(p, 'fruit', 1);
+    if (['storm', 'blossom', 'coral', 'dream'].includes(state(p).attr)) atLeast(p, 'new_grimoire', 1);
     if (safe(() => p.getComponent('minecraft:riding')?.entityRidingOn?.typeId) === 'bc:broom') atLeast(p, 'broom', 1);
     const f = feats(p);
     const want = f.title ? `${p.name}\n§6${f.title}` : p.name;

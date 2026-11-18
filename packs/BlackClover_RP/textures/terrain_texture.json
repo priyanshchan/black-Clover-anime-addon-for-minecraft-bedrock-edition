@@ -21,6 +21,9 @@
     },
     "bc_war_table": {
       "textures": "textures/blocks/bc/war_table"
+    },
+    "bc_waygate": {
+      "textures": "textures/blocks/bc/waygate"
     }
   }
 }

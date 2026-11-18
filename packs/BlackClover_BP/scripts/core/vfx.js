@@ -104,9 +104,9 @@ const FRUIT_KIT = {
   ember: 'flame', stone: 'earth', gravity: 'gravity', shadow: 'dark', bloom: 'leaf', quicksilver: 'metal', frost: 'ice', barrier: 'crystal',
   wolf: 'beast', hawk: 'wind', lava: 'magma', ash: 'ash', prism: 'light', bounce: 'bubble', blast: 'flame', acid: 'acid', lodestone: 'metal',
   cloud: 'cotton', ink: 'ink', bear: 'beast', tiger: 'beast', wyvern: 'flame', spore: 'poison', thread: 'paper', slime: 'bubble', chain: 'steel',
-  lion: 'flame', shark: 'water', phoenix: 'flame', spider: 'dark',
+  lion: 'flame', shark: 'water', phoenix: 'flame', spider: 'dark', spark: 'lightning', echo: 'sound', sand: 'sand', gale: 'wind',
 };
-const ATTR_KIT = { plant: 'leaf' };
+const ATTR_KIT = { plant: 'leaf', storm: 'lightning', blossom: 'leaf', coral: 'crystal', dream: 'spirit' };
 
 /** The kit for a spec fx key, an attribute, a fruit ('f:id' / 'a:id') or an element name. */
 export function kitOf(key) {

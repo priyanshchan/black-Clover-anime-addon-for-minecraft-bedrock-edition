@@ -158,8 +158,9 @@ FRUIT_KIT = {
     'barrier': 'crystal', 'wolf': 'beast', 'hawk': 'wind', 'lava': 'magma', 'ash': 'ash', 'prism': 'light', 'bounce': 'bubble', 'blast': 'flame',
     'acid': 'acid', 'lodestone': 'metal', 'cloud': 'cotton', 'ink': 'ink', 'bear': 'beast', 'tiger': 'beast', 'wyvern': 'flame', 'spore': 'poison',
     'thread': 'paper', 'slime': 'bubble', 'chain': 'steel', 'lion': 'flame', 'shark': 'water', 'phoenix': 'flame', 'spider': 'dark',
+    'spark': 'lightning', 'echo': 'sound', 'sand': 'sand', 'gale': 'wind',
 }
-ATTR_KIT = {'plant': 'leaf'}
+ATTR_KIT = {'plant': 'leaf', 'storm': 'lightning', 'blossom': 'leaf', 'coral': 'crystal', 'dream': 'spirit'}
 
 
 def flavor_of(tint_key, flavors):

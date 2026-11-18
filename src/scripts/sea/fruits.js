@@ -540,6 +540,16 @@ system.runInterval(() => {
       } else if (fid === 'bloom') {
         const below = p.dimension.getBlock({ x: Math.floor(p.location.x), y: Math.floor(p.location.y) - 1, z: Math.floor(p.location.z) });
         if (below && (below.typeId === 'minecraft:grass_block' || below.typeId.endsWith('_leaves'))) effect(p, 'regeneration', 2, 0, false);
+      } else if (fid === 'spark') {
+        effect(p, 'speed', 2, 0, false);
+      } else if (fid === 'echo') {
+        effect(p, 'night_vision', 12, 0, false);
+      } else if (fid === 'sand') {
+        const below = p.dimension.getBlock({ x: Math.floor(p.location.x), y: Math.floor(p.location.y) - 1, z: Math.floor(p.location.z) });
+        if (below && /sand|terracotta|dirt|stone/.test(below.typeId)) effect(p, 'resistance', 2, 0, false);
+      } else if (fid === 'gale') {
+        effect(p, 'jump_boost', 2, 1, false);
+        if (p.isFalling && p.getVelocity().y < -0.5) effect(p, 'slow_falling', 1, 0, false);
       }
     });
   }

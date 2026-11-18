@@ -543,6 +543,7 @@ ITEM_USE = {
     **{f"bc:{sid}_{PIECE[sl]}": f"{SLOT_WORD[sl]} armour ({s['prot'][i]}) - {s['name']} set ([Armour](armour.md))"
        for sid, s in ARMOR_SETS.items() for i, sl in enumerate(ARMOR_SLOTS)},
     'bc:magic_forge': 'forge armour; reinforce, inscribe runes, sew mantles, salvage ([Armour](armour.md#the-magic-forge))',
+    'bc:waygate': 'a Mana Waygate: travel to any other Waygate for mana (20 + 15 per 100 blocks) or a Mana Crystal; rename it from its menu',
 }
 
 
@@ -677,7 +678,7 @@ def page_progression():
           '(yours, and your companions\' for kill missions), bosses and Devil Gates (everyone nearby gets credit), spells and fruit powers cast, magic XP earned. '
           '**Delivery** missions take the items from your pack at the board. Turn missions in at a **Mission Board** (craft one or find one in a Magic Knight camp); '
           'the board also swaps an unstarted mission (free once a day, then 25 doubloons). Finish all three for a bonus of 4 Mana Crystals.\n\n')
-    kinds = {'kill': 'defeat', 'boss': 'defeat any boss', 'gate': 'seal', 'cast': 'cast spells or fruit powers', 'xp': 'earn magic XP',
+    kinds = {'event': 'win a world event', 'kill': 'defeat', 'boss': 'defeat any boss', 'gate': 'seal', 'cast': 'cast spells or fruit powers', 'xp': 'earn magic XP',
              'deliver': 'deliver at the board', 'companion': 'companion victories'}
     o += table(['Mission', 'Kind', 'Target', 'Count', 'Tier'], [[f'**{t}**', kinds[k], f'`{tg}`' if tg else '–', c, '★' * tr] for _, k, tg, c, t, tr in MISSIONS])
     o += table(['Tier', 'Stars', 'Doubloons', 'Magic XP'], [['★' * k, v['stars'], v['coins'], v['xp']] for k, v in MISSION_REWARDS.items()])
@@ -968,17 +969,51 @@ def page_companions():
 
 
 def page_events():
-    o = ('Every **4-7 minutes** one event happens near a random player in the Overworld (the first one about 3 minutes after the world loads). '
-         'Toggle them at a **War Table**; creative players can start any event there, and anyone with commands can run `/scriptevent bc:event <name>`.\n\n'
-         '## The event director (v0.7.0)\n\n'
-         '* **Scaling:** each player has an event **tier** from their magic level plus 3 per companion nearby: tier 1 (under 7), tier 2 (7-15), tier 3 (16+). '
-         'Enemy counts in raids, rituals, hives, assassins and pirate landings are ×1 / ×1.4 / ×1.8, and the nastiest outcomes (a Bandit King leading a raid, '
-         'the Grimoire Devourer or the Hive Queen when you fail) need tier 2.\n'
-         '* **No repeats:** the last two events are never picked again.\n'
-         '* **Pacing:** 25+ kills since the last event push the next one 50% later; 2 or fewer bring it 30% sooner.\n'
-         '* **Objectives:** raids, rituals, hives and assassins are won by defeating every enemy (or egg) in time - with a reward - and some have consequences when you fail. '
-         'Their enemies never break and run.\n'
-         '* **Event log:** the last 12 events and how they ended are in the Handbook (**Recent events**).\n\n')
+    o = ('## The living world (v1.0.0)\n\n'
+         'World events are **incidents** that happen at real places in the world - not in front of you.\n\n'
+         '* **Out of sight.** Every **3-6 minutes** the director picks a player and starts an incident about **60-200 blocks** away '
+         '(at most 7 at once). Everyone within 360 blocks hears about it **by direction and distance** - '
+         '*"A crimson light splits the sky - to the north-east, about 180 blocks away"* - with a horn or a gong from that direction.\n'
+         '* **Signs on the horizon.** Smoke columns and pillars of light mark every incident you are within 360 blocks of.\n'
+         '* **Tracking.** The newest incident you hear about is tracked on your HUD: an arrow, its distance and its state '
+         '(*gate strength 4/10, erupts in 6 min*). Open the Handbook → **World events** to see everything that is going on and track another one.\n'
+         '* **They develop on their own.** While nobody is there, incidents are simulated: a Devil Gate grows stronger every minute, '
+         'a ritual nears completion, a hive lays more eggs, two armies wear each other down, a wounded knight bleeds out, a bandit raid marches on '
+         'your home, caravans and patrols cross the land.\n'
+         '* **Left alone, they play out - with consequences.** Gates erupt (the Archdevil roams, or ruins are left), rituals complete '
+         '(the Grimoire Devourer walks there), hives grow a queen, raids sack the land and leave ruins, unwatched battles are decided and shift '
+         'the factions\' power, knights fall. It all goes into the news (State of the Kingdom) and the event log.\n'
+         '* **They become real when you arrive.** Units only appear when a player comes within about 50 blocks - in whatever state the incident '
+         'has reached (a gate left open for 8 minutes pours out 10 devils; a skirmish you reach late has fewer soldiers). If everyone walks away '
+         'again for a minute, the incident fades back into the simulation and remembers its survivors.\n'
+         '* **Hunters approach from out of sight.** Thieves, Shadow Assassins, Tidewatch bounty hunters, Rogue Mage ambushes and rival squads '
+         'come at you from behind, 20-34 blocks away, and walk in - with a warning. Crimson nights, mana storms and Mana Eclipses still cover the whole world.\n'
+         '* **Answer faster** with **Mana Waygates** (Items) - build a network of them and travel for mana.\n\n')
+    o += table(['Incident', 'Weight', 'When', 'While nobody is there', 'When you arrive', 'Left alone'], [
+        ['Devil Gate', '8 × Devil power', 'any time', 'grows stronger every minute (up to 10)', 'the gate and 2-10 devils; break the gate (+1 star, 120 XP)', 'erupts after 12 min: Devil power up, the Archdevil roams or ruins are left'],
+        ['Skirmish', 10, 'any time', 'two factions (5-8 a side) wear each other down', 'the battle, with the soldiers still standing', 'decided: the winner gains faction power'],
+        ['Bandit raid', '8', 'any time', 'marches on your home from 130-210 blocks away', 'the band (scaled to your tier), maybe led by the Bandit King; beat them for doubloons and a star', 'sacks the land and leaves ruins'],
+        ['Devil ritual', '5 × Devil power', 'night', 'nears completion (5 min)', 'cultists and imps, and the time left to stop them', 'completes: the Grimoire Devourer roams there'],
+        ['Hive infestation', 5, 'any time', 'lays more eggs (up to 12)', 'eggs and drones; smash every egg', 'grows a queen after 8 min'],
+        ['Knight in trouble', 5, 'any time', 'the knight bleeds out (6 min)', 'a wounded knight (weaker the later you come) and devils; save them and they join you', 'the knight falls'],
+        ['Sky treasure', 6, 'any time', 'a chest has fallen (15 min)', 'the chest and the pirates who found it', 'pirates carry it off'],
+        ["Merchant's camp", 6, 'any time', 'waits (10 min)', 'the Travelling Magic Merchant', 'moves on'],
+        ['Meteor shower', 7, 'any time', 'stars fall (5 min)', 'mana meteors falling around you, leaving Mana Crystals', 'ends'],
+        ["Knights' tournament", 4, 'day', 'goes on (7 min)', 'a duel between two Magic Knights', 'ends'],
+        ['Knight patrol', '5 × Knight power', 'day', 'crosses the land past you', 'three Magic Knights', 'passes by'],
+        ['Pirate landing', '6 × Raider power', 'near water', 'raiders come ashore (8 min)', 'a Raider Captain and his crew', 'raid the coast: Raider power up'],
+        ['Merchant caravan **(new)**', 5, 'day', 'crosses the land past you', 'the merchant and two knights - half the time ambushed by bandits: save it for 60 doubloons', 'arrives safely'],
+        ['Mana spring **(new)**', 5, 'any time', 'erupts (6 min)', 'a geyser of mana: stand in it to refill, and crystals spill out', 'runs dry'],
+        ['Camp under siege **(new)**', 4, 'any time', 'the knights hold out (7 min)', 'three knights and devils, bandits or rogue mages; hold the line for 2 stars and 50 doubloons', 'overrun: Knight power down, ruins left'],
+        ['Refugees **(new)**', 3, 'any time', 'flee toward you from a Devil Gate further out', 'villagers who tell you where the gate is (and track it for you)', 'find shelter'],
+        ['Ruins **(new)**', 'after a failure', '-', 'smoulder (20 min)', 'a chest of salvage and the raiders still guarding it', 'scavenged'],
+        ['A giant boss', '2 each', 'by night, day or sea', 'something stirs (10 min)', 'the Fallen Captain, the Soul Puppeteer, the Witch Sisters, the Bone Dragon, a Stone Colossus, the Phantom Galleon or the Storm Kraken', 'moves on'],
+        ["A faction's offensive", 'when a faction tops 80 power', 'any time', 'a great battle (8-10 against 6-8)', 'the battle', 'decided'],
+    ])
+    o += ('Incidents follow the same **tiers** as before (your magic level plus 3 per companion): bandit raids, hives and sieges grow, '
+          'and the Bandit King only rides with tier 2 and up. Cheat: `/scriptevent bc:incident <kind>` starts one (add `near` for 56-64 blocks away).\n\n'
+          '## Events (the classic list)\n\nThese are still in the game: the hunters and the world-wide events come from this list, '
+          'and `/scriptevent bc:event <name>` runs any of them on the spot (handy for testing).\n\n')
     o += table(['Event (`name`)', 'Weight', 'When', 'What happens'], [
         ['Mana meteor shower (`meteor_shower`)', 10, 'any time', 'For 30 s mana meteors fall within 7-30 blocks; each impact may leave a Mana Crystal (50%).'],
         ['Devil Gate (`devil_gate`)', '8 × Devil power', 'any time', 'A 120-HP Devil Gate opens 18-26 blocks away and releases imps and Dark Disciples every 8 s (up to 12 devils) for ~96 s. Break it for 120 XP and a star. If it survives, 30% chance the Archdevil steps out.'],
@@ -1038,6 +1073,11 @@ def page_commands():
               'wounded_knight', 'mana_storm', 'bounty_hunters', 'rogue_ambush', 'rival_squad', 'bandit_raid', 'devil_ritual', 'hive_infestation',
               'assassins', 'thief', 'mana_eclipse', 'fallen_captain', 'witch_sisters', 'bone_dragon', 'puppet_show', 'colossus', 'phantom_galleon', 'kraken'):
         o += f'/scriptevent bc:event {n}\n'
+    o += '```\n\n```\n/scriptevent bc:incident               (something happens out in the world)\n'
+    for n in ('devil_gate', 'skirmish', 'bandit_raid', 'devil_ritual', 'hive', 'wounded_knight', 'sky_treasure', 'merchant_camp', 'meteor_shower',
+              'tournament', 'patrol', 'pirates', 'caravan', 'mana_spring', 'camp_siege', 'refugees'):
+        o += f'/scriptevent bc:incident {n}\n'
+    o += '/scriptevent bc:incident devil_gate near   (just out of sight, 56-64 blocks away)\n'
     o += '```\n\n```\n/scriptevent bc:lair                  (a lair suited to the ground behind you)\n'
     for n in ('hideout', 'nest', 'shrine'):
         o += f'/scriptevent bc:lair {n}\n'
@@ -1071,7 +1111,7 @@ def page_getting_started():
 * **Gear up:** craft a Magic Forge (or find one in a Magic Knight camp) and forge armour from the spoils of your fights - eight sets with bonuses for two and four pieces, runes and reinforcement. → [Armour](armour.md)
 * **Build a War Table** (map, iron sword, feather, planks, sticks) and stage battles. → [Battles](ai-and-simulation.md#battles-battlejs)
 * **Fight bosses:** the Devil, the Leviathan, the Archdevil, the Stone Colossus, the Phantom Galleon, the Storm Kraken, the Fallen Captain, the Witch Sisters, the Bone Dragon, the Soul Puppeteer, the Bandit King, the Grimoire Devourer, the Hive Queen. → [Bosses](mobs-and-bosses.md#bosses)
-* **Watch the world:** events happen every few minutes; the factions rise and fall. → [World events](world-events.md)
+* **Answer the world:** every few minutes something happens out there - you hear where, see its sign on the horizon and follow the arrow on your HUD. Get there before it plays out without you. Build **Mana Waygates** to travel faster. → [World events](world-events.md)
 '''
     return write('getting-started.md', 'Getting started', o)
 
@@ -1147,6 +1187,7 @@ Everything in `packs/` and `dist/` is generated - edit the generators in `tools/
 | `src/scripts/living/` (companions) | `companions.js` saved party, whistle and hooks; `squad.js` specialisations, tactics, combos, revives, broom flight; `camp.js` mood, camp, talk, trials, gear; `roster.js` Squad Banner, expeditions, Training Dummy; `rivals.js` sparring and rival squads; `puppeteer.js` the Soul Puppeteer's strings |
 | `src/scripts/living/` (v0.7) | `warband.js` enemy warbands; `foes.js` thieves, assassins, cultist rituals, the Hive; `elites.js` elite enemies; `lairs.js` hideouts, nests and shrines; `consumables.js` potions, elixirs, smoke bombs, scrolls; `feats.js` feats and titles |
 | `src/scripts/core/scrolls.js` | writing and reading spell scrolls |
+| `src/scripts/living/world.js`, `waygate.js` (v1.0.0) | the living world: incidents placed out of sight, simulated, announced, tracked, made real on arrival and faded back out; the director; Mana Waygates |
 | `src/scripts/core/vfx.js` (v0.9.0) | the VFX director: element kits and the layered effects (impact, muzzle, beam, ground, pillar, lightning, slash, swirl, aura, screen flash) and the per-tick particle budget |
 | `tools/bc/vfx9.py`, `v9gen.py` (+ `models/v9.py`) | v0.9.0: high-resolution particle textures and the `bc:fx_*` particle effects; the rebuilt spell projectile, its halo and element trails; the full-body cast animations |
 | `src/scripts/core/armor.js`, `living/armor.js`, `living/forge.js` (v0.8.0) | what is worn and the bonus maths; set effects, damage, drops and companions in armour; the Magic Forge and the Armoury |
@@ -1205,7 +1246,7 @@ def page_home():
 | Items | {len(ITEMS)} items and blocks, {len(RECIPES)} recipes |
 | AI & simulation | a tactical brain for spellcasters, enemy warbands (focus, flanking, calling for help, breaking), bosses that adapt, battles with tactics, morale and leaders, a world where four factions rise and fall |
 | Adventure | daily missions and the Mission Board, {len(FEATS)} feats with titles, potions, elixirs, smoke bombs and spell scrolls, magic brooms, amulets, Magic Knight camps |
-| World | an event director with scaling, objectives and a log; elite enemies with {len(ELITE_AFFIXES)} traits; bandit hideouts, hive nests and cultist shrines; ships, outposts, wrecks, dungeons, the Bounty Board, a travelling merchant, the War Table |
+| World | **a living world**: incidents happen out in the world, develop on their own, are reported by direction and tracked on your HUD, and become real when you arrive; Mana Waygates; an event director with scaling, objectives and a log; elite enemies with {len(ELITE_AFFIXES)} traits; bandit hideouts, hive nests and cultist shrines; ships, outposts, wrecks, dungeons, the Bounty Board, a travelling merchant, the War Table |
 
 ## Pages
 
@@ -1217,7 +1258,7 @@ def page_home():
 | [Armour](armour.md) | every set and its bonuses, the Magic Forge, materials and where they drop, runes, reinforcement, mantles |
 | [Companions](companions.md) | your squad: personalities, specialisations, tactics, combos, revives, mood, camp, talking, trials, the Squad Banner and expeditions, training, sparring, rival squads, bond, robes |
 | [AI & simulation](ai-and-simulation.md) | the tactical brain, enemy and boss brains, battles (tactics, morale, leaders, bets, camera), the world simulation, knights |
-| [World events](world-events.md) | every event, its odds, conditions and rewards |
+| [World events](world-events.md) | the living world: incidents, how they develop and what happens if you ignore them; every event |
 | [Mobs & bosses](mobs-and-bosses.md) | every creature: health, attack, spawning, drops; all bosses and their attacks; factions; structures and lairs; elite enemies |
 | [Items & recipes](items-and-recipes.md) | every recipe as a grid, every item id, potions and scrolls, both shops |
 | [Progression](progression.md) | magic levels and mana formulas, ranks and stars, robes, bounties, daily missions, amulets, brooms, feats and titles |

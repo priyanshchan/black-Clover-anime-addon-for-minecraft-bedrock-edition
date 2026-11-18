@@ -72,7 +72,15 @@
         "t62": "textures/entity/bc/bolt/t62",
         "t63": "textures/entity/bc/bolt/t63",
         "t64": "textures/entity/bc/bolt/t64",
-        "t65": "textures/entity/bc/bolt/t65"
+        "t65": "textures/entity/bc/bolt/t65",
+        "t66": "textures/entity/bc/bolt/t66",
+        "t67": "textures/entity/bc/bolt/t67",
+        "t68": "textures/entity/bc/bolt/t68",
+        "t69": "textures/entity/bc/bolt/t69",
+        "t70": "textures/entity/bc/bolt/t70",
+        "t71": "textures/entity/bc/bolt/t71",
+        "t72": "textures/entity/bc/bolt/t72",
+        "t73": "textures/entity/bc/bolt/t73"
       },
       "geometry": {
         "orb": "geometry.bc.bolt_orb",

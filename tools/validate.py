@@ -165,7 +165,9 @@ for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
              # v0.7.0: stolen goods, egg timers, silenced grimoires, the event log and the Mana Eclipse
              'bc:stolen', 'bc:hatch_at', 'bc:silenced_until', 'bc:event_log', 'bc:eclipse_until', 'bc:lair',
              # v0.7.5: elites and their minions, lairs, the Elixir of Haste, feats and titles
-             'bc:elite', 'bc:minion', 'bc:lairs', 'bc:haste_until', 'bc:feats', 'bc:title'):
+             'bc:elite', 'bc:minion', 'bc:lairs', 'bc:haste_until', 'bc:feats', 'bc:title',
+             # v1.0.0: the living world
+             'bc:incidents', 'bc:incident', 'bc:waygates'):
         continue
     errors.append(f'script references unknown id {m}')
 for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):

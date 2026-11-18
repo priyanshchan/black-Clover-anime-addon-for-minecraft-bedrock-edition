@@ -10,9 +10,9 @@ import { rankTitle, stars } from '../core/ranks.js';
 import { notoriety, notorietyTitle } from '../sea/navy.js';
 import { kingdomPage } from '../living/worldsim.js';
 import { missionSummary } from '../living/missions.js';
-import { eventLog } from '../living/events.js';
 import { featsPage } from '../living/feats.js';
 import { armoryPage } from '../living/forge.js';
+import { worldPage } from '../living/world.js';
 import { gearOf } from '../core/armor.js';
 
 const G = DATA.glyphs;
@@ -67,8 +67,8 @@ export async function openHandbook(p) {
   actions.push(() => gearPage(p));
   form.button('§lState of the Kingdom\n§r§8Faction power and world news');
   actions.push(() => kingdomPage(p));
-  form.button('§lRecent events\n§r§8Raids, rituals, hives and more');
-  actions.push(() => eventPage(p));
+  form.button('§lWorld events\n§r§8What is happening out there; track it');
+  actions.push(() => worldPage(p, () => openHandbook(p)));
   form.button('§lFeats & titles\n§r§8Lifetime achievements');
   actions.push(() => featsPage(p, () => openHandbook(p)));
   form.button('§lThe Armoury\n§r§8Armour sets, runes, the Magic Forge');
@@ -266,19 +266,6 @@ async function warPage(p) {
     if (r.selection === 0) return openHandbook(p);
     return undefined;
   });
-}
-
-async function eventPage(p) {
-  const log = eventLog();
-  const col = { success: '§a', failed: '§c', 'under way': '§e', happened: '§7' };
-  const body = log.length
-    ? log.map((e) => `§8Day ${e.day} §f${e.label}§8 - ${col[e.outcome] ?? '§7'}${e.outcome}`).join('\n')
-    : '§7Nothing has happened yet. Events come every few minutes - they grow tougher as you and your party do.';
-  await new MessageFormData().title('Recent events').body(`${body}\n\n§8Events with an objective (raids, rituals, hives) reward you when you win - and have consequences when you don't.`)
-    .button1('Back').button2('Close').show(p).then((r) => {
-      if (r.selection === 0) return openHandbook(p);
-      return undefined;
-    });
 }
 
 async function missionPage(p) {

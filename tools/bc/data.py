@@ -1129,3 +1129,110 @@ FEATS += [
     ('runesmith', 'Runesmith', 'Inscribe 8 runes.', 'runes', 8, 1, 100, 'the Runesmith'),
 ]
 MERCHANT += [('bc:mana_steel_ingot', 4, 40, 'Mana-Steel Ingots x4'), ('bc:rune_shard', 2, 55, 'Rune Shards x2')]
+
+# ======================================================================================
+# v1.0.0: the living world (incidents out in the world - see src/scripts/living/world.js), four more grimoires,
+# four more Abyss Fruits, Mana Waygates, and more feats and missions.
+# ======================================================================================
+ATTRIBUTES.update({
+    'storm': dict(name='Storm', color='6a8ac8', leaves=4, cover=('0c1222', '141c34', '1e2a48', '2a3a5e', '384a76', '485c8e'), trim='silver', mc='§9'),
+    'blossom': dict(name='Blossom', color='ff9ac8', leaves=3, cover=('2a0c1a', '3e1428', '561e38', '70284a', '8c345e', 'a84274'), trim='gold', mc='§d'),
+    'coral': dict(name='Coral', color='ff7a5a', leaves=3, cover=('2a0e0a', '401812', '5a2218', '762e20', '923c28', 'ae4c32'), trim='gold', mc='§c'),
+    'dream': dict(name='Dream', color='b08cff', leaves=4, cover=('140c26', '201438', '2c1e4c', '3a2862', '4a347a', '5c4294'), trim='silver', mc='§5'),
+})
+ATTR_ORDER += ['storm', 'blossom', 'coral', 'dream']
+SPELLS.update({
+    'storm': [
+        _s('storm_bolt', 'Storm Bolt', 10, 0.6, 1, 'A crackling bolt torn from the storm.', t='bolt', d=5, shape=3, speed=2.6, fx='lightning', eff=[['slowness', 1, 0]]),
+        _s('squall_ring', 'Squall Ring', 24, 6.0, 3, 'A ring of howling wind blasts everyone away from you.', t='nova', d=7, r=4.5, kb=[1.6, 0.5], fx='wind'),
+        _s('thunderhead', 'Thunderhead', 34, 12.0, 6, 'A thundercloud gathers over your aim and lashes it with lightning.', t='rain', d=6, n=12, r=6, every=2, fx='lightning'),
+        _s('tempest_eye', 'Tempest Eye', 82, 24.0, 10, 'The eye of a storm drags foes into its heart, then lightning falls.', t='vortex', d=16, r=8, dur=3, fx='wind',
+           then=dict(t='strikes', d=8, n=5, r=8, fx='lightning')),
+    ],
+    'blossom': [
+        _s('petal_darts', 'Petal Darts', 10, 0.6, 1, 'Three petals as sharp as blades.', t='bolt', d=3.5, n=3, spread=12, shape=2, speed=2.2, fx='leaf'),
+        _s('sakura_veil', 'Sakura Veil', 28, 12.0, 3, 'A veil of falling blossoms mends you and your allies.', t='heal', heal=6, r=6, regen=4, fx='leaf'),
+        _s('petal_storm', 'Petal Storm', 30, 9.0, 6, 'A storm of cutting petals over your aim.', t='zone', d=2.5, r=5, dur=6, fx='leaf', eff=[['slowness', 2, 1]]),
+        _s('thousand_blossoms', 'Thousand Blossoms', 80, 22.0, 10, 'Two rings of blossom blades burst out from you.', t='radial', d=6, n=24, rings=2, shape=2, speed=2.0, fx='leaf'),
+    ],
+    'coral': [
+        _s('coral_shard', 'Coral Shard', 10, 0.6, 1, 'A jagged shard of living coral.', t='bolt', d=5, shape=1, speed=2.2, fx='crystal'),
+        _s('reef_spikes', 'Reef Spikes', 26, 8.0, 3, 'Coral spikes burst out of the ground ahead of you.', t='wave', d=8, len=11, fx='crystal', kb=[0.2, 0.8]),
+        _s('tide_pool', 'Tide Pool', 30, 10.0, 6, 'A swirling tide pool slows and drags foes near your aim.', t='zone', d=2, r=4, dur=6, pull=0.25, fx='water', eff=[['slowness', 2, 2]]),
+        _s('barrier_reef', 'Barrier Reef', 60, 20.0, 10, 'A wall of coral rises in front of you.', t='wall', block='minecraft:brain_coral_block', w=7, h=3, dur=10, fx='crystal'),
+    ],
+    'dream': [
+        _s('drowsy_mote', 'Drowsy Mote', 10, 0.6, 1, 'A drifting mote of sleep that slows what it touches.', t='bolt', d=4, shape=0, speed=1.8, fx='spirit', eff=[['slowness', 2, 1]]),
+        _s('lullaby', 'Lullaby', 28, 10.0, 3, 'A lullaby makes every foe around you heavy with sleep.', t='nova', d=3, r=6, fx='sound', eff=[['slowness', 4, 3], ['weakness', 4, 1]]),
+        _s('nightmare', 'Nightmare', 36, 12.0, 6, 'Nightmares fall on foes near your aim.', t='strikes', d=9, n=4, r=10, fx='dark', eff=[['blindness', 3, 0]]),
+        _s('dreamscape', 'Dreamscape', 80, 24.0, 10, 'The world around your aim becomes a dream: everything in it drifts and weakens.', t='zone', d=4, r=8, dur=8, fx='spirit',
+           eff=[['slowness', 2, 2], ['weakness', 2, 1], ['nausea', 3, 0]]),
+    ],
+})
+ALTAR_WEIGHTS.update({'storm': 4, 'blossom': 7, 'coral': 7, 'dream': 4})
+_V1_MOVES = {
+    'storm': _s('lightning_lattice', 'Lightning Lattice', 62, 18.0, 12, 'A lattice of lightning strikes every foe near your aim.', t='strikes', d=12, n=6, r=12, fx='lightning'),
+    'blossom': _s('blooming_prison', 'Blooming Prison', 58, 18.0, 12, 'Foes near your aim are wrapped in blossoming vines.', t='prison', d=10, r=4, dur=3, fx='leaf', eff=[['weakness', 3, 1]]),
+    'coral': _s('riptide_reef', 'Riptide Reef', 62, 18.0, 12, 'A reef-lined whirlpool drags foes into its jaws.', t='vortex', d=14, r=7, dur=3, fx='water'),
+    'dream': _s('waking_nightmare', 'Waking Nightmare', 60, 18.0, 12, 'Trap foes near your aim inside their worst dream.', t='prison', d=12, r=4, dur=4, fx='dark', eff=[['blindness', 3, 0]]),
+}
+for _a, _sp in _V1_MOVES.items():
+    SPELLS[_a].append(_sp)
+AWAKENED.update({
+    'storm': _s('heavens_wrath', "Heaven's Wrath", 120, 40.0, 15, 'The sky itself answers: lightning on every foe in sight, then a thunderclap.', t='strikes', d=18, n=10, r=14, fx='lightning',
+                then=dict(t='nova', d=10, r=8, kb=[1.8, 0.6], fx='wind')),
+    'blossom': _s('spring_eternal', 'Spring Eternal', 110, 38.0, 15, 'An endless spring: blossoms heal you and your allies, and cut down every foe near you.', t='heal', heal=12, r=10, regen=8, fx='leaf',
+                  then=dict(t='zone', at='self', d=4, r=8, dur=6, fx='leaf')),
+    'coral': _s('leviathan_reef', 'Leviathan Reef', 115, 38.0, 15, 'A reef erupts in eight directions, as vast as a sea serpent.', t='wave', d=16, len=16, dirs=8, fx='crystal', kb=[0.3, 1.0]),
+    'dream': _s('eternal_slumber', 'Eternal Slumber', 120, 40.0, 15, 'Every foe around you falls into a dream where time does not move.', t='timestop', d=14, r=14, dur=5, fx='spirit'),
+})
+for _a in ('storm', 'blossom', 'coral', 'dream'):
+    SPELLS[_a].append(AWAKENED[_a])
+
+FRUITS.update({
+    'spark': dict(name='Spark Fruit', color='ffe03a', mc='§e', power='Spark Body', beast=False,
+                  passive='Lightning in your veins: you move faster.',
+                  abilities=[('spark_jolt', 'Spark Jolt', 1.6, 'A jolt of lightning from your fingertips.', dict(t='bolt', d=5, shape=3, speed=2.8, fx='lightning', eff=[['slowness', 1, 1]])),
+                             ('thunder_step', 'Thunder Step', 6.0, 'Become lightning and strike through everything to your aim.', dict(t='leap', mode='blink', d=7, dist=10, fx='lightning')),
+                             ('storm_cage', 'Storm Cage', 12.0, 'A cage of lightning around foes near your aim.', dict(t='prison', d=10, r=4, dur=3, fx='lightning'))]),
+    'echo': dict(name='Echo Fruit', color='a0e0d0', mc='§3', power='Echo Voice', beast=False,
+                 passive='You hear everything: you see in the dark.',
+                 abilities=[('sonic_shot', 'Sonic Shot', 1.6, 'A bullet of compressed sound.', dict(t='bolt', d=5, shape=0, speed=2.4, fx='sound')),
+                            ('echo_burst', 'Echo Burst', 7.0, 'A shout that throws everyone around you back and rattles them.', dict(t='nova', d=6, r=5, kb=[1.6, 0.4], fx='sound', eff=[['nausea', 4, 0]])),
+                            ('resonance', 'Resonance', 9.0, 'A wave of sound tears along the ground ahead.', dict(t='wave', d=9, len=14, fx='sound'))]),
+    'sand': dict(name='Sand Fruit', color='d8b878', mc='§6', power='Sand Body', beast=False,
+                 passive='A body of sand: you are tougher on dry ground.',
+                 abilities=[('sand_blades', 'Sand Blades', 1.8, 'Three blades of hardened sand.', dict(t='bolt', d=4, n=3, spread=14, shape=2, speed=2.0, fx='sand')),
+                            ('quicksand', 'Quicksand', 9.0, 'The ground near your aim turns to quicksand.', dict(t='zone', d=1, r=4, dur=6, pull=0.4, fx='sand', eff=[['slowness', 2, 3]])),
+                            ('desert_coffin', 'Desert Coffin', 12.0, 'Sand swallows and crushes foes near your aim.', dict(t='prison', d=10, r=4, dur=3, fx='sand'))]),
+    'gale': dict(name='Gale Fruit', color='b0f0d0', mc='§a', power='Gale Body', beast=False,
+                 passive='The wind carries you: you fall gently and jump higher.',
+                 abilities=[('air_bullet', 'Air Bullet', 1.4, 'Two bullets of compressed air.', dict(t='bolt', d=4, n=2, spread=6, shape=1, speed=3.0, fx='wind')),
+                            ('tailwind', 'Tailwind', 14.0, 'A tailwind for you and your allies.', dict(t='buff', allies=8, fx='wind', self=[['speed', 12, 1], ['jump_boost', 12, 1]])),
+                            ('cyclone', 'Cyclone', 10.0, 'A cyclone pulls foes in and flings them.', dict(t='vortex', d=8, r=6, dur=2, fx='wind'))]),
+})
+FRUIT_ORDER += ['spark', 'echo', 'sand', 'gale']
+_V1_FRUIT_MOVES = {
+    'spark': ('gigavolt', 'Gigavolt', 16.0, 'Lightning strikes every foe near your aim.', dict(t='strikes', d=14, n=6, r=10, fx='lightning')),
+    'echo': ('requiem_wave', 'Requiem Wave', 16.0, 'Waves of sound tear out in eight directions.', dict(t='wave', d=12, len=12, dirs=8, fx='sound', eff=[['weakness', 3, 1]])),
+    'sand': ('sandstorm', 'Sandstorm', 18.0, 'A blinding sandstorm drags foes into its heart.', dict(t='vortex', d=14, r=8, dur=3, fx='sand', eff=[['blindness', 2, 0]])),
+    'gale': ('sky_splitter', 'Sky Splitter', 16.0, 'Three lanes of cutting wind.', dict(t='wave', d=12, len=16, lanes=3, fx='wind', kb=[1.2, 0.4])),
+}
+for _f, (_id, _n, _cd, _desc, _spec) in _V1_FRUIT_MOVES.items():
+    FRUITS[_f]['abilities'].append((_id, _n, _cd, _desc, _spec, NEW_FRUIT_WILL))
+
+# Mana Waygates: a network of gates you build; travel costs mana (or a mana crystal)
+WAYGATE_MANA_BASE = 20
+WAYGATE_MANA_PER_100 = 15
+WAYGATE_COOLDOWN = 30   # seconds
+FEATS += [
+    ('answer_the_call', 'Answer the Call', 'Win 10 world events (incidents) where they happen.', 'events', 10, 2, 150, 'the Answerer'),
+    ('gatebreaker', 'Gatebreaker', 'Seal 5 Devil Gates.', 'gates', 5, 2, 150, 'Gatebreaker'),
+    ('wayfarer', 'Wayfarer', 'Travel by Mana Waygate 10 times.', 'waygate', 10, 1, 60, 'the Wayfarer'),
+    ('new_bloom', 'Late Bloomer', 'Receive one of the four newest grimoires (Storm, Blossom, Coral or Dream).', 'new_grimoire', 1, 1, 50, 'the Late Bloomer'),
+]
+MISSIONS += [
+    ('m_incident', 'event', '', 1, 'Answer a call: win a world event where it happens', 2),
+    ('m_bandit_band', 'kill', 'bc:bandit', 8, 'Break up a bandit band', 1),
+]
+MERCHANT += [('bc:waygate', 1, 160, 'Mana Waygate')]

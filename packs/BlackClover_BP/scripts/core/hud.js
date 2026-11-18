@@ -92,6 +92,12 @@ function magicText(player) {
   return `${a.glyph} ${spellPart} ${idx}  ${bar(s.mana, mx)} §b${Math.floor(s.mana)}§7/${mx}  §e${G.star}${level}`;
 }
 
+/** @type {((p: any) => string | undefined) | undefined} the world-incident compass (living/world.js) */
+let compassProvider;
+export function setCompassProvider(fn) {
+  compassProvider = fn;
+}
+
 export function showHud(player) {
   safe(() => player.onScreenDisplay.setActionBar(hudText(player)), 'hud');
 }
@@ -106,7 +112,8 @@ system.runInterval(() => {
       const m = safe(() => mapHud(p));
       if (m) safe(() => p.onScreenDisplay.setActionBar(m));
     } else if (t % 8 === 0) {
-      const b = safe(() => bountyHud(p));
+      const c = compassProvider ? safe(() => compassProvider?.(p)) : undefined;
+      const b = c ?? safe(() => bountyHud(p));
       if (b) safe(() => p.onScreenDisplay.setActionBar(b));
     }
   }

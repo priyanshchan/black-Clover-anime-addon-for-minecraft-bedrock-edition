@@ -1,8 +1,8 @@
 # Black Clover: Grimoire Awakening
 
-> **Early Access – v0.9.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
+> **Version 1.0.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
-**An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 36 magic attributes, lead a squad of Magic Knight companions with their own personalities and specialisations, draw anti-magic demon swords, wear squad robes, fly brooms, and fight devils, pirates, bandits, assassins, rogue mages, insect swarms and fifteen giant bosses.
+**An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 40 magic attributes, lead a squad of Magic Knight companions with their own personalities and specialisations, draw anti-magic demon swords, wear squad robes, fly brooms, and fight devils, pirates, bandits, assassins, rogue mages, insect swarms and fifteen giant bosses.
 
 ![Hero](docs/images/hero.png)
 
@@ -14,7 +14,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 
 ## Features
 
-* **36 grimoires, 215 spells** (six per grimoire: levels 1, 3, 6, 10, 12 and an awakened spell at 15) – Wind, Flame, Water, Lightning, Ice, Earth, Steel, Sand, Bubble, Plant, Poison, Blood, Sound, Mist, Crystal, Bone, Magma, Cotton, Paper, Smoke, Glass, Beast, Thorn, Ash, the rarer Light, Dark, Spatial, Mirror, Star, Time, Gold, Spirit, Rune, Gravity and Moon (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
+* **40 grimoires, 239 spells** (six per grimoire: levels 1, 3, 6, 10, 12 and an awakened spell at 15) – Storm, Blossom, Coral, Dream, Wind, Flame, Water, Lightning, Ice, Earth, Steel, Sand, Bubble, Plant, Poison, Blood, Sound, Mist, Crystal, Bone, Magma, Cotton, Paper, Smoke, Glass, Beast, Thorn, Ash, the rarer Light, Dark, Spatial, Mirror, Star, Time, Gold, Spirit, Rune, Gravity and Moon (four-leaf), and the very rare five-leaf **Anti-Magic** grimoire.
 * **3D held grimoires** – your grimoire floats open beside your shoulder with flipping pages, glowing rune text and a spinning magic sigil (first-person view included).
 * **3D anti-magic swords** – Demon-Slayer, Demon-Dweller and Demon-Destroyer, each with its own ability, spell-cutting and an Anti-Magic gauge that powers **Black Form**.
 * **3D spell entities with animations** – wind crescents, fireballs, a roaring flame lion, a serpentine water dragon, a spinning tornado, thunder spears, swords of light, dark crescents, a black hole, ice spears and ice prisons.
@@ -26,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v1.0.0 – a living world:** world events are now **incidents out in the world** - reported by direction and distance, marked by smoke and light on the horizon and tracked on your HUD. They develop while you are away (gates grow, rituals complete, raids march on your home, armies decide their battles) and resolve with consequences; their units appear only when you arrive, and hunters creep up from behind. Plus four grimoires (Storm, Blossom, Coral, Dream), four Abyss Fruits (Spark, Echo, Sand, Gale), new incidents (caravans, mana springs, camp sieges, refugees, ruins), **Mana Waygates** for fast travel, and new feats and missions.
 * **v0.9.0 – spells that look the part:** every spell and fruit power is redrawn in layers - magic circles, flashes, shock rings, sparks that bounce, solid beams with white-hot cores, real lightning, licking flames, rolling smoke, dust waves and ground cracks - with a rebuilt glowing projectile (and burning comets), element trails, and new full-body cast animations for players, knights and fruit brawlers.
 * **v0.8.0 – the armour update:** eight 3D armour sets (Mana-Steel, Royal Knight, Devilhide, Abyssal Scale, Shadowweave, Hive Chitin, Runeplate, Archmage) with bonuses for two and four pieces, materials dropped by the foes that suit them, and the **Magic Forge**: forge pieces, reinforce them to +5, inscribe six kinds of runes, sew a squad robe on as a mantle, salvage; companions wear armour too.
 * **v0.7.5 – lairs, elites & feats:** bandit hideouts, hive nests and cultist shrines to raid; **elite enemies** with seven traits (Vampiric, Shielded, Swift, Explosive, Summoner, Arcane, Frenzied) and better loot; Mana Potions, elixirs, Smoke Bombs and **spell scrolls** that cast a spell from any grimoire; and **22 feats** that pay stars and doubloons and unlock a title shown under your name.
@@ -344,6 +345,21 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 /summon bc:dungeon_golem
 /summon bc:tidewatch_commodore
 ```
+
+---
+
+## v1.0.0: a living world
+
+![v1.0.0](docs/images/v100.png)
+
+* **World events happen out in the world, not in front of you.** An incident is placed 60-200 blocks away and reported by direction and distance (*"A crimson light splits the sky - to the north-east, about 180 blocks away"*). Smoke columns and pillars of light mark it on the horizon, and the newest one is tracked on your HUD with an arrow, its distance and its state. → [The living world](docs/world-events.md#the-living-world-v100)
+* **It develops while you are away.** Devil Gates grow stronger every minute, rituals near completion, hives lay eggs, armies wear each other down, wounded knights bleed out, bandit raids march on your home, caravans and patrols cross the land.
+* **Left alone, it plays out - with consequences.** Gates erupt (the Archdevil roams, or ruins are left), rituals wake the Grimoire Devourer, hives grow a queen, raids sack the land, unwatched battles shift the factions' power. It all goes into the news and the event log.
+* **It becomes real when you arrive**, in whatever state it has reached - and fades back into the simulation if everyone walks away. Thieves, assassins, bounty hunters, rogue mages and rival squads now come at you **from behind, out of sight**.
+* **New incidents:** merchant caravans (sometimes ambushed), mana springs, Magic Knight camps under siege, refugees fleeing a gate, and ruins left by failures. The great bosses walk the world too.
+* **Four new grimoires** - **Storm**, **Blossom**, **Coral** and **Dream** (6 spells each, up to Heaven's Wrath, Spring Eternal, Leviathan Reef and Eternal Slumber) - and **four new Abyss Fruits** - **Spark**, **Echo**, **Sand** and **Gale** (4 powers each).
+* **Mana Waygates** - build a network of rune arches and travel between them for mana (or a Mana Crystal). Rename your gates; everyone shares the network.
+* **The Handbook's World events page** lists everything happening out there, nearest first, and lets you track any of it. New feats (Answer the Call, Gatebreaker, Wayfarer, Late Bloomer) and missions.
 
 ---
 
@@ -675,7 +691,7 @@ python3 tools/docs.py         # regenerates the reference pages in docs/
 
 The scripts are type-checked against the official `@minecraft/server` 2.0.0 typings (`tsc --checkJs`).
 
-**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v0.9.0`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
+**Releasing:** bump `VERSION` in `tools/bc/packgen.py`, add a section to `CHANGELOG.md`, rebuild, commit, then push a tag such as `v1.0.0`. The [release workflow](.github/workflows/release.yml) attaches the `.mcaddon` / `.mcpack` files and uses the changelog section as release notes.
 
 **Tuning held items:** third/first-person poses live in `grimoire_animations()` and `sword_animations()` in `tools/bc/models/items.py`. First-person poses are solved from a target screen position by `tools/bc/fpsolve.py`, so moving an item on screen means changing one target point.
 

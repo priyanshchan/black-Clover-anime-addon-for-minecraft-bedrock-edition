@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "Black Clover: Grimoire Awakening §7(Resources)",
-    "description": "Early Access v0.9.0 - HD spell effects, 3D grimoires, armour, brooms, swords, robes, spells, companions, bandits, insects, witches, dragons, puppets, bosses, potions, particles and sounds. Unofficial fan addon.",
+    "description": "v1.0.0 - HD spell effects, 3D grimoires, armour, brooms, swords, robes, spells, companions, bandits, insects, witches, dragons, puppets, bosses, potions, particles and sounds. Unofficial fan addon.",
     "uuid": "fb6916dc-6965-5317-97d9-c2f0276ce444",
     "version": [
+      1,
       0,
-      9,
       0
     ],
     "min_engine_version": [
@@ -20,8 +20,8 @@
       "type": "resources",
       "uuid": "1baac065-c710-5c63-98b3-d7c07b0289bd",
       "version": [
+        1,
         0,
-        9,
         0
       ]
     }
@@ -30,8 +30,8 @@
     {
       "uuid": "e31c2aa6-e171-5e62-8d60-e4fb08605627",
       "version": [
+        1,
         0,
-        9,
         0
       ]
     }

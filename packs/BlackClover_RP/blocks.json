@@ -21,5 +21,8 @@
   },
   "bc:magic_forge": {
     "sound": "metal"
+  },
+  "bc:waygate": {
+    "sound": "stone"
   }
 }

@@ -1,5 +1,33 @@
 # Changelog
 
+## v1.0.0 (2026-11-18)
+
+**A living world.** The first full release: world events are now incidents that happen out in the world, develop on their own and are discovered from afar - plus four grimoires, four Abyss Fruits, new incidents, Mana Waygates and more. (This release also contains everything since v0.1.0: see the sections below.)
+
+### The living world
+* **No more events in your face.** Incidents are placed about 60-200 blocks away (out of sight) and reported to everyone within 360 blocks **by direction and distance**, with a horn or gong from that direction.
+* **Signs on the horizon:** smoke columns and pillars of light mark every incident near you.
+* **Tracking:** the newest incident is tracked on your HUD (arrow, distance and state - *gate strength 4/10, erupts in 6 min*); the Handbook's new **World events** page lists everything, nearest first, and tracks your pick.
+* **A simulation:** while nobody is there, Devil Gates grow stronger, rituals near completion, hives lay eggs, two armies wear each other down, wounded knights bleed out, bandit raids march on your home, caravans and patrols cross the land.
+* **Consequences:** left alone, gates erupt (Devil power rises; the Archdevil roams or ruins remain), rituals wake the Grimoire Devourer, hives grow a queen, raids sack the land and leave ruins, sieges overrun camps, unwatched battles shift faction power, knights fall - all in the news and the event log.
+* **Made real on arrival:** an incident's units appear only when a player comes within about 50 blocks, in its current state (a gate left open for 8 minutes pours out 10 devils; a late arrival finds fewer soldiers). If everyone leaves for a minute it fades back into the simulation and remembers its survivors.
+* **Hunters approach:** thieves, Shadow Assassins, bounty hunters, Rogue Mage ambushes, rival squads and crimson-night devils come from behind you, 20-34 blocks away, with a warning.
+* **Offensives** by a dominant faction are great battles somewhere out there.
+* New incidents: **merchant caravans** (half the time ambushed - save them for 60 doubloons), **mana springs** (stand in the geyser to refill; crystals spill out), **Magic Knight camps under siege**, **refugees** fleeing a Devil Gate (they show you where it is), and **ruins** left by failures (salvage and its guards). The great bosses walk the world as incidents too.
+* Cheat: `/scriptevent bc:incident <kind> [near]`.
+
+### New grimoires and fruits
+* Four grimoires with six spells each: **Storm** (Storm Bolt, Squall Ring, Thunderhead, Tempest Eye, Lightning Lattice, Heaven's Wrath), **Blossom** (Petal Darts, Sakura Veil, Petal Storm, Thousand Blossoms, Blooming Prison, Spring Eternal), **Coral** (Coral Shard, Reef Spikes, Tide Pool, Barrier Reef, Riptide Reef, Leviathan Reef) and **Dream** (Drowsy Mote, Lullaby, Nightmare, Dreamscape, Waking Nightmare, Eternal Slumber).
+* Four Abyss Fruits with four powers each and a passive: **Spark** (speed), **Echo** (night vision), **Sand** (tougher on dry ground) and **Gale** (higher jumps, gentle falls).
+* 40 grimoires, 239 spells, 34 fruits and 136 fruit powers in all.
+
+### Mana Waygates
+* A new block (craft: stone bricks, a mana crystal, an ender pearl, a rune shard; or buy one from the merchant). Every Waygate joins a network all players share: travel to any other for 20 mana + 15 per 100 blocks (or a Mana Crystal), with a short cooldown. Rename your gates from their menu.
+
+### Other changes
+* New feats: Answer the Call, Gatebreaker, Wayfarer, Late Bloomer. New missions: win a world event; break up a bandit band.
+* The Handbook's Recent events page became **World events**.
+
 ## v0.9.0 – Early Access (2026-11-18)
 
 **Spells that look the part.** Every spell and fruit power is redrawn with layered, high-resolution effects, a rebuilt projectile and full-body cast animations.

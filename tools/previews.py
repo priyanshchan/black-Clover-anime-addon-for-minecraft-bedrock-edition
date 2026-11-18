@@ -708,6 +708,41 @@ def vfx_sheet():
     img.convert('RGB').save(os.path.join(OUT, 'vfx090.png'), optimize=True)
 
 
+def v10_sheet():
+    """v1.0.0: the Mana Waygate, the four new grimoires and the four new Abyss Fruits."""
+    from bc.models import v10
+    cell = 260
+    W, H = cell * 5, 60 + cell + 120
+    img = background(W, H, '22222c', '101016', ring=False)
+    draw = ImageDraw.Draw(img)
+    draw.text((20, 14), 'v1.0.0: the Mana Waygate, four new grimoires and four new Abyss Fruits', font=font(28), fill=(235, 235, 235, 255))
+    entries = [('Mana Waygate', model(v10.waygate_geo()), {}, 30, 12, 1.25)]
+    A = items.grimoire_animations()
+    for a in ('storm', 'blossom', 'coral', 'dream'):
+        pose = {}
+        render.pose_from_anim(A['animation.bc.grimoire.page_flip'], 0.4, env={'c.item_slot': 'main_hand'}, pose=pose)
+        entries.append((f'{ATTRIBUTES[a]["name"]} Grimoire', model(items.grimoire_geo(a)), pose, 40, 20, 1.4))
+    for i, (label, m, pose, yaw, pitch, dm) in enumerate(entries):
+        pts = np.concatenate([q[0] for q in m.quads(pose)])
+        c = (pts.min(0) + pts.max(0)) / 2
+        r = np.linalg.norm(pts.max(0) - pts.min(0))
+        sc = render.Scene(cell, cell, ss=2)
+        sc.add(m, pose)
+        sc.render(render.orbit_eye(tuple(c), r * dm, yaw, pitch), tuple(c), fov=40)
+        img.alpha_composite(sc.image(), (i * cell, 50))
+        draw.text((i * cell + 12, 50 + cell - 30), label, font=font(17), fill=(225, 225, 225, 255))
+    rp = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'packs', 'BlackClover_RP', 'textures', 'items', 'bc')
+    for i, f in enumerate(('spark', 'echo', 'sand', 'gale')):
+        path = os.path.join(rp, f'fruit_{f}.png')
+        if not os.path.exists(path):
+            continue
+        ic = Image.open(path).convert('RGBA').resize((72, 72), Image.NEAREST)
+        x = 40 + i * 300
+        img.alpha_composite(ic, (x, 50 + cell + 20))
+        draw.text((x + 86, 50 + cell + 46), f'{f.title()} Fruit', font=font(18), fill=(225, 225, 225, 255))
+    img.convert('RGB').save(os.path.join(OUT, 'v100.png'), optimize=True)
+
+
 BLOCK_RGB = {
     'coarse_dirt': (122, 88, 60), 'gravel': (134, 128, 126), 'spruce_log': (70, 48, 26), 'spruce_fence': (112, 82, 48), 'spruce_planks': (114, 84, 50),
     'dark_oak_planks': (68, 45, 22), 'campfire': (230, 120, 40), 'chest': (168, 116, 44), 'barrel': (120, 86, 48), 'red_wool': (170, 40, 40),
@@ -803,7 +838,7 @@ def strip_codes(t):
 
 if __name__ == '__main__':
     names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
-                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet', 'v9_sheet', 'vfx_sheet']
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet', 'v9_sheet', 'vfx_sheet', 'v10_sheet']
     for n in names:
         print('rendering', n)
         globals()[n]()

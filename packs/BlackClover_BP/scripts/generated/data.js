@@ -252,6 +252,34 @@ export const DATA = {
       "leaves": 3,
       "mc": "\u00a77",
       "glyph": "\ue783"
+    },
+    "storm": {
+      "name": "Storm",
+      "color": "6a8ac8",
+      "leaves": 4,
+      "mc": "\u00a79",
+      "glyph": "\ue784"
+    },
+    "blossom": {
+      "name": "Blossom",
+      "color": "ff9ac8",
+      "leaves": 3,
+      "mc": "\u00a7d",
+      "glyph": "\ue785"
+    },
+    "coral": {
+      "name": "Coral",
+      "color": "ff7a5a",
+      "leaves": 3,
+      "mc": "\u00a7c",
+      "glyph": "\ue786"
+    },
+    "dream": {
+      "name": "Dream",
+      "color": "b08cff",
+      "leaves": 4,
+      "mc": "\u00a75",
+      "glyph": "\ue787"
     }
   },
   "order": [
@@ -290,7 +318,11 @@ export const DATA = {
     "gravity",
     "moon",
     "thorn",
-    "ash"
+    "ash",
+    "storm",
+    "blossom",
+    "coral",
+    "dream"
   ],
   "spells": {
     "wind": [
@@ -4230,6 +4262,493 @@ export const DATA = {
           "fx": "ash"
         }
       }
+    ],
+    "storm": [
+      {
+        "id": "storm_bolt",
+        "name": "Storm Bolt",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "A crackling bolt torn from the storm.",
+        "spec": {
+          "t": "bolt",
+          "d": 5,
+          "shape": 3,
+          "speed": 2.6,
+          "fx": "lightning",
+          "eff": [
+            [
+              "slowness",
+              1,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "squall_ring",
+        "name": "Squall Ring",
+        "mana": 24,
+        "cooldown": 6.0,
+        "level": 3,
+        "desc": "A ring of howling wind blasts everyone away from you.",
+        "spec": {
+          "t": "nova",
+          "d": 7,
+          "r": 4.5,
+          "kb": [
+            1.6,
+            0.5
+          ],
+          "fx": "wind"
+        }
+      },
+      {
+        "id": "thunderhead",
+        "name": "Thunderhead",
+        "mana": 34,
+        "cooldown": 12.0,
+        "level": 6,
+        "desc": "A thundercloud gathers over your aim and lashes it with lightning.",
+        "spec": {
+          "t": "rain",
+          "d": 6,
+          "n": 12,
+          "r": 6,
+          "every": 2,
+          "fx": "lightning"
+        }
+      },
+      {
+        "id": "tempest_eye",
+        "name": "Tempest Eye",
+        "mana": 82,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "The eye of a storm drags foes into its heart, then lightning falls.",
+        "spec": {
+          "t": "vortex",
+          "d": 16,
+          "r": 8,
+          "dur": 3,
+          "fx": "wind",
+          "then": {
+            "t": "strikes",
+            "d": 8,
+            "n": 5,
+            "r": 8,
+            "fx": "lightning"
+          }
+        }
+      },
+      {
+        "id": "lightning_lattice",
+        "name": "Lightning Lattice",
+        "mana": 62,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "A lattice of lightning strikes every foe near your aim.",
+        "spec": {
+          "t": "strikes",
+          "d": 12,
+          "n": 6,
+          "r": 12,
+          "fx": "lightning"
+        }
+      },
+      {
+        "id": "heavens_wrath",
+        "name": "Heaven's Wrath",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "The sky itself answers: lightning on every foe in sight, then a thunderclap.",
+        "spec": {
+          "t": "strikes",
+          "d": 18,
+          "n": 10,
+          "r": 14,
+          "fx": "lightning",
+          "then": {
+            "t": "nova",
+            "d": 10,
+            "r": 8,
+            "kb": [
+              1.8,
+              0.6
+            ],
+            "fx": "wind"
+          }
+        }
+      }
+    ],
+    "blossom": [
+      {
+        "id": "petal_darts",
+        "name": "Petal Darts",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "Three petals as sharp as blades.",
+        "spec": {
+          "t": "bolt",
+          "d": 3.5,
+          "n": 3,
+          "spread": 12,
+          "shape": 2,
+          "speed": 2.2,
+          "fx": "leaf"
+        }
+      },
+      {
+        "id": "sakura_veil",
+        "name": "Sakura Veil",
+        "mana": 28,
+        "cooldown": 12.0,
+        "level": 3,
+        "desc": "A veil of falling blossoms mends you and your allies.",
+        "spec": {
+          "t": "heal",
+          "heal": 6,
+          "r": 6,
+          "regen": 4,
+          "fx": "leaf"
+        }
+      },
+      {
+        "id": "petal_storm",
+        "name": "Petal Storm",
+        "mana": 30,
+        "cooldown": 9.0,
+        "level": 6,
+        "desc": "A storm of cutting petals over your aim.",
+        "spec": {
+          "t": "zone",
+          "d": 2.5,
+          "r": 5,
+          "dur": 6,
+          "fx": "leaf",
+          "eff": [
+            [
+              "slowness",
+              2,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "thousand_blossoms",
+        "name": "Thousand Blossoms",
+        "mana": 80,
+        "cooldown": 22.0,
+        "level": 10,
+        "desc": "Two rings of blossom blades burst out from you.",
+        "spec": {
+          "t": "radial",
+          "d": 6,
+          "n": 24,
+          "rings": 2,
+          "shape": 2,
+          "speed": 2.0,
+          "fx": "leaf"
+        }
+      },
+      {
+        "id": "blooming_prison",
+        "name": "Blooming Prison",
+        "mana": 58,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "Foes near your aim are wrapped in blossoming vines.",
+        "spec": {
+          "t": "prison",
+          "d": 10,
+          "r": 4,
+          "dur": 3,
+          "fx": "leaf",
+          "eff": [
+            [
+              "weakness",
+              3,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "spring_eternal",
+        "name": "Spring Eternal",
+        "mana": 110,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "An endless spring: blossoms heal you and your allies, and cut down every foe near you.",
+        "spec": {
+          "t": "heal",
+          "heal": 12,
+          "r": 10,
+          "regen": 8,
+          "fx": "leaf",
+          "then": {
+            "t": "zone",
+            "at": "self",
+            "d": 4,
+            "r": 8,
+            "dur": 6,
+            "fx": "leaf"
+          }
+        }
+      }
+    ],
+    "coral": [
+      {
+        "id": "coral_shard",
+        "name": "Coral Shard",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "A jagged shard of living coral.",
+        "spec": {
+          "t": "bolt",
+          "d": 5,
+          "shape": 1,
+          "speed": 2.2,
+          "fx": "crystal"
+        }
+      },
+      {
+        "id": "reef_spikes",
+        "name": "Reef Spikes",
+        "mana": 26,
+        "cooldown": 8.0,
+        "level": 3,
+        "desc": "Coral spikes burst out of the ground ahead of you.",
+        "spec": {
+          "t": "wave",
+          "d": 8,
+          "len": 11,
+          "fx": "crystal",
+          "kb": [
+            0.2,
+            0.8
+          ]
+        }
+      },
+      {
+        "id": "tide_pool",
+        "name": "Tide Pool",
+        "mana": 30,
+        "cooldown": 10.0,
+        "level": 6,
+        "desc": "A swirling tide pool slows and drags foes near your aim.",
+        "spec": {
+          "t": "zone",
+          "d": 2,
+          "r": 4,
+          "dur": 6,
+          "pull": 0.25,
+          "fx": "water",
+          "eff": [
+            [
+              "slowness",
+              2,
+              2
+            ]
+          ]
+        }
+      },
+      {
+        "id": "barrier_reef",
+        "name": "Barrier Reef",
+        "mana": 60,
+        "cooldown": 20.0,
+        "level": 10,
+        "desc": "A wall of coral rises in front of you.",
+        "spec": {
+          "t": "wall",
+          "block": "minecraft:brain_coral_block",
+          "w": 7,
+          "h": 3,
+          "dur": 10,
+          "fx": "crystal"
+        }
+      },
+      {
+        "id": "riptide_reef",
+        "name": "Riptide Reef",
+        "mana": 62,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "A reef-lined whirlpool drags foes into its jaws.",
+        "spec": {
+          "t": "vortex",
+          "d": 14,
+          "r": 7,
+          "dur": 3,
+          "fx": "water"
+        }
+      },
+      {
+        "id": "leviathan_reef",
+        "name": "Leviathan Reef",
+        "mana": 115,
+        "cooldown": 38.0,
+        "level": 15,
+        "desc": "A reef erupts in eight directions, as vast as a sea serpent.",
+        "spec": {
+          "t": "wave",
+          "d": 16,
+          "len": 16,
+          "dirs": 8,
+          "fx": "crystal",
+          "kb": [
+            0.3,
+            1.0
+          ]
+        }
+      }
+    ],
+    "dream": [
+      {
+        "id": "drowsy_mote",
+        "name": "Drowsy Mote",
+        "mana": 10,
+        "cooldown": 0.6,
+        "level": 1,
+        "desc": "A drifting mote of sleep that slows what it touches.",
+        "spec": {
+          "t": "bolt",
+          "d": 4,
+          "shape": 0,
+          "speed": 1.8,
+          "fx": "spirit",
+          "eff": [
+            [
+              "slowness",
+              2,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "lullaby",
+        "name": "Lullaby",
+        "mana": 28,
+        "cooldown": 10.0,
+        "level": 3,
+        "desc": "A lullaby makes every foe around you heavy with sleep.",
+        "spec": {
+          "t": "nova",
+          "d": 3,
+          "r": 6,
+          "fx": "sound",
+          "eff": [
+            [
+              "slowness",
+              4,
+              3
+            ],
+            [
+              "weakness",
+              4,
+              1
+            ]
+          ]
+        }
+      },
+      {
+        "id": "nightmare",
+        "name": "Nightmare",
+        "mana": 36,
+        "cooldown": 12.0,
+        "level": 6,
+        "desc": "Nightmares fall on foes near your aim.",
+        "spec": {
+          "t": "strikes",
+          "d": 9,
+          "n": 4,
+          "r": 10,
+          "fx": "dark",
+          "eff": [
+            [
+              "blindness",
+              3,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "dreamscape",
+        "name": "Dreamscape",
+        "mana": 80,
+        "cooldown": 24.0,
+        "level": 10,
+        "desc": "The world around your aim becomes a dream: everything in it drifts and weakens.",
+        "spec": {
+          "t": "zone",
+          "d": 4,
+          "r": 8,
+          "dur": 8,
+          "fx": "spirit",
+          "eff": [
+            [
+              "slowness",
+              2,
+              2
+            ],
+            [
+              "weakness",
+              2,
+              1
+            ],
+            [
+              "nausea",
+              3,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "waking_nightmare",
+        "name": "Waking Nightmare",
+        "mana": 60,
+        "cooldown": 18.0,
+        "level": 12,
+        "desc": "Trap foes near your aim inside their worst dream.",
+        "spec": {
+          "t": "prison",
+          "d": 12,
+          "r": 4,
+          "dur": 4,
+          "fx": "dark",
+          "eff": [
+            [
+              "blindness",
+              3,
+              0
+            ]
+          ]
+        }
+      },
+      {
+        "id": "eternal_slumber",
+        "name": "Eternal Slumber",
+        "mana": 120,
+        "cooldown": 40.0,
+        "level": 15,
+        "desc": "Every foe around you falls into a dream where time does not move.",
+        "spec": {
+          "t": "timestop",
+          "d": 14,
+          "r": 14,
+          "dur": 5,
+          "fx": "spirit"
+        }
+      }
     ]
   },
   "swords": {
@@ -6420,6 +6939,318 @@ export const DATA = {
           "will": 2
         }
       ]
+    },
+    "spark": {
+      "name": "Spark Fruit",
+      "color": "ffe03a",
+      "mc": "\u00a7e",
+      "power": "Spark Body",
+      "passive": "Lightning in your veins: you move faster.",
+      "glyph": "\ue7de",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "spark_jolt",
+          "name": "Spark Jolt",
+          "cooldown": 1.6,
+          "desc": "A jolt of lightning from your fingertips.",
+          "spec": {
+            "t": "bolt",
+            "d": 5,
+            "shape": 3,
+            "speed": 2.8,
+            "fx": "lightning",
+            "eff": [
+              [
+                "slowness",
+                1,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "thunder_step",
+          "name": "Thunder Step",
+          "cooldown": 6.0,
+          "desc": "Become lightning and strike through everything to your aim.",
+          "spec": {
+            "t": "leap",
+            "mode": "blink",
+            "d": 7,
+            "dist": 10,
+            "fx": "lightning"
+          }
+        },
+        {
+          "id": "storm_cage",
+          "name": "Storm Cage",
+          "cooldown": 12.0,
+          "desc": "A cage of lightning around foes near your aim.",
+          "spec": {
+            "t": "prison",
+            "d": 10,
+            "r": 4,
+            "dur": 3,
+            "fx": "lightning"
+          }
+        },
+        {
+          "id": "gigavolt",
+          "name": "Gigavolt",
+          "cooldown": 16.0,
+          "desc": "Lightning strikes every foe near your aim.",
+          "spec": {
+            "t": "strikes",
+            "d": 14,
+            "n": 6,
+            "r": 10,
+            "fx": "lightning"
+          },
+          "will": 2
+        }
+      ]
+    },
+    "echo": {
+      "name": "Echo Fruit",
+      "color": "a0e0d0",
+      "mc": "\u00a73",
+      "power": "Echo Voice",
+      "passive": "You hear everything: you see in the dark.",
+      "glyph": "\ue7df",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "sonic_shot",
+          "name": "Sonic Shot",
+          "cooldown": 1.6,
+          "desc": "A bullet of compressed sound.",
+          "spec": {
+            "t": "bolt",
+            "d": 5,
+            "shape": 0,
+            "speed": 2.4,
+            "fx": "sound"
+          }
+        },
+        {
+          "id": "echo_burst",
+          "name": "Echo Burst",
+          "cooldown": 7.0,
+          "desc": "A shout that throws everyone around you back and rattles them.",
+          "spec": {
+            "t": "nova",
+            "d": 6,
+            "r": 5,
+            "kb": [
+              1.6,
+              0.4
+            ],
+            "fx": "sound",
+            "eff": [
+              [
+                "nausea",
+                4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "id": "resonance",
+          "name": "Resonance",
+          "cooldown": 9.0,
+          "desc": "A wave of sound tears along the ground ahead.",
+          "spec": {
+            "t": "wave",
+            "d": 9,
+            "len": 14,
+            "fx": "sound"
+          }
+        },
+        {
+          "id": "requiem_wave",
+          "name": "Requiem Wave",
+          "cooldown": 16.0,
+          "desc": "Waves of sound tear out in eight directions.",
+          "spec": {
+            "t": "wave",
+            "d": 12,
+            "len": 12,
+            "dirs": 8,
+            "fx": "sound",
+            "eff": [
+              [
+                "weakness",
+                3,
+                1
+              ]
+            ]
+          },
+          "will": 2
+        }
+      ]
+    },
+    "sand": {
+      "name": "Sand Fruit",
+      "color": "d8b878",
+      "mc": "\u00a76",
+      "power": "Sand Body",
+      "passive": "A body of sand: you are tougher on dry ground.",
+      "glyph": "\ue7e0",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "sand_blades",
+          "name": "Sand Blades",
+          "cooldown": 1.8,
+          "desc": "Three blades of hardened sand.",
+          "spec": {
+            "t": "bolt",
+            "d": 4,
+            "n": 3,
+            "spread": 14,
+            "shape": 2,
+            "speed": 2.0,
+            "fx": "sand"
+          }
+        },
+        {
+          "id": "quicksand",
+          "name": "Quicksand",
+          "cooldown": 9.0,
+          "desc": "The ground near your aim turns to quicksand.",
+          "spec": {
+            "t": "zone",
+            "d": 1,
+            "r": 4,
+            "dur": 6,
+            "pull": 0.4,
+            "fx": "sand",
+            "eff": [
+              [
+                "slowness",
+                2,
+                3
+              ]
+            ]
+          }
+        },
+        {
+          "id": "desert_coffin",
+          "name": "Desert Coffin",
+          "cooldown": 12.0,
+          "desc": "Sand swallows and crushes foes near your aim.",
+          "spec": {
+            "t": "prison",
+            "d": 10,
+            "r": 4,
+            "dur": 3,
+            "fx": "sand"
+          }
+        },
+        {
+          "id": "sandstorm",
+          "name": "Sandstorm",
+          "cooldown": 18.0,
+          "desc": "A blinding sandstorm drags foes into its heart.",
+          "spec": {
+            "t": "vortex",
+            "d": 14,
+            "r": 8,
+            "dur": 3,
+            "fx": "sand",
+            "eff": [
+              [
+                "blindness",
+                2,
+                0
+              ]
+            ]
+          },
+          "will": 2
+        }
+      ]
+    },
+    "gale": {
+      "name": "Gale Fruit",
+      "color": "b0f0d0",
+      "mc": "\u00a7a",
+      "power": "Gale Body",
+      "passive": "The wind carries you: you fall gently and jump higher.",
+      "glyph": "\ue7e1",
+      "beast": false,
+      "abilities": [
+        {
+          "id": "air_bullet",
+          "name": "Air Bullet",
+          "cooldown": 1.4,
+          "desc": "Two bullets of compressed air.",
+          "spec": {
+            "t": "bolt",
+            "d": 4,
+            "n": 2,
+            "spread": 6,
+            "shape": 1,
+            "speed": 3.0,
+            "fx": "wind"
+          }
+        },
+        {
+          "id": "tailwind",
+          "name": "Tailwind",
+          "cooldown": 14.0,
+          "desc": "A tailwind for you and your allies.",
+          "spec": {
+            "t": "buff",
+            "allies": 8,
+            "fx": "wind",
+            "self": [
+              [
+                "speed",
+                12,
+                1
+              ],
+              [
+                "jump_boost",
+                12,
+                1
+              ]
+            ]
+          }
+        },
+        {
+          "id": "cyclone",
+          "name": "Cyclone",
+          "cooldown": 10.0,
+          "desc": "A cyclone pulls foes in and flings them.",
+          "spec": {
+            "t": "vortex",
+            "d": 8,
+            "r": 6,
+            "dur": 2,
+            "fx": "wind"
+          }
+        },
+        {
+          "id": "sky_splitter",
+          "name": "Sky Splitter",
+          "cooldown": 16.0,
+          "desc": "Three lanes of cutting wind.",
+          "spec": {
+            "t": "wave",
+            "d": 12,
+            "len": 16,
+            "lanes": 3,
+            "fx": "wind",
+            "kb": [
+              1.2,
+              0.4
+            ]
+          },
+          "will": 2
+        }
+      ]
     }
   },
   "fruitOrder": [
@@ -6452,7 +7283,11 @@ export const DATA = {
     "lion",
     "shark",
     "phoenix",
-    "spider"
+    "spider",
+    "spark",
+    "echo",
+    "sand",
+    "gale"
   ],
   "willMax": 10,
   "captainFirst": [
@@ -6629,36 +7464,44 @@ export const DATA = {
     "a:moon": 33,
     "a:thorn": 34,
     "a:ash": 35,
-    "f:ember": 36,
-    "f:stone": 37,
-    "f:gravity": 38,
-    "f:shadow": 39,
-    "f:bloom": 40,
-    "f:quicksilver": 41,
-    "f:frost": 42,
-    "f:barrier": 43,
-    "f:wolf": 44,
-    "f:hawk": 45,
-    "f:lava": 46,
-    "f:ash": 47,
-    "f:prism": 48,
-    "f:bounce": 49,
-    "f:blast": 50,
-    "f:acid": 51,
-    "f:lodestone": 52,
-    "f:cloud": 53,
-    "f:ink": 54,
-    "f:bear": 55,
-    "f:tiger": 56,
-    "f:wyvern": 57,
-    "f:spore": 58,
-    "f:thread": 59,
-    "f:slime": 60,
-    "f:chain": 61,
-    "f:lion": 62,
-    "f:shark": 63,
-    "f:phoenix": 64,
-    "f:spider": 65
+    "a:storm": 36,
+    "a:blossom": 37,
+    "a:coral": 38,
+    "a:dream": 39,
+    "f:ember": 40,
+    "f:stone": 41,
+    "f:gravity": 42,
+    "f:shadow": 43,
+    "f:bloom": 44,
+    "f:quicksilver": 45,
+    "f:frost": 46,
+    "f:barrier": 47,
+    "f:wolf": 48,
+    "f:hawk": 49,
+    "f:lava": 50,
+    "f:ash": 51,
+    "f:prism": 52,
+    "f:bounce": 53,
+    "f:blast": 54,
+    "f:acid": 55,
+    "f:lodestone": 56,
+    "f:cloud": 57,
+    "f:ink": 58,
+    "f:bear": 59,
+    "f:tiger": 60,
+    "f:wyvern": 61,
+    "f:spore": 62,
+    "f:thread": 63,
+    "f:slime": 64,
+    "f:chain": 65,
+    "f:lion": 66,
+    "f:shark": 67,
+    "f:phoenix": 68,
+    "f:spider": 69,
+    "f:spark": 70,
+    "f:echo": 71,
+    "f:sand": 72,
+    "f:gale": 73
   },
   "altarWeights": {
     "wind": 11,
@@ -6696,7 +7539,11 @@ export const DATA = {
     "gravity": 4,
     "moon": 4,
     "thorn": 7,
-    "ash": 7
+    "ash": 7,
+    "storm": 4,
+    "blossom": 7,
+    "coral": 7,
+    "dream": 4
   },
   "npcKits": {
     "wind": [
@@ -7102,6 +7949,12 @@ export const DATA = {
       "count": 2,
       "price": 55,
       "label": "Rune Shards x2"
+    },
+    {
+      "item": "bc:waygate",
+      "count": 1,
+      "price": 160,
+      "label": "Mana Waygate"
     }
   ],
   "factions": {
@@ -7592,6 +8445,22 @@ export const DATA = {
       "count": 10,
       "title": "Lead your companions to 10 victories",
       "tier": 2
+    },
+    {
+      "id": "m_incident",
+      "kind": "event",
+      "target": "",
+      "count": 1,
+      "title": "Answer a call: win a world event where it happens",
+      "tier": 2
+    },
+    {
+      "id": "m_bandit_band",
+      "kind": "kill",
+      "target": "bc:bandit",
+      "count": 8,
+      "title": "Break up a bandit band",
+      "tier": 1
     }
   ],
   "missionRewards": {
@@ -7979,6 +8848,46 @@ export const DATA = {
       "stars": 1,
       "coins": 100,
       "title": "the Runesmith"
+    },
+    {
+      "id": "answer_the_call",
+      "name": "Answer the Call",
+      "desc": "Win 10 world events (incidents) where they happen.",
+      "counter": "events",
+      "goal": 10,
+      "stars": 2,
+      "coins": 150,
+      "title": "the Answerer"
+    },
+    {
+      "id": "gatebreaker",
+      "name": "Gatebreaker",
+      "desc": "Seal 5 Devil Gates.",
+      "counter": "gates",
+      "goal": 5,
+      "stars": 2,
+      "coins": 150,
+      "title": "Gatebreaker"
+    },
+    {
+      "id": "wayfarer",
+      "name": "Wayfarer",
+      "desc": "Travel by Mana Waygate 10 times.",
+      "counter": "waygate",
+      "goal": 10,
+      "stars": 1,
+      "coins": 60,
+      "title": "the Wayfarer"
+    },
+    {
+      "id": "new_bloom",
+      "name": "Late Bloomer",
+      "desc": "Receive one of the four newest grimoires (Storm, Blossom, Coral or Dream).",
+      "counter": "new_grimoire",
+      "goal": 1,
+      "stars": 1,
+      "coins": 50,
+      "title": "the Late Bloomer"
     }
   ],
   "armor": {

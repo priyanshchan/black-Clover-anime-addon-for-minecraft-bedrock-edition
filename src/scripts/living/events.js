@@ -17,7 +17,7 @@ import { addStars } from '../core/ranks.js';
 import { V, alive, pick, rand, repeat, safe, timer } from '../core/util.js';
 import { spawnCaptain } from '../sea/captains.js';
 import { TACTICS, startBattle } from './battle.js';
-import { POWERS, RIVAL, onOffensive, powerMul } from './worldsim.js';
+import { POWERS, RIVAL, powerMul } from './worldsim.js';
 import { summonBoss } from './bosses.js';
 import { boltFrom } from './engine.js';
 import { setupKnight } from './knights.js';
@@ -33,8 +33,9 @@ import { notoriety } from '../sea/navy.js';
 import { eclipseMul, state } from '../core/data.js';
 import { layEgg } from './foes.js';
 import { giveCoins } from '../sea/bounty.js';
+import { forceTarget } from './ai.js';
 
-const night = () => {
+export const night = () => {
   const t = world.getTimeOfDay();
   return t > 13000 && t < 23000;
 };
@@ -69,6 +70,28 @@ function spotNear(p, dist, tries = 8) {
   return undefined;
 }
 
+/** Out of sight: behind the player, `lo`-`hi` blocks away, on solid ground (v1.0.0: hunters come from there). */
+export function behind(p, lo, hi) {
+  const back = V.mul(V.flat(p.getViewDirection()), -1);
+  for (let i = 0; i < 10; i++) {
+    const a = rand(-70, 70);
+    const d = rand(lo, hi) * (i < 6 ? 1 : 0.75);
+    const dir = V.yaw(back, a);
+    const x = p.location.x + dir.x * d;
+    const z = p.location.z + dir.z * d;
+    const top = safe(() => p.dimension.getTopmostBlock({ x, z }));
+    if (!top || top.isLiquid || top.typeId.endsWith('leaves')) continue;
+    const y = top.location.y + 1;
+    if (Math.abs(y - p.location.y) > 12) continue;
+    return { x, y, z };
+  }
+  return spotNear(p, lo);
+}
+/** Send a hunting party at a player (brain-run enemies walk in from out of sight). */
+function hunt(e, p) {
+  safe(() => forceTarget(e, p, 20 * 60));
+}
+
 function waterNear(p, dist) {
   for (let i = 0; i < 10; i++) {
     const a = Math.random() * Math.PI * 2;
@@ -92,7 +115,7 @@ export function tier(p) {
   return score >= 16 ? 3 : score >= 7 ? 2 : 1;
 }
 /** Scale an enemy count by tier. */
-function scaled(p, base) {
+export function scaled(p, base) {
   return Math.round(base * [1, 1, 1.4, 1.8][tier(p)]);
 }
 
@@ -105,14 +128,14 @@ export function eventLog() {
     return [];
   }
 }
-function logEvent(label, outcome) {
+export function logEvent(label, outcome) {
   const log = eventLog();
   log.unshift({ label, outcome, day: world.getDay() });
   safe(() => world.setDynamicProperty('bc:event_log', JSON.stringify(log.slice(0, 12))));
 }
-function setOutcome(label, outcome) {
+export function setOutcome(label, outcome, prefix = false) {
   const log = eventLog();
-  const e = log.find((x) => x.label === label && x.outcome === 'under way');
+  const e = log.find((x) => (prefix ? x.label.startsWith(label) : x.label === label) && x.outcome === 'under way');
   if (e) e.outcome = outcome;
   safe(() => world.setDynamicProperty('bc:event_log', JSON.stringify(log)));
 }
@@ -150,7 +173,7 @@ system.runInterval(() => {
 function playersNear(dim, at, r) {
   return safe(() => dim.getPlayers({ location: at, maxDistance: r })) ?? [];
 }
-function reward(dim, at, coins, stars, xp, why) {
+export function reward(dim, at, coins, stars, xp, why) {
   for (const q of playersNear(dim, at, 64)) {
     if (coins) giveCoins(q, coins);
     if (xp) addXp(q, xp);
@@ -161,7 +184,7 @@ function reward(dim, at, coins, stars, xp, why) {
 
 // ------------------------------------------------------------------------------- the events
 /** Pick a faction, the stronger ones more often. */
-function weightedFaction(exclude) {
+export function weightedFaction(exclude) {
   const pool = Object.keys(DATA.factions).filter((f) => f !== exclude);
   const w = pool.map((f) => (POWERS.includes(f) ? powerMul(f) : 0.6));
   let r = Math.random() * w.reduce((a, b) => a + b, 0);
@@ -325,11 +348,12 @@ export const EVENTS = {
         for (const q of world.getAllPlayers()) {
           if (q.dimension.id !== 'minecraft:overworld') continue;
           particle(q.dimension, 'bc:blood_moon', V.add(q.location, { x: 0, y: 14, z: 0 }), { scale: 1 });
-          const at = spotNear(q, rand(10, 16), 4);
+          const at = behind(q, 22, 30);
           if (!at) continue;
           for (const type of ['bc:imp', 'bc:dark_disciple']) {
             const e = safe(() => q.dimension.spawnEntity(type, V.add(at, { x: rand(-2, 2), y: 0.5, z: rand(-2, 2) })));
             safe(() => e?.addTag('bc_crimson'));
+            if (e) hunt(e, q);
           }
         }
       }, () => {
@@ -397,14 +421,16 @@ export const EVENTS = {
     w: 4,
     ok: (p) => notoriety(p) >= 300,
     run(p) {
-      const at = spotNear(p, rand(14, 18));
+      const at = behind(p, 26, 34);
       if (!at) return false;
-      announce(p, '§9§lBOUNTY HUNTERS', '§7The Tidewatch have found you', '§9⚓ Tidewatch bounty hunters have tracked you down!');
+      safe(() => p.sendMessage('§9⚓ Tidewatch bounty hunters have picked up your trail - they are closing in from behind you.'));
+      sound(p.dimension, 'bc.ship.bell', V.add(p.location, V.mul(V.norm(V.sub(at, p.location)), 12)), 0.8, 0.8);
       const squad = ['bc:tidewatch_marksman', 'bc:tidewatch_marksman', 'bc:tidewatch_sentinel', 'bc:tidewatch_sentinel'];
       if (notoriety(p) >= 1500) squad.push('bc:tidewatch_commodore');
       for (const type of squad) {
         const e = safe(() => p.dimension.spawnEntity(type, V.add(at, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) })));
         safe(() => { if (e) e.nameTag = '§9Bounty Hunter'; });
+        if (e) hunt(e, p);
       }
     },
   },
@@ -422,7 +448,7 @@ export const EVENTS = {
     w: 6,
     f: 'rogues',
     run(p) {
-      const at = spotNear(p, rand(14, 20));
+      const at = behind(p, 24, 32);
       if (!at) return false;
       const n = 3 + Math.floor(Math.random() * 2);
       // sometimes a knight patrol was already on their trail
@@ -432,6 +458,7 @@ export const EVENTS = {
       for (let i = 0; i < n; i++) {
         const e = safe(() => p.dimension.spawnEntity('bc:rogue_mage', V.add(at, { x: rand(-3, 3), y: 0.5, z: rand(-3, 3) })));
         if (e) setupRogue(e, { level: 2 + Math.floor(Math.random() * 5) + (i === 0 ? 3 : 0) });
+        if (e) hunt(e, p);
       }
       if (patrol) {
         const back = V.add(p.location, V.mul(V.flat(V.sub(p.location, at)), 8));
@@ -542,7 +569,7 @@ export const EVENTS = {
     label: 'Assassins',
     ok: (p) => night() && ((safe(() => p.getDynamicProperty('bc:stars')) ?? 0) >= 5 || (safe(() => state(p).level) ?? 1) >= 8),
     run(p) {
-      const at = spotNear(p, rand(18, 22));
+      const at = behind(p, 26, 34);
       if (!at) return false;
       safe(() => p.sendMessage('§5You feel watched... §7(Shadow Assassins hunt you tonight. Look for faint shadows.)'));
       sound(p.dimension, 'bc.portal', p.location, 0.4, 0.5);
@@ -552,6 +579,7 @@ export const EVENTS = {
         if (e) {
           ids.push(e.id);
           safe(() => e.addEffect('invisibility', 200, { amplifier: 0, showParticles: false }));
+          hunt(e, p);
         }
       }
       objective('Assassins', ids, 20 * 300, p.dimension, at, () => reward(p.dimension, at, 25, 1, 100, 'survived the assassins'), () => {});
@@ -568,11 +596,10 @@ export const EVENTS = {
       return n >= 20;
     },
     run(p) {
-      const behind = V.add(p.location, V.mul(V.flat(p.getViewDirection()), -9));
-      const top = safe(() => p.dimension.getTopmostBlock({ x: behind.x, z: behind.z }));
-      if (top && Math.abs(top.location.y + 1 - p.location.y) < 5) behind.y = top.location.y + 1;
-      const e = safe(() => p.dimension.spawnEntity('bc:bandit_thief', behind));
+      const spot = behind(p, 16, 22) ?? V.add(p.location, V.mul(V.flat(p.getViewDirection()), -16));
+      const e = safe(() => p.dimension.spawnEntity('bc:bandit_thief', spot));
       if (!e) return false;
+      hunt(e, p);
       safe(() => e.addEffect('invisibility', 160, { amplifier: 0, showParticles: false }));
       safe(() => p.sendMessage('§6Watch your purse... §7(a thief is close)'));
       logEvent('A thief', 'happened');
@@ -595,7 +622,7 @@ export const EVENTS = {
     w: 5,
     ok: (p) => !night() && partySize(p) > 0,
     run(p) {
-      const at = spotNear(p, rand(14, 18));
+      const at = behind(p, 20, 26);
       if (!at) return false;
       return startRivalMatch(p, at);
     },
@@ -664,18 +691,7 @@ export const EVENTS = {
   },
 };
 
-// a dominant faction marches on its rival, near a player
-onOffensive((attacker, defender) => {
-  const players = world.getAllPlayers().filter((p) => p.dimension.id === 'minecraft:overworld');
-  if (!players.length) return false;
-  const p = pick(players);
-  const spot = battleSpot(p, 24);
-  if (!spot) return false;
-  announce(p, `${DATA.factions[attacker].mc}§lAN OFFENSIVE`, `§7The ${DATA.factions[attacker].name} march on the ${DATA.factions[defender].name}`);
-  startBattle({ dim: p.dimension, center: spot.c, facing: spot.dir, fa: attacker, fb: defender, size: 7 + Math.floor(Math.random() * 3), leaders: true, quiet: true,
-    tactics: { a: Math.random() < 0.5 ? 'charge' : 'flank', b: 'hold' } });
-  return true;
-});
+// (v1.0.0: offensives are incidents out in the world - see living/world.js)
 
 // crimson-night devils give extra XP
 world.afterEvents.entityDie.subscribe((ev) => safe(() => {
@@ -691,6 +707,7 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
   particle(ev.deadEntity.dimension, 'bc:light_burst', loc, { scale: 2 });
   for (const q of ev.deadEntity.dimension.getPlayers({ location: loc, maxDistance: 48 })) {
     title(q, '§a§lGATE SEALED', '§7The devils are cut off', 50);
+    emit('gate', q);
     addXp(q, 120);
     safe(() => addStars(q, 1, 'sealed a Devil Gate'));
   }
@@ -746,16 +763,7 @@ system.runInterval(() => {
   }
 }, 100);
 
-let nextAt = 20 * 60 * 3;
-system.runInterval(() => {
-  const t = system.currentTick;
-  if (t < nextAt || !eventsOn()) return;
-  const players = world.getAllPlayers().filter((p) => p.dimension.id === 'minecraft:overworld');
-  if (!players.length) return;
-  const p = pick(players);
-  if (runEvent(p)) nextAt = t + Math.round(rand(20 * 60 * 4, 20 * 60 * 7) * pace());
-  else nextAt = t + 20 * 30;
-}, 100);
+// (v1.0.0: the director lives in living/world.js - incidents out in the world, and hunters who come for you)
 
 system.afterEvents.scriptEventReceive.subscribe((ev) => {
   if (ev.id !== 'bc:event') return;
