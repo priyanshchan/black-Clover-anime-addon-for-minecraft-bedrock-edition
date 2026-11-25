@@ -89,6 +89,11 @@ def _emblem(color):
 
 
 # ------------------------------------------------------------------------------------------------ materials
+# v1.1.0: the Wyvernscale set wears the scale-armour shapes in its own colours
+WYVERN = tex.ramp('0e2412', '163a1c', '1e5226', '286a30', '34843c', '46a04a')
+SHAPE_OF = {'wyvern': 'abyssal'}
+
+
 def mats(sid):
     """Materials for a set: base, dark, accent, glow, cloth."""
     s = ARMOR_SETS[sid]
@@ -105,6 +110,10 @@ def mats(sid):
         hide = tex.Material(P['devil_skin'], noise=0.2, cell=1.6)
         return dict(base=hide, dark=tex.Material(P['obsidian']), accent=tex.Material(P['bone'], noise=0.08), glow=glow,
                     cloth=tex.Cloth(P['black_cloth']), deco=tex.Painted(hide, {'north': _runes('ff4a4a')}))
+    if st == 'wyvern':
+        scale = tex.Painted(tex.Metal(WYVERN, sheen=0.5), {'*': _scales('14301a')})
+        return dict(base=scale, dark=tex.Metal(P['blackiron']), accent=tex.Metal(P['gold'], sheen=0.5), glow=glow,
+                    cloth=tex.Material(P['leather']), deco=scale)
     if st == 'abyssal':
         scale = tex.Painted(tex.Metal(P['aqua_cloth'], sheen=0.5), {'*': _scales('0b363c')})
         return dict(base=scale, dark=tex.Metal(P['navy']), accent=tex.Metal(P['water'], sheen=0.5), glow=glow,
@@ -158,6 +167,7 @@ def has_cape(sid, slot):
 def armor_geo(sid, slot):
     st = ARMOR_SETS[sid]['style']
     m = mats(sid)
+    st = SHAPE_OF.get(st, st)
     g = Geo(f'geometry.bc.{sid}_{slot}', res=2, atlas_width=128, visible=(3, 3, (0, 1, 0)))
     g.skeleton()
     for name, parent, pivot in BONES[slot]:
@@ -374,9 +384,10 @@ def _cols(sid):
     s = ARMOR_SETS[sid]
     st = s['style']
     base = {'knight': P['steel'], 'royal': P['silver'], 'devil': P['devil_skin'], 'abyssal': P['aqua_cloth'], 'shadow': P['black_cloth'],
-            'chitin': CHITIN, 'rune': P['stone'], 'mage': P['navy']}[st]
+            'chitin': CHITIN, 'rune': P['stone'], 'mage': P['navy'], 'wyvern': WYVERN}[st]
     acc = {'knight': P['water'], 'royal': P['gold'], 'devil': P['bone'], 'abyssal': P['water'], 'shadow': P['purple_cloth'],
-           'chitin': P['blackiron'], 'rune': P['mossstone'], 'mage': P['gold']}[st]
+           'chitin': P['blackiron'], 'rune': P['mossstone'], 'mage': P['gold'], 'wyvern': P['gold']}[st]
+    st = SHAPE_OF.get(st, st)
     c = lambda r, i: tuple(int(v) for v in r[min(len(r) - 1, i)][:3]) + (255,)  # noqa: E731
     return st, c(base, len(base) - 3), c(base, len(base) - 1), c(base, 1), c(acc, len(acc) - 2), _t(s['glow'])
 
@@ -486,8 +497,9 @@ def material_icons():
         for y in (10, 13, 16, 19, 22):
             d.line([(11 * s, y * s), (21 * s, (y + 1) * s)], fill=(255, 190, 255, 255), width=int(0.8 * s))
         d.line([(21 * s, 20 * s), (28 * s, 29 * s)], fill=(255, 156, 255, 255), width=int(1.0 * s))
+    from .v11 import wyvern_scale_icon
     return {'mana_steel_ingot': _ic(ingot), 'devil_hide': _ic(hide), 'shadow_silk': _ic(silk), 'chitin_plate': _ic(chitin),
-            'rune_shard': _ic(shard), 'arcane_thread': _ic(thread)}
+            'rune_shard': _ic(shard), 'arcane_thread': _ic(thread), 'wyvern_scale': _ic(wyvern_scale_icon)}
 
 
 GLYPHS = {

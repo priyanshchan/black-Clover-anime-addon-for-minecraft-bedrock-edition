@@ -123,9 +123,11 @@ export function armorRegenMul(e) {
 export function armorCostMul(e) {
   return hasSet(e, 'manasteel', 4) ? 0.9 : 1;
 }
-/** @param {number} hp the wearer's health fraction */
-export function armorPowerMul(e, hp = 1) {
+const WYVERN_ATTRS = new Set(['flame', 'ice', 'lightning', 'magma', 'storm', 'ash', 'crystal', 'frost']);
+/** @param {number} hp the wearer's health fraction @param {string} [attr] the attribute being cast */
+export function armorPowerMul(e, hp = 1, attr = '') {
   let m = 1;
+  if (attr && WYVERN_ATTRS.has(attr) && hasSet(e, 'wyvernscale', 4)) m *= 1.2;
   if (hasSet(e, 'royal', 2)) m *= 1.1;
   if (hasSet(e, 'archmage', 4)) m *= 1.2;
   if (hasSet(e, 'devilhide', 4) && hp < 0.3) m *= 1.2;

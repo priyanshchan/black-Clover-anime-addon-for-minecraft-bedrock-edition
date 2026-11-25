@@ -1,0 +1,148 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "bc:wanderer",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "properties": {
+        "bc:look": {
+          "type": "int",
+          "range": [
+            0,
+            5
+          ],
+          "default": 0,
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "bc_wanderer",
+          "mob"
+        ]
+      },
+      "minecraft:health": {
+        "value": 30,
+        "max": 30
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 1.95
+      },
+      "minecraft:movement": {
+        "value": 0.25
+      },
+      "minecraft:physics": {},
+      "minecraft:pushable": {
+        "is_pushable": true,
+        "is_pushable_by_piston": true
+      },
+      "minecraft:breathable": {
+        "total_supply": 15,
+        "suffocate_time": 0
+      },
+      "minecraft:nameable": {},
+      "minecraft:loot": {
+        "table": "loot_tables/empty.json"
+      },
+      "minecraft:experience_reward": {
+        "on_death": "q.last_hit_by_player ? 0 : 0"
+      },
+      "minecraft:follow_range": {
+        "value": 40,
+        "max": 40
+      },
+      "minecraft:conditional_bandwidth_optimization": {},
+      "minecraft:hurt_on_condition": {
+        "damage_conditions": [
+          {
+            "filters": {
+              "test": "in_lava",
+              "subject": "self"
+            },
+            "cause": "lava",
+            "damage_per_tick": 4
+          }
+        ]
+      },
+      "minecraft:navigation.walk": {
+        "can_path_over_water": true,
+        "avoid_water": true,
+        "can_open_doors": true,
+        "avoid_damage_blocks": true
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:can_climb": {},
+      "minecraft:persistent": {},
+      "minecraft:behavior.float": {
+        "priority": 0
+      },
+      "minecraft:behavior.panic": {
+        "priority": 1,
+        "speed_multiplier": 1.4
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 4,
+        "look_distance": 8,
+        "probability": 0.6
+      },
+      "minecraft:behavior.random_stroll": {
+        "priority": 6,
+        "speed_multiplier": 0.7,
+        "interval": 60
+      },
+      "minecraft:interact": {
+        "interactions": [
+          {
+            "on_interact": {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "player"
+              },
+              "event": "bc:noop"
+            },
+            "interact_text": "action.interact.talk"
+          }
+        ]
+      }
+    },
+    "events": {
+      "bc:noop": {},
+      "bc:look_0": {
+        "set_property": {
+          "bc:look": 0
+        }
+      },
+      "bc:look_1": {
+        "set_property": {
+          "bc:look": 1
+        }
+      },
+      "bc:look_2": {
+        "set_property": {
+          "bc:look": 2
+        }
+      },
+      "bc:look_3": {
+        "set_property": {
+          "bc:look": 3
+        }
+      },
+      "bc:look_4": {
+        "set_property": {
+          "bc:look": 4
+        }
+      },
+      "bc:look_5": {
+        "set_property": {
+          "bc:look": 5
+        }
+      }
+    }
+  }
+}

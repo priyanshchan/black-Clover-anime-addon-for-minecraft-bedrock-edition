@@ -31,14 +31,15 @@ function store(list) {
 }
 const keyOf = (dim, l) => `${dim}:${Math.floor(l.x)},${Math.floor(l.y)},${Math.floor(l.z)}`;
 
-export function addGate(p, loc) {
+export function addGate(p, loc, name = '') {
   const list = gates();
   const id = keyOf(p.dimension.id, loc);
-  if (list.some((g) => g.id === id)) return;
-  list.push({ id, dim: p.dimension.id, x: Math.floor(loc.x), y: Math.floor(loc.y), z: Math.floor(loc.z), name: `Waygate ${list.length + 1}`, by: p.name });
+  if (list.some((g) => g.id === id)) return false;
+  list.push({ id, dim: p.dimension.id, x: Math.floor(loc.x), y: Math.floor(loc.y), z: Math.floor(loc.z), name: name || `Waygate ${list.length + 1}`, by: p.name });
   store(list);
   vfx.pillar(p.dimension, { x: Math.floor(loc.x) + 0.5, y: Math.floor(loc.y), z: Math.floor(loc.z) + 0.5 }, CYAN, 6, 1);
   safe(() => p.sendMessage(`§bThe Waygate joins the network (§f${list.length}§b gates). §7Use it to travel; rename it from its menu.`));
+  return true;
 }
 export function removeGate(dim, loc) {
   const id = keyOf(dim, loc);

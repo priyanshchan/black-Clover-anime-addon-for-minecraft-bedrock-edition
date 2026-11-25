@@ -1,0 +1,45 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:wanderer",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "v0": "textures/entity/bc/wanderer/0",
+        "v1": "textures/entity/bc/wanderer/1",
+        "v2": "textures/entity/bc/wanderer/2",
+        "v3": "textures/entity/bc/wanderer/3",
+        "v4": "textures/entity/bc/wanderer/4",
+        "v5": "textures/entity/bc/wanderer/5"
+      },
+      "geometry": {
+        "default": "geometry.bc.wanderer"
+      },
+      "animations": {
+        "idle": "animation.bc.wanderer.idle",
+        "walk": "animation.bc.wanderer.walk",
+        "look_at_target": "animation.bc.wanderer.look_at_target",
+        "attack": "animation.bc.wanderer.attack",
+        "wave": "animation.bc.wanderer.wave"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.wanderer"
+      ],
+      "spawn_egg": {
+        "base_color": "#3a8452",
+        "overlay_color": "#9c6c18"
+      }
+    }
+  }
+}

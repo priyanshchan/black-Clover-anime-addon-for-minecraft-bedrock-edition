@@ -1,0 +1,216 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.spire_warden.idle": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "position": [
+            0,
+            "3.0 + math.sin(q.life_time * 90.0) * 1.5",
+            0
+          ]
+        },
+        "rightFist": {
+          "position": [
+            0,
+            "math.sin(q.life_time * 90.0 + 90.0) * 1.6",
+            0
+          ]
+        },
+        "leftFist": {
+          "position": [
+            0,
+            "math.sin(q.life_time * 90.0 - 90.0) * 1.6",
+            0
+          ]
+        },
+        "ring": {
+          "rotation": [
+            0,
+            "q.life_time * 40.0",
+            0
+          ]
+        },
+        "shard": {
+          "rotation": [
+            0,
+            "q.life_time * -120.0",
+            0
+          ],
+          "position": [
+            0,
+            "math.sin(q.life_time * 90.0) * -1.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.spire_warden.look": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": [
+            "q.target_x_rotation",
+            "q.target_y_rotation",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.spire_warden.slam": {
+      "animation_length": 1.0,
+      "bones": {
+        "rightFist": {
+          "position": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              4,
+              14,
+              -2
+            ],
+            "0.6": [
+              6,
+              -14,
+              -8
+            ],
+            "1.0": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftFist": {
+          "position": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              -4,
+              14,
+              -2
+            ],
+            "0.6": [
+              -6,
+              -14,
+              -8
+            ],
+            "1.0": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "body": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              -14,
+              0,
+              0
+            ],
+            "0.6": [
+              16,
+              0,
+              0
+            ],
+            "1.0": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.spire_warden.cast": {
+      "animation_length": 1.2,
+      "bones": {
+        "rightFist": {
+          "position": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -6,
+              8,
+              0
+            ],
+            "0.9": [
+              -6,
+              8,
+              0
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftFist": {
+          "position": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              6,
+              8,
+              0
+            ],
+            "0.9": [
+              6,
+              8,
+              0
+            ],
+            "1.2": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "ring": {
+          "scale": {
+            "0.0": [
+              1,
+              1,
+              1
+            ],
+            "0.3": [
+              1.35,
+              1,
+              1.35
+            ],
+            "0.9": [
+              1.35,
+              1,
+              1.35
+            ],
+            "1.2": [
+              1,
+              1,
+              1
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 // Magic Knight's Handbook: status page, spell picker and guide (server-ui forms).
+import { atlasPage } from '../living/exploration.js';
 import { ActionFormData, MessageFormData } from '@minecraft/server-ui';
 import { DATA } from '../generated/data.js';
 import { maxMana, regenPerSecond, robe, spellPower, spellsOf, state, xpToNext } from '../core/data.js';
@@ -69,6 +70,8 @@ export async function openHandbook(p) {
   actions.push(() => kingdomPage(p));
   form.button('§lWorld events\n§r§8What is happening out there; track it');
   actions.push(() => worldPage(p, () => openHandbook(p)));
+  form.button('§lThe Atlas\n§r§8Regions, landmarks, omens, relics');
+  actions.push(() => atlasPage(p, () => openHandbook(p)));
   form.button('§lFeats & titles\n§r§8Lifetime achievements');
   actions.push(() => featsPage(p, () => openHandbook(p)));
   form.button('§lThe Armoury\n§r§8Armour sets, runes, the Magic Forge');

@@ -152,6 +152,9 @@
     "bc_elixir_iron": {
       "textures": "textures/items/bc/elixir_iron"
     },
+    "bc_explorer_map": {
+      "textures": "textures/items/bc/explorer_map"
+    },
     "bc_fallen_seal": {
       "textures": "textures/items/bc/fallen_seal"
     },
@@ -407,6 +410,12 @@
     "bc_hearty_roast": {
       "textures": "textures/items/bc/hearty_roast"
     },
+    "bc_hollow_ember": {
+      "textures": "textures/items/bc/hollow_ember"
+    },
+    "bc_journal_page": {
+      "textures": "textures/items/bc/journal_page"
+    },
     "bc_knight_contract": {
       "textures": "textures/items/bc/knight_contract"
     },
@@ -448,6 +457,9 @@
     },
     "bc_manasteel_leggings": {
       "textures": "textures/items/bc/manasteel_leggings"
+    },
+    "bc_mimic_tooth": {
+      "textures": "textures/items/bc/mimic_tooth"
     },
     "bc_power_acid": {
       "textures": "textures/items/bc/power_acid"
@@ -554,6 +566,24 @@
     "bc_purple_orca_robe": {
       "textures": "textures/items/bc/purple_orca_robe"
     },
+    "bc_relic_eye": {
+      "textures": "textures/items/bc/relic_eye"
+    },
+    "bc_relic_fang": {
+      "textures": "textures/items/bc/relic_fang"
+    },
+    "bc_relic_feather": {
+      "textures": "textures/items/bc/relic_feather"
+    },
+    "bc_relic_idol": {
+      "textures": "textures/items/bc/relic_idol"
+    },
+    "bc_relic_ring": {
+      "textures": "textures/items/bc/relic_ring"
+    },
+    "bc_relic_talisman": {
+      "textures": "textures/items/bc/relic_talisman"
+    },
     "bc_royal_boots": {
       "textures": "textures/items/bc/royal_boots"
     },
@@ -632,6 +662,15 @@
     "bc_spell_scroll": {
       "textures": "textures/items/bc/spell_scroll"
     },
+    "bc_spire_core": {
+      "textures": "textures/items/bc/spire_core"
+    },
+    "bc_sprite_dust": {
+      "textures": "textures/items/bc/sprite_dust"
+    },
+    "bc_star_fragment": {
+      "textures": "textures/items/bc/star_fragment"
+    },
     "bc_swift_broom": {
       "textures": "textures/items/bc/swift_broom"
     },
@@ -652,6 +691,21 @@
     },
     "bc_waygate": {
       "textures": "textures/items/bc/waygate"
+    },
+    "bc_wyvern_scale": {
+      "textures": "textures/items/bc/wyvern_scale"
+    },
+    "bc_wyvernscale_boots": {
+      "textures": "textures/items/bc/wyvernscale_boots"
+    },
+    "bc_wyvernscale_chestplate": {
+      "textures": "textures/items/bc/wyvernscale_chestplate"
+    },
+    "bc_wyvernscale_helmet": {
+      "textures": "textures/items/bc/wyvernscale_helmet"
+    },
+    "bc_wyvernscale_leggings": {
+      "textures": "textures/items/bc/wyvernscale_leggings"
     }
   }
 }

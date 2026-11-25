@@ -1,0 +1,54 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:ember_wyvern",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/ember_wyvern"
+      },
+      "geometry": {
+        "default": "geometry.bc.mana_wyvern"
+      },
+      "animations": {
+        "fly": "animation.bc.wyvern.fly",
+        "ground": "animation.bc.wyvern.ground",
+        "walk": "animation.bc.wyvern.walk",
+        "sleep": "animation.bc.wyvern.sleep",
+        "look": "animation.bc.wyvern.look",
+        "breath": "animation.bc.wyvern.breath",
+        "bite": "animation.bc.wyvern.bite",
+        "roar": "animation.bc.wyvern.roar"
+      },
+      "scripts": {
+        "animate": [
+          {
+            "fly": "!q.is_on_ground && !q.property('bc:asleep')"
+          },
+          {
+            "ground": "q.is_on_ground && !q.property('bc:asleep')"
+          },
+          {
+            "walk": "q.is_on_ground && q.modified_move_speed > 0.05 && !q.property('bc:asleep')"
+          },
+          {
+            "sleep": "q.property('bc:asleep')"
+          },
+          {
+            "look": "!q.property('bc:asleep')"
+          }
+        ],
+        "scale": "1.35"
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#ff7a2a",
+        "overlay_color": "#1a1a1a"
+      }
+    }
+  }
+}

@@ -97,6 +97,25 @@ let compassProvider;
 export function setCompassProvider(fn) {
   compassProvider = fn;
 }
+/** @type {((p: any) => string | undefined)[]} more compasses (v1.1.0: a landmark tracked from the Atlas), after the incident one */
+const compassProviders = [];
+export function addCompassProvider(fn) {
+  compassProviders.push(fn);
+}
+/** @type {Map<string, (p: any, item: any) => string | undefined>} what a held item shows on the action bar (v1.1.0: maps, journals) */
+const heldHuds = new Map();
+export function addHeldHud(id, fn) {
+  heldHuds.set(id, fn);
+}
+function compassText(p) {
+  const c = compassProvider ? safe(() => compassProvider?.(p)) : undefined;
+  if (c) return c;
+  for (const fn of compassProviders) {
+    const x = safe(() => fn(p));
+    if (x) return x;
+  }
+  return undefined;
+}
 
 export function showHud(player) {
   safe(() => player.onScreenDisplay.setActionBar(hudText(player)), 'hud');
@@ -111,8 +130,12 @@ system.runInterval(() => {
     else if (heldId(p) === 'bc:treasure_map') {
       const m = safe(() => mapHud(p));
       if (m) safe(() => p.onScreenDisplay.setActionBar(m));
+    } else if (heldHuds.has(heldId(p))) {
+      const it = safe(() => p.getComponent('minecraft:inventory')?.container?.getItem(p.selectedSlotIndex));
+      const m = it ? safe(() => heldHuds.get(heldId(p))?.(p, it)) : undefined;
+      if (m) safe(() => p.onScreenDisplay.setActionBar(m));
     } else if (t % 8 === 0) {
-      const c = compassProvider ? safe(() => compassProvider?.(p)) : undefined;
+      const c = compassText(p);
       const b = c ?? safe(() => bountyHud(p));
       if (b) safe(() => p.onScreenDisplay.setActionBar(b));
     }

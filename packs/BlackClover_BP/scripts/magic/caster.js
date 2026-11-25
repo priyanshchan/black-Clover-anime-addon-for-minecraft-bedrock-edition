@@ -14,6 +14,8 @@ import { castSpec } from '../living/engine.js';
 import { emit } from '../core/bus.js';
 import { amuletOf } from '../core/data.js';
 import { armorCdMul, armorCostMul } from '../core/armor.js';
+import { mods } from '../core/mods.js';
+import { wildMagic } from '../core/wild.js';
 
 const IMPL = { ...SPELLS, ...SPELLS2, ...ANTI_SPELLS };
 
@@ -75,7 +77,7 @@ export function useGrimoire(p, item) {
   const zone = zoneBonus(p);
   const haste = p.getDynamicProperty('bc:haste_until');
   const cdMul = (robe(p) === 'green_mantis_robe' ? 0.85 : 1) * zone.cd * (amuletOf(p) === 'amulet_swift' ? 0.88 : 1)
-    * (typeof haste === 'number' && haste > t ? 0.75 : 1) * armorCdMul(p);
+    * (typeof haste === 'number' && haste > t ? 0.75 : 1) * armorCdMul(p) * mods(p).cd;
   s.cd.set(sp.id, t + Math.round(sp.cooldown * 20 * cdMul));
   if (!creative && cost > 0 && robe(p) === 'coral_peacock_robe' && Math.random() < 0.2) {
     s.mana += cost;
@@ -88,7 +90,15 @@ export function useGrimoire(p, item) {
     castCircle(p, attr, sp.level >= 10 ? 2.6 : sp.level >= 6 ? 2.0 : 1.5);
     sound(p.dimension, 'bc.cast', p.location, 0.7, 0.9 + Math.random() * 0.2);
   }
+  // v1.1.0: in Wild Magic regions (and on a Wild Surge day) a spell may surge - free, or cast twice - or misfire
+  const wild = !creative && attr !== 'anti' && mods(p).wild ? wildMagic(p, cost) : '';
+  if (wild === 'misfire') {
+    s.lastCast = t;
+    showHud(p);
+    return;
+  }
   const ok = safe(() => impl(ctx), `spell:${sp.id}`);
+  if (ok !== false && wild === 'twice') system.runTimeout(() => safe(() => impl({ ...ctx, pw: ctx.pw * 0.7 }), `spell:${sp.id}:echo`), 10);
   if (ok === false) {
     if (!creative) s.mana += cost;
     s.cd.delete(sp.id);

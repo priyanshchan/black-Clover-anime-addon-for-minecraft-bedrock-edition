@@ -1,0 +1,40 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:hollow_knight",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/hollow_knight"
+      },
+      "geometry": {
+        "default": "geometry.bc.hollow_knight"
+      },
+      "animations": {
+        "idle": "animation.bc.hollow_knight.idle",
+        "walk": "animation.bc.hollow_knight.walk",
+        "look_at_target": "animation.bc.hollow_knight.look_at_target",
+        "attack": "animation.bc.hollow_knight.attack",
+        "cast": "animation.bc.hollow_knight.cast"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#17141e",
+        "overlay_color": "#7ad0ff"
+      }
+    }
+  }
+}

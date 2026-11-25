@@ -45,7 +45,7 @@ function keep(e, id, amp) {
 export function wearerTick(e, isPlayer) {
   const g = gearOf(e);
   const has = (sid, n) => (g.sets[sid] ?? 0) >= n;
-  if (has('devilhide', 2)) keep(e, 'fire_resistance', 0);
+  if (has('devilhide', 2) || has('wyvernscale', 2)) keep(e, 'fire_resistance', 0);
   if (has('abyssal', 2)) {
     keep(e, 'water_breathing', 0);
     if (safe(() => e.isInWater)) keep(e, 'conduit_power', 0);
@@ -150,6 +150,9 @@ world.afterEvents.entityHurt.subscribe((ev) => safe(() => {
     }
     let back = ev.damage * (1 - damageTakenMul(e, false));
     if (has('runeplate', 2) && ['fall', 'entityExplosion', 'blockExplosion'].includes(cause)) back += ev.damage * 0.4;
+    // v1.1.0: Wyvernscale - no fall damage (2), and fire and lightning hurt 40% less (4)
+    if (has('wyvernscale', 2) && cause === 'fall') back = ev.damage;
+    else if (has('wyvernscale', 4) && ['fire', 'fire_tick', 'lava', 'lightning', 'magma'].includes(cause)) back += ev.damage * 0.4;
     if (back > 0) heal(e, back);
   }
   // Thorns runes and Chitin barbs

@@ -1,6 +1,7 @@
 // Living world entry point: spell engine, tactical AI, knights, battles, world simulation, bosses, events, merchant, War Table,
 // the v0.3.0 systems (brooms, missions, amulets, Rogue Mages, Magic Knight camps) and the v0.5.0 companion update
 // (squad.js, camp.js, roster.js, rivals.js, puppeteer.js), and the v0.7.0 warbands (warband.js) and new foes (foes.js).
+import { system } from '@minecraft/server';
 import { safe } from '../core/util.js';
 import './engine.js';
 import './passives.js';
@@ -29,6 +30,16 @@ import './armor.js';
 import './forge.js';
 import './world.js';
 import './waygate.js';
+// v1.1.0: the Untamed Kingdom
+import './regions.js';
+import './landmarks.js';
+import './beasts.js';
+import './relics.js';
+import './omens.js';
+import './ambush.js';
+import './wanderers.js';
+import { readJournal, useExplorerMap } from './exploration.js';
+import { useSpireCore } from './spirecore.js';
 import { useScroll, useSmokeBomb } from './consumables.js';
 import { useCloverLeaf } from './squad.js';
 import { placeDummy } from './roster.js';
@@ -69,6 +80,12 @@ export function useLivingItem(p, item) {
     safe(() => useSmokeBomb(p));
   } else if (id === 'bc:spell_scroll') {
     safe(() => useScroll(p, item));
+  } else if (id === 'bc:explorer_map') {
+    safe(() => useExplorerMap(p));
+  } else if (id === 'bc:journal_page') {
+    system.run(() => readJournal(p).catch(() => {}));
+  } else if (id === 'bc:spire_core') {
+    if (safe(() => useSpireCore(p))) consume(p, id);
   } else if (id === 'bc:companion_tome') {
     safe(() => p.onScreenDisplay.setActionBar('§bTalk to a companion (level 10+) while holding the tome to retrain their specialisation.'));
   } else return false;

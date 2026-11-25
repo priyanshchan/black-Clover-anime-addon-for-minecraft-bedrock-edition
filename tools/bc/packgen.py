@@ -6,7 +6,7 @@ from .data import ATTR_ORDER, ATTRIBUTES, NS, ROBES, SPELLS, SWORDS
 from .models import items, mobs, spells, world
 from .out import BP, RP, write_json, write_png, write_text
 
-VERSION = [1, 0, 0]  # v1.0.0 - bump on every release so Minecraft replaces the installed packs
+VERSION = [1, 1, 0]  # v1.1.0 - bump on every release so Minecraft replaces the installed packs
 MIN_ENGINE = [1, 21, 90]
 ITEM_FMT = '1.21.60'
 ENTITY_FMT = '1.21.0'
@@ -42,7 +42,7 @@ def manifest_bp():
         'format_version': 2,
         'header': {
             'name': 'Black Clover: Grimoire Awakening §7(Behavior)',
-            'description': 'v1.0.0 - a living world: incidents happen out in the world, develop on their own and are discovered from afar; 40 grimoires, 34 Abyss Fruits, layered spell VFX, eight armour sets, companions, bosses, Mana Waygates. Unofficial fan addon.',
+            'description': 'v1.1.0 - the Untamed Kingdom: named regions with their own danger and traits, landmarks in every region (Mage Spires, Wyvern Roosts, Catacombs, ruined hamlets...), random loot with rarities and rolled relics, Champion and Infernal elites, omens and wanderers; plus a living world, 40 grimoires, 34 Abyss Fruits, nine armour sets and companions. Unofficial fan addon.',
             'uuid': out.uid('bp-header'),
             'version': VERSION,
             'min_engine_version': MIN_ENGINE,
@@ -65,7 +65,7 @@ def manifest_rp():
         'format_version': 2,
         'header': {
             'name': 'Black Clover: Grimoire Awakening §7(Resources)',
-            'description': 'v1.0.0 - HD spell effects, 3D grimoires, armour, brooms, swords, robes, spells, companions, bandits, insects, witches, dragons, puppets, bosses, potions, particles and sounds. Unofficial fan addon.',
+            'description': 'v1.1.0 - Mana Wyverns, the Spire Warden, mimics, sprites, the Hollow, wanderers, relics; HD spell effects, 3D grimoires, armour, brooms, swords, robes, companions, bosses, particles and sounds. Unofficial fan addon.',
             'uuid': out.uid('rp-header'),
             'version': VERSION,
             'min_engine_version': MIN_ENGINE,
@@ -663,7 +663,8 @@ def flush(ctx: Ctx):
     })
     write_json(RP, 'blocks.json', {'format_version': [1, 1, 0], f'{NS}:grimoire_altar': {'sound': 'stone'}, f'{NS}:bounty_board': {'sound': 'wood'},
                             f'{NS}:war_table': {'sound': 'wood'}, f'{NS}:mission_board': {'sound': 'wood'}, f'{NS}:squad_banner': {'sound': 'wood'},
-                            f'{NS}:magic_forge': {'sound': 'metal'}, f'{NS}:waygate': {'sound': 'stone'}})
+                            f'{NS}:magic_forge': {'sound': 'metal'}, f'{NS}:waygate': {'sound': 'stone'},
+                            f'{NS}:mana_spawner': {'sound': 'metal'}, f'{NS}:obelisk_core': {'sound': 'stone'}})
     gen_render_controllers()
     gen_lang(ctx)
     write_json(BP, 'manifest.json', manifest_bp())
@@ -681,7 +682,7 @@ def build():
     gen_loot(ctx)
     gen_spell_entities(ctx)
     gen_mobs(ctx)
-    from . import grandgen, seagen, v2gen, v3gen, v5gen, v7gen, v8gen, v9gen, v10gen, v75gen, wave4gen  # expansions (import this module, so loaded lazily)
+    from . import grandgen, seagen, v2gen, v3gen, v5gen, v7gen, v8gen, v9gen, v10gen, v11gen, v75gen, wave4gen  # expansions (import this module, so loaded lazily)
     seagen.build(ctx)
     grandgen.build(ctx)
     wave4gen.build(ctx)
@@ -693,6 +694,7 @@ def build():
     v8gen.build(ctx)
     v9gen.build(ctx)
     v10gen.build(ctx)
+    v11gen.build(ctx)
     v3gen.check_armies()
     flush(ctx)
     return ctx

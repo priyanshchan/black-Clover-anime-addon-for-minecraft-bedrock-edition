@@ -1,5 +1,45 @@
 # Changelog
 
+## v1.1.0 (2026-11-25)
+
+**The Untamed Kingdom.** World-building and randomness: a named world of regions with their own danger and character, landmarks over every hill, random loot, tougher elites, encounters, omens and wanderers.
+
+### Regions
+* The overworld is cut into **320 x 320-block regions**. Each has a **name** made from its land (*Kelmoor Fen*, *the Peaks of Varowbarrow*, *the Whispering Pines*), a **realm** by its distance from the world spawn (the Noble Realm, the Common Realm, the Forsaken Realm, then the Spade, Heart, Diamond Marches and the Southern Wilds), **danger stars** (1-5) and one to three **traits**: Mana-Rich (+30% mana regeneration), Ley Line (+10% spell power), Wild Magic (spells may surge or misfire), Haunted, Bandit Country, Devil-Scarred, Wyvern Territory, Fae Wilds, Ancient Ruins, Sanctuary, Hoard-Rich and Untamed. Everything is rolled from the world's seed.
+* Entering a new region shows its name, realm and danger, adds a line of lore and gives magic XP. Danger stars raise loot rarity, landmark counts, elite odds and ambush sizes.
+* Devil-Scarred land makes Devil Gates and rituals likelier; Bandit Country makes raids and caravans likelier.
+
+### Landmarks
+* **3-8 landmarks per region**, seeded where they lie, raised out of sight as explorers come near and fitted to the ground: **Mage Spires** (five guarded floors, a spiral stair, Mana Spawners, and the **Spire Warden** on the roof), **Wyvern Roosts** (an Ember, Frost or Storm **Mana Wyvern** asleep on its hoard), **Ancient Catacombs** (5-10 rooms laid out at random: crypts, libraries, treasure, spawner halls, flame-trap rooms, prisons with a captive knight to free, shrines, and the Guardian's hall), **ruined hamlets** (empty, bandit-held, haunted, or a hermit's home), **old graveyards**, **Mana Obelisks** (pray for a boon - or a curse), **fairy rings** (trade an item with the sprites), **ruined watchtowers**, **wrecked caravans** (sometimes bait), **star craters**, **colossal bones**, **forgotten battlefields**, **Lost Waygates** (join your network) and **hedge witch huts**.
+* Guards appear as you come near, masters when you reach the heart. **Mana Spawners** call foes until broken. About one chest in eight is a **Mimic**.
+* Cheat: `/scriptevent bc:landmark [kind]`, `/scriptevent bc:region`.
+
+### Random loot
+* Rarities from **Common to Mythic**; danger stars, luck and the Lucky Stars omen push rolls up.
+* **Relics** (Signet Ring, Rune Talisman, Bone Idol, Crystal Eye, Wyvern Fang, Spirit Feather) with 18 possible affixes - they work from your hotbar, three at a time.
+* **Rolled weapons** (stone to netherite swords and axes) with 10 possible affixes: keen, burning, freezing, lightning, vampiric, mana-drinking, merciless, giant-felling, cleaving, hasty.
+* Legendary and Mythic items have names of their own. **Reforge** a relic or weapon at the Magic Forge (mana crystals, Sprite Dust, Star Fragments).
+* Reinforced (and sometimes rune-inscribed) armour pieces turn up in chests.
+
+### Champions and Infernals
+* Elites come as **Elite** (1 trait), **Champion** (2) and **Infernal** (3), commoner with danger stars and twice as common in Untamed land. Ten new traits: Blinking, Frostbound, Stormcaller, Gravitic, Regenerating, Reflective, Webbing, Splitting, Ghostly, Juggernaut. Champions and Infernals drop rolled items.
+
+### New creatures
+* **Mana Wyverns** (Ember, Frost, Storm) - flying bosses with elemental breath, dives, tail sweeps, wing gusts and a storm of their element; they also cross the sky over Wyvern Territory.
+* **The Spire Warden** - a floating rune construct with fist slams, rune beams and a collapsing roof.
+* **Mimics**, **Mana Sprites** (they steal items - catch them!), **Will-o'-Wisps** (follow one to a cache or a trap), **Rootwardens**, **Hollow Knights** and **Wanderers**.
+
+### Encounters, omens and wanderers
+* Chopping trees, mining deep stone, cutting grass and sleeping at night can wake a Rootwarden, a Mana Wraith, a Mana Sprite or a Hollow Knight; haunted dead sometimes rise as wraiths. The land sends ambushes, the Hollow, imps, wyverns, sprites and wisps by its traits; Sanctuaries stay quiet.
+* **Omens** most mornings: Mana Tide, Wild Surge, Starfall (falling stars leave Star Fragments to find), Hollow Night, Wyvern Migration, Merchants' Fair, Bandit Moon, Fae Revel, Calm Skies, Lucky Stars. Cheat: `/scriptevent bc:omen [id]`.
+* **Wanderers** - pilgrims, cartographers, peddlers, hermit mages, bards and lost knights - with names, rumours of real landmarks, trades and favours. A lost knight may join your squad. Cheat: `/scriptevent bc:wanderer [kind]`.
+
+### Items and other changes
+* **Explorer's Map**, **Torn Journal Page** (some mark buried caches), **Star Fragment**, **Sprite Dust**, **Mimic Tooth** (the merchant buys them), **Hollow Ember**, **Spire Core** (raises a Mana Waygate), six relics, the **Mana Spawner** and **Obelisk Core** blocks.
+* **Wyvernscale** armour (a ninth set, from Wyvern Scales): fire resistance and no fall damage; fire, ice and lightning spells +20% and fire and lightning hurt 40% less.
+* The Handbook's **Atlas**: your region, today's omen, regions and landmarks found, relics at work, and tracking for the nearest unknown landmark.
+* Nine new feats (Cartographer, World Walker, Trailblazer, Spire Breaker, Wyvernslayer, Legend Hunter, It Bit Me, Into the Inferno, Good Samaritan) and three missions.
+
 ## v1.0.0 (2026-11-18)
 
 **A living world.** The first full release: world events are now incidents that happen out in the world, develop on their own and are discovered from afar - plus four grimoires, four Abyss Fruits, new incidents, Mana Waygates and more. (This release also contains everything since v0.1.0: see the sections below.)

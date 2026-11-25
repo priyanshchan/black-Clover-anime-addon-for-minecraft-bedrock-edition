@@ -1,0 +1,653 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.wyvern.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "position": [
+            0,
+            "2.0 + math.sin(q.life_time * 210.0) * -1.5",
+            0
+          ]
+        },
+        "rightWing": {
+          "rotation": [
+            0,
+            0,
+            "8.0 + math.sin(q.life_time * 210.0) * 38.0"
+          ]
+        },
+        "leftWing": {
+          "rotation": [
+            0,
+            0,
+            "-8.0 - math.sin(q.life_time * 210.0) * 38.0"
+          ]
+        },
+        "rightWingTip": {
+          "rotation": [
+            0,
+            0,
+            "math.sin(q.life_time * 210.0) * 24.0"
+          ]
+        },
+        "leftWingTip": {
+          "rotation": [
+            0,
+            0,
+            "-math.sin(q.life_time * 210.0) * 24.0"
+          ]
+        },
+        "rightThigh": {
+          "rotation": [
+            55,
+            0,
+            0
+          ]
+        },
+        "leftThigh": {
+          "rotation": [
+            55,
+            0,
+            0
+          ]
+        },
+        "rightShin": {
+          "rotation": [
+            30,
+            0,
+            0
+          ]
+        },
+        "leftShin": {
+          "rotation": [
+            30,
+            0,
+            0
+          ]
+        },
+        "neck0": {
+          "rotation": [
+            "-10.0 + math.sin(q.life_time * 105.0) * 3.0",
+            0,
+            0
+          ]
+        },
+        "tail0": {
+          "rotation": [
+            "-4.0 + math.sin(q.life_time * 210.0) * 3.0",
+            "math.sin(q.life_time * 70.0) * 6.0",
+            0
+          ]
+        },
+        "tail1": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 70.0) * 8.0",
+            0
+          ]
+        },
+        "tail2": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 70.0) * 10.0",
+            0
+          ]
+        },
+        "tail3": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 70.0) * 12.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.wyvern.ground": {
+      "loop": true,
+      "bones": {
+        "body": {
+          "rotation": [
+            "-6.0 + math.sin(q.life_time * 60.0) * 1.0",
+            0,
+            0
+          ]
+        },
+        "rightWing": {
+          "rotation": [
+            0,
+            -85,
+            15
+          ]
+        },
+        "leftWing": {
+          "rotation": [
+            0,
+            85,
+            -15
+          ]
+        },
+        "rightWingTip": {
+          "rotation": [
+            0,
+            170,
+            0
+          ]
+        },
+        "leftWingTip": {
+          "rotation": [
+            0,
+            -170,
+            0
+          ]
+        },
+        "tail0": {
+          "rotation": [
+            8,
+            "math.sin(q.life_time * 70.0) * 8.0",
+            0
+          ]
+        },
+        "tail1": {
+          "rotation": [
+            4,
+            "math.sin(q.life_time * 70.0) * 10.0",
+            0
+          ]
+        },
+        "tail2": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 70.0) * 12.0",
+            0
+          ]
+        },
+        "tail3": {
+          "rotation": [
+            -6,
+            "math.sin(q.life_time * 70.0) * 14.0",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.wyvern.walk": {
+      "loop": true,
+      "bones": {
+        "rightThigh": {
+          "rotation": [
+            "math.cos(q.modified_distance_moved * 30.0) * 30.0 * q.modified_move_speed",
+            0,
+            0
+          ]
+        },
+        "leftThigh": {
+          "rotation": [
+            "-math.cos(q.modified_distance_moved * 30.0) * 30.0 * q.modified_move_speed",
+            0,
+            0
+          ]
+        },
+        "body": {
+          "position": [
+            0,
+            "math.abs(math.cos(q.modified_distance_moved * 30.0)) * 1.2 * q.modified_move_speed",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.wyvern.sleep": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "position": [
+            0,
+            -5,
+            0
+          ]
+        },
+        "body": {
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1,
+            "1.0 + math.sin(q.life_time * 40.0) * 0.025",
+            1
+          ]
+        },
+        "neck0": {
+          "rotation": [
+            38,
+            -32,
+            0
+          ]
+        },
+        "neck1": {
+          "rotation": [
+            30,
+            -26,
+            0
+          ]
+        },
+        "head": {
+          "rotation": [
+            -18,
+            -20,
+            8
+          ]
+        },
+        "rightWing": {
+          "rotation": [
+            0,
+            -85,
+            22
+          ]
+        },
+        "leftWing": {
+          "rotation": [
+            0,
+            85,
+            -22
+          ]
+        },
+        "rightWingTip": {
+          "rotation": [
+            0,
+            170,
+            0
+          ]
+        },
+        "leftWingTip": {
+          "rotation": [
+            0,
+            -170,
+            0
+          ]
+        },
+        "rightThigh": {
+          "rotation": [
+            -60,
+            0,
+            0
+          ]
+        },
+        "leftThigh": {
+          "rotation": [
+            -60,
+            0,
+            0
+          ]
+        },
+        "rightShin": {
+          "rotation": [
+            60,
+            0,
+            0
+          ]
+        },
+        "leftShin": {
+          "rotation": [
+            60,
+            0,
+            0
+          ]
+        },
+        "tail0": {
+          "rotation": [
+            0,
+            30,
+            0
+          ]
+        },
+        "tail1": {
+          "rotation": [
+            0,
+            38,
+            0
+          ]
+        },
+        "tail2": {
+          "rotation": [
+            0,
+            40,
+            0
+          ]
+        },
+        "tail3": {
+          "rotation": [
+            0,
+            40,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.wyvern.look": {
+      "loop": true,
+      "bones": {
+        "neck1": {
+          "rotation": [
+            "q.target_x_rotation * 0.4",
+            "q.target_y_rotation * 0.5",
+            0
+          ]
+        },
+        "head": {
+          "rotation": [
+            "q.target_x_rotation * 0.4",
+            "q.target_y_rotation * 0.5",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.wyvern.breath": {
+      "animation_length": 1.6,
+      "bones": {
+        "neck0": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.35": [
+              -30,
+              0,
+              0
+            ],
+            "0.5": [
+              18,
+              0,
+              0
+            ],
+            "1.3": [
+              14,
+              0,
+              0
+            ],
+            "1.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "neck1": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.35": [
+              -15,
+              0,
+              0
+            ],
+            "0.5": [
+              10,
+              0,
+              0
+            ],
+            "1.3": [
+              8,
+              0,
+              0
+            ],
+            "1.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "jaw": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.35": [
+              12,
+              0,
+              0
+            ],
+            "0.5": [
+              38,
+              0,
+              0
+            ],
+            "1.3": [
+              36,
+              0,
+              0
+            ],
+            "1.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "rightWing": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              0,
+              -25,
+              30
+            ],
+            "1.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftWing": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.4": [
+              0,
+              25,
+              -30
+            ],
+            "1.6": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.wyvern.bite": {
+      "animation_length": 0.5,
+      "bones": {
+        "neck0": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.15": [
+              -25,
+              0,
+              0
+            ],
+            "0.28": [
+              30,
+              0,
+              0
+            ],
+            "0.5": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "jaw": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.15": [
+              40,
+              0,
+              0
+            ],
+            "0.28": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.wyvern.roar": {
+      "animation_length": 1.4,
+      "bones": {
+        "neck0": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -38,
+              0,
+              0
+            ],
+            "1.1": [
+              -34,
+              0,
+              0
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "head": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              -25,
+              0,
+              0
+            ],
+            "1.1": [
+              -20,
+              0,
+              0
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "jaw": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.3": [
+              42,
+              0,
+              0
+            ],
+            "1.1": [
+              40,
+              0,
+              0
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "rightWing": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.35": [
+              0,
+              -10,
+              60
+            ],
+            "1.1": [
+              0,
+              -10,
+              55
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "leftWing": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.35": [
+              0,
+              10,
+              -60
+            ],
+            "1.1": [
+              0,
+              10,
+              -55
+            ],
+            "1.4": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

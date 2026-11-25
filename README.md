@@ -1,8 +1,8 @@
 # Black Clover: Grimoire Awakening
 
-> **Version 1.0.0.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
+> **Version 1.1.0 - the Untamed Kingdom.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
-**An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 40 magic attributes, lead a squad of Magic Knight companions with their own personalities and specialisations, draw anti-magic demon swords, wear squad robes, fly brooms, and fight devils, pirates, bandits, assassins, rogue mages, insect swarms and fifteen giant bosses.
+**An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 40 magic attributes, lead a squad of Magic Knight companions with their own personalities and specialisations, draw anti-magic demon swords, wear squad robes, fly brooms, and fight devils, pirates, bandits, assassins, rogue mages, insect swarms, wyverns and nineteen giant bosses - across a world where every region has its own name, danger and landmarks to find.
 
 ![Hero](docs/images/hero.png)
 
@@ -26,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v1.1.0 – the Untamed Kingdom:** every 320-block region now has a **name of its own**, a realm (Noble, Common, Forsaken, the Marches), **danger stars** and **traits** (Mana-Rich, Haunted, Wyvern Territory, Fae Wilds, Wild Magic...); **15 kinds of landmark** seeded across them - Mage Spires with the Spire Warden, Wyvern Roosts with sleeping **Mana Wyverns**, procedural **Catacombs**, ruined hamlets, graveyards, obelisks, fairy rings and more, with **Mana Spawners** and **Mimics**; **random loot** from Common to Mythic with rolled **relics** and weapons (reforge them at the Magic Forge); **Champion and Infernal** elites with ten new traits; encounters your own actions wake; daily **omens**; **wanderers** with rumours, trades and requests; Explorer's Maps, journals, the Atlas, and the Wyvernscale armour set.
 * **v1.0.0 – a living world:** world events are now **incidents out in the world** - reported by direction and distance, marked by smoke and light on the horizon and tracked on your HUD. They develop while you are away (gates grow, rituals complete, raids march on your home, armies decide their battles) and resolve with consequences; their units appear only when you arrive, and hunters creep up from behind. Plus four grimoires (Storm, Blossom, Coral, Dream), four Abyss Fruits (Spark, Echo, Sand, Gale), new incidents (caravans, mana springs, camp sieges, refugees, ruins), **Mana Waygates** for fast travel, and new feats and missions.
 * **v0.9.0 – spells that look the part:** every spell and fruit power is redrawn in layers - magic circles, flashes, shock rings, sparks that bounce, solid beams with white-hot cores, real lightning, licking flames, rolling smoke, dust waves and ground cracks - with a rebuilt glowing projectile (and burning comets), element trails, and new full-body cast animations for players, knights and fruit brawlers.
 * **v0.8.0 – the armour update:** eight 3D armour sets (Mana-Steel, Royal Knight, Devilhide, Abyssal Scale, Shadowweave, Hive Chitin, Runeplate, Archmage) with bonuses for two and four pieces, materials dropped by the foes that suit them, and the **Magic Forge**: forge pieces, reinforce them to +5, inscribe six kinds of runes, sew a squad robe on as a mantle, salvage; companions wear armour too.
@@ -64,7 +65,8 @@ Every detail lives in **[docs/](docs/README.md)** (generated from the game data,
 | [Companions](docs/companions.md) | your saved party: recruiting, the whistle, orders, stances, formations, bond and its perks, robes, levels to 20 |
 | [AI & simulation](docs/ai-and-simulation.md) | how NPCs, enemies and bosses think, battles (tactics, morale, leaders, bets, camera), the world simulation |
 | [World events](docs/world-events.md) | every event, its odds, conditions and rewards |
-| [Mobs & bosses](docs/mobs-and-bosses.md) | every creature's health, attack, spawning and drops; all 8 bosses; factions; structures |
+| [The Untamed Kingdom](docs/exploration.md) | regions, realms, danger and traits; every landmark; random loot, relics and rolled weapons; Champions and Infernals; encounters; omens; wanderers; maps and journals |
+| [Mobs & bosses](docs/mobs-and-bosses.md) | every creature's health, attack, spawning and drops; all the bosses; factions; structures; elites |
 | [Items & recipes](docs/items-and-recipes.md) | every crafting recipe, every item id, both shops |
 | [Progression](docs/progression.md) | magic levels and mana, ranks and stars, robes, bounties |
 | [Commands](docs/commands.md) | every `/give`, `/summon` and `/scriptevent` |
@@ -345,6 +347,21 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 /summon bc:dungeon_golem
 /summon bc:tidewatch_commodore
 ```
+
+---
+
+## v1.1.0: the Untamed Kingdom
+
+![v1.1.0](docs/images/v110.png)
+
+* **A world with names.** The overworld is cut into 320-block regions, and every one is a place: *Kelmoor Fen*, *the Peaks of Varowbarrow*, *the Whispering Pines*. Walk into a new one and its name, its realm (the **Noble Realm** near home, then the **Common** and **Forsaken** Realms, then **the Marches** toward the neighbouring kingdoms), its **danger stars** and its **traits** appear on your screen. Everything comes from your world's seed. → [The Untamed Kingdom](docs/exploration.md)
+* **Twelve traits** change what a region is like: Mana-Rich, Ley Line, **Wild Magic** (spells surge or misfire), **Haunted** (the Hollow walk at night), Bandit Country, Devil-Scarred, **Wyvern Territory**, **Fae Wilds**, Ancient Ruins, Sanctuary, Hoard-Rich and Untamed.
+* **Something over every hill.** Three to eight **landmarks** per region, raised out of sight as you come near: **Mage Spires** (five guarded floors and the **Spire Warden** on the roof), **Wyvern Roosts** (an **Ember, Frost or Storm Wyvern** asleep on its hoard), **Ancient Catacombs** (a new maze every time, with traps, prisons and a guardian), ruined hamlets, graveyards, **Mana Obelisks** (a boon or a curse), **fairy rings** (trade with the sprites), watchtowers, wrecked caravans, star craters, colossal bones, forgotten battlefields, **Lost Waygates** and hedge witch huts. **Mana Spawners** keep calling foes until you break them, and some chests are **Mimics**.
+* **Random loot.** Common to **Mythic**, better the more dangerous the land: rolled **relics** that work from your hotbar (up to three) and rolled **weapons** with procs (burning, freezing, lightning, life drain, executions, cleaving...). Legendaries get names of their own. **Reforge** them at the Magic Forge.
+* **Champions and Infernals:** elites with two or three of **seventeen traits** (Blinking, Frostbound, Stormcaller, Gravitic, Regenerating, Reflective, Webbing, Splitting, Ghostly, Juggernaut are new), commoner far from home.
+* **Encounters you wake yourself:** chop a tree and a **Rootwarden** may tear free; dig deep and a wraith seeps out; cut grass and a **Mana Sprite** (a little thief) pops up; sleep at night and wake to a **Hollow Knight**. **Will-o'-Wisps** lead you to hidden caches - or traps.
+* **Omens** colour each day (Mana Tide, Wild Surge, **Starfall**, Hollow Night, Wyvern Migration, Merchants' Fair, Bandit Moon, Fae Revel, Calm Skies, Lucky Stars), and **wanderers** walk the roads with rumours of real landmarks, odd trades and favours to ask.
+* **Explorer's Maps**, **torn journal pages** (some mark buried caches), the **Spire Core**, the Handbook's **Atlas**, the **Wyvernscale** armour set, and nine new feats.
 
 ---
 

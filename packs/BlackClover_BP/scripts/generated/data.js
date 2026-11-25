@@ -7955,6 +7955,12 @@ export const DATA = {
       "count": 1,
       "price": 160,
       "label": "Mana Waygate"
+    },
+    {
+      "item": "bc:explorer_map",
+      "count": 1,
+      "price": 60,
+      "label": "Explorer's Map"
     }
   ],
   "factions": {
@@ -8461,6 +8467,30 @@ export const DATA = {
       "count": 8,
       "title": "Break up a bandit band",
       "tier": 1
+    },
+    {
+      "id": "m_landmark",
+      "kind": "landmark",
+      "target": "",
+      "count": 2,
+      "title": "Explore: find 2 landmarks",
+      "tier": 1
+    },
+    {
+      "id": "m_region",
+      "kind": "discover",
+      "target": "",
+      "count": 2,
+      "title": "Explore: discover 2 new regions",
+      "tier": 1
+    },
+    {
+      "id": "m_hollow",
+      "kind": "kill",
+      "target": "bc:hollow_knight",
+      "count": 6,
+      "title": "Lay 6 Hollow Knights to rest",
+      "tier": 2
     }
   ],
   "missionRewards": {
@@ -8549,6 +8579,56 @@ export const DATA = {
       "name": "Frenzied",
       "mc": "\u00a76",
       "desc": "below half health it gains Strength II and Speed"
+    },
+    "blinking": {
+      "name": "Blinking",
+      "mc": "\u00a75",
+      "desc": "teleports behind its foe every few seconds"
+    },
+    "frostbound": {
+      "name": "Frostbound",
+      "mc": "\u00a7b",
+      "desc": "its blows freeze: slowness and mining fatigue"
+    },
+    "stormcaller": {
+      "name": "Stormcaller",
+      "mc": "\u00a7e",
+      "desc": "calls lightning down on its foe every 6 seconds"
+    },
+    "gravitic": {
+      "name": "Gravitic",
+      "mc": "\u00a7d",
+      "desc": "drags its foes toward it"
+    },
+    "regenerating": {
+      "name": "Regenerating",
+      "mc": "\u00a7a",
+      "desc": "heals 2% of its health every second"
+    },
+    "reflective": {
+      "name": "Reflective",
+      "mc": "\u00a7f",
+      "desc": "turns a quarter of spell damage back on the caster"
+    },
+    "webbing": {
+      "name": "Webbing",
+      "mc": "\u00a77",
+      "desc": "tangles its foes in cobwebs"
+    },
+    "splitting": {
+      "name": "Splitting",
+      "mc": "\u00a76",
+      "desc": "splits into two lesser copies when it falls"
+    },
+    "ghostly": {
+      "name": "Ghostly",
+      "mc": "\u00a78",
+      "desc": "fades from sight now and then"
+    },
+    "juggernaut": {
+      "name": "Juggernaut",
+      "mc": "\u00a74",
+      "desc": "cannot be knocked back, and hits like a hammer"
     }
   },
   "eliteChance": 0.06,
@@ -8888,6 +8968,96 @@ export const DATA = {
       "stars": 1,
       "coins": 50,
       "title": "the Late Bloomer"
+    },
+    {
+      "id": "cartographer",
+      "name": "Cartographer",
+      "desc": "Discover 10 regions.",
+      "counter": "regions",
+      "goal": 10,
+      "stars": 1,
+      "coins": 80,
+      "title": "the Cartographer"
+    },
+    {
+      "id": "world_walker",
+      "name": "World Walker",
+      "desc": "Discover 40 regions.",
+      "counter": "regions",
+      "goal": 40,
+      "stars": 3,
+      "coins": 300,
+      "title": "the World Walker"
+    },
+    {
+      "id": "trailblazer",
+      "name": "Trailblazer",
+      "desc": "Find 15 landmarks.",
+      "counter": "landmarks",
+      "goal": 15,
+      "stars": 2,
+      "coins": 150,
+      "title": "the Trailblazer"
+    },
+    {
+      "id": "spire_breaker",
+      "name": "Spire Breaker",
+      "desc": "Defeat a Spire Warden at the top of its spire.",
+      "counter": "wardens",
+      "goal": 1,
+      "stars": 2,
+      "coins": 150,
+      "title": "Spire Breaker"
+    },
+    {
+      "id": "wyvernslayer",
+      "name": "Wyvernslayer",
+      "desc": "Defeat 3 Mana Wyverns.",
+      "counter": "wyverns",
+      "goal": 3,
+      "stars": 3,
+      "coins": 250,
+      "title": "the Wyvernslayer"
+    },
+    {
+      "id": "legendary",
+      "name": "Legend Hunter",
+      "desc": "Find a Legendary or Mythic item.",
+      "counter": "legendaries",
+      "goal": 1,
+      "stars": 2,
+      "coins": 150,
+      "title": "the Fortunate"
+    },
+    {
+      "id": "it_bit_me",
+      "name": "It Bit Me",
+      "desc": "Defeat a Mimic.",
+      "counter": "mimics",
+      "goal": 1,
+      "stars": 1,
+      "coins": 40,
+      "title": "Chest-Wary"
+    },
+    {
+      "id": "infernal",
+      "name": "Into the Inferno",
+      "desc": "Defeat an Infernal elite.",
+      "counter": "infernals",
+      "goal": 1,
+      "stars": 2,
+      "coins": 150,
+      "title": "the Unburnt"
+    },
+    {
+      "id": "good_samaritan",
+      "name": "Good Samaritan",
+      "desc": "Fulfil 5 wanderers' requests.",
+      "counter": "requests",
+      "goal": 5,
+      "stars": 2,
+      "coins": 120,
+      "title": "the Kind"
     }
   ],
   "armor": {
@@ -9065,6 +9235,27 @@ export const DATA = {
         "glow": "ff9cff",
         "b2": "Spell and fruit power cooldowns 10% shorter",
         "b4": "+20% spell power and +40 max mana"
+      },
+      "wyvernscale": {
+        "name": "Wyvernscale",
+        "pieces": [
+          "Wyvernscale Helm",
+          "Wyvernscale Hauberk",
+          "Wyvernscale Greaves",
+          "Wyvernscale Talons"
+        ],
+        "prot": [
+          3,
+          8,
+          6,
+          3
+        ],
+        "material": "wyvern_scale",
+        "stars": 8,
+        "mc": "\u00a72",
+        "glow": "ffb040",
+        "b2": "Fire Resistance, and you take no fall damage",
+        "b4": "Wyvern's Fury: fire, ice and lightning spells hit 20% harder, and fire and lightning hurt you 40% less"
       }
     },
     "cost": {
@@ -9283,6 +9474,27 @@ export const DATA = {
             5
           ]
         }
+      },
+      "wyvern_scale": {
+        "name": "\u00a72Wyvern Scale",
+        "desc": "A scale shed by a Mana Wyvern - harder than mana-steel, warm to the touch.",
+        "drops": {
+          "bc:ember_wyvern": [
+            1.0,
+            5,
+            9
+          ],
+          "bc:frost_wyvern": [
+            1.0,
+            5,
+            9
+          ],
+          "bc:storm_wyvern": [
+            1.0,
+            5,
+            9
+          ]
+        }
       }
     },
     "scaleDrops": {
@@ -9370,6 +9582,1362 @@ export const DATA = {
       ]
     }
   },
+  "world": {
+    "regionSize": 320,
+    "findXp": 40,
+    "realms": [
+      {
+        "upTo": 600,
+        "id": "noble",
+        "name": "Noble Realm",
+        "mc": "\u00a7e",
+        "stars": 1,
+        "traits": 1
+      },
+      {
+        "upTo": 1500,
+        "id": "common",
+        "name": "Common Realm",
+        "mc": "\u00a7a",
+        "stars": 2,
+        "traits": 1
+      },
+      {
+        "upTo": 2800,
+        "id": "forsaken",
+        "name": "Forsaken Realm",
+        "mc": "\u00a77",
+        "stars": 3,
+        "traits": 2
+      },
+      {
+        "upTo": 1000000000,
+        "id": "marches",
+        "name": "the Marches",
+        "mc": "\u00a7c",
+        "stars": 4,
+        "traits": 2
+      }
+    ],
+    "marches": {
+      "north": "the Spade Marches",
+      "east": "the Heart Marches",
+      "south": "the Southern Wilds",
+      "west": "the Diamond Marches"
+    },
+    "syllables": [
+      [
+        "Ash",
+        "Bel",
+        "Cor",
+        "Dun",
+        "El",
+        "Fen",
+        "Gal",
+        "Hal",
+        "Ir",
+        "Kel",
+        "Lor",
+        "Mor",
+        "Nor",
+        "Os",
+        "Pel",
+        "Quen",
+        "Rav",
+        "Sel",
+        "Thal",
+        "Ul",
+        "Var",
+        "Wyn",
+        "Yr",
+        "Zan",
+        "Brin",
+        "Cael",
+        "Drav",
+        "Ery",
+        "Gor",
+        "Hest",
+        "Myr",
+        "Tor",
+        "Vel",
+        "Ald",
+        "Bram",
+        "Cyr"
+      ],
+      [
+        "a",
+        "e",
+        "i",
+        "o",
+        "en",
+        "ar",
+        "or",
+        "ith",
+        "an",
+        "el",
+        "and",
+        "ow",
+        "",
+        "",
+        ""
+      ],
+      [
+        "mere",
+        "dale",
+        "wick",
+        "holm",
+        "ford",
+        "moor",
+        "reach",
+        "hollow",
+        "vale",
+        "crest",
+        "fell",
+        "gard",
+        "stead",
+        "thorn",
+        "wood",
+        "more",
+        "brook",
+        "spire",
+        "haven",
+        "watch",
+        "barrow",
+        "rest",
+        "mark",
+        "shade"
+      ]
+    ],
+    "adjectives": [
+      "Whispering",
+      "Ashen",
+      "Sunken",
+      "Shattered",
+      "Silent",
+      "Weeping",
+      "Gilded",
+      "Thorned",
+      "Howling",
+      "Drowned",
+      "Blighted",
+      "Starlit",
+      "Hollow",
+      "Crimson",
+      "Pale",
+      "Burning",
+      "Forgotten",
+      "Broken",
+      "Wandering",
+      "Restless",
+      "Golden",
+      "Moonlit",
+      "Bleak",
+      "Verdant",
+      "Iron",
+      "Lonely",
+      "Cursed",
+      "Singing"
+    ],
+    "landforms": {
+      "forest": [
+        "Wood",
+        "Woods",
+        "Weald",
+        "Grove",
+        "Thicket",
+        "Forest"
+      ],
+      "darkwood": [
+        "Darkwood",
+        "Gloom",
+        "Shadowwood",
+        "Wildwood",
+        "Tangles"
+      ],
+      "jungle": [
+        "Jungle",
+        "Tangle",
+        "Verdance",
+        "Wilds"
+      ],
+      "taiga": [
+        "Pines",
+        "Taiga",
+        "Firwood",
+        "Hollows"
+      ],
+      "plains": [
+        "Fields",
+        "Plains",
+        "Meadows",
+        "Downs",
+        "Leas",
+        "Heath"
+      ],
+      "desert": [
+        "Sands",
+        "Dunes",
+        "Wastes",
+        "Expanse"
+      ],
+      "badlands": [
+        "Badlands",
+        "Mesas",
+        "Scar",
+        "Canyons"
+      ],
+      "savanna": [
+        "Savanna",
+        "Steppe",
+        "Grasslands",
+        "Barrens"
+      ],
+      "frozen": [
+        "Tundra",
+        "Frostlands",
+        "Snowfields",
+        "Rime",
+        "Glacier"
+      ],
+      "mountains": [
+        "Peaks",
+        "Highlands",
+        "Crags",
+        "Heights",
+        "Spires"
+      ],
+      "swamp": [
+        "Fen",
+        "Marsh",
+        "Mire",
+        "Bog",
+        "Swamp"
+      ],
+      "water": [
+        "Coast",
+        "Shallows",
+        "Lakes",
+        "Strand",
+        "Isles"
+      ],
+      "blossom": [
+        "Vale",
+        "Gardens",
+        "Bloomwood",
+        "Glade"
+      ],
+      "mushroom": [
+        "Sporelands",
+        "Fungal Isles"
+      ],
+      "hills": [
+        "Hills",
+        "Wolds",
+        "Tors",
+        "Downs"
+      ]
+    },
+    "traits": {
+      "mana_rich": {
+        "name": "Mana-Rich",
+        "mc": "\u00a7b",
+        "desc": "+30% mana regeneration",
+        "land": []
+      },
+      "ley_line": {
+        "name": "Ley Line",
+        "mc": "\u00a7d",
+        "desc": "+10% spell power",
+        "land": []
+      },
+      "wild_magic": {
+        "name": "Wild Magic",
+        "mc": "\u00a75",
+        "desc": "spells may surge (free, or cast twice) - or misfire",
+        "land": []
+      },
+      "haunted": {
+        "name": "Haunted",
+        "mc": "\u00a78",
+        "desc": "Hollow Knights and wraiths walk at night; ghost lights drift",
+        "land": [
+          "darkwood",
+          "swamp",
+          "taiga",
+          "plains",
+          "frozen"
+        ]
+      },
+      "bandit_country": {
+        "name": "Bandit Country",
+        "mc": "\u00a7c",
+        "desc": "bandits roam and ambush travellers",
+        "land": [
+          "plains",
+          "savanna",
+          "desert",
+          "badlands",
+          "hills"
+        ]
+      },
+      "devil_scarred": {
+        "name": "Devil-Scarred",
+        "mc": "\u00a74",
+        "desc": "imps lurk, and Devil Gates tear open more often",
+        "land": [
+          "badlands",
+          "desert",
+          "darkwood",
+          "swamp"
+        ]
+      },
+      "wyvern_lands": {
+        "name": "Wyvern Territory",
+        "mc": "\u00a72",
+        "desc": "wyverns roost in the heights and hunt overhead",
+        "land": [
+          "mountains",
+          "badlands",
+          "desert",
+          "frozen",
+          "hills",
+          "savanna"
+        ]
+      },
+      "fae_wilds": {
+        "name": "Fae Wilds",
+        "mc": "\u00a7a",
+        "desc": "sprites dance in fairy rings - mischievous, and generous",
+        "land": [
+          "forest",
+          "blossom",
+          "plains",
+          "jungle",
+          "mushroom"
+        ]
+      },
+      "ancient": {
+        "name": "Ancient Ruins",
+        "mc": "\u00a76",
+        "desc": "the old kingdom's spires, crypts and obelisks lie thick here",
+        "land": []
+      },
+      "sanctuary": {
+        "name": "Sanctuary",
+        "mc": "\u00a7f",
+        "desc": "a quiet land: no ambushes, and wanderers come here to rest",
+        "land": [
+          "plains",
+          "blossom",
+          "forest"
+        ]
+      },
+      "treasure": {
+        "name": "Hoard-Rich",
+        "mc": "\u00a7e",
+        "desc": "treasure maps and journals that mark buried caches turn up far more often",
+        "land": [
+          "desert",
+          "water",
+          "badlands"
+        ]
+      },
+      "untamed": {
+        "name": "Untamed",
+        "mc": "\u00a74",
+        "desc": "elites are twice as common - and drop better loot",
+        "land": [
+          "jungle",
+          "darkwood",
+          "mountains",
+          "frozen"
+        ]
+      }
+    },
+    "lore": {
+      "mana_rich": [
+        "The air of {name} hums; even the grass glitters with spent mana.",
+        "Old mages came to {name} to drink the ley-wells dry. They never could."
+      ],
+      "ley_line": [
+        "A ley line runs under {name}. Spells cast here leave scorch-marks on the sky.",
+        "Grimoires flutter open by themselves in {name}."
+      ],
+      "wild_magic": [
+        "Magic misbehaves in {name}. Locals cast their spells twice, or not at all.",
+        "In {name} the wind sometimes tastes of lightning."
+      ],
+      "haunted": [
+        "Knights fell by the hundred in {name}. Some of them still keep watch.",
+        "Nobody lights a fire in {name} after dark. The lights come anyway."
+      ],
+      "bandit_country": [
+        "{name} belongs to whoever holds the road. Today that is the Brotherhood.",
+        "Travellers cross {name} in convoys, or not at all."
+      ],
+      "devil_scarred": [
+        "Something tore through {name} long ago. The scars still smoke.",
+        "Imps nest in the cracks of {name}, waiting for the next gate."
+      ],
+      "wyvern_lands": [
+        "Shadows cross {name} at noon - wyverns, circling their hoards.",
+        "Shepherds in {name} count their flocks twice a day, and still come up short."
+      ],
+      "fae_wilds": [
+        "Sprites dance in the rings of {name}. Bring something shiny.",
+        "Paths in {name} lead somewhere different each time you walk them."
+      ],
+      "ancient": [
+        "The old kingdom built its spires in {name}, and its dead lie beneath them.",
+        "Every stone in {name} remembers a spell."
+      ],
+      "sanctuary": [
+        "{name} is a quiet country. Wanderers come here to rest their feet.",
+        "Even the wolves of {name} seem tired of fighting."
+      ],
+      "treasure": [
+        "They say {name} is paved with buried gold, if you know where to dig.",
+        "Every fool with a map ends up in {name} sooner or later."
+      ],
+      "untamed": [
+        "Nothing in {name} has ever been tamed - least of all its monsters.",
+        "The beasts of {name} grow strong on the bones of knights."
+      ]
+    },
+    "landmarks": {
+      "spire": {
+        "name": "Mage Spire",
+        "weight": 6,
+        "land": "*",
+        "stars": 2,
+        "master": "bc:spire_warden",
+        "desc": "a five-floor tower of the old kingdom - each floor guarded, the Spire Warden waiting at the top"
+      },
+      "roost": {
+        "name": "Wyvern Roost",
+        "weight": 6,
+        "land": [
+          "mountains",
+          "badlands",
+          "desert",
+          "frozen",
+          "hills",
+          "savanna",
+          "taiga"
+        ],
+        "stars": 2,
+        "master": "wyvern",
+        "desc": "a nest of bones and gold where a Mana Wyvern (Ember, Frost or Storm) sleeps on its hoard"
+      },
+      "catacombs": {
+        "name": "Ancient Catacombs",
+        "weight": 6,
+        "land": "*",
+        "stars": 1,
+        "master": "bc:dungeon_golem",
+        "desc": "a stair down into a maze of crypts - every one different - with a guardian at its heart"
+      },
+      "hamlet": {
+        "name": "Ruined Hamlet",
+        "weight": 9,
+        "land": [
+          "plains",
+          "forest",
+          "savanna",
+          "taiga",
+          "hills",
+          "blossom",
+          "frozen"
+        ],
+        "stars": 1,
+        "master": "",
+        "desc": "a village nobody lives in any more - some are empty, some are not"
+      },
+      "graveyard": {
+        "name": "Old Graveyard",
+        "weight": 8,
+        "land": "*",
+        "stars": 1,
+        "master": "bc:hollow_knight",
+        "desc": "tombstones, a crypt, and the Hollow who rise from it at night"
+      },
+      "obelisk": {
+        "name": "Mana Obelisk",
+        "weight": 7,
+        "land": "*",
+        "stars": 1,
+        "master": "",
+        "desc": "an ancient obelisk that answers a prayer with a boon - or a curse"
+      },
+      "fairy_ring": {
+        "name": "Fairy Ring",
+        "weight": 6,
+        "land": [
+          "forest",
+          "blossom",
+          "plains",
+          "jungle",
+          "mushroom",
+          "darkwood",
+          "taiga"
+        ],
+        "stars": 1,
+        "master": "",
+        "desc": "a ring of mushrooms where sprites bargain - your offering for a random gift"
+      },
+      "watchtower": {
+        "name": "Ruined Watchtower",
+        "weight": 7,
+        "land": "*",
+        "stars": 1,
+        "master": "",
+        "desc": "a broken Magic Knight watchtower, now held by bandits - with a mana spawner"
+      },
+      "caravan": {
+        "name": "Wrecked Caravan",
+        "weight": 7,
+        "land": [
+          "plains",
+          "savanna",
+          "desert",
+          "badlands",
+          "forest",
+          "hills"
+        ],
+        "stars": 1,
+        "master": "",
+        "desc": "a broken cart and scattered cargo - and maybe the bandits who broke it"
+      },
+      "crater": {
+        "name": "Star Crater",
+        "weight": 5,
+        "land": "*",
+        "stars": 1,
+        "master": "",
+        "desc": "where a star fell long ago: mana crystals, a Star Fragment, and something guarding them"
+      },
+      "skeleton": {
+        "name": "Colossal Bones",
+        "weight": 5,
+        "land": [
+          "desert",
+          "badlands",
+          "savanna",
+          "plains",
+          "frozen",
+          "hills"
+        ],
+        "stars": 1,
+        "master": "",
+        "desc": "the bones of something enormous, with a treasure hidden in its skull"
+      },
+      "battlefield": {
+        "name": "Forgotten Battlefield",
+        "weight": 5,
+        "land": [
+          "plains",
+          "savanna",
+          "hills",
+          "taiga",
+          "frozen",
+          "badlands"
+        ],
+        "stars": 2,
+        "master": "",
+        "desc": "old banners and broken grimoires where two armies died - the Hollow still fight here at night"
+      },
+      "lost_waygate": {
+        "name": "Lost Waygate",
+        "weight": 5,
+        "land": "*",
+        "stars": 1,
+        "master": "",
+        "desc": "a ruined Mana Waygate of the old kingdom - touch it to add it to the network"
+      },
+      "witch_hut": {
+        "name": "Hedge Witch Hut",
+        "weight": 5,
+        "land": [
+          "swamp",
+          "darkwood",
+          "forest",
+          "taiga",
+          "jungle"
+        ],
+        "stars": 1,
+        "master": "",
+        "desc": "a stilt hut where a hedge witch lives - a trader, or a curse"
+      }
+    },
+    "landmarkBase": 2,
+    "landmarkPerStar": 0.6,
+    "wyverns": {
+      "ember_wyvern": {
+        "name": "Ember Wyvern",
+        "attr": "flame",
+        "color": "ff7a2a",
+        "breath": "fire",
+        "land": [
+          "desert",
+          "badlands",
+          "savanna"
+        ]
+      },
+      "frost_wyvern": {
+        "name": "Frost Wyvern",
+        "attr": "ice",
+        "color": "8ae6ff",
+        "breath": "freeze",
+        "land": [
+          "frozen",
+          "taiga",
+          "mountains"
+        ]
+      },
+      "storm_wyvern": {
+        "name": "Storm Wyvern",
+        "attr": "lightning",
+        "color": "ffe03a",
+        "breath": "shock",
+        "land": [
+          "hills",
+          "mountains",
+          "plains",
+          "forest",
+          "jungle"
+        ]
+      }
+    },
+    "encounters": {
+      "chop": {
+        "chance": 0.004,
+        "id": "bc:rootwarden",
+        "msg": "\u00a72The tree groans... a Rootwarden tears itself free of the bark!"
+      },
+      "mine": {
+        "chance": 0.002,
+        "id": "bc:mana_wraith",
+        "msg": "\u00a77The rock splits open - a Mana Wraith seeps out of the stone!"
+      },
+      "grass": {
+        "chance": 0.0015,
+        "id": "bc:mana_sprite",
+        "msg": "\u00a7aSomething giggles in the grass..."
+      },
+      "bed": {
+        "chance": 0.05,
+        "id": "bc:hollow_knight",
+        "msg": "\u00a78You wake with a start. A Hollow Knight stands over your bed."
+      },
+      "mimic": {
+        "chance": 0.12,
+        "id": "bc:mimic",
+        "msg": "\u00a7cThe chest has TEETH!"
+      },
+      "wraith": {
+        "chance": 0.03,
+        "id": "bc:mana_wraith",
+        "msg": "\u00a78Its spirit will not rest..."
+      }
+    },
+    "omenChance": 0.6,
+    "omens": {
+      "mana_tide": {
+        "name": "Mana Tide",
+        "mc": "\u00a7b",
+        "desc": "The ley lines swell: +25% mana regeneration for everyone today."
+      },
+      "wild_surge": {
+        "name": "Wild Surge",
+        "mc": "\u00a7d",
+        "desc": "Magic runs wild today: spells may surge, or misfire, anywhere."
+      },
+      "starfall": {
+        "name": "Starfall",
+        "mc": "\u00a7e",
+        "desc": "Stars will fall tonight. Find where they land - each leaves a Star Fragment."
+      },
+      "hollow_night": {
+        "name": "Hollow Night",
+        "mc": "\u00a78",
+        "desc": "The Hollow walk tonight: fallen knights rise across the land."
+      },
+      "wyvern_migration": {
+        "name": "Wyvern Migration",
+        "mc": "\u00a72",
+        "desc": "Wyverns are on the wing today. Watch the skies."
+      },
+      "merchants_fair": {
+        "name": "Merchants' Fair",
+        "mc": "\u00a76",
+        "desc": "Wanderers are on every road, and the merchant sells for 20% less."
+      },
+      "bandit_moon": {
+        "name": "Bandit Moon",
+        "mc": "\u00a7c",
+        "desc": "Bandits are bold today - and their purses are heavy."
+      },
+      "fae_revel": {
+        "name": "Fae Revel",
+        "mc": "\u00a7a",
+        "desc": "The fae are generous today: fairy-ring bargains favour you."
+      },
+      "calm": {
+        "name": "Calm Skies",
+        "mc": "\u00a7f",
+        "desc": "A quiet day: no ambushes, and wounds heal faster."
+      },
+      "lucky_stars": {
+        "name": "Lucky Stars",
+        "mc": "\u00a76",
+        "desc": "Fortune smiles: loot is far likelier to roll a rarer item today."
+      }
+    },
+    "wanderers": {
+      "pilgrim": {
+        "title": "Pilgrim",
+        "desc": "walks from shrine to shrine and knows every road",
+        "look": 0
+      },
+      "cartographer": {
+        "title": "Cartographer",
+        "desc": "sells Explorer's Maps to the landmarks nobody has found",
+        "look": 1
+      },
+      "peddler": {
+        "title": "Peddler",
+        "desc": "trades odd goods - and now and then a relic",
+        "look": 2
+      },
+      "hermit": {
+        "title": "Hermit Mage",
+        "desc": "knows the old magic and sells spell scrolls",
+        "look": 3
+      },
+      "bard": {
+        "title": "Bard",
+        "desc": "trades in tales - true ones point the way to treasure",
+        "look": 4
+      },
+      "lost_knight": {
+        "title": "Lost Knight",
+        "desc": "a Magic Knight far from their squad, who may join yours",
+        "look": 5
+      }
+    },
+    "wandererFirst": [
+      "Oswin",
+      "Maren",
+      "Tobiah",
+      "Ilse",
+      "Corwin",
+      "Nell",
+      "Fenwick",
+      "Ysolde",
+      "Barnaby",
+      "Wren",
+      "Ambrose",
+      "Tilda",
+      "Garrow",
+      "Liesel",
+      "Quill",
+      "Rosamund",
+      "Hob",
+      "Edda",
+      "Percival",
+      "Saffi"
+    ],
+    "wandererEpithet": [
+      "the Wanderer",
+      "of the Long Road",
+      "Two-Boots",
+      "the Grey",
+      "Lightfoot",
+      "the Unlucky",
+      "of Nowhere in Particular",
+      "Mapmaker",
+      "the Patient",
+      "Sixpence",
+      "the Last of Their Squad",
+      "Old Lantern"
+    ],
+    "greetings": {
+      "pilgrim": [
+        "Peace on your road, friend.",
+        "I have walked from the Noble Realm on these feet. Ask me anything."
+      ],
+      "cartographer": [
+        "Maps! Maps to places nobody has found yet!",
+        "Every blank on my map is a fortune, if you are brave."
+      ],
+      "peddler": [
+        "Buttons, buckles, the odd cursed ring - what'll it be?",
+        "Fell off a cart. Several carts, actually."
+      ],
+      "hermit": [
+        "Hm. A grimoire. Not a bad one, either.",
+        "I left the Capital to read in peace. Then people kept finding me."
+      ],
+      "bard": [
+        "Sit! A tale for a doubloon, a true one for two.",
+        "I have a song about a wyvern. It ends badly for the knight."
+      ],
+      "lost_knight": [
+        "My squad... we were scattered. Have you seen a camp?",
+        "I have not slept in three days. Is it over? Did we win?"
+      ]
+    },
+    "rumors": [
+      "There is a {what} to the {dir}, {dist} blocks or so. I would not go alone.",
+      "Folk in {region} whisper about a {what} out {dir}. About {dist} blocks.",
+      "I passed a {what} to the {dir}, maybe {dist} blocks back. Something watched me the whole way.",
+      "If it is treasure you want, try the {what} {dist} blocks {dir} of here.",
+      "Do not go {dir}. There is a {what} out there, {dist} blocks off, and nobody comes back the same."
+    ],
+    "fetch": [
+      [
+        "minecraft:bread",
+        4,
+        8
+      ],
+      [
+        "bc:mana_crystal",
+        5,
+        10
+      ],
+      [
+        "minecraft:iron_ingot",
+        4,
+        8
+      ],
+      [
+        "minecraft:leather",
+        3,
+        6
+      ],
+      [
+        "bc:sprite_dust",
+        2,
+        4
+      ],
+      [
+        "bc:hollow_ember",
+        2,
+        4
+      ],
+      [
+        "minecraft:cooked_beef",
+        4,
+        8
+      ],
+      [
+        "bc:doubloon",
+        20,
+        40
+      ],
+      [
+        "minecraft:torch",
+        16,
+        32
+      ],
+      [
+        "bc:rune_shard",
+        1,
+        3
+      ],
+      [
+        "minecraft:book",
+        2,
+        4
+      ],
+      [
+        "bc:mimic_tooth",
+        1,
+        1
+      ]
+    ],
+    "journals": [
+      "Day {day}. We made camp in {region}. {name} swears the {what} to the {dir} still holds its treasure. We go at first light.",
+      "If you read this, do not climb the {what}. Whatever waits at the top does not sleep, and it does not forget.",
+      "The road from {other} was long. {name} is gone - taken in the night, near the {what}. I am writing this so someone knows.",
+      "Note to self: the sprites of {region} want shiny things. Bring something shiny. Do NOT bring something you love.",
+      "Squad orders: hold the {what} until relieved. That was forty days ago. Nobody has come.",
+      "The merchant swore this map was real. If it is, the {what} is {dist} blocks {dir} of {region}.",
+      "{name} found a grimoire in the dirt today, burned at the edges. It still turned its own pages.",
+      "They say a wyvern sleeps on a bed of gold somewhere in the heights. They say a lot of things."
+    ],
+    "cacheJournals": [
+      "We buried our pay {dist} paces {dir} of this spot, under the old stone. If I do not come back, {name}, it is yours.",
+      "Hid the sack {dist} paces to the {dir}. Mark it in your head; never on paper. ...I wrote it on paper.",
+      "The captain's purse is buried {dist} paces {dir} of here. The captain does not need it any more."
+    ],
+    "items": {
+      "explorer_map": {
+        "name": "\u00a76Explorer's Map",
+        "desc": "Leads you to a landmark nobody has found. Hold it to follow the arrow."
+      },
+      "journal_page": {
+        "name": "\u00a7fTorn Journal Page",
+        "desc": "Read it: a page of someone's story. Some mark a buried cache."
+      },
+      "star_fragment": {
+        "name": "\u00a7eStar Fragment",
+        "desc": "A shard of a fallen star. Reforges Epic and better relics and weapons."
+      },
+      "sprite_dust": {
+        "name": "\u00a7aSprite Dust",
+        "desc": "Glittering dust shed by Mana Sprites. Used to reforge relics and weapons."
+      },
+      "mimic_tooth": {
+        "name": "\u00a7cMimic Tooth",
+        "desc": "A tooth from a chest that bit back. Merchants pay well for them."
+      },
+      "hollow_ember": {
+        "name": "\u00a78Hollow Ember",
+        "desc": "The last spark of a Hollow Knight's grimoire. Wanderers collect them."
+      },
+      "spire_core": {
+        "name": "\u00a7bSpire Core",
+        "desc": "The heart of a Spire Warden. Use it to raise a Mana Waygate in an instant."
+      }
+    },
+    "mimicToothPrice": 45
+  },
+  "loot": {
+    "rarities": [
+      {
+        "id": "common",
+        "name": "Common",
+        "mc": "\u00a7f",
+        "weight": 50,
+        "affixes": 1,
+        "power": 1.0
+      },
+      {
+        "id": "uncommon",
+        "name": "Uncommon",
+        "mc": "\u00a7a",
+        "weight": 28,
+        "affixes": 1,
+        "power": 1.35
+      },
+      {
+        "id": "rare",
+        "name": "Rare",
+        "mc": "\u00a79",
+        "weight": 14,
+        "affixes": 2,
+        "power": 1.7
+      },
+      {
+        "id": "epic",
+        "name": "Epic",
+        "mc": "\u00a75",
+        "weight": 6,
+        "affixes": 2,
+        "power": 2.1
+      },
+      {
+        "id": "legendary",
+        "name": "Legendary",
+        "mc": "\u00a76",
+        "weight": 1.8,
+        "affixes": 3,
+        "power": 2.7
+      },
+      {
+        "id": "mythic",
+        "name": "Mythic",
+        "mc": "\u00a7c",
+        "weight": 0.2,
+        "affixes": 4,
+        "power": 3.4
+      }
+    ],
+    "starShift": 0.28,
+    "relics": {
+      "relic_ring": {
+        "name": "Signet Ring",
+        "desc": "a ring cut with an old house's sigil",
+        "favour": [
+          "mana",
+          "regen",
+          "power",
+          "scholar"
+        ]
+      },
+      "relic_talisman": {
+        "name": "Rune Talisman",
+        "desc": "a stone tablet humming with a single rune",
+        "favour": [
+          "haste",
+          "ward",
+          "guard",
+          "mana"
+        ]
+      },
+      "relic_idol": {
+        "name": "Bone Idol",
+        "desc": "a little carved idol of a forgotten god",
+        "favour": [
+          "vigor",
+          "thorns",
+          "leech",
+          "guard"
+        ]
+      },
+      "relic_eye": {
+        "name": "Crystal Eye",
+        "desc": "a crystal that sees in the dark",
+        "favour": [
+          "sight",
+          "luck",
+          "power",
+          "fortune"
+        ]
+      },
+      "relic_fang": {
+        "name": "Wyvern Fang",
+        "desc": "a fang that is still warm",
+        "favour": [
+          "might",
+          "leech",
+          "ember",
+          "thorns"
+        ]
+      },
+      "relic_feather": {
+        "name": "Spirit Feather",
+        "desc": "a feather lighter than air",
+        "favour": [
+          "swift",
+          "leap",
+          "gills",
+          "regen"
+        ]
+      }
+    },
+    "relicSlots": 3,
+    "relicAffixes": {
+      "mana": {
+        "label": "+{v} max mana",
+        "base": 8,
+        "flag": false
+      },
+      "regen": {
+        "label": "+{v}% mana regeneration",
+        "base": 6,
+        "flag": false
+      },
+      "power": {
+        "label": "+{v}% spell power",
+        "base": 4,
+        "flag": false
+      },
+      "haste": {
+        "label": "-{v}% spell cooldowns",
+        "base": 3,
+        "flag": false
+      },
+      "vigor": {
+        "label": "+{v} max health",
+        "base": 2,
+        "flag": false
+      },
+      "ward": {
+        "label": "-{v}% damage from spells",
+        "base": 4,
+        "flag": false
+      },
+      "guard": {
+        "label": "-{v}% damage taken",
+        "base": 2,
+        "flag": false
+      },
+      "thorns": {
+        "label": "melee attackers take {v} damage",
+        "base": 1,
+        "flag": false
+      },
+      "leech": {
+        "label": "heal {v}% of melee damage dealt",
+        "base": 3,
+        "flag": false
+      },
+      "might": {
+        "label": "+{v}% melee damage",
+        "base": 5,
+        "flag": false
+      },
+      "luck": {
+        "label": "+{v}% chance of extra loot",
+        "base": 6,
+        "flag": false
+      },
+      "scholar": {
+        "label": "+{v}% magic XP",
+        "base": 5,
+        "flag": false
+      },
+      "fortune": {
+        "label": "+{v}% doubloons found",
+        "base": 8,
+        "flag": false
+      },
+      "swift": {
+        "label": "Swiftness",
+        "base": 1,
+        "flag": true
+      },
+      "leap": {
+        "label": "Jump Boost",
+        "base": 1,
+        "flag": true
+      },
+      "sight": {
+        "label": "Night Vision",
+        "base": 1,
+        "flag": true
+      },
+      "gills": {
+        "label": "Water Breathing",
+        "base": 1,
+        "flag": true
+      },
+      "ember": {
+        "label": "Fire Resistance",
+        "base": 1,
+        "flag": true
+      }
+    },
+    "weaponAffixes": {
+      "sharp": {
+        "label": "+{v}% damage",
+        "base": 6
+      },
+      "burning": {
+        "label": "sets foes ablaze ({v}s)",
+        "base": 2
+      },
+      "frost": {
+        "label": "{v}% chance to freeze",
+        "base": 12
+      },
+      "storm": {
+        "label": "{v}% chance to call lightning",
+        "base": 5
+      },
+      "vampiric": {
+        "label": "heal {v}% of damage dealt",
+        "base": 4
+      },
+      "mana_thirst": {
+        "label": "+{v} mana per hit",
+        "base": 2
+      },
+      "executioner": {
+        "label": "+{v}% damage below 30% health",
+        "base": 15
+      },
+      "giantslayer": {
+        "label": "+{v}% damage to bosses and elites",
+        "base": 10
+      },
+      "cleave": {
+        "label": "cleaves a nearby foe for {v}%",
+        "base": 25
+      },
+      "quick": {
+        "label": "Haste while held",
+        "base": 1
+      }
+    },
+    "weaponBases": {
+      "common": [
+        "minecraft:stone_sword",
+        "minecraft:iron_sword",
+        "minecraft:stone_axe"
+      ],
+      "uncommon": [
+        "minecraft:iron_sword",
+        "minecraft:iron_axe"
+      ],
+      "rare": [
+        "minecraft:iron_sword",
+        "minecraft:iron_axe",
+        "minecraft:diamond_sword"
+      ],
+      "epic": [
+        "minecraft:diamond_sword",
+        "minecraft:diamond_axe"
+      ],
+      "legendary": [
+        "minecraft:diamond_sword",
+        "minecraft:diamond_axe",
+        "minecraft:netherite_sword"
+      ],
+      "mythic": [
+        "minecraft:netherite_sword",
+        "minecraft:netherite_axe"
+      ]
+    },
+    "prefix": {
+      "mana": "Arcane",
+      "regen": "Flowing",
+      "power": "Empowered",
+      "haste": "Quickened",
+      "vigor": "Hale",
+      "ward": "Warding",
+      "guard": "Stalwart",
+      "thorns": "Thorned",
+      "leech": "Thirsting",
+      "might": "Mighty",
+      "luck": "Lucky",
+      "scholar": "Learned",
+      "fortune": "Gilded",
+      "swift": "Swift",
+      "leap": "Bounding",
+      "sight": "Watchful",
+      "gills": "Tidal",
+      "ember": "Emberproof",
+      "sharp": "Keen",
+      "burning": "Burning",
+      "frost": "Frozen",
+      "storm": "Thundering",
+      "vampiric": "Vampiric",
+      "mana_thirst": "Mana-Drinking",
+      "executioner": "Merciless",
+      "giantslayer": "Giant-Felling",
+      "cleave": "Cleaving",
+      "quick": "Hasty"
+    },
+    "suffix": [
+      "of the Wyvern",
+      "of Embers",
+      "of the Hollow",
+      "of Ley Lines",
+      "of the Fae",
+      "of the Old Kingdom",
+      "of Stars",
+      "of the Marches",
+      "of Dawn",
+      "of the Deep",
+      "of Ashes",
+      "of the Spire",
+      "of Thorns",
+      "of the Moon",
+      "of the Lost Squad",
+      "of Tides"
+    ],
+    "legendSyllables": [
+      [
+        "Vel",
+        "Mor",
+        "Ash",
+        "Kael",
+        "Ser",
+        "Thra",
+        "Ul",
+        "Ys",
+        "Dra",
+        "Cor",
+        "Nym",
+        "Zeph",
+        "Rhae",
+        "Ost"
+      ],
+      [
+        "mora",
+        "ith",
+        "andel",
+        "yra",
+        "oth",
+        "iel",
+        "ane",
+        "orn",
+        "essa",
+        "ion",
+        "ar",
+        "uin"
+      ]
+    ],
+    "epithets": [
+      "the Ashen Promise",
+      "Last Light of the Spire",
+      "the Unbroken Oath",
+      "Whisper of the Deep",
+      "the Wyvern's Due",
+      "Bane of the Hollow",
+      "the Starfallen",
+      "Keeper of Ley Lines",
+      "the Queen's Regret",
+      "the Seventh Leaf",
+      "Song of the Marches",
+      "the Gravewarden",
+      "the Thousandth Spell",
+      "Heart of the Old Kingdom"
+    ],
+    "reforge": {
+      "common": [
+        2,
+        0,
+        0
+      ],
+      "uncommon": [
+        4,
+        0,
+        0
+      ],
+      "rare": [
+        6,
+        1,
+        0
+      ],
+      "epic": [
+        10,
+        2,
+        1
+      ],
+      "legendary": [
+        16,
+        3,
+        2
+      ],
+      "mythic": [
+        24,
+        4,
+        3
+      ]
+    }
+  },
+  "eliteTiers": [
+    {
+      "id": "elite",
+      "name": "Elite",
+      "mc": "\u00a76",
+      "affixes": 1,
+      "boost": 2
+    },
+    {
+      "id": "champion",
+      "name": "Champion",
+      "mc": "\u00a7e",
+      "affixes": 2,
+      "boost": 4
+    },
+    {
+      "id": "infernal",
+      "name": "Infernal",
+      "mc": "\u00a7c",
+      "affixes": 3,
+      "boost": 7
+    }
+  ],
+  "eliteTierChance": {
+    "champion": 0.22,
+    "infernal": 0.05
+  },
+  "eliteStarBonus": 0.012,
   "companion": {
     "xp": [
       0,

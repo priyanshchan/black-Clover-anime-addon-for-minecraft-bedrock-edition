@@ -13,8 +13,14 @@
     "bc_magic_forge": {
       "textures": "textures/blocks/bc/magic_forge"
     },
+    "bc_mana_spawner": {
+      "textures": "textures/blocks/bc/mana_spawner"
+    },
     "bc_mission_board": {
       "textures": "textures/blocks/bc/mission_board"
+    },
+    "bc_obelisk_core": {
+      "textures": "textures/blocks/bc/obelisk_core"
     },
     "bc_squad_banner": {
       "textures": "textures/blocks/bc/squad_banner"

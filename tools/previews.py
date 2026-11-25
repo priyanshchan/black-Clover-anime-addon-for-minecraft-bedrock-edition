@@ -836,9 +836,49 @@ def strip_codes(t):
     return re.sub('\u00a7.', '', t)
 
 
+def v11_sheet():
+    """v1.1.0: the Untamed Kingdom - Mana Wyverns, the Spire Warden, the Mimic, sprites, wisps, the Rootwarden, the Hollow and wanderers."""
+    from bc.models import v11
+    e = []
+    wa = v11.wyvern_animations()
+    for kind, label in (('ember_wyvern', 'Ember Wyvern'), ('frost_wyvern', 'Frost Wyvern'), ('storm_wyvern', 'Storm Wyvern')):
+        pose = {}
+        render.pose_from_anim(wa['animation.bc.wyvern.fly'], 0.2 if kind != 'frost_wyvern' else 0.45, pose=pose)
+        if kind == 'storm_wyvern':
+            render.pose_from_anim(wa['animation.bc.wyvern.breath'], 0.7, pose=pose)
+        e.append((label, model(v11.wyvern_geo(kind)), pose, 35, 22, 1.05))
+    pose = {}
+    render.pose_from_anim(wa['animation.bc.wyvern.sleep'], 0.3, pose=pose)
+    e.append(('Asleep on its hoard', model(v11.wyvern_geo('ember_wyvern')), pose, 40, 25, 1.1))
+    pose = {}
+    render.pose_from_anim(v11.warden_animations()['animation.bc.spire_warden.idle'], 0.3, pose=pose)
+    e.append(('The Spire Warden', model(v11.warden_geo()), pose, 30, 12, 1.2))
+    pose = {}
+    render.pose_from_anim(v11.mimic_animations()['animation.bc.mimic.attack'], 0.15, pose=pose)
+    e.append(('Mimic', model(v11.mimic_geo()), pose, 35, 20, 1.6))
+    pose = {}
+    render.pose_from_anim(v11.sprite_animations()['animation.bc.mana_sprite.fly'], 0.31, pose=pose)
+    e.append(('Mana Sprite', model(v11.sprite_geo()), pose, 30, 10, 1.6))
+    pose = {}
+    render.pose_from_anim(v11.wisp_animations()['animation.bc.wisp.float'], 0.3, pose=pose)
+    e.append(('Will-o\'-Wisp', model(v11.wisp_geo()), pose, 30, 10, 1.8))
+    pose = {}
+    render.pose_from_anim(v11.rootwarden_animations()['animation.bc.rootwarden.attack'], 0.3, pose=pose)
+    e.append(('Rootwarden', model(v11.rootwarden_geo()), pose, 30, 10, 1.3))
+    pose = {}
+    render.pose_from_anim(v11.hollow_knight_animations()['animation.bc.hollow_knight.cast'], 0.4, pose=pose)
+    e.append(('Hollow Knight', model(v11.hollow_knight_geo()), pose, 30, 10, 1.5))
+    wan = v11.wanderer_animations()
+    for i, label in ((1, 'Wanderer: Cartographer'), (4, 'Wanderer: Bard')):
+        pose = {}
+        render.pose_from_anim(wan['animation.bc.wanderer.idle'], 0.3, pose=pose)
+        e.append((label, model(v11.wanderer_geo(i)), pose, 30 if i == 1 else -30, 10, 1.5))
+    grid(e, 4, 300, 'v110.png', 'v1.1.0: the Untamed Kingdom')
+
+
 if __name__ == '__main__':
     names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
-                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet', 'v9_sheet', 'vfx_sheet', 'v10_sheet']
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet', 'v9_sheet', 'vfx_sheet', 'v10_sheet', 'v11_sheet']
     for n in names:
         print('rendering', n)
         globals()[n]()

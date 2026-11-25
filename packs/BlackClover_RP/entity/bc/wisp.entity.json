@@ -1,0 +1,32 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:wisp",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/wisp"
+      },
+      "geometry": {
+        "default": "geometry.bc.wisp"
+      },
+      "animations": {
+        "float": "animation.bc.wisp.float"
+      },
+      "scripts": {
+        "animate": [
+          "float"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#4a9ad0",
+        "overlay_color": "#f0fbff"
+      }
+    }
+  }
+}

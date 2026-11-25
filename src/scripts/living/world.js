@@ -31,6 +31,7 @@ import { setupRogue } from './rogues.js';
 import { POWERS, RIVAL, news, onOffensive, powerMul, shift } from './worldsim.js';
 import { spawnCaptain } from '../sea/captains.js';
 import { setCompassProvider } from '../core/hud.js';
+import { traitsAt } from './regions.js';
 
 const KEY = 'bc:incidents';
 const MAX_ACTIVE = 7;
@@ -890,7 +891,11 @@ export function direct(p) {
     if (pool.length && runEvent(p, pick(pool))) return true;
   }
   const kinds = Object.entries(KINDS).filter(([k, K]) => K.w > 0 && (!K.ok || K.ok(p)) && !incidents().some((i) => i.kind === k));
-  const weight = ([, K]) => K.w * (K.f && POWERS.includes(K.f) ? powerMul(K.f) : 1);
+  // v1.1.0: the land has a say - Devil-Scarred regions tear open more gates, Bandit Country sends more raids and caravans
+  const traits = traitsAt(p.location);
+  const LAND = { devil_gate: traits.includes('devil_scarred') ? 2.5 : 1, devil_ritual: traits.includes('devil_scarred') ? 1.8 : 1,
+    bandit_raid: traits.includes('bandit_country') ? 2 : 1, caravan: traits.includes('bandit_country') ? 1.5 : 1 };
+  const weight = ([k, K]) => K.w * (K.f && POWERS.includes(K.f) ? powerMul(K.f) : 1) * (LAND[k] ?? 1);
   let r = Math.random() * kinds.reduce((s, e) => s + weight(e), 0);
   for (const e of kinds) {
     r -= weight(e);
