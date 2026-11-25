@@ -585,6 +585,13 @@ function approach(p, rec) {
       safe(() => (e.nameTag = `${K.mc}§l${K.commander}§r ${String(e.nameTag).replace(/^[^(]*/, '§7')}`));
       for (const q of dim.getPlayers({ location: p.location, maxDistance: 32 })) title(q, `${K.mc}§l${K.commander.toUpperCase()}`, `§7The ${K.name} holds this fort`, 60);
     }
+  } else if (rec.kind === 'underworld_breach' && mark && !boss && dist3(p.location, mark) < 16) {
+    // v1.3.0: the Crowned Vessel stands in the rift
+    const e = spawnMaster(dim, rec, 'bc:crowned_vessel', mark, { up: 0.2 });
+    if (e) {
+      particle(dim, 'bc:magic_circle_dark', { x: mark[0] + 0.5, y: mark[1] + 0.1, z: mark[2] + 0.5 }, { size: 5, life: 1.5, color: rgb('ff2a4a') });
+      for (const q of dim.getPlayers({ location: p.location, maxDistance: 40 })) title(q, '§4§lTHE CROWNED VESSEL', '§7It has been waiting for you', 70);
+    }
   } else if (rec.kind === 'catacombs' && mark && !boss && dist3(p.location, mark) < 14) {
     const e = spawnMaster(dim, rec, 'bc:dungeon_golem', mark, { up: 0.2 });
     if (e) title(p, '§6§lTHE GUARDIAN WAKES', '§7The catacombs\' heart will not let you leave with its gold', 60);

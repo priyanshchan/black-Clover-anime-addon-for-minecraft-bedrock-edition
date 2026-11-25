@@ -902,9 +902,31 @@ def v12_sheet():
     grid(e, 5, 280, 'v120.png', 'v1.2.0: Dragonbound & Kingdoms')
 
 
+def v13_sheet():
+    """v1.3.0: Devil Union - a devil host at 0%, 50% and 100% union, the four mid-rank devils' hosts, the Crowned Vessel."""
+    from bc.models import v13
+    e = []
+    ha = v13.host_animations()
+    for stage, label in ((0, 'A host, 0% union'), (1, 'Vharog, 50% union'), (2, 'Vharog, 100% union')):
+        pose = {}
+        render.pose_from_anim(ha['animation.bc.devil_host.cast'], 0.3, pose=pose)
+        e.append((label, model(v13.devil_host_geo('vharog', upto=stage)), pose, 30, 12 if stage < 2 else 20, 1.5 if stage < 2 else 1.25))
+    for d, label in (('sileth', 'Sileth (100%)'), ('morvane', 'Morvane (100%)'), ('ghorza', 'Ghorza (100%)'),
+                     ('lesser', 'A possessed knight')):
+        pose = {}
+        render.pose_from_anim(ha['animation.bc.devil_host.idle'], 0.3, pose=pose)
+        e.append((label, model(v13.devil_host_geo(d, upto=2 if d != 'lesser' else 1)), pose, 35, 20, 1.25))
+    va = v13.vessel_animations()
+    for stage, label in ((0, 'The Crowned Vessel'), (2, 'The Vessel, full union')):
+        pose = {}
+        render.pose_from_anim(va['animation.bc.crowned_vessel.slash' if stage == 0 else 'animation.bc.crowned_vessel.roar'], 0.25, pose=pose)
+        e.append((label, model(v13.vessel_geo(upto=stage)), pose, 30, 15, 1.2 if stage == 0 else 0.95))
+    grid(e, 5, 280, 'v130.png', 'v1.3.0: Devil Union')
+
+
 if __name__ == '__main__':
     names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
-                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet', 'v9_sheet', 'vfx_sheet', 'v10_sheet', 'v11_sheet', 'v12_sheet']
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet', 'v9_sheet', 'vfx_sheet', 'v10_sheet', 'v11_sheet', 'v12_sheet', 'v13_sheet']
     for n in names:
         print('rendering', n)
         globals()[n]()

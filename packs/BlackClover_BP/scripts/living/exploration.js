@@ -16,6 +16,7 @@ import { omenInfo } from './omens.js';
 import { relicsOf } from './relics.js';
 import { capitalLine } from './capital.js';
 import { stageOf, wyvernsOf } from './dragonbound.js';
+import { pactOf, unionText } from './union.js';
 
 const W = DATA.world;
 const G = DATA.glyphs;
@@ -222,7 +223,8 @@ export async function atlasPage(p, back) {
     return `§2${n} §7- ${DATA.dragon.stages[stageOf(e)].name}${next ? ` (growth ${g}/${next.at})` : ''}, ${Math.round(Math.hypot(e.location.x - p.location.x, e.location.z - p.location.z))}m away`;
   });
   const body = [regionBlock(p), '', o ? `§7Omen of the day: ${o.mc}${o.name}§7 - ${o.desc}` : '§7No omen today.', '', capitalLine(p),
-    ...(wyverns.length ? ['', '§2Your wyverns:', ...wyverns] : []), '',
+    ...(wyverns.length ? ['', '§2Your wyverns:', ...wyverns] : []),
+    ...(pactOf(p).devil ? ['', `§4Your devil: §r${unionText(p)}`] : []), '',
     `§eRegions found: §f${mine.length}   §eLandmarks found: §f${found.length}`, '', '§dRelics at work:', relicBlock(p)].join('\n');
   const f = new ActionFormData().title('§lThe Atlas').body(body);
   f.button('§lRegions you have found\n§r§8Nearest first');

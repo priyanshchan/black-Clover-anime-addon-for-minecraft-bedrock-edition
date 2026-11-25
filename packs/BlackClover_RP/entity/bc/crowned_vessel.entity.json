@@ -1,0 +1,44 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:crowned_vessel",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/crowned_vessel"
+      },
+      "geometry": {
+        "default": "geometry.bc.crowned_vessel"
+      },
+      "animations": {
+        "idle": "animation.bc.crowned_vessel.idle",
+        "walk": "animation.bc.crowned_vessel.walk",
+        "look_at_target": "animation.bc.crowned_vessel.look_at_target",
+        "attack": "animation.bc.crowned_vessel.attack",
+        "cast": "animation.bc.crowned_vessel.cast",
+        "roar": "animation.bc.crowned_vessel.roar",
+        "union": "animation.bc.crowned_vessel.union",
+        "slash": "animation.bc.crowned_vessel.slash"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target",
+          "union"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.crowned_vessel"
+      ],
+      "spawn_egg": {
+        "base_color": "#16121a",
+        "overlay_color": "#ff2a4a"
+      }
+    }
+  }
+}

@@ -55,10 +55,25 @@ function powerText(player) {
   return `${f.glyph} ${part} §8[${w.ability + 1}/${f.abilities.length}]${willPart(player)}`;
 }
 
+/** @type {((p: any) => string | undefined)[]} appended to the grimoire and fruit HUD (v1.3.0: your devil union) */
+const suffixes = [];
+export function addHudSuffix(fn) {
+  suffixes.push(fn);
+}
+function suffix(player) {
+  let out = '';
+  for (const fn of suffixes) out += safe(() => fn(player)) ?? '';
+  return out;
+}
+/** A gauge drawn with the anti-magic pips (v1.3.0: the union gauge). */
+export function gaugeBar(value, max) {
+  return bar(value, max, true);
+}
+
 /** Build the HUD text for a player. */
 export function hudText(player) {
-  if (heldKind(player) === 'power') return powerText(player);
-  return magicText(player) + willPart(player);
+  if (heldKind(player) === 'power') return powerText(player) + suffix(player);
+  return magicText(player) + willPart(player) + suffix(player);
 }
 
 function magicText(player) {

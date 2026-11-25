@@ -15,6 +15,7 @@ import { featsPage } from '../living/feats.js';
 import { armoryPage } from '../living/forge.js';
 import { worldPage } from '../living/world.js';
 import { gearOf } from '../core/armor.js';
+import { devilPage } from '../living/union.js';
 
 const G = DATA.glyphs;
 
@@ -78,6 +79,8 @@ export async function openHandbook(p) {
   actions.push(() => armoryPage(p, () => openHandbook(p)));
   form.button('§lHow to play\n§r§8Altar, mana, robes, the Devil');
   actions.push(() => guide(p));
+  form.button('§lDevil Union\n§r§8Your pact, hosts, possession');
+  actions.push(() => devilPage(p, () => openHandbook(p)));
   sound(p.dimension, 'bc.grimoire.flip', p.location, 0.8, 1);
   const res = await form.show(p);
   if (res.canceled || res.selection === undefined) return;

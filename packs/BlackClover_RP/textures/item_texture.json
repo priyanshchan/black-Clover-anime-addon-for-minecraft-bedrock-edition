@@ -8,6 +8,9 @@
     "bc_abyssal_chestplate": {
       "textures": "textures/items/bc/abyssal_chestplate"
     },
+    "bc_abyssal_crown": {
+      "textures": "textures/items/bc/abyssal_crown"
+    },
     "bc_abyssal_helmet": {
       "textures": "textures/items/bc/abyssal_helmet"
     },
@@ -55,6 +58,9 @@
     },
     "bc_bandit_crown": {
       "textures": "textures/items/bc/bandit_crown"
+    },
+    "bc_binding_chain": {
+      "textures": "textures/items/bc/binding_chain"
     },
     "bc_black_bull_robe": {
       "textures": "textures/items/bc/black_bull_robe"
@@ -419,6 +425,9 @@
     "bc_hollow_ember": {
       "textures": "textures/items/bc/hollow_ember"
     },
+    "bc_host_horn": {
+      "textures": "textures/items/bc/host_horn"
+    },
     "bc_journal_page": {
       "textures": "textures/items/bc/journal_page"
     },
@@ -466,6 +475,21 @@
     },
     "bc_mimic_tooth": {
       "textures": "textures/items/bc/mimic_tooth"
+    },
+    "bc_pact_ghorza": {
+      "textures": "textures/items/bc/pact_ghorza"
+    },
+    "bc_pact_morvane": {
+      "textures": "textures/items/bc/pact_morvane"
+    },
+    "bc_pact_sileth": {
+      "textures": "textures/items/bc/pact_sileth"
+    },
+    "bc_pact_vaelgrim": {
+      "textures": "textures/items/bc/pact_vaelgrim"
+    },
+    "bc_pact_vharog": {
+      "textures": "textures/items/bc/pact_vharog"
     },
     "bc_power_acid": {
       "textures": "textures/items/bc/power_acid"

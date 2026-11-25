@@ -28,6 +28,8 @@ from bc.data import (ALTAR_WEIGHTS, ATTR_ORDER, ATTRIBUTES, BOND, CAPTAIN_FIRST,
 from bc.data import (BANTER, DREAMS, EXPEDITIONS, HOMETOWNS, MOOD, PERSONALITIES, RESERVE_MAX, SPEC_LEVEL, SPECS, TACTICS_PARTY,  # noqa: E402
                      TIPS, TRIAL_TITLES, TRIALS, COMPANION_FRUIT_LEVEL)
 from bc.data import CONSUMABLES, ELITE_AFFIXES, ELITE_CHANCE, FEATS  # noqa: E402
+from bc.data import DEVIL_RANKS, DEVILS, HOST, HOST_DEVILS, PACT_DEVILS, UNION, V13_ITEMS  # noqa: E402
+from bc.v13gen import HOST_LOOKS  # noqa: E402
 from bc.data import (ARMOR_COST, ARMOR_EXTRA, ARMOR_MATERIALS, ARMOR_SETS, ARMOR_SLOTS, REINFORCE_COST, REINFORCE_MAX,  # noqa: E402
                      REINFORCE_PCT, RUNES, SCALE_DROPS)
 from bc.data import (ELITE_STAR_BONUS, ELITE_TIER_CHANCE, ELITE_TIERS, ENCOUNTERS, ITEM_PREFIX, ITEM_SUFFIX, JOURNALS, CACHE_JOURNALS,  # noqa: E402
@@ -145,6 +147,10 @@ def gen_script_data():
         'kingdoms': {k: dict(v) for k, v in KINGDOMS.items()}, 'marchKingdom': MARCH_KINGDOM,
         'capital': {'distance': list(CAPITAL_DISTANCE), 'radius': CAPITAL_RADIUS, 'safe': CAPITAL_SAFE},
         'spoilsPrice': SPOILS_PRICE, 'v12Items': {k: dict(name=n, desc=d) for k, (n, d) in V12_ITEMS.items()},
+        # v1.3.0: Devil Union
+        'devils': {k: {kk: vv for kk, vv in v.items() if kk not in ('skin', 'cloth')} for k, v in DEVILS.items()},
+        'pactDevils': PACT_DEVILS, 'hostDevils': HOST_DEVILS, 'hostLooks': HOST_LOOKS, 'devilRanks': DEVIL_RANKS, 'host': HOST, 'union': UNION,
+        'v13Items': {k: dict(name=n, desc=d) for k, (n, d) in V13_ITEMS.items()},
         'eliteTiers': [dict(id=i, name=n, mc=c, affixes=a, boost=b) for i, n, c, a, b in ELITE_TIERS], 'eliteTierChance': ELITE_TIER_CHANCE,
         'eliteStarBonus': ELITE_STAR_BONUS,
         'companion': {'xp': COMPANION_XP, 'hp': COMPANION_HP, 'bond': [dict(at=a, name=n, perk=k) for a, n, k in BOND],

@@ -64,6 +64,11 @@ system.runInterval(() => {
 }, 20);
 
 // ------------------------------------------------------------------------------- patrols in the Marches
+/** @type {((dim: any, at: any, devil: string) => any) | undefined} v1.3.0: the Spade Kingdom's devil hosts march with its patrols */
+let patrolHost;
+export function setPatrolHost(fn) {
+  patrolHost = fn;
+}
 /** One roll of a border patrol for a player (exported for tests). */
 export function patrol(p, roll = Math.random) {
   if (p.dimension.id !== 'minecraft:overworld' || calm() || inCapital(p.location)) return '';
@@ -79,6 +84,7 @@ export function patrol(p, roll = Math.random) {
       const e = safe(() => p.dimension.spawnEntity(`bc:${kin.soldier}`, V.add(at, { x: rand(-3, 3), y: 0.2, z: rand(-3, 3) })));
       if (e && i === 0 && roll() < 0.35) makeElite(e, undefined, 'champion');
     }
+    if (kid === 'spade' && patrolHost && roll() < 0.3) safe(() => patrolHost?.(p.dimension, V.add(at, { x: 0, y: 0.2, z: -3 }), 'morvane'));
     safe(() => p.onScreenDisplay.setActionBar(`${kin.mc}A ${kin.name} patrol! §7They have seen you.`));
     return kid;
   }

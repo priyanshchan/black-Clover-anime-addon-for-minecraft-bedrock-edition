@@ -173,7 +173,8 @@ for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
              'bc:wkind', 'bc:wname', 'bc:wtitle', 'bc:wborn', 'bc:wstay', 'bc:wreq', 'bc:requests', 'bc:track_lm', 'bc:tid', 'bc:text', 'bc:cache',
              'bc:elites', 'bc:etier', 'bc:mimic_loot', 'bc:flyby', 'bc:flee_until',
              # v1.2.0: eggs and tamed wyverns, the Capital, spoils of war, animations named in scripts
-             'bc:kind', 'bc:warmth', 'bc:growth', 'bc:mode', 'bc:capital', 'bc:capital_seen', 'bc:capital_guard', 'bc:spoils', 'bc:wyvern_egg_'):
+             'bc:kind', 'bc:warmth', 'bc:growth', 'bc:mode', 'bc:capital', 'bc:capital_seen', 'bc:capital_guard', 'bc:spoils', 'bc:wyvern_egg_',
+             'bc:possessed', 'bc:sigil_pity', 'bc:host', 'bc:pact', 'bc:pact_', 'bc:union'):
         continue
     errors.append(f'script references unknown id {m}')
 for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):

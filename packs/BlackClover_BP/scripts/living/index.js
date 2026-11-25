@@ -44,6 +44,11 @@ import { useSpireCore } from './spirecore.js';
 import { placeEgg, useWhistle as useWyvernWhistle } from './dragonbound.js';
 import { drinkDraught } from './kingdoms.js';
 import './capital.js';
+// v1.3.0: Devil Union
+import { spawnHost } from './devilhosts.js';
+import { useChain, useSigil } from './union.js';
+import { raiseCrown } from './vessel.js';
+import { setPatrolHost } from './kingdoms.js';
 import { useScroll, useSmokeBomb } from './consumables.js';
 import { useCloverLeaf } from './squad.js';
 import { placeDummy } from './roster.js';
@@ -52,6 +57,8 @@ import { useBossItem } from './bosses.js';
 import { hireKnight } from './knights.js';
 import { blowHorn } from './wartable.js';
 import { isCreative } from '../core/util.js';
+
+setPatrolHost(spawnHost);
 
 function consume(p, id) {
   if (isCreative(p)) return;
@@ -98,6 +105,14 @@ export function useLivingItem(p, item) {
     safe(() => p.onScreenDisplay.setActionBar('§6Use the saddle on your fully grown wyvern.'));
   } else if (id === 'bc:spirit_draught') {
     if (safe(() => drinkDraught(p))) consume(p, id);
+  } else if (id.startsWith('bc:pact_')) {
+    safe(() => useSigil(p, id));
+  } else if (id === 'bc:binding_chain') {
+    if (safe(() => useChain(p))) consume(p, id);
+  } else if (id === 'bc:abyssal_crown') {
+    if (safe(() => raiseCrown(p))) consume(p, id);
+  } else if (id === 'bc:host_horn') {
+    safe(() => p.onScreenDisplay.setActionBar('§4A Host Horn. §7Smiths make Binding Chains and Abyssal Crowns from them.'));
   } else if (id === 'bc:companion_tome') {
     safe(() => p.onScreenDisplay.setActionBar('§bTalk to a companion (level 10+) while holding the tome to retrain their specialisation.'));
   } else return false;

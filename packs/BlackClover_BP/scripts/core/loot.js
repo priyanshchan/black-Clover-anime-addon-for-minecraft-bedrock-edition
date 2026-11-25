@@ -231,6 +231,9 @@ const TABLES = {
     ['krelic:relic_prism', 1, 1, 0.35], ['armor', 1, 1, 0.25]], rolled: [0.7, 'uncommon'] },
   fort_spade: { items: [['bc:doubloon', 30, 70, 1], ['bc:spade_sigil', 3, 8, 1], ['bc:ancient_page', 1, 3, 0.7], ['scroll', 1, 2, 0.6],
     ['krelic:relic_brand', 1, 1, 0.35], ['armor', 1, 1, 0.25]], rolled: [0.7, 'uncommon'] },
+  // v1.3.0: the Underworld Breach
+  breach: { items: [['bc:devil_heart', 1, 3, 1], ['bc:host_horn', 1, 2, 0.8], ['bc:doubloon', 40, 90, 1], ['bc:binding_chain', 1, 2, 0.6],
+    ['minecraft:netherite_scrap', 1, 1, 0.3], ['armor', 1, 1, 0.3]], rolled: [0.8, 'rare'] },
   cache: { items: [['bc:doubloon', 25, 60, 1], ['minecraft:gold_ingot', 2, 5, 0.8], ['minecraft:emerald', 1, 4, 0.6], ['bc:mana_crystal', 2, 5, 0.6]], rolled: [0.6, 'common'] },
 };
 export const TABLE_NAMES = Object.keys(TABLES);

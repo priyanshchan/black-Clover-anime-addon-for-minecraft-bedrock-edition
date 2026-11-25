@@ -7967,6 +7967,12 @@ export const DATA = {
       "count": 1,
       "price": 220,
       "label": "Wyvern Saddle"
+    },
+    {
+      "item": "bc:binding_chain",
+      "count": 1,
+      "price": 90,
+      "label": "Binding Chain"
     }
   ],
   "factions": {
@@ -8504,6 +8510,14 @@ export const DATA = {
       "target": "bc_kingdom_foe",
       "count": 6,
       "title": "Hold the border: defeat 6 kingdom soldiers",
+      "tier": 2
+    },
+    {
+      "id": "m_hosts",
+      "kind": "kill",
+      "target": "bc_devil_host",
+      "count": 3,
+      "title": "Cast out the devils: defeat 3 devil hosts",
       "tier": 2
     }
   ],
@@ -9142,6 +9156,76 @@ export const DATA = {
       "stars": 1,
       "coins": 50,
       "title": "Citizen of the Crown"
+    },
+    {
+      "id": "pact_bound",
+      "name": "Pact-Bound",
+      "desc": "Make a pact with a devil.",
+      "counter": "pacts",
+      "goal": 1,
+      "stars": 1,
+      "coins": 80,
+      "title": "the Pact-Bound"
+    },
+    {
+      "id": "half_union",
+      "name": "Half a Devil",
+      "desc": "Join with your devil at 50% union.",
+      "counter": "half_unions",
+      "goal": 1,
+      "stars": 1,
+      "coins": 80,
+      "title": "Half-Devil"
+    },
+    {
+      "id": "full_union",
+      "name": "Full Union",
+      "desc": "Join with your devil at 100% union.",
+      "counter": "full_unions",
+      "goal": 1,
+      "stars": 2,
+      "coins": 200,
+      "title": "the Devil-Joined"
+    },
+    {
+      "id": "devils_equal",
+      "name": "Devil's Equal",
+      "desc": "Reach bond 5 with your devil.",
+      "counter": "bond5",
+      "goal": 1,
+      "stars": 3,
+      "coins": 300,
+      "title": "the Devil's Equal"
+    },
+    {
+      "id": "exorcist",
+      "name": "Exorcist",
+      "desc": "Free 3 possessed Magic Knights.",
+      "counter": "exorcisms",
+      "goal": 3,
+      "stars": 2,
+      "coins": 150,
+      "title": "the Exorcist"
+    },
+    {
+      "id": "host_hunter",
+      "name": "Host Hunter",
+      "desc": "Defeat 20 devil hosts.",
+      "counter": "host_kills",
+      "goal": 20,
+      "stars": 2,
+      "coins": 150,
+      "title": "Host Hunter"
+    },
+    {
+      "id": "crown_breaker",
+      "name": "Crown-Breaker",
+      "desc": "Defeat the Crowned Vessel.",
+      "counter": "vessels",
+      "goal": 1,
+      "stars": 3,
+      "coins": 300,
+      "title": "Crown-Breaker"
     }
   ],
   "armor": {
@@ -10278,6 +10362,14 @@ export const DATA = {
         "master": "",
         "kingdom": "heart",
         "desc": "a spirit grove of the Heart Kingdom - its guardians are friendly, and its priestess trades"
+      },
+      "underworld_breach": {
+        "name": "Underworld Breach",
+        "weight": 5,
+        "land": "*",
+        "stars": 3,
+        "master": "bc:crowned_vessel",
+        "desc": "a wound in the world where the underworld shows through - the Crowned Vessel waits there for a challenger"
       }
     },
     "landmarkBase": 2,
@@ -10402,6 +10494,11 @@ export const DATA = {
         "name": "Lucky Stars",
         "mc": "\u00a76",
         "desc": "Fortune smiles: loot is far likelier to roll a rarer item today."
+      },
+      "underworld_stirs": {
+        "name": "The Underworld Stirs",
+        "mc": "\u00a74",
+        "desc": "Devils walk in borrowed bodies tonight, and every union gauge fills 50% faster."
       }
     },
     "wanderers": {
@@ -11260,6 +11357,590 @@ export const DATA = {
     "spirit_draught": {
       "name": "\u00a7dSpirit Draught",
       "desc": "Regeneration and +50% mana regeneration for 3 minutes."
+    }
+  },
+  "devils": {
+    "vharog": {
+      "name": "Vharog",
+      "title": "the Cinder Maw",
+      "rank": "mid",
+      "vice": "Wrath",
+      "attr": "flame",
+      "fx": "magma",
+      "color": "ff5a1a",
+      "mc": "\u00a7c",
+      "boon": {
+        "melee": 1.1
+      },
+      "boon_text": "+10% melee damage",
+      "price": {
+        "regen": 0.9
+      },
+      "price_text": "-10% mana regeneration",
+      "desc": "a devil of wrath that burns everything it is allowed to touch",
+      "offer": "Your anger is a fire with no fuel. Give it mine.",
+      "whispers": [
+        "Burn it. Burn all of it.",
+        "Why do you hold back? I never do.",
+        "More. MORE.",
+        "They will run from us. Let them run."
+      ],
+      "moves": [
+        {
+          "id": "cinder_fang",
+          "name": "Cinder Fang",
+          "cost": 8,
+          "cd": 1.2,
+          "desc": "Three fangs of hellfire.",
+          "spec": {
+            "t": "bolt",
+            "d": 9,
+            "n": 3,
+            "spread": 14,
+            "shape": 2,
+            "speed": 2.2,
+            "fire": 4,
+            "fx": "magma"
+          }
+        },
+        {
+          "id": "wrath_pillars",
+          "name": "Wrath Pillars",
+          "cost": 15,
+          "cd": 5.0,
+          "desc": "Pillars of fire burst up around your aim.",
+          "spec": {
+            "t": "strikes",
+            "d": 12,
+            "n": 5,
+            "r": 9,
+            "fire": 5,
+            "fx": "magma"
+          }
+        },
+        {
+          "id": "hellmouth",
+          "name": "Hellmouth",
+          "cost": 30,
+          "cd": 14.0,
+          "desc": "The sky opens and hell falls through.",
+          "spec": {
+            "t": "meteor",
+            "d": 26,
+            "n": 3,
+            "r": 6,
+            "aoe": 5,
+            "fire": 8,
+            "size": 3,
+            "fx": "magma"
+          }
+        }
+      ]
+    },
+    "sileth": {
+      "name": "Sileth",
+      "title": "the Pale Choir",
+      "rank": "mid",
+      "vice": "Sorrow",
+      "attr": "ice",
+      "fx": "ice",
+      "color": "9ad8ff",
+      "mc": "\u00a7b",
+      "boon": {
+        "ward": 0.08
+      },
+      "boon_text": "spells hurt you 8% less",
+      "price": {
+        "melee": 0.92
+      },
+      "price_text": "-8% melee damage",
+      "desc": "a devil of sorrow whose voice is a winter that never ends",
+      "offer": "Everyone you love will leave you. I never will. Sing with me.",
+      "whispers": [
+        "Do you hear them weeping? Make them louder.",
+        "Cold is only another kind of quiet.",
+        "Stay. Stay a little longer."
+      ],
+      "moves": [
+        {
+          "id": "grave_frost",
+          "name": "Grave Frost",
+          "cost": 8,
+          "cd": 1.5,
+          "desc": "A wave of grave-cold that slows all it touches.",
+          "spec": {
+            "t": "wave",
+            "d": 9,
+            "len": 14,
+            "lanes": 3,
+            "fx": "ice",
+            "eff": [
+              [
+                "slowness",
+                3,
+                2
+              ]
+            ]
+          }
+        },
+        {
+          "id": "mourning_bell",
+          "name": "Mourning Bell",
+          "cost": 15,
+          "cd": 6.0,
+          "desc": "A frozen knell: foes around you are slowed and weakened.",
+          "spec": {
+            "t": "nova",
+            "d": 12,
+            "r": 7,
+            "kb": [
+              1.2,
+              0.4
+            ],
+            "fx": "ice",
+            "eff": [
+              [
+                "slowness",
+                4,
+                3
+              ],
+              [
+                "weakness",
+                4,
+                0
+              ]
+            ]
+          }
+        },
+        {
+          "id": "pale_choir",
+          "name": "The Pale Choir",
+          "cost": 30,
+          "cd": 16.0,
+          "desc": "A storm of mourning voices freezes everything around you.",
+          "spec": {
+            "t": "zone",
+            "at": "self",
+            "d": 5,
+            "r": 10,
+            "dur": 6,
+            "fx": "ice",
+            "eff": [
+              [
+                "slowness",
+                2,
+                4
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "morvane": {
+      "name": "Morvane",
+      "title": "the Hollow Crown",
+      "rank": "mid",
+      "vice": "Pride",
+      "attr": "dark",
+      "fx": "gravity",
+      "color": "a060ff",
+      "mc": "\u00a75",
+      "boon": {
+        "guard": 0.08
+      },
+      "boon_text": "blows hurt you 8% less",
+      "price": {
+        "cd": 1.1
+      },
+      "price_text": "spells recharge 10% slower",
+      "desc": "a devil of pride that wears its hosts like a borrowed crown",
+      "offer": "Kneel to no one. Not even to me - well. Perhaps a little, to me.",
+      "whispers": [
+        "Kneel them. Every one of them.",
+        "You were born to be looked up at.",
+        "Weight is only power that has not been used yet."
+      ],
+      "moves": [
+        {
+          "id": "crowns_weight",
+          "name": "Crown's Weight",
+          "cost": 10,
+          "cd": 3.0,
+          "desc": "A crushing weight pins foes around your aim.",
+          "spec": {
+            "t": "prison",
+            "d": 12,
+            "r": 3.5,
+            "dur": 3,
+            "fx": "gravity"
+          }
+        },
+        {
+          "id": "hollow_pull",
+          "name": "Hollow Pull",
+          "cost": 14,
+          "cd": 6.0,
+          "desc": "A hollow in the world drags foes in and grinds them.",
+          "spec": {
+            "t": "vortex",
+            "d": 10,
+            "r": 7,
+            "dur": 2.5,
+            "fx": "dark"
+          }
+        },
+        {
+          "id": "abyssal_throne",
+          "name": "Abyssal Throne",
+          "cost": 30,
+          "cd": 16.0,
+          "desc": "Five falling weights of solid night.",
+          "spec": {
+            "t": "meteor",
+            "d": 22,
+            "n": 5,
+            "r": 8,
+            "aoe": 4,
+            "size": 2,
+            "fx": "gravity"
+          }
+        }
+      ]
+    },
+    "ghorza": {
+      "name": "Ghorza",
+      "title": "the Red Hunger",
+      "rank": "mid",
+      "vice": "Hunger",
+      "attr": "blood",
+      "fx": "blood",
+      "color": "e0203a",
+      "mc": "\u00a74",
+      "boon": {
+        "leech": 1
+      },
+      "boon_text": "your blows heal you a little",
+      "price": {
+        "maxMana": -20
+      },
+      "price_text": "-20 max mana",
+      "desc": "a devil of hunger that has never once been full",
+      "offer": "You are starving and do not know it. I can teach you to eat.",
+      "whispers": [
+        "Hungry. So hungry.",
+        "That one looks warm.",
+        "Do not stop. Never stop eating."
+      ],
+      "moves": [
+        {
+          "id": "red_hunger",
+          "name": "Red Hunger",
+          "cost": 8,
+          "cd": 1.5,
+          "desc": "A beam of hunger that drinks what it burns.",
+          "spec": {
+            "t": "beam",
+            "d": 10,
+            "range": 18,
+            "fx": "blood",
+            "ls": 0.5
+          }
+        },
+        {
+          "id": "feeding_frenzy",
+          "name": "Feeding Frenzy",
+          "cost": 14,
+          "cd": 5.0,
+          "desc": "Four savage bites in a row, each one feeding you.",
+          "spec": {
+            "t": "repeat",
+            "n": 4,
+            "every": 4,
+            "spec": {
+              "t": "nova",
+              "at": "front",
+              "d": 6,
+              "r": 3,
+              "kb": [
+                0.4,
+                0.1
+              ],
+              "fx": "blood",
+              "ls": 0.3
+            }
+          }
+        },
+        {
+          "id": "crimson_feast",
+          "name": "Crimson Feast",
+          "cost": 30,
+          "cd": 15.0,
+          "desc": "Blood-red fangs rain on everything near you - and you drink.",
+          "spec": {
+            "t": "strikes",
+            "d": 16,
+            "n": 8,
+            "r": 12,
+            "fx": "blood",
+            "ls": 0.35
+          }
+        }
+      ]
+    },
+    "vaelgrim": {
+      "name": "Vaelgrim",
+      "title": "the Crowned Abyss",
+      "rank": "higher",
+      "vice": "Dominion",
+      "attr": "blood",
+      "fx": "devil",
+      "color": "ff2a4a",
+      "mc": "\u00a74",
+      "boon": {
+        "power": 1.12
+      },
+      "boon_text": "+12% spell power",
+      "price": {
+        "luck": -10
+      },
+      "price_text": "loot rolls a little worse",
+      "desc": "a higher-rank devil, a lord of the deep underworld, who rules lesser devils as a king rules dogs",
+      "offer": "You broke my vessel. Good. Now be a better one.",
+      "whispers": [
+        "On your knees, world.",
+        "I have ruled longer than your kingdom has had a name.",
+        "Let go. I will drive."
+      ],
+      "moves": [
+        {
+          "id": "abyss_lance",
+          "name": "Abyss Lance",
+          "cost": 8,
+          "cd": 1.2,
+          "desc": "A lance of the deep underworld.",
+          "spec": {
+            "t": "beam",
+            "d": 14,
+            "range": 26,
+            "width": 1.4,
+            "fx": "devil"
+          }
+        },
+        {
+          "id": "dominion",
+          "name": "Dominion",
+          "cost": 15,
+          "cd": 6.0,
+          "desc": "Everything near you is thrown down.",
+          "spec": {
+            "t": "nova",
+            "d": 16,
+            "r": 8,
+            "kb": [
+              2.4,
+              0.9
+            ],
+            "fx": "devil"
+          }
+        },
+        {
+          "id": "crowned_abyss",
+          "name": "The Crowned Abyss",
+          "cost": 35,
+          "cd": 18.0,
+          "desc": "The underworld itself falls on your foes.",
+          "spec": {
+            "t": "meteor",
+            "d": 30,
+            "n": 6,
+            "r": 9,
+            "aoe": 5,
+            "size": 3,
+            "fire": 6,
+            "fx": "devil"
+          }
+        }
+      ]
+    },
+    "lesser": {
+      "name": "a lesser devil",
+      "title": "",
+      "rank": "lower",
+      "vice": "Spite",
+      "attr": "dark",
+      "fx": "devil",
+      "color": "ff3a2a",
+      "mc": "\u00a7c",
+      "boon": {},
+      "boon_text": "",
+      "price": {},
+      "price_text": "",
+      "desc": "a low-rank devil, small and spiteful",
+      "offer": "",
+      "whispers": [],
+      "moves": [
+        {
+          "id": "spite_bolt",
+          "name": "Spite Bolt",
+          "cost": 0,
+          "cd": 2.0,
+          "desc": "",
+          "spec": {
+            "t": "bolt",
+            "d": 6,
+            "n": 2,
+            "spread": 10,
+            "shape": 2,
+            "speed": 2.0,
+            "fx": "devil"
+          }
+        },
+        {
+          "id": "spite_burst",
+          "name": "Spite Burst",
+          "cost": 0,
+          "cd": 6.0,
+          "desc": "",
+          "spec": {
+            "t": "nova",
+            "d": 8,
+            "r": 5,
+            "kb": [
+              1.4,
+              0.5
+            ],
+            "fx": "devil"
+          }
+        },
+        {
+          "id": "spite_rain",
+          "name": "Spite Rain",
+          "cost": 0,
+          "cd": 10.0,
+          "desc": "",
+          "spec": {
+            "t": "rain",
+            "d": 7,
+            "n": 6,
+            "r": 4,
+            "every": 4,
+            "fx": "devil"
+          }
+        }
+      ]
+    }
+  },
+  "pactDevils": [
+    "vharog",
+    "sileth",
+    "morvane",
+    "ghorza",
+    "vaelgrim"
+  ],
+  "hostDevils": [
+    "vharog",
+    "sileth",
+    "morvane",
+    "ghorza"
+  ],
+  "hostLooks": [
+    "vharog",
+    "sileth",
+    "morvane",
+    "ghorza",
+    "lesser"
+  ],
+  "devilRanks": {
+    "lower": "Low-rank",
+    "mid": "Mid-rank",
+    "higher": "Higher-rank"
+  },
+  "host": {
+    "hp": 70,
+    "half": 0.6,
+    "full": 0.3,
+    "heal": 0.2,
+    "sigil": 0.3,
+    "sigil_pity": 4,
+    "horn": 0.6,
+    "possessed_free": 0.35
+  },
+  "union": {
+    "hit": 0.6,
+    "hurt": 1.2,
+    "kill": 6,
+    "devil_kill": 14,
+    "half": 50,
+    "full": 100,
+    "drain": [
+      1.0,
+      2.2
+    ],
+    "hold": [
+      1.0,
+      3.2
+    ],
+    "hold_decay": 2.5,
+    "takeover": 10,
+    "bond": [
+      0,
+      150,
+      450,
+      1000,
+      1800
+    ],
+    "full_bond": 3,
+    "steady_bond": 5,
+    "half_mods": {
+      "power": 1.25,
+      "melee": 1.35,
+      "guard": 0.1
+    },
+    "full_mods": {
+      "power": 1.6,
+      "melee": 1.7,
+      "guard": 0.2,
+      "ward": 0.2,
+      "regen": 1.5
+    },
+    "higher": {
+      "power": 1.15,
+      "hold": 1.4
+    },
+    "chain_seconds": 120
+  },
+  "v13Items": {
+    "pact_vharog": {
+      "name": "\u00a7cPact Sigil: Vharog",
+      "desc": "Use: hear the devil's offer. Bound: use to join in union, then to cast; sneak-use to switch."
+    },
+    "pact_sileth": {
+      "name": "\u00a7bPact Sigil: Sileth",
+      "desc": "Use: hear the devil's offer. Bound: use to join in union, then to cast; sneak-use to switch."
+    },
+    "pact_morvane": {
+      "name": "\u00a75Pact Sigil: Morvane",
+      "desc": "Use: hear the devil's offer. Bound: use to join in union, then to cast; sneak-use to switch."
+    },
+    "pact_ghorza": {
+      "name": "\u00a74Pact Sigil: Ghorza",
+      "desc": "Use: hear the devil's offer. Bound: use to join in union, then to cast; sneak-use to switch."
+    },
+    "pact_vaelgrim": {
+      "name": "\u00a74\u00a7lPact Sigil: Vaelgrim",
+      "desc": "A higher-rank devil's sigil. Use: hear its offer."
+    },
+    "host_horn": {
+      "name": "\u00a74Host Horn",
+      "desc": "Shed by a devil host at full union. Exorcists and smiths want them."
+    },
+    "binding_chain": {
+      "name": "\u00a77Binding Chain",
+      "desc": "Use: your devil's hold drops to nothing, and it cannot take over for 2 minutes."
+    },
+    "abyssal_crown": {
+      "name": "\u00a74Abyssal Crown",
+      "desc": "Raise it at night to call the Crowned Vessel."
     }
   },
   "eliteTiers": [
