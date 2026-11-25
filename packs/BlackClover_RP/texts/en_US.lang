@@ -148,3 +148,7 @@ entity.bc:spade_zealot.name=Spade Zealot
 item.spawn_egg.entity.bc:spade_zealot.name=Spade Zealot Spawn Egg
 entity.bc:heart_guardian.name=Heart Guardian
 item.spawn_egg.entity.bc:heart_guardian.name=Heart Guardian Spawn Egg
+entity.bc:devil_host.name=Devil Host
+item.spawn_egg.entity.bc:devil_host.name=Devil Host Spawn Egg
+entity.bc:crowned_vessel.name=§4The Crowned Vessel
+item.spawn_egg.entity.bc:crowned_vessel.name=Crowned Vessel Spawn Egg

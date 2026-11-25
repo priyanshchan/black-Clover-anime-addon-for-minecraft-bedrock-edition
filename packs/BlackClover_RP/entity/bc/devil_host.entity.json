@@ -1,0 +1,51 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:devil_host",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "vharog": "textures/entity/bc/devil_host/vharog",
+        "sileth": "textures/entity/bc/devil_host/sileth",
+        "morvane": "textures/entity/bc/devil_host/morvane",
+        "ghorza": "textures/entity/bc/devil_host/ghorza",
+        "lesser": "textures/entity/bc/devil_host/lesser"
+      },
+      "geometry": {
+        "vharog": "geometry.bc.devil_host_vharog",
+        "sileth": "geometry.bc.devil_host_sileth",
+        "morvane": "geometry.bc.devil_host_morvane",
+        "ghorza": "geometry.bc.devil_host_ghorza",
+        "lesser": "geometry.bc.devil_host_lesser"
+      },
+      "animations": {
+        "idle": "animation.bc.devil_host.idle",
+        "walk": "animation.bc.devil_host.walk",
+        "look_at_target": "animation.bc.devil_host.look_at_target",
+        "attack": "animation.bc.devil_host.attack",
+        "cast": "animation.bc.devil_host.cast",
+        "roar": "animation.bc.devil_host.roar",
+        "union": "animation.bc.devil_host.union"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target",
+          "union"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.devil_host"
+      ],
+      "spawn_egg": {
+        "base_color": "#1a0a0e",
+        "overlay_color": "#ff3a2a"
+      }
+    }
+  }
+}

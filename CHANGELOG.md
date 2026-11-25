@@ -1,5 +1,33 @@
 # Changelog
 
+## v1.3.0 (2026-11-25)
+
+**Devil Union.** Devils of the underworld walk in borrowed bodies, changing as their union deepens; make a pact with a devil of your own and join with it.
+
+### Devil hosts
+* **Devil hosts** of four mid-rank devils - **Vharog** (Wrath; hellfire), **Sileth** (Sorrow; grave frost), **Morvane** (Pride; gravity and dark), **Ghorza** (Hunger; blood) - each with its own look, horns and three spells.
+* **Union stages**: below 60% health a host reaches **50% union** (horns, a devil's arm, glowing marks; it heals 20% and grows stronger); below 30% **full union** (wings and a tail; faster and tougher, flies at its prey, casts its devil's greatest spell). Its name shows its union.
+* **Where they walk**: the Forsaken Realm and the Marches at night, Devil-Scarred regions, and the Spade Marches (Spade patrols now march with a devil host now and then). Each comes with a cultist or an imp or two.
+* **Spoils**: a host beaten at full union leaves its devil's **Pact Sigil** (30%; guaranteed by the fourth in a row) and a **Host Horn** (60%).
+* **Possession**: at night a lesser devil may seize a Magic Knight near you. Beat it below 35% health and the devil is cast out (the knight is free; the devil flees as an imp). A killing blow kills the knight too.
+
+### Your pact
+* Use a **Pact Sigil** to hear its devil's offer - rank, vice, magic, a **boon** and a **price** (always on while you are bound). One pact at a time.
+* The **union gauge** fills as you fight (damage dealt and taken, kills, devils most of all).
+* **50% union** (gauge 50%): horns; spells x1.25, blows x1.35, blows hurt you 10% less; two devil moves (use: cast, sneak-use: switch). **100% union** (full gauge, bond 3): wings - glide and leap; spells x1.6, blows x1.7, 20% less damage from blows and spells, x1.5 mana regeneration; the third move. A 50% union deepens by itself when the gauge fills in battle.
+* The gauge drains while joined; **bond** (1-5) grows with time and kills joined, and strengthens the devil's moves.
+* **The devil's hold** rises while you are joined. If it fills, the devil **takes over** for 10 seconds and lashes out at everything near you, friends included, then leaves you weak. Will and bond push back; at bond 5 it never fights you at 50%. The **Binding Chain** (craft: chain, Host Horn, chain; or buy one) breaks its hold and keeps it quiet for 2 minutes.
+* Union shows as horns, wings and an aura in your devil's colour; the HUD shows your gauge, union and the devil's hold.
+
+### The Crowned Vessel
+* A new boss: a knight-captain host of **Vaelgrim, the Crowned Abyss**, a higher-rank devil. Its union deepens with the fight (50% at half health, full union at a quarter): greatsword slashes, blinks, Abyss Lances, Dominion, lesser devils in borrowed bodies, and **The Crowned Abyss**.
+* Found in **Underworld Breaches** (a new landmark in 3-star lands, most of all Devil-Scarred regions) or called with an **Abyssal Crown** at night. Drops **Vaelgrim's Pact Sigil**.
+
+### Other changes
+* Seven new feats: Pact-Bound, Half a Devil, Full Union, Devil's Equal, Exorcist, Host Hunter, Crown-Breaker. New mission: *Cast out the devils*. New omen: **The Underworld Stirs**.
+* The merchant sells Binding Chains. The Handbook has a Devil Union page; the Atlas shows your devil.
+* Cheats: `/scriptevent bc:host [devil|possess]`, `/scriptevent bc:union [devil|off]`.
+
 ## v1.2.0 (2026-11-25)
 
 **Dragonbound & Kingdoms.** Hatch, raise and ride a Mana Wyvern; the neighbouring kingdoms hold the Marches; the Royal Capital rises near home.

@@ -117,6 +117,18 @@ on('kingdom_kill', (p) => bump(p, 'kingdom_kills'));
 on('commander', (p) => bump(p, 'commanders'));
 on('heart_trade', (p) => bump(p, 'heart_trades'));
 on('capital', (p) => atLeast(p, 'capital', 1));
+// v1.3.0: Devil Union
+on('pact', (p) => bump(p, 'pacts'));
+on('union', (p, mode) => {
+  atLeast(p, 'half_unions', 1);
+  if (mode === 2) atLeast(p, 'full_unions', 1);
+});
+on('bond', (p, lv) => {
+  if (lv >= 5) atLeast(p, 'bond5', 1);
+});
+on('exorcism', (p) => bump(p, 'exorcisms'));
+on('host_kill', (p) => bump(p, 'host_kills'));
+on('vessel', (p) => bump(p, 'vessels'));
 on('waygate', (p) => bump(p, 'waygate'));
 // v0.8.0: armour
 on('forge', (p) => bump(p, 'forged'));

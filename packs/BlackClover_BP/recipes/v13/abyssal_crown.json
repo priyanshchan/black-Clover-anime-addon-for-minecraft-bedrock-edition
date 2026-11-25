@@ -1,0 +1,37 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:abyssal_crown"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "HGH",
+      "DOD",
+      "HGH"
+    ],
+    "key": {
+      "H": {
+        "item": "bc:host_horn"
+      },
+      "G": {
+        "item": "minecraft:gold_ingot"
+      },
+      "D": {
+        "item": "bc:devil_heart"
+      },
+      "O": {
+        "item": "minecraft:crying_obsidian"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:abyssal_crown",
+      "count": 1
+    }
+  }
+}

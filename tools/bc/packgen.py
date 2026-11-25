@@ -6,7 +6,7 @@ from .data import ATTR_ORDER, ATTRIBUTES, NS, ROBES, SPELLS, SWORDS
 from .models import items, mobs, spells, world
 from .out import BP, RP, write_json, write_png, write_text
 
-VERSION = [1, 2, 0]  # v1.2.0 - bump on every release so Minecraft replaces the installed packs
+VERSION = [1, 3, 0]  # v1.3.0 - bump on every release so Minecraft replaces the installed packs
 MIN_ENGINE = [1, 21, 90]
 ITEM_FMT = '1.21.60'
 ENTITY_FMT = '1.21.0'
@@ -42,7 +42,7 @@ def manifest_bp():
         'format_version': 2,
         'header': {
             'name': 'Black Clover: Grimoire Awakening §7(Behavior)',
-            'description': 'v1.2.0 - Dragonbound & Kingdoms: hatch, raise and ride a Mana Wyvern of your own; the Diamond, Spade and Heart kingdoms hold the Marches with forts and commanders; the Royal Capital rises near home. Plus named regions, landmarks, random loot, a living world, 40 grimoires, 34 Abyss Fruits and companions. Unofficial fan addon.',
+            'description': 'v1.3.0 - Devil Union: devils walk in borrowed bodies, changing as their union deepens; make a pact with a devil of your own and join with it at 50% and 100% union; free possessed knights; face the Crowned Vessel. Plus wyverns to raise and ride, the neighbouring kingdoms, the Royal Capital, named regions, landmarks, random loot, a living world, 40 grimoires, 34 Abyss Fruits and companions. Unofficial fan addon.',
             'uuid': out.uid('bp-header'),
             'version': VERSION,
             'min_engine_version': MIN_ENGINE,
@@ -65,7 +65,7 @@ def manifest_rp():
         'format_version': 2,
         'header': {
             'name': 'Black Clover: Grimoire Awakening §7(Resources)',
-            'description': 'v1.2.0 - tamed and saddled wyverns, wyvern eggs, kingdom soldiers, the Royal Capital; Mana Wyverns, the Spire Warden, mimics, sprites, relics; HD spell effects, 3D grimoires, armour, companions, bosses, particles and sounds. Unofficial fan addon.',
+            'description': 'v1.3.0 - devil hosts and their union stages, the Crowned Vessel, Pact Sigils and union horns and wings; tamed and saddled wyverns, wyvern eggs, kingdom soldiers, the Royal Capital; Mana Wyverns, the Spire Warden, mimics, sprites, relics; HD spell effects, 3D grimoires, armour, companions, bosses, particles and sounds. Unofficial fan addon.',
             'uuid': out.uid('rp-header'),
             'version': VERSION,
             'min_engine_version': MIN_ENGINE,
@@ -682,7 +682,7 @@ def build():
     gen_loot(ctx)
     gen_spell_entities(ctx)
     gen_mobs(ctx)
-    from . import grandgen, seagen, v2gen, v3gen, v5gen, v7gen, v8gen, v9gen, v10gen, v11gen, v12gen, v75gen, wave4gen  # expansions (import this module, so loaded lazily)
+    from . import grandgen, seagen, v2gen, v3gen, v5gen, v7gen, v8gen, v9gen, v10gen, v11gen, v12gen, v13gen, v75gen, wave4gen  # expansions (import this module, so loaded lazily)
     seagen.build(ctx)
     grandgen.build(ctx)
     wave4gen.build(ctx)
@@ -696,6 +696,7 @@ def build():
     v10gen.build(ctx)
     v11gen.build(ctx)
     v12gen.build(ctx)
+    v13gen.build(ctx)
     v3gen.check_armies()
     flush(ctx)
     return ctx

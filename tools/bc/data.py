@@ -1658,3 +1658,120 @@ MISSIONS += [
     ('m_border', 'kill', 'bc_kingdom_foe', 6, 'Hold the border: defeat 6 kingdom soldiers', 2),
 ]
 MERCHANT += [('bc:wyvern_saddle', 1, 220, 'Wyvern Saddle')]
+
+# ======================================================================================
+# v1.3.0: Devil Union - devils of the underworld cannot walk this world without a host. Hosts change as their union with
+# the devil deepens (0% -> 50% -> 100%). Defeat a host at full union and its devil may offer YOU a pact: fill a union
+# gauge in battle, then join with it - at 50%, and once your bond is strong enough, at 100%. Stay joined too long and
+# the devil takes the wheel. All the devils are original.
+# ======================================================================================
+def _dm(id_, name, cost, cd, desc, **spec):
+    return dict(id=id_, name=name, cost=cost, cd=cd, desc=desc, spec=spec)
+
+
+# id -> dict. rank: lower / mid / higher. attr: the grimoire colour its magic borrows. boon/price: always on while bound
+# (stat modifiers, as core/mods.js reads them). moves: two at 50% union, the third only at 100%.
+DEVILS = {
+    'vharog': dict(name='Vharog', title='the Cinder Maw', rank='mid', vice='Wrath', attr='flame', fx='magma', color='ff5a1a', mc='§c',
+                   skin=('1a0604', '3a0c08', '5e140c', '8a2010', 'b83418', 'e05a24'), cloth=('120808', '201010', '2e1612', '3e1e16'),
+                   boon={'melee': 1.1}, boon_text='+10% melee damage', price={'regen': 0.9}, price_text='-10% mana regeneration',
+                   desc='a devil of wrath that burns everything it is allowed to touch',
+                   offer='Your anger is a fire with no fuel. Give it mine.',
+                   whispers=['Burn it. Burn all of it.', 'Why do you hold back? I never do.', 'More. MORE.', 'They will run from us. Let them run.'],
+                   moves=[_dm('cinder_fang', 'Cinder Fang', 8, 1.2, 'Three fangs of hellfire.', t='bolt', d=9, n=3, spread=14, shape=2, speed=2.2, fire=4, fx='magma'),
+                          _dm('wrath_pillars', 'Wrath Pillars', 15, 5.0, 'Pillars of fire burst up around your aim.', t='strikes', d=12, n=5, r=9, fire=5, fx='magma'),
+                          _dm('hellmouth', 'Hellmouth', 30, 14.0, 'The sky opens and hell falls through.', t='meteor', d=26, n=3, r=6, aoe=5, fire=8, size=3, fx='magma')]),
+    'sileth': dict(name='Sileth', title='the Pale Choir', rank='mid', vice='Sorrow', attr='ice', fx='ice', color='9ad8ff', mc='§b',
+                   skin=('0e1620', '1c2a3a', '2c4256', '486a86', '78a0be', 'b8d8ee'), cloth=('0a0e14', '121a24', '1c2836', '283a4c'),
+                   boon={'ward': 0.08}, boon_text='spells hurt you 8% less', price={'melee': 0.92}, price_text='-8% melee damage',
+                   desc='a devil of sorrow whose voice is a winter that never ends',
+                   offer='Everyone you love will leave you. I never will. Sing with me.',
+                   whispers=['Do you hear them weeping? Make them louder.', 'Cold is only another kind of quiet.', 'Stay. Stay a little longer.'],
+                   moves=[_dm('grave_frost', 'Grave Frost', 8, 1.5, 'A wave of grave-cold that slows all it touches.', t='wave', d=9, len=14, lanes=3, fx='ice', eff=[['slowness', 3, 2]]),
+                          _dm('mourning_bell', 'Mourning Bell', 15, 6.0, 'A frozen knell: foes around you are slowed and weakened.', t='nova', d=12, r=7, kb=[1.2, 0.4], fx='ice', eff=[['slowness', 4, 3], ['weakness', 4, 0]]),
+                          _dm('pale_choir', 'The Pale Choir', 30, 16.0, 'A storm of mourning voices freezes everything around you.', t='zone', at='self', d=5, r=10, dur=6, fx='ice', eff=[['slowness', 2, 4]])]),
+    'morvane': dict(name='Morvane', title='the Hollow Crown', rank='mid', vice='Pride', attr='dark', fx='gravity', color='a060ff', mc='§5',
+                    skin=('0a0612', '160c24', '241438', '361e52', '4c2a70', '6a3a96'), cloth=('060408', '0e0a14', '18101e', '22182c'),
+                    boon={'guard': 0.08}, boon_text='blows hurt you 8% less', price={'cd': 1.1}, price_text='spells recharge 10% slower',
+                    desc='a devil of pride that wears its hosts like a borrowed crown',
+                    offer='Kneel to no one. Not even to me - well. Perhaps a little, to me.',
+                    whispers=['Kneel them. Every one of them.', 'You were born to be looked up at.', 'Weight is only power that has not been used yet.'],
+                    moves=[_dm('crowns_weight', "Crown's Weight", 10, 3.0, 'A crushing weight pins foes around your aim.', t='prison', d=12, r=3.5, dur=3, fx='gravity'),
+                           _dm('hollow_pull', 'Hollow Pull', 14, 6.0, 'A hollow in the world drags foes in and grinds them.', t='vortex', d=10, r=7, dur=2.5, fx='dark'),
+                           _dm('abyssal_throne', 'Abyssal Throne', 30, 16.0, 'Five falling weights of solid night.', t='meteor', d=22, n=5, r=8, aoe=4, size=2, fx='gravity')]),
+    'ghorza': dict(name='Ghorza', title='the Red Hunger', rank='mid', vice='Hunger', attr='blood', fx='blood', color='e0203a', mc='§4',
+                   skin=('16040a', '2c0812', '460e1c', '641628', '8a2036', 'b03048'), cloth=('100606', '1c0c0c', '2a1212', '3a1818'),
+                   boon={'leech': 1}, boon_text='your blows heal you a little', price={'maxMana': -20}, price_text='-20 max mana',
+                   desc='a devil of hunger that has never once been full',
+                   offer='You are starving and do not know it. I can teach you to eat.',
+                   whispers=['Hungry. So hungry.', 'That one looks warm.', 'Do not stop. Never stop eating.'],
+                   moves=[_dm('red_hunger', 'Red Hunger', 8, 1.5, 'A beam of hunger that drinks what it burns.', t='beam', d=10, range=18, fx='blood', ls=0.5),
+                          _dm('feeding_frenzy', 'Feeding Frenzy', 14, 5.0, 'Four savage bites in a row, each one feeding you.', t='repeat', n=4, every=4,
+                              spec=dict(t='nova', at='front', d=6, r=3, kb=[0.4, 0.1], fx='blood', ls=0.3)),
+                          _dm('crimson_feast', 'Crimson Feast', 30, 15.0, 'Blood-red fangs rain on everything near you - and you drink.', t='strikes', d=16, n=8, r=12, fx='blood', ls=0.35)]),
+    'vaelgrim': dict(name='Vaelgrim', title='the Crowned Abyss', rank='higher', vice='Dominion', attr='blood', fx='devil', color='ff2a4a', mc='§4',
+                     skin=('0c0204', '1e0408', '34080e', '520c16', '761420', '9a1e2c'), cloth=('060204', '100608', '1a0a0e', '261016'),
+                     boon={'power': 1.12}, boon_text='+12% spell power', price={'luck': -10}, price_text='loot rolls a little worse',
+                     desc='a higher-rank devil, a lord of the deep underworld, who rules lesser devils as a king rules dogs',
+                     offer='You broke my vessel. Good. Now be a better one.',
+                     whispers=['On your knees, world.', 'I have ruled longer than your kingdom has had a name.', 'Let go. I will drive.'],
+                     moves=[_dm('abyss_lance', 'Abyss Lance', 8, 1.2, 'A lance of the deep underworld.', t='beam', d=14, range=26, width=1.4, fx='devil'),
+                            _dm('dominion', 'Dominion', 15, 6.0, 'Everything near you is thrown down.', t='nova', d=16, r=8, kb=[2.4, 0.9], fx='devil'),
+                            _dm('crowned_abyss', 'The Crowned Abyss', 35, 18.0, 'The underworld itself falls on your foes.', t='meteor', d=30, n=6, r=9, aoe=5, size=3, fire=6, fx='devil')]),
+    # the lesser devils that seize Magic Knights; they make no pacts
+    'lesser': dict(name='a lesser devil', title='', rank='lower', vice='Spite', attr='dark', fx='devil', color='ff3a2a', mc='§c',
+                   skin=('120808', '22100e', '341814', '4a221c', '603026', '7c4032'), cloth=('0c0c10', '16161c', '202028', '2c2c36'),
+                   boon={}, boon_text='', price={}, price_text='', desc='a low-rank devil, small and spiteful', offer='', whispers=[],
+                   moves=[_dm('spite_bolt', 'Spite Bolt', 0, 2.0, '', t='bolt', d=6, n=2, spread=10, shape=2, speed=2.0, fx='devil'),
+                          _dm('spite_burst', 'Spite Burst', 0, 6.0, '', t='nova', d=8, r=5, kb=[1.4, 0.5], fx='devil'),
+                          _dm('spite_rain', 'Spite Rain', 0, 10.0, '', t='rain', d=7, n=6, r=4, every=4, fx='devil')]),
+}
+PACT_DEVILS = ['vharog', 'sileth', 'morvane', 'ghorza', 'vaelgrim']
+HOST_DEVILS = ['vharog', 'sileth', 'morvane', 'ghorza']       # the mid-rank devils that walk in hosts
+DEVIL_RANKS = {'lower': 'Low-rank', 'mid': 'Mid-rank', 'higher': 'Higher-rank'}
+# devil hosts: their union deepens as they are hurt
+HOST = dict(hp=70, half=0.6, full=0.3, heal=0.2, sigil=0.3, sigil_pity=4, horn=0.6, possessed_free=0.35)
+# the player's union with their devil
+UNION = dict(
+    hit=0.6, hurt=1.2, kill=6, devil_kill=14,    # gauge gained per damage dealt / taken, per kill, per devil killed
+    half=50, full=100,                            # gauge needed to join at 50% / 100% (100% also needs bond 3)
+    drain=(1.0, 2.2),                             # gauge lost per second at 50% / 100%
+    hold=(1.0, 3.2), hold_decay=2.5,              # the devil's hold gained per second at 50% / 100%, lost per second apart
+    takeover=10,                                  # seconds the devil drives once its hold is full
+    bond=[0, 150, 450, 1000, 1800],               # bond points for bond levels 1-5 (a second in union = 1, a kill in union = 6)
+    full_bond=3, steady_bond=5,                   # bond for 100% union; at bond 5 the devil never takes over at 50%
+    half_mods=dict(power=1.25, melee=1.35, guard=0.1),
+    full_mods=dict(power=1.6, melee=1.7, guard=0.2, ward=0.2, regen=1.5),
+    higher=dict(power=1.15, hold=1.4),            # a higher-rank devil: stronger, and harder to hold back
+    chain_seconds=120,                            # a Binding Chain keeps the devil from taking over this long
+)
+V13_ITEMS = {
+    'pact_vharog': ('§cPact Sigil: Vharog', 'Use: hear the devil\'s offer. Bound: use to join in union, then to cast; sneak-use to switch.'),
+    'pact_sileth': ('§bPact Sigil: Sileth', 'Use: hear the devil\'s offer. Bound: use to join in union, then to cast; sneak-use to switch.'),
+    'pact_morvane': ('§5Pact Sigil: Morvane', 'Use: hear the devil\'s offer. Bound: use to join in union, then to cast; sneak-use to switch.'),
+    'pact_ghorza': ('§4Pact Sigil: Ghorza', 'Use: hear the devil\'s offer. Bound: use to join in union, then to cast; sneak-use to switch.'),
+    'pact_vaelgrim': ('§4§lPact Sigil: Vaelgrim', 'A higher-rank devil\'s sigil. Use: hear its offer.'),
+    'host_horn': ('§4Host Horn', 'Shed by a devil host at full union. Exorcists and smiths want them.'),
+    'binding_chain': ('§7Binding Chain', 'Use: your devil\'s hold drops to nothing, and it cannot take over for 2 minutes.'),
+    'abyssal_crown': ('§4Abyssal Crown', 'Raise it at night to call the Crowned Vessel.'),
+}
+OMENS.update({
+    'underworld_stirs': ('The Underworld Stirs', '§4', 'Devils walk in borrowed bodies tonight, and every union gauge fills 50% faster.'),
+})
+LANDMARKS.update({
+    'underworld_breach': dict(name='Underworld Breach', weight=5, land='*', stars=3, master='bc:crowned_vessel',
+                              desc='a wound in the world where the underworld shows through - the Crowned Vessel waits there for a challenger'),
+})
+FEATS += [
+    ('pact_bound', 'Pact-Bound', 'Make a pact with a devil.', 'pacts', 1, 1, 80, 'the Pact-Bound'),
+    ('half_union', 'Half a Devil', 'Join with your devil at 50% union.', 'half_unions', 1, 1, 80, 'Half-Devil'),
+    ('full_union', 'Full Union', 'Join with your devil at 100% union.', 'full_unions', 1, 2, 200, 'the Devil-Joined'),
+    ('devils_equal', 'Devil\'s Equal', 'Reach bond 5 with your devil.', 'bond5', 1, 3, 300, 'the Devil\'s Equal'),
+    ('exorcist', 'Exorcist', 'Free 3 possessed Magic Knights.', 'exorcisms', 3, 2, 150, 'the Exorcist'),
+    ('host_hunter', 'Host Hunter', 'Defeat 20 devil hosts.', 'host_kills', 20, 2, 150, 'Host Hunter'),
+    ('crown_breaker', 'Crown-Breaker', 'Defeat the Crowned Vessel.', 'vessels', 1, 3, 300, 'Crown-Breaker'),
+]
+MISSIONS += [
+    ('m_hosts', 'kill', 'bc_devil_host', 3, 'Cast out the devils: defeat 3 devil hosts', 2),
+]
+MERCHANT += [('bc:binding_chain', 1, 90, 'Binding Chain')]

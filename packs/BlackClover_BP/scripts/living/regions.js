@@ -154,11 +154,11 @@ function rollTraits(r, land, realm) {
   return out;
 }
 
-const UNIQUE = new Set(['spire', 'roost', 'catacombs', 'lost_waygate', 'diamond_fort', 'spade_citadel', 'heart_sanctum']);
+const UNIQUE = new Set(['spire', 'roost', 'catacombs', 'lost_waygate', 'diamond_fort', 'spade_citadel', 'heart_sanctum', 'underworld_breach']);
 const BOOST = {
   ancient: { spire: 2, catacombs: 2, obelisk: 2, graveyard: 1.5 }, haunted: { graveyard: 2.5, battlefield: 2.5 }, wyvern_lands: { roost: 4 },
   fae_wilds: { fairy_ring: 4 }, bandit_country: { watchtower: 2.5, caravan: 2.5 }, treasure: { skeleton: 2.5, crater: 2 }, sanctuary: { hamlet: 2, obelisk: 2 },
-  devil_scarred: { crater: 1.5, battlefield: 1.5 },
+  devil_scarred: { crater: 1.5, battlefield: 1.5, underworld_breach: 4 },
 };
 /** Can a landmark kind stand on this land? */
 export function kindFits(kind, land) {

@@ -1,6 +1,6 @@
 # Black Clover: Grimoire Awakening
 
-> **Version 1.2.0 - Dragonbound & Kingdoms.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
+> **Version 1.3.0 - Devil Union.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
 **An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 40 magic attributes, lead a squad of Magic Knight companions with their own personalities and specialisations, draw anti-magic demon swords, wear squad robes, fly brooms, and fight devils, pirates, bandits, assassins, rogue mages, insect swarms, wyverns and nineteen giant bosses - across a world where every region has its own name, danger and landmarks to find.
 
@@ -26,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v1.3.0 – Devil Union:** **devil hosts** walk in borrowed bodies and change as their union with the devil deepens - **horns and a devil's arm at 50%, wings and a tail at 100%**; lesser devils **possess Magic Knights** (beat the devil out without killing the knight); beat a host at full union and its devil may offer **you a pact** - fill a union gauge in battle and **join with it at 50% and 100%** for its power and its magic, but stay joined too long and **the devil takes over**; the **Crowned Vessel**, host of a higher-rank devil, waits in Underworld Breaches.
 * **v1.2.0 – Dragonbound & Kingdoms:** hatch a **Mana Wyvern** of your own from an egg, raise it from hatchling to adult (it fights beside you), **saddle it and ride it** through the sky breathing fire, frost or lightning; the **Diamond, Spade and Heart kingdoms** hold the Marches with patrols, **border forts** and their Commanders (the Heart Kingdom is friendly, with priestesses who trade spirit relics); the **Royal Capital** rises near home - walls, the Magic Knight HQ, a market, an inn, a smithy, a Waygate, guards - a safe home base.
 * **v1.1.0 – the Untamed Kingdom:** every 320-block region now has a **name of its own**, a realm (Noble, Common, Forsaken, the Marches), **danger stars** and **traits** (Mana-Rich, Haunted, Wyvern Territory, Fae Wilds, Wild Magic...); **15 kinds of landmark** seeded across them - Mage Spires with the Spire Warden, Wyvern Roosts with sleeping **Mana Wyverns**, procedural **Catacombs**, ruined hamlets, graveyards, obelisks, fairy rings and more, with **Mana Spawners** and **Mimics**; **random loot** from Common to Mythic with rolled **relics** and weapons (reforge them at the Magic Forge); **Champion and Infernal** elites with ten new traits; encounters your own actions wake; daily **omens**; **wanderers** with rumours, trades and requests; Explorer's Maps, journals, the Atlas, and the Wyvernscale armour set.
 * **v1.0.0 – a living world:** world events are now **incidents out in the world** - reported by direction and distance, marked by smoke and light on the horizon and tracked on your HUD. They develop while you are away (gates grow, rituals complete, raids march on your home, armies decide their battles) and resolve with consequences; their units appear only when you arrive, and hunters creep up from behind. Plus four grimoires (Storm, Blossom, Coral, Dream), four Abyss Fruits (Spark, Echo, Sand, Gale), new incidents (caravans, mana springs, camp sieges, refugees, ruins), **Mana Waygates** for fast travel, and new feats and missions.
@@ -67,6 +68,7 @@ Every detail lives in **[docs/](docs/README.md)** (generated from the game data,
 | [AI & simulation](docs/ai-and-simulation.md) | how NPCs, enemies and bosses think, battles (tactics, morale, leaders, bets, camera), the world simulation |
 | [World events](docs/world-events.md) | every event, its odds, conditions and rewards |
 | [Dragonbound & Kingdoms](docs/dragonbound.md) | wyvern eggs, growing, riding and breath; the Diamond, Spade and Heart kingdoms; the Royal Capital |
+| [Devil Union](docs/devil-union.md) | devil hosts and their union stages; possession; your pact, the union gauge, 50% and 100% union, bond and the devil's hold; the Crowned Vessel |
 | [The Untamed Kingdom](docs/exploration.md) | regions, realms, danger and traits; every landmark; random loot, relics and rolled weapons; Champions and Infernals; encounters; omens; wanderers; maps and journals |
 | [Mobs & bosses](docs/mobs-and-bosses.md) | every creature's health, attack, spawning and drops; all the bosses; factions; structures; elites |
 | [Items & recipes](docs/items-and-recipes.md) | every crafting recipe, every item id, both shops |
@@ -349,6 +351,20 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 /summon bc:dungeon_golem
 /summon bc:tidewatch_commodore
 ```
+
+---
+
+## v1.3.0: Devil Union
+
+![v1.3.0](docs/images/v130.png)
+
+* **Devil hosts.** A devil cannot walk this world without a body - so it borrows one. Hosts of four devils - **Vharog** the Cinder Maw, **Sileth** the Pale Choir, **Morvane** the Hollow Crown and **Ghorza** the Red Hunger - walk the Forsaken Realm and the Marches at night, haunt Devil-Scarred land, and march with Spade patrols, casting their devil's magic. → [Devil Union](docs/devil-union.md)
+* **Union.** Push a host and its devil digs in: at **50% union** horns, a devil's arm and glowing marks break through and it heals; at **100%** it spreads wings, grows a tail, flies at you and casts its devil's greatest spell. Only a host beaten at full union leaves its devil's **Pact Sigil** behind.
+* **Possession.** At night a lesser devil may seize a Magic Knight near you. Beat it down - but not to death - and the devil is cast out and the knight is free. A killing blow kills them both.
+* **A pact of your own.** Use a Pact Sigil to hear its devil's offer: a **boon** and a **price**, always. Fighting fills your **union gauge**; at 50% join with your devil - horns, stronger blows and spells, and two of its moves. With a full gauge and a strong **bond**, join at **100%** - wings, far greater power and its third, greatest move.
+* **The devil's hold.** While you are joined your devil pushes to take over. Let it, and for ten seconds it lashes out at everything near you - friends too. A **Binding Chain** holds it back; bond and Will push it away.
+* **The Crowned Vessel.** A knight-captain who gave himself to **Vaelgrim, the Crowned Abyss**, a higher-rank devil. It waits in **Underworld Breaches** in the dangerous lands, or answers an **Abyssal Crown** raised at night - and its union deepens as you fight it. Beat it for Vaelgrim's own sigil.
+* Seven new feats, a new omen (**The Underworld Stirs**), a new mission, and a Devil Union page in the Handbook.
 
 ---
 

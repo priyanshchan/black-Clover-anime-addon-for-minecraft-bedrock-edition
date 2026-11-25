@@ -1,0 +1,129 @@
+{
+  "format_version": "1.10.0",
+  "render_controllers": {
+    "controller.render.bc.devil_host": {
+      "arrays": {
+        "textures": {
+          "Array.skins": [
+            "Texture.vharog",
+            "Texture.sileth",
+            "Texture.morvane",
+            "Texture.ghorza",
+            "Texture.lesser"
+          ]
+        },
+        "geometries": {
+          "Array.geos": [
+            "Geometry.vharog",
+            "Geometry.sileth",
+            "Geometry.morvane",
+            "Geometry.ghorza",
+            "Geometry.lesser"
+          ]
+        }
+      },
+      "geometry": "Array.geos[q.property('bc:devil')]",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.skins[q.property('bc:devil')]"
+      ],
+      "part_visibility": [
+        {
+          "*": true
+        },
+        {
+          "horns": "q.property('bc:union') >= 1"
+        },
+        {
+          "devilArm": "q.property('bc:union') >= 1"
+        },
+        {
+          "marks": "q.property('bc:union') >= 1"
+        },
+        {
+          "rightWing": "q.property('bc:union') >= 2"
+        },
+        {
+          "rightWingTip": "q.property('bc:union') >= 2"
+        },
+        {
+          "leftWing": "q.property('bc:union') >= 2"
+        },
+        {
+          "leftWingTip": "q.property('bc:union') >= 2"
+        },
+        {
+          "tail0": "q.property('bc:union') >= 2"
+        },
+        {
+          "tail1": "q.property('bc:union') >= 2"
+        },
+        {
+          "tail2": "q.property('bc:union') >= 2"
+        },
+        {
+          "tail3": "q.property('bc:union') >= 2"
+        }
+      ]
+    },
+    "controller.render.bc.crowned_vessel": {
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Texture.default"
+      ],
+      "part_visibility": [
+        {
+          "*": true
+        },
+        {
+          "horns": "q.property('bc:union') >= 1"
+        },
+        {
+          "devilArm": "q.property('bc:union') >= 1"
+        },
+        {
+          "devilArmL": "q.property('bc:union') >= 1"
+        },
+        {
+          "marks": "q.property('bc:union') >= 1"
+        },
+        {
+          "rightWing": "q.property('bc:union') >= 2"
+        },
+        {
+          "rightWingTip": "q.property('bc:union') >= 2"
+        },
+        {
+          "leftWing": "q.property('bc:union') >= 2"
+        },
+        {
+          "leftWingTip": "q.property('bc:union') >= 2"
+        },
+        {
+          "tail0": "q.property('bc:union') >= 2"
+        },
+        {
+          "tail1": "q.property('bc:union') >= 2"
+        },
+        {
+          "tail2": "q.property('bc:union') >= 2"
+        },
+        {
+          "tail3": "q.property('bc:union') >= 2"
+        },
+        {
+          "halo": "q.property('bc:union') >= 2"
+        }
+      ]
+    }
+  }
+}
