@@ -143,6 +143,9 @@
     "bc_devilhide_leggings": {
       "textures": "textures/items/bc/devilhide_leggings"
     },
+    "bc_diamond_shard": {
+      "textures": "textures/items/bc/diamond_shard"
+    },
     "bc_doubloon": {
       "textures": "textures/items/bc/doubloon"
     },
@@ -407,6 +410,9 @@
     "bc_harpoon": {
       "textures": "textures/items/bc/harpoon"
     },
+    "bc_heart_bloom": {
+      "textures": "textures/items/bc/heart_bloom"
+    },
     "bc_hearty_roast": {
       "textures": "textures/items/bc/hearty_roast"
     },
@@ -566,6 +572,12 @@
     "bc_purple_orca_robe": {
       "textures": "textures/items/bc/purple_orca_robe"
     },
+    "bc_relic_blossom": {
+      "textures": "textures/items/bc/relic_blossom"
+    },
+    "bc_relic_brand": {
+      "textures": "textures/items/bc/relic_brand"
+    },
     "bc_relic_eye": {
       "textures": "textures/items/bc/relic_eye"
     },
@@ -577,6 +589,9 @@
     },
     "bc_relic_idol": {
       "textures": "textures/items/bc/relic_idol"
+    },
+    "bc_relic_prism": {
+      "textures": "textures/items/bc/relic_prism"
     },
     "bc_relic_ring": {
       "textures": "textures/items/bc/relic_ring"
@@ -659,11 +674,17 @@
     "bc_smoke_bomb": {
       "textures": "textures/items/bc/smoke_bomb"
     },
+    "bc_spade_sigil": {
+      "textures": "textures/items/bc/spade_sigil"
+    },
     "bc_spell_scroll": {
       "textures": "textures/items/bc/spell_scroll"
     },
     "bc_spire_core": {
       "textures": "textures/items/bc/spire_core"
+    },
+    "bc_spirit_draught": {
+      "textures": "textures/items/bc/spirit_draught"
     },
     "bc_sprite_dust": {
       "textures": "textures/items/bc/sprite_dust"
@@ -692,8 +713,23 @@
     "bc_waygate": {
       "textures": "textures/items/bc/waygate"
     },
+    "bc_wyvern_egg_ember": {
+      "textures": "textures/items/bc/wyvern_egg_ember"
+    },
+    "bc_wyvern_egg_frost": {
+      "textures": "textures/items/bc/wyvern_egg_frost"
+    },
+    "bc_wyvern_egg_storm": {
+      "textures": "textures/items/bc/wyvern_egg_storm"
+    },
+    "bc_wyvern_saddle": {
+      "textures": "textures/items/bc/wyvern_saddle"
+    },
     "bc_wyvern_scale": {
       "textures": "textures/items/bc/wyvern_scale"
+    },
+    "bc_wyvern_whistle": {
+      "textures": "textures/items/bc/wyvern_whistle"
     },
     "bc_wyvernscale_boots": {
       "textures": "textures/items/bc/wyvernscale_boots"

@@ -29,8 +29,15 @@ function feats(p) {
   cache.set(p.id, f);
   return f;
 }
+/** @type {Set<string>} players with counts not yet written down */
+const dirty = new Set();
 function save(p) {
+  dirty.delete(p.id);
   safe(() => p.setDynamicProperty(KEY, JSON.stringify(feats(p))));
+}
+/** A feat counter's value (v1.2.0: also for the Handbook and tests). */
+export function featCount(p, counter) {
+  return feats(p).c[counter] ?? 0;
 }
 world.afterEvents.playerLeave.subscribe((ev) => cache.delete(ev.playerId));
 
@@ -57,6 +64,7 @@ export function bump(p, counter, n = 1) {
   const f = feats(p);
   f.c[counter] = (f.c[counter] ?? 0) + n;
   check(p);
+  dirty.add(p.id);
   if (system.currentTick % 20 === 0) save(p);
 }
 /** Set a counter to at least `n` (levels, party size...). */
@@ -101,6 +109,14 @@ on('legendary', (p) => atLeast(p, 'legendaries', 1));
 on('mimic', (p) => bump(p, 'mimics'));
 on('infernal', (p) => bump(p, 'infernals'));
 on('request', (p) => bump(p, 'requests'));
+// v1.2.0: Dragonbound & Kingdoms
+on('hatch', (p) => bump(p, 'hatched'));
+on('wyvern_adult', (p) => atLeast(p, 'adult_wyverns', 1));
+on('wyvern_ride', (p) => atLeast(p, 'wyvern_rides', 1));
+on('kingdom_kill', (p) => bump(p, 'kingdom_kills'));
+on('commander', (p) => bump(p, 'commanders'));
+on('heart_trade', (p) => bump(p, 'heart_trades'));
+on('capital', (p) => atLeast(p, 'capital', 1));
 on('waygate', (p) => bump(p, 'waygate'));
 // v0.8.0: armour
 on('forge', (p) => bump(p, 'forged'));
@@ -127,6 +143,7 @@ system.runInterval(() => {
     if (sea(p).fruit) atLeast(p, 'fruit', 1);
     if (['storm', 'blossom', 'coral', 'dream'].includes(state(p).attr)) atLeast(p, 'new_grimoire', 1);
     if (safe(() => p.getComponent('minecraft:riding')?.entityRidingOn?.typeId) === 'bc:broom') atLeast(p, 'broom', 1);
+    if (dirty.has(p.id)) save(p);   // counts are written down at least every two seconds
     const f = feats(p);
     const want = f.title ? `${p.name}\n§6${f.title}` : p.name;
     if (p.nameTag !== want) p.nameTag = want;

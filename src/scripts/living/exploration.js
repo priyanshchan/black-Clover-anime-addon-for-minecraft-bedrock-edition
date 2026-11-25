@@ -14,6 +14,8 @@ import { foundBy, nameOf, nearestUnfound, slotsNear } from './landmarks.js';
 import { compassWord, currentRegion, regions, stars as starText, traitText } from './regions.js';
 import { omenInfo } from './omens.js';
 import { relicsOf } from './relics.js';
+import { capitalLine } from './capital.js';
+import { stageOf, wyvernsOf } from './dragonbound.js';
 
 const W = DATA.world;
 const G = DATA.glyphs;
@@ -213,7 +215,14 @@ export async function atlasPage(p, back) {
   const mine = Object.values(regions()).filter((r) => r.by.includes(p.id));
   const found = foundBy(p);
   const o = omenInfo();
-  const body = [regionBlock(p), '', o ? `§7Omen of the day: ${o.mc}${o.name}§7 - ${o.desc}` : '§7No omen today.', '',
+  const wyverns = wyvernsOf(p).map((e) => {
+    const n = String(safe(() => e.getDynamicProperty('bc:wname')) ?? 'Wyvern');
+    const g = Number(safe(() => e.getDynamicProperty('bc:growth')) ?? 0);
+    const next = DATA.dragon.stages[stageOf(e) + 1];
+    return `§2${n} §7- ${DATA.dragon.stages[stageOf(e)].name}${next ? ` (growth ${g}/${next.at})` : ''}, ${Math.round(Math.hypot(e.location.x - p.location.x, e.location.z - p.location.z))}m away`;
+  });
+  const body = [regionBlock(p), '', o ? `§7Omen of the day: ${o.mc}${o.name}§7 - ${o.desc}` : '§7No omen today.', '', capitalLine(p),
+    ...(wyverns.length ? ['', '§2Your wyverns:', ...wyverns] : []), '',
     `§eRegions found: §f${mine.length}   §eLandmarks found: §f${found.length}`, '', '§dRelics at work:', relicBlock(p)].join('\n');
   const f = new ActionFormData().title('§lThe Atlas').body(body);
   f.button('§lRegions you have found\n§r§8Nearest first');

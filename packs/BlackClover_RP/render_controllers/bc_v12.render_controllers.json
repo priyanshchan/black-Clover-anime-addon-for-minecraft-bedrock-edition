@@ -1,0 +1,53 @@
+{
+  "format_version": "1.10.0",
+  "render_controllers": {
+    "controller.render.bc.wyvern_egg": {
+      "arrays": {
+        "textures": {
+          "Array.eggs": [
+            "Texture.e0",
+            "Texture.e1",
+            "Texture.e2"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.eggs[q.property('bc:element')]"
+      ]
+    },
+    "controller.render.bc.tamed_wyvern": {
+      "arrays": {
+        "textures": {
+          "Array.skins": [
+            "Texture.e0",
+            "Texture.e1",
+            "Texture.e2"
+          ]
+        }
+      },
+      "geometry": "Geometry.default",
+      "materials": [
+        {
+          "*": "Material.default"
+        }
+      ],
+      "textures": [
+        "Array.skins[q.property('bc:element')]"
+      ],
+      "part_visibility": [
+        {
+          "*": true
+        },
+        {
+          "saddle": "q.property('bc:saddled')"
+        }
+      ]
+    }
+  }
+}

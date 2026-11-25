@@ -36,6 +36,9 @@ from bc.data import (ELITE_STAR_BONUS, ELITE_TIER_CHANCE, ELITE_TIERS, ENCOUNTER
                      REGION_SIZE, REGION_SYLLABLES, REGION_TRAITS, RELIC_AFFIXES, RELIC_SLOTS, RELICS, RUMORS, V11_ITEMS, WANDERER_EPITHET,
                      WANDERER_FETCH, WANDERER_FIRST, WANDERER_GREETINGS, WANDERERS, WEAPON_AFFIXES, WEAPON_BASES, WYVERNS)
 from bc import structures11  # noqa: E402
+from bc.data import (CAPITAL_DISTANCE, CAPITAL_RADIUS, CAPITAL_SAFE, EGG_FROM_HOARD, EGG_FROM_WYVERN, EGG_HATCH_SECONDS, EGG_NEEDS,  # noqa: E402
+                     KINGDOMS, MARCH_KINGDOM, SPOILS_PRICE, V12_ITEMS, WYVERN_BREATH_COOLDOWN, WYVERN_EGGS, WYVERN_FOOD,
+                     WYVERN_GROWTH_PER_SECOND, WYVERN_NAMES, WYVERN_RIDE_SPEED, WYVERN_STAGES)
 from bc.models import wave4  # noqa: E402
 
 ROOT = out.ROOT
@@ -134,6 +137,14 @@ def gen_script_data():
             'prefix': ITEM_PREFIX, 'suffix': ITEM_SUFFIX, 'legendSyllables': [list(x) for x in LEGEND_SYLLABLES], 'epithets': LEGEND_EPITHETS,
             'reforge': {k: list(v) for k, v in REFORGE_COST.items()},
         },
+        'dragon': {
+            'eggs': WYVERN_EGGS, 'hatchSeconds': EGG_HATCH_SECONDS, 'needs': EGG_NEEDS, 'fromHoard': EGG_FROM_HOARD, 'fromWyvern': EGG_FROM_WYVERN,
+            'stages': [dict(name=n, at=a, hp=h, ride=r) for n, a, h, r in WYVERN_STAGES], 'growthPerSecond': WYVERN_GROWTH_PER_SECOND,
+            'food': WYVERN_FOOD, 'names': [list(x) for x in WYVERN_NAMES], 'rideSpeed': WYVERN_RIDE_SPEED, 'breathCooldown': WYVERN_BREATH_COOLDOWN,
+        },
+        'kingdoms': {k: dict(v) for k, v in KINGDOMS.items()}, 'marchKingdom': MARCH_KINGDOM,
+        'capital': {'distance': list(CAPITAL_DISTANCE), 'radius': CAPITAL_RADIUS, 'safe': CAPITAL_SAFE},
+        'spoilsPrice': SPOILS_PRICE, 'v12Items': {k: dict(name=n, desc=d) for k, (n, d) in V12_ITEMS.items()},
         'eliteTiers': [dict(id=i, name=n, mc=c, affixes=a, boost=b) for i, n, c, a, b in ELITE_TIERS], 'eliteTierChance': ELITE_TIER_CHANCE,
         'eliteStarBonus': ELITE_STAR_BONUS,
         'companion': {'xp': COMPANION_XP, 'hp': COMPANION_HP, 'bond': [dict(at=a, name=n, perk=k) for a, n, k in BOND],

@@ -13,6 +13,7 @@ import { behind } from './events.js';
 import { flyby, spawnWisp } from './beasts.js';
 import { calm, omen } from './omens.js';
 import { hasTrait, starsAt, traitsAt } from './regions.js';
+import { inCapital } from './capital.js';
 
 const E = DATA.world.encounters;
 const cool = new Map();
@@ -99,7 +100,7 @@ function party(p, ids, n, msg) {
 
 /** One roll of the land's dangers for a player (exported for tests). Returns what happened. */
 export function landRoll(p, roll = Math.random) {
-  if (p.dimension.id !== 'minecraft:overworld' || calm()) return '';
+  if (p.dimension.id !== 'minecraft:overworld' || calm() || inCapital(p.location)) return '';
   const loc = p.location;
   const traits = traitsAt(loc);
   if (traits.includes('sanctuary')) return '';

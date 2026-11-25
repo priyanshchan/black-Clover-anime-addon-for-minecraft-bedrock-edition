@@ -21,6 +21,8 @@ const CODES = {
 };
 const FROM_CODE = Object.fromEntries(Object.entries(CODES).map(([k, v]) => [v, k]));
 export const RELIC_IDS = Object.keys(L.relics).map((k) => `bc:${k}`);
+/** (v1.2.0) the kingdoms' relics come only from their forts and the Heart priestesses */
+const KINGDOM_RELICS = new Set(['relic_prism', 'relic_brand', 'relic_blossom']);
 
 // ------------------------------------------------------------------------------- the luck of the world today
 /** @type {(() => number)} extra rarity luck from the day's omen (omens.js) */
@@ -136,7 +138,7 @@ export function writeRoll(item, roll) {
 /** A relic, rolled. @returns {ItemStack} */
 export function makeRelic(stars = 1, opts = {}) {
   const rar = opts.rarity ? RARITIES[R_INDEX[opts.rarity] ?? 0] : rollRarity(stars, opts.luck ?? 0, opts.min ?? 'common');
-  const baseKey = opts.base ?? pick(Object.keys(L.relics));
+  const baseKey = opts.base ?? pick(Object.keys(L.relics).filter((k) => !KINGDOM_RELICS.has(k)));
   const affixes = rollRelicAffixes(baseKey, rar);
   const first = Object.keys(affixes)[0] ?? 'mana';
   const name = R_INDEX[rar.id] >= R_INDEX.legendary ? legendName() : plainName(first, L.relics[baseKey].name);
@@ -224,6 +226,11 @@ const TABLES = {
     ['armor', 1, 1, 0.2]], rolled: [0.45, 'common'] },
   witch: { items: [['bc:mana_potion', 1, 3, 0.9], ['bc:greater_mana_potion', 1, 1, 0.3], ['bc:sprite_dust', 1, 3, 0.7], ['scroll', 1, 1, 0.5], ['minecraft:glowstone_dust', 2, 6, 0.6]],
     rolled: [0.25, 'common'], relicsOnly: true },
+  // v1.2.0: the kingdoms' forts
+  fort_diamond: { items: [['bc:doubloon', 30, 70, 1], ['bc:diamond_shard', 3, 8, 1], ['minecraft:iron_ingot', 3, 8, 0.8], ['minecraft:diamond', 1, 2, 0.4],
+    ['krelic:relic_prism', 1, 1, 0.35], ['armor', 1, 1, 0.25]], rolled: [0.7, 'uncommon'] },
+  fort_spade: { items: [['bc:doubloon', 30, 70, 1], ['bc:spade_sigil', 3, 8, 1], ['bc:ancient_page', 1, 3, 0.7], ['scroll', 1, 2, 0.6],
+    ['krelic:relic_brand', 1, 1, 0.35], ['armor', 1, 1, 0.25]], rolled: [0.7, 'uncommon'] },
   cache: { items: [['bc:doubloon', 25, 60, 1], ['minecraft:gold_ingot', 2, 5, 0.8], ['minecraft:emerald', 1, 4, 0.6], ['bc:mana_crystal', 2, 5, 0.6]], rolled: [0.6, 'common'] },
 };
 export const TABLE_NAMES = Object.keys(TABLES);
@@ -249,6 +256,7 @@ export function chestItems(table, stars = 1, o = {}) {
     else if (id === 'tmap') it = new ItemStack('bc:treasure_map', 1);
     else if (id === 'amulet') it = new ItemStack(`bc:${pick(Object.keys(DATA.amulets))}`, 1);
     else if (id === 'armor') it = makeArmorPiece(stars);
+    else if (id.startsWith('krelic:')) it = makeRelic(stars, { base: id.slice(7), min: 'rare' });
     else it = safe(() => new ItemStack(id, Math.min(64, n)));
     if (it) out.push(it);
   }

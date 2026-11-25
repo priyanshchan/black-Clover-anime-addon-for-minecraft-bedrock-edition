@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "Black Clover: Grimoire Awakening §7(Resources)",
-    "description": "v1.1.0 - Mana Wyverns, the Spire Warden, mimics, sprites, the Hollow, wanderers, relics; HD spell effects, 3D grimoires, armour, brooms, swords, robes, companions, bosses, particles and sounds. Unofficial fan addon.",
+    "description": "v1.2.0 - tamed and saddled wyverns, wyvern eggs, kingdom soldiers, the Royal Capital; Mana Wyverns, the Spire Warden, mimics, sprites, relics; HD spell effects, 3D grimoires, armour, companions, bosses, particles and sounds. Unofficial fan addon.",
     "uuid": "fb6916dc-6965-5317-97d9-c2f0276ce444",
     "version": [
       1,
-      1,
+      2,
       0
     ],
     "min_engine_version": [
@@ -21,7 +21,7 @@
       "uuid": "1baac065-c710-5c63-98b3-d7c07b0289bd",
       "version": [
         1,
-        1,
+        2,
         0
       ]
     }
@@ -31,7 +31,7 @@
       "uuid": "e31c2aa6-e171-5e62-8d60-e4fb08605627",
       "version": [
         1,
-        1,
+        2,
         0
       ]
     }

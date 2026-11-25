@@ -76,10 +76,10 @@ def _wyvern_eyes(glow):
     return fn
 
 
-def wyvern_geo(kind):
-    """All three wyverns share one layout (one geometry), with their own textures."""
+def wyvern_geo(kind, saddle=False):
+    """All three wyverns share one layout (one geometry), with their own textures. v1.2.0: a tamed wyvern's geometry adds a saddle."""
     L = WYVERN_LOOK[kind]
-    g = Geo('geometry.bc.mana_wyvern', res=2, atlas_width=256, visible=(8, 6, (0, 2, 0)), seed=1101)
+    g = Geo('geometry.bc.tamed_wyvern' if saddle else 'geometry.bc.mana_wyvern', res=2, atlas_width=256, visible=(8, 6, (0, 2, 0)), seed=1101)
     scales = tex.Painted(tex.Metal(L['scale'], sheen=0.28, noise=0.1), {'*': _scale_pattern})
     belly = tex.Material(L['belly'], noise=0.08, edge=0.8)
     membrane = tex.Painted(tex.Material(L['membrane'], noise=0.18, edge=0, highlight=False), {'*': _membrane(L['vein'])})
@@ -161,6 +161,19 @@ def wyvern_geo(kind):
     g.box('tail3', (0, 17.0, 38.4), (4.6, 0.9, 4.6), glow, rotation=[0, 45, 0], pivot=(0, 17.0, 38.4))
     for sx in (-1, 1):
         g.box('tail3', (sx * 2.2, 17.0, 35.4), (0.8, 0.8, 3.6), spine, rotation=[0, sx * -40, 0], pivot=(sx * 1, 17.0, 34.4))
+    if saddle:
+        leather = tex.Material(P['leather'], noise=0.1)
+        gold = tex.Metal(P['gold'], sheen=0.5)
+        red = tex.Cloth(P['red_cloth'])
+        g.bone('saddle', 'body', (0, 23, -2))
+        g.cube('saddle', (-4.5, 22.6, -6), (9, 1.4, 9), leather)
+        g.cube('saddle', (-3.5, 23.8, -6.5), (7, 2.2, 1.6), leather)          # pommel
+        g.cube('saddle', (-3.8, 23.8, 1.6), (7.6, 2.6, 1.6), leather)         # cantle
+        g.cube('saddle', (-5.6, 14.5, -3.5), (0.8, 8.5, 2.4), red)           # girth and stirrup straps
+        g.cube('saddle', (4.8, 14.5, -3.5), (0.8, 8.5, 2.4), red)
+        g.cube('saddle', (-6.2, 13.6, -3.8), (1.6, 1.2, 3), gold)
+        g.cube('saddle', (4.6, 13.6, -3.8), (1.6, 1.2, 3), gold)
+        g.cube('saddle', (-4.6, 22.4, -6.2), (9.2, 0.4, 9.4), red)           # blanket
     return g
 
 
@@ -600,6 +613,9 @@ WANDERER_LOOKS = [
     ('hermit', _r('140a24', '22103a', '321850', '442268', '582e82'), _r('140a24', '22103a', '321850'), P['leather'], P['gold']),
     ('bard', _r('3a0a0e', '5e1016', '82181e', 'a6242a', 'c8383a'), _r('5a3a08', '7a520e', '9c6c18'), P['leather'], P['gold']),
     ('lost_knight', _r('070b1a', '0d1430', '142048', '1d2d62', '283c7c'), _r('2d313a', '434955', '5c6370'), P['leather'], P['silver']),
+    # v1.2.0: the Heart Priestess and the Capital's quartermaster
+    ('priestess', _r('8a5a6a', 'b07a8a', 'd49aaa', 'ecc0cc', 'fbe4ea'), _r('2a5a2a', '3a7a3a', '4e964e'), _r('5a3a28', '7a5236', '96683e'), _r('d06a8a', 'f08aaa', 'ffc0d4')),
+    ('quartermaster', _r('101a3a', '18265a', '22347a', '2e4596', '3c58b0'), _r('3a2a10', '5a4018', '7a5a24'), P['leather'], P['gold']),
 ]
 
 

@@ -1,0 +1,40 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:spade_zealot",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/spade_zealot"
+      },
+      "geometry": {
+        "default": "geometry.bc.spade_zealot"
+      },
+      "animations": {
+        "idle": "animation.bc.spade_zealot.idle",
+        "walk": "animation.bc.spade_zealot.walk",
+        "look_at_target": "animation.bc.spade_zealot.look_at_target",
+        "attack": "animation.bc.spade_zealot.attack",
+        "cast": "animation.bc.spade_zealot.cast"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#1a1424",
+        "overlay_color": "#a040ff"
+      }
+    }
+  }
+}

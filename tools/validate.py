@@ -139,7 +139,7 @@ VANILLA_SOUNDS = {'mob.blaze.shoot', 'mob.blaze.breathe', 'mob.ghast.fireball', 
                   'random.explode', 'random.orb', 'random.anvil_land', 'mob.evocation_illager.cast_spell', 'mob.evocation_illager.prepare_summon',
                   'mob.ravager.bite', 'random.click', 'item.trident.throw', 'random.burp', 'mob.skeleton.say', 'mob.enderdragon.flap',
                   'mob.enderdragon.growl', 'random.pop', 'random.fizz', 'random.levelup', 'fire.ignite', 'dig.wood', 'mob.slime.big', 'random.fuse',
-                  'armor.equip_iron', 'random.break', 'random.anvil_use', 'random.chestclosed', 'dig.grass', 'dig.stone', 'mob.zombie.unfect'}
+                  'armor.equip_iron', 'random.break', 'random.anvil_use', 'random.chestclosed', 'dig.grass', 'dig.stone', 'mob.zombie.unfect', 'note.flute'}
 js = ''
 for p in walk(os.path.join(BP, 'scripts'), '.js'):
     js += open(p, encoding='utf-8').read()
@@ -171,7 +171,9 @@ for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):
              # v1.1.0: the world seed, regions, landmarks, spawners, omens, wanderers, relics, elites' tiers, maps and journals
              'bc:seed', 'bc:regions', 'bc:region', 'bc:landmarks', 'bc:landmark', 'bc:extra_slots', 'bc:spawners', 'bc:omen', 'bc:relic_',
              'bc:wkind', 'bc:wname', 'bc:wtitle', 'bc:wborn', 'bc:wstay', 'bc:wreq', 'bc:requests', 'bc:track_lm', 'bc:tid', 'bc:text', 'bc:cache',
-             'bc:elites', 'bc:etier', 'bc:mimic_loot', 'bc:flyby', 'bc:flee_until'):
+             'bc:elites', 'bc:etier', 'bc:mimic_loot', 'bc:flyby', 'bc:flee_until',
+             # v1.2.0: eggs and tamed wyverns, the Capital, spoils of war, animations named in scripts
+             'bc:kind', 'bc:warmth', 'bc:growth', 'bc:mode', 'bc:capital', 'bc:capital_seen', 'bc:capital_guard', 'bc:spoils', 'bc:wyvern_egg_'):
         continue
     errors.append(f'script references unknown id {m}')
 for m in set(re.findall(r"'(bc:[a-z_]+)'", js)):

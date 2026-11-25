@@ -1,0 +1,40 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:diamond_legionnaire",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/diamond_legionnaire"
+      },
+      "geometry": {
+        "default": "geometry.bc.diamond_legionnaire"
+      },
+      "animations": {
+        "idle": "animation.bc.diamond_legionnaire.idle",
+        "walk": "animation.bc.diamond_legionnaire.walk",
+        "look_at_target": "animation.bc.diamond_legionnaire.look_at_target",
+        "attack": "animation.bc.diamond_legionnaire.attack",
+        "cast": "animation.bc.diamond_legionnaire.cast"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          },
+          "look_at_target"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#707c90",
+        "overlay_color": "#8ae0f8"
+      }
+    }
+  }
+}

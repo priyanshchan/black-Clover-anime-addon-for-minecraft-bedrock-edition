@@ -12,7 +12,9 @@
         "v2": "textures/entity/bc/wanderer/2",
         "v3": "textures/entity/bc/wanderer/3",
         "v4": "textures/entity/bc/wanderer/4",
-        "v5": "textures/entity/bc/wanderer/5"
+        "v5": "textures/entity/bc/wanderer/5",
+        "v6": "textures/entity/bc/wanderer/6",
+        "v7": "textures/entity/bc/wanderer/7"
       },
       "geometry": {
         "default": "geometry.bc.wanderer"

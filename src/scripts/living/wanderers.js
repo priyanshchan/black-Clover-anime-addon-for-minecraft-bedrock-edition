@@ -14,16 +14,19 @@ import { mods } from '../core/mods.js';
 import { makeScroll } from '../core/scrolls.js';
 import { V, alive, pick, rand, safe } from '../core/util.js';
 import { countCoins, giveCoins, takeCoins } from '../sea/bounty.js';
+import { addStars } from '../core/ranks.js';
 import { joinParty } from './companions.js';
 import { behind } from './events.js';
 import { makeExplorerMap, makeJournal } from './exploration.js';
 import { setupKnight } from './knights.js';
 import { nameOf, nearestUnfound, setResidentMaker, slotsNear } from './landmarks.js';
+import { setCapitalResidentMaker } from './capital.js';
 import { omen } from './omens.js';
 import { compassWord, currentRegion, starsAt, traitsAt } from './regions.js';
 
 const W = DATA.world;
-const KINDS = Object.keys(W.wanderers);
+const RESIDENT = new Set(['quartermaster', 'priestess']);   // (v1.2.0: they keep to the Capital and the Heart Sanctums)
+const KINDS = Object.keys(W.wanderers).filter((k) => !RESIDENT.has(k));
 const LIFE = 12 * 60 * 1000; // twelve minutes (real time, so it survives a reload)
 
 /** @typedef {{label: string, price: number, give: string}} Offer */
@@ -47,6 +50,7 @@ export function spawnWanderer(dim, loc, kind = '', opts = {}) {
   return e;
 }
 setResidentMaker((dim, loc, kind, opts) => spawnWanderer(dim, loc, kind, opts));
+setCapitalResidentMaker((dim, loc, kind, opts) => spawnWanderer(dim, loc, kind, opts));
 
 // ------------------------------------------------------------------------------- arriving and leaving
 function chanceFor(p) {
@@ -113,6 +117,14 @@ function stockFor(kind) {
     return [{ label: 'A tale (a journal page)', price: 10, give: 'journal' }, { label: 'A TRUE tale (a buried cache)', price: 60, give: 'journal:cache' },
       { label: 'A song of a famous blade', price: 400, give: 'weapon:epic' }];
   }
+  if (kind === 'quartermaster') {
+    return [{ label: 'Knight Contract', price: 120, give: 'item:bc:knight_contract:1' }, { label: 'Wyvern Saddle', price: 200, give: 'item:bc:wyvern_saddle:1' },
+      { label: 'Wyvern Whistle', price: 90, give: 'item:bc:wyvern_whistle:1' }, { label: 'Explorer\'s Map', price: 50, give: 'map:' }];
+  }
+  if (kind === 'priestess') {
+    return [{ label: 'Spirit Blossom (a relic)', price: 150, give: 'relic:rare:relic_blossom' }, { label: 'Spirit Draught', price: 40, give: 'item:bc:spirit_draught:1' },
+      { label: 'Sprite Dust x3', price: 30, give: 'item:bc:sprite_dust:3' }, { label: 'Heart Bloom', price: 35, give: 'item:bc:heart_bloom:1' }];
+  }
   if (kind === 'pilgrim') {
     return [{ label: 'Mana Cookies x4', price: 20, give: 'item:bc:mana_cookie:4' }, { label: 'Bread x6', price: 10, give: 'item:minecraft:bread:6' },
       { label: 'A pilgrim\'s blessing', price: 25, give: 'blessing' }, { label: 'Explorer\'s Map', price: 60, give: 'map:' }];
@@ -132,7 +144,7 @@ function deliver(p, o) {
   const [what, a, b, c] = o.give.split(':');
   if (what === 'map') give(p, makeExplorerMap(p, a ?? ''));
   else if (what === 'tmap') give(p, new ItemStack('bc:treasure_map', 1));
-  else if (what === 'relic') give(p, makeRelic(stars, { min: a || 'uncommon', luck }));
+  else if (what === 'relic') give(p, makeRelic(stars, { min: a || 'uncommon', luck, base: b || undefined }));
   else if (what === 'weapon') give(p, makeWeapon(stars, { min: a || 'uncommon', luck }));
   else if (what === 'scroll') give(p, makeScroll());
   else if (what === 'journal') give(p, makeJournal(stars, a === 'cache'));
@@ -202,6 +214,28 @@ function takeItem(p, id, n) {
 }
 const itemName = (id) => (id.startsWith('bc:') ? (DATA.world.items[id.slice(3)]?.name ?? id.slice(3).replace(/_/g, ' ')) : id.replace('minecraft:', '').replace(/_/g, ' ')).replace(/§./g, '');
 
+/** The Capital's quartermaster buys spoils of war: doubloons for each, and a star for every ten. Returns the doubloons paid. */
+export function sellSpoils(p) {
+  let paid = 0;
+  let count = 0;
+  for (const [id, price] of Object.entries(DATA.spoilsPrice)) {
+    const n = countItem(p, `bc:${id}`);
+    if (!n || !takeItem(p, `bc:${id}`, n)) continue;
+    paid += n * price;
+    count += n;
+  }
+  if (!paid) return 0;
+  giveCoins(p, paid);
+  const before = Number(safe(() => p.getDynamicProperty('bc:spoils')) ?? 0);
+  const after = before + count;
+  safe(() => p.setDynamicProperty('bc:spoils', after));
+  const stars = Math.floor(after / 10) - Math.floor(before / 10);
+  if (stars > 0) addStars(p, stars, 'spoils of war');
+  sound(p.dimension, 'bc.coins', p.location, 1, 1);
+  safe(() => p.sendMessage(`§a"The Crown thanks you." §7(+${paid} doubloons${stars ? `, +${stars} star${stars > 1 ? 's' : ''}` : ''})`));
+  return paid;
+}
+
 // a landmark request is done when the landmark's master falls, or its chest is opened
 function landmarkDone(p, rec) {
   const list = requestsOf(p);
@@ -243,6 +277,7 @@ export async function talk(p, e) {
         return;
       }
       deliver(p, o);
+      if (kind === 'priestess') emit('heart_trade', p);
       sound(p.dimension, 'bc.coins', p.location, 1, 1);
       safe(() => p.sendMessage(`§a"A fine choice!" §7(${o.label})`));
     });
@@ -267,6 +302,24 @@ export async function talk(p, e) {
       safe(() => e.setDynamicProperty('bc:wreq', 'none'));
       safe(() => p.sendMessage(`§7"${name}: Find the §6${req.what}§7 ${compassWord((req.x ?? 0) - p.location.x, (req.z ?? 0) - p.location.z)} of here - defeat whatever guards it, or bring back its treasure. I'll know." §8(The reward comes when it is done.)`));
       safe(() => p.setDynamicProperty('bc:track_lm', req.slot));
+    });
+  }
+  if (kind === 'quartermaster') {
+    const spoils = Object.keys(DATA.spoilsPrice).map((id) => ({ id, n: countItem(p, `bc:${id}`) })).filter((x) => x.n > 0);
+    const total = spoils.reduce((s, x) => s + x.n * DATA.spoilsPrice[x.id], 0);
+    if (spoils.length) {
+      f.button(`§l§2Hand over the spoils of war\n§r§6+${total} doubloons`);
+      acts.push(() => sellSpoils(p));
+    }
+  }
+  if (kind === 'priestess' && countItem(p, 'bc:heart_bloom') >= 3) {
+    f.button('§l§dOffer three Heart Blooms\n§r§8The spirits answer with a gift');
+    acts.push(() => {
+      if (!takeItem(p, 'bc:heart_bloom', 3)) return;
+      give(p, makeRelic(starsAt(p.location) + 1, { min: 'rare', luck: mods(p).luck }));
+      particle(p.dimension, 'bc:burst_spark', p.location, { color: rgb('f8a0c0'), scale: 1 });
+      safe(() => p.sendMessage('§dThe priestess lays the blooms on the shrine... and the spirits leave a gift.'));
+      emit('heart_trade', p);
     });
   }
   if (kind === 'lost_knight') {
