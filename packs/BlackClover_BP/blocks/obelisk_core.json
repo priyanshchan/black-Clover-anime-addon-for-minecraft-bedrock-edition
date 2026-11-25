@@ -1,0 +1,29 @@
+{
+  "format_version": "1.21.90",
+  "minecraft:block": {
+    "description": {
+      "identifier": "bc:obelisk_core",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:geometry": "minecraft:geometry.full_block",
+      "minecraft:material_instances": {
+        "*": {
+          "texture": "bc_obelisk_core",
+          "render_method": "opaque"
+        }
+      },
+      "minecraft:map_color": "#60e0ff",
+      "minecraft:destructible_by_mining": {
+        "seconds_to_destroy": 25.0
+      },
+      "minecraft:destructible_by_explosion": {
+        "explosion_resistance": 1200
+      },
+      "minecraft:light_emission": 9,
+      "bc:obelisk": {}
+    }
+  }
+}

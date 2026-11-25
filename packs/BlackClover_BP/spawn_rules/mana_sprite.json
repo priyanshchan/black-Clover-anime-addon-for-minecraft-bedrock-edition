@@ -1,0 +1,57 @@
+{
+  "format_version": "1.8.0",
+  "minecraft:spawn_rules": {
+    "description": {
+      "identifier": "bc:mana_sprite",
+      "population_control": "ambient"
+    },
+    "conditions": [
+      {
+        "minecraft:spawns_on_surface": {},
+        "minecraft:difficulty_filter": {
+          "min": "easy",
+          "max": "hard"
+        },
+        "minecraft:weight": {
+          "default": 2
+        },
+        "minecraft:herd": {
+          "min_size": 1,
+          "max_size": 3
+        },
+        "minecraft:density_limit": {
+          "surface": 4
+        },
+        "minecraft:biome_filter": {
+          "any_of": [
+            {
+              "test": "has_biome_tag",
+              "value": "flower_forest"
+            },
+            {
+              "test": "has_biome_tag",
+              "value": "birch"
+            },
+            {
+              "test": "has_biome_tag",
+              "value": "cherry_grove"
+            },
+            {
+              "test": "has_biome_tag",
+              "value": "meadow"
+            },
+            {
+              "test": "has_biome_tag",
+              "value": "forest"
+            }
+          ]
+        },
+        "minecraft:brightness_filter": {
+          "min": 8,
+          "max": 15,
+          "adjust_for_weather": true
+        }
+      }
+    ]
+  }
+}

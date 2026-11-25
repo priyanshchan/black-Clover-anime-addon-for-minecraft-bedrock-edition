@@ -1,0 +1,37 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:mimic",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/mimic"
+      },
+      "geometry": {
+        "default": "geometry.bc.mimic"
+      },
+      "animations": {
+        "idle": "animation.bc.mimic.idle",
+        "hop": "animation.bc.mimic.hop",
+        "attack": "animation.bc.mimic.attack"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "hop": "q.modified_move_speed > 0.01"
+          }
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#764c2f",
+        "overlay_color": "#ffd040"
+      }
+    }
+  }
+}

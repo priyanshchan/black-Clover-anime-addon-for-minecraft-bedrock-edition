@@ -1,0 +1,36 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:spire_warden",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/spire_warden"
+      },
+      "geometry": {
+        "default": "geometry.bc.spire_warden"
+      },
+      "animations": {
+        "idle": "animation.bc.spire_warden.idle",
+        "look": "animation.bc.spire_warden.look",
+        "slam": "animation.bc.spire_warden.slam",
+        "cast": "animation.bc.spire_warden.cast"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          "look"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#3b3d45",
+        "overlay_color": "#60e0ff"
+      }
+    }
+  }
+}

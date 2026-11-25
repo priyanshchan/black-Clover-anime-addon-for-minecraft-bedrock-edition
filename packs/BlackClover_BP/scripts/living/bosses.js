@@ -918,6 +918,32 @@ function announce(e, main, sub) {
   for (const p of e.dimension.getPlayers({ location: e.location, maxDistance: 56 })) title(p, main, sub, 50);
 }
 
+// ------------------------------------------------------------------------------- extensions (v1.1.0)
+/** @type {Record<string, (e: any, target: any, st: any, t: number) => void>} how a registered boss moves */
+const MOVERS = {};
+/** @type {Record<string, (e: any) => boolean>} a registered boss that is asleep (on its hoard) neither moves nor attacks */
+const ASLEEP = {};
+/**
+ * Register a boss from another module: its definition, its own moves and desperation moves, how it moves, when it sleeps.
+ * @param {string} type @param {BossDef} def
+ * @param {{moves?: Record<string, Function>, desperation?: Record<string, Function>, mover?: (e: any, target: any, st: any, t: number) => void,
+ *   asleep?: (e: any) => boolean, color?: string, flyer?: number}} [opts]
+ */
+export function registerBoss(type, def, opts = {}) {
+  DEF[type] = def;
+  Object.assign(MOVES, opts.moves ?? {});
+  Object.assign(DESPERATION, opts.desperation ?? {});
+  if (opts.mover) MOVERS[type] = opts.mover;
+  if (opts.asleep) ASLEEP[type] = opts.asleep;
+  if (opts.color) COLORS[type] = opts.color;
+  if (opts.flyer) FLYERS[type] = opts.flyer;
+}
+/** Run one of the shared boss moves (dive, tail, slam...) for a registered boss. */
+export function bossMove(name, e, target, st) {
+  return MOVES[name]?.(e, target, st);
+}
+export { telegraph, announce };
+
 system.runInterval(() => {
   const t = system.currentTick;
   for (const [id, st] of bosses) {
@@ -927,8 +953,10 @@ system.runInterval(() => {
       continue;
     }
     const def = DEF[e.typeId];
+    if (ASLEEP[e.typeId] && safe(() => ASLEEP[e.typeId](e))) continue;
     safe(() => {
       const target = bossTarget(e, st, def);
+      MOVERS[e.typeId]?.(e, target, st, t);
       // movement
       if (e.typeId === 'bc:phantom_galleon' && target) {
         const want = V.add(target.location, V.mul(V.flat(V.sub(e.location, target.location)), 14));

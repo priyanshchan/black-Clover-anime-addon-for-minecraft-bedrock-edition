@@ -496,6 +496,65 @@
           "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
         }
       }
+    },
+    "animation.bc.armor.wyvernscale_head": {
+      "loop": true,
+      "bones": {
+        "ar_head": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.wyvernscale_chest": {
+      "loop": true,
+      "bones": {
+        "ar_body": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rarm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_larm": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.wyvernscale_legs": {
+      "loop": true,
+      "bones": {
+        "ar_belt": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_rleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lleg": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
+    },
+    "animation.bc.armor.wyvernscale_feet": {
+      "loop": true,
+      "bones": {
+        "ar_rfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_lfoot": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 0.0 : 1.0"
+        },
+        "ar_held": {
+          "scale": "(c.item_slot == 'main_hand' || c.item_slot == 'off_hand') ? 1.0 : 0.0"
+        }
+      }
     }
   }
 }

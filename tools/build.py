@@ -30,6 +30,12 @@ from bc.data import (BANTER, DREAMS, EXPEDITIONS, HOMETOWNS, MOOD, PERSONALITIES
 from bc.data import CONSUMABLES, ELITE_AFFIXES, ELITE_CHANCE, FEATS  # noqa: E402
 from bc.data import (ARMOR_COST, ARMOR_EXTRA, ARMOR_MATERIALS, ARMOR_SETS, ARMOR_SLOTS, REINFORCE_COST, REINFORCE_MAX,  # noqa: E402
                      REINFORCE_PCT, RUNES, SCALE_DROPS)
+from bc.data import (ELITE_STAR_BONUS, ELITE_TIER_CHANCE, ELITE_TIERS, ENCOUNTERS, ITEM_PREFIX, ITEM_SUFFIX, JOURNALS, CACHE_JOURNALS,  # noqa: E402
+                     LANDMARK_BASE, LANDMARK_PER_STAR, LANDMARKS, LEGEND_EPITHETS, LEGEND_SYLLABLES, MARCHES, MIMIC_TOOTH_PRICE, OMEN_CHANCE,
+                     OMENS, RARITIES, RARITY_STAR_SHIFT, REALMS, REFORGE_COST, REGION_ADJECTIVES, REGION_FIND_XP, REGION_LANDFORMS, REGION_LORE,
+                     REGION_SIZE, REGION_SYLLABLES, REGION_TRAITS, RELIC_AFFIXES, RELIC_SLOTS, RELICS, RUMORS, V11_ITEMS, WANDERER_EPITHET,
+                     WANDERER_FETCH, WANDERER_FIRST, WANDERER_GREETINGS, WANDERERS, WEAPON_AFFIXES, WEAPON_BASES, WYVERNS)
+from bc import structures11  # noqa: E402
 from bc.models import wave4  # noqa: E402
 
 ROOT = out.ROOT
@@ -106,6 +112,30 @@ def gen_script_data():
             'runes': {k: dict(name=n, color=c, desc=d, item=x) for k, (n, c, d, x) in RUNES.items()},
             'reinforceMax': REINFORCE_MAX, 'reinforcePct': REINFORCE_PCT, 'reinforceCost': {str(k): list(v) for k, v in REINFORCE_COST.items()},
         },
+        'world': {
+            'regionSize': REGION_SIZE, 'findXp': REGION_FIND_XP,
+            'realms': [dict(upTo=u, id=i, name=n, mc=c, stars=st, traits=tr) for u, i, n, c, st, tr in REALMS], 'marches': MARCHES,
+            'syllables': [list(x) for x in REGION_SYLLABLES], 'adjectives': REGION_ADJECTIVES, 'landforms': REGION_LANDFORMS,
+            'traits': {k: dict(name=n, mc=c, desc=d, land=l) for k, (n, c, d, l) in REGION_TRAITS.items()}, 'lore': REGION_LORE,
+            'landmarks': {k: dict(v) for k, v in LANDMARKS.items()}, 'landmarkBase': LANDMARK_BASE, 'landmarkPerStar': LANDMARK_PER_STAR,
+            'wyverns': {k: dict(name=n, attr=a, color=c, breath=b, land=l) for k, (n, a, c, b, l) in WYVERNS.items()},
+            'encounters': {k: dict(chance=c, id=i, msg=m) for k, (c, i, m) in ENCOUNTERS.items()},
+            'omenChance': OMEN_CHANCE, 'omens': {k: dict(name=n, mc=c, desc=d) for k, (n, c, d) in OMENS.items()},
+            'wanderers': {k: dict(title=t, desc=d, look=lk) for k, (t, d, lk) in WANDERERS.items()}, 'wandererFirst': WANDERER_FIRST,
+            'wandererEpithet': WANDERER_EPITHET, 'greetings': WANDERER_GREETINGS, 'rumors': RUMORS,
+            'fetch': [list(x) for x in WANDERER_FETCH], 'journals': JOURNALS, 'cacheJournals': CACHE_JOURNALS,
+            'items': {k: dict(name=n, desc=d) for k, (n, d) in V11_ITEMS.items()}, 'mimicToothPrice': MIMIC_TOOTH_PRICE,
+        },
+        'loot': {
+            'rarities': [dict(id=i, name=n, mc=c, weight=w, affixes=a, power=pw) for i, n, c, w, a, pw in RARITIES], 'starShift': RARITY_STAR_SHIFT,
+            'relics': {k: dict(name=n, desc=d, favour=f) for k, (n, d, f) in RELICS.items()}, 'relicSlots': RELIC_SLOTS,
+            'relicAffixes': {k: dict(label=lb, base=b, flag=f) for k, (lb, b, f) in RELIC_AFFIXES.items()},
+            'weaponAffixes': {k: dict(label=lb, base=b) for k, (lb, b) in WEAPON_AFFIXES.items()}, 'weaponBases': WEAPON_BASES,
+            'prefix': ITEM_PREFIX, 'suffix': ITEM_SUFFIX, 'legendSyllables': [list(x) for x in LEGEND_SYLLABLES], 'epithets': LEGEND_EPITHETS,
+            'reforge': {k: list(v) for k, v in REFORGE_COST.items()},
+        },
+        'eliteTiers': [dict(id=i, name=n, mc=c, affixes=a, boost=b) for i, n, c, a, b in ELITE_TIERS], 'eliteTierChance': ELITE_TIER_CHANCE,
+        'eliteStarBonus': ELITE_STAR_BONUS,
         'companion': {'xp': COMPANION_XP, 'hp': COMPANION_HP, 'bond': [dict(at=a, name=n, perk=k) for a, n, k in BOND],
                       'partyMax': PARTY_MAX, 'lines': COMPANION_LINES, 'personalities': PERSONALITIES, 'specs': SPECS, 'specLevel': SPEC_LEVEL,
                       'tactics': {k: dict(name=n, desc=d) for k, (n, d) in TACTICS_PARTY.items()}, 'mood': MOOD,
@@ -117,6 +147,7 @@ def gen_script_data():
           f'export const DATA = {json.dumps(data, indent=2, ensure_ascii=True)};\n')
     out.write_text(out.BP, 'scripts/generated/data.js', js)
     out.write_text(out.BP, 'scripts/generated/structures.js', structures.export_js())
+    out.write_text(out.BP, 'scripts/generated/landmarks.js', structures11.export_js())
 
 
 def copy_scripts():

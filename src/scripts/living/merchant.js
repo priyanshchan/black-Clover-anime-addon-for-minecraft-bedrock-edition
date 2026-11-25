@@ -5,6 +5,7 @@ import { DATA } from '../generated/data.js';
 import { particle, sound } from '../core/fx.js';
 import { pick, safe } from '../core/util.js';
 import { countCoins, giveCoins } from '../sea/bounty.js';
+import { omen } from './omens.js';
 
 const GREETINGS = [
   'Wares from every corner of the kingdom - and a few from beyond the sea!',
@@ -35,16 +36,54 @@ function give(p, item) {
   if (left) p.dimension.spawnItem(left, p.location);
 }
 
+/** The merchant's price today (20% off on a Merchants' Fair). */
+export function priceOf(o) {
+  return omen() === 'merchants_fair' ? Math.max(1, Math.round(o.price * 0.8)) : o.price;
+}
+function teethOf(p) {
+  const inv = p.getComponent('minecraft:inventory')?.container;
+  let n = 0;
+  for (let i = 0; inv && i < inv.size; i++) if (inv.getItem(i)?.typeId === 'bc:mimic_tooth') n += inv.getItem(i)?.amount ?? 0;
+  return n;
+}
+/** Sell every Mimic Tooth in the pack. Returns the doubloons paid. */
+export function sellTeeth(p) {
+  const inv = p.getComponent('minecraft:inventory')?.container;
+  let n = 0;
+  for (let i = 0; inv && i < inv.size; i++) {
+    const it = inv.getItem(i);
+    if (it?.typeId !== 'bc:mimic_tooth') continue;
+    n += it.amount;
+    inv.setItem(i, undefined);
+  }
+  if (n) giveCoins(p, n * DATA.world.mimicToothPrice);
+  return n * DATA.world.mimicToothPrice;
+}
+
 async function openShop(p, merchant) {
   const coins = countCoins(p);
-  const form = new ActionFormData().title('§lTravelling Magic Merchant').body(`§7"${pick(GREETINGS)}"\n\n§eYour purse: ${DATA.glyphs.coin} ${coins} doubloons`);
-  for (const o of DATA.merchant) form.button(`${coins >= o.price ? '§0' : '§8'}§l${o.label}\n§r${coins >= o.price ? '§6' : '§c'}${o.price} doubloons`);
+  const fair = omen() === 'merchants_fair';
+  const form = new ActionFormData().title('§lTravelling Magic Merchant').body(`§7"${pick(GREETINGS)}"${fair ? '\n§6(Merchants\' Fair: everything 20% off!)' : ''}\n\n§eYour purse: ${DATA.glyphs.coin} ${coins} doubloons`);
+  for (const o of DATA.merchant) {
+    const price = priceOf(o);
+    form.button(`${coins >= price ? '§0' : '§8'}§l${o.label}\n§r${coins >= price ? '§6' : '§c'}${price} doubloons`);
+  }
+  const teeth = teethOf(p);
+  if (teeth) form.button(`§l§2Sell ${teeth} Mimic Teeth\n§r§6+${teeth * DATA.world.mimicToothPrice} doubloons`);
   form.button('§8Leave');
   const res = await form.show(p);
-  if (res.canceled || res.selection === undefined || res.selection >= DATA.merchant.length) return;
+  if (res.canceled || res.selection === undefined) return;
+  if (teeth && res.selection === DATA.merchant.length) {
+    const paid = sellTeeth(p);
+    sound(p.dimension, 'bc.coins', p.location, 1, 1);
+    safe(() => p.sendMessage(`§a"Teeth! From a chest that bit back? Marvellous." §7(+${paid} doubloons)`));
+    return;
+  }
+  if (res.selection >= DATA.merchant.length) return;
   const o = DATA.merchant[res.selection];
-  if (!takeCoins(p, o.price)) {
-    safe(() => p.sendMessage(`§7"Come back with §6${o.price}§7 doubloons, friend."`));
+  const price = priceOf(o);
+  if (!takeCoins(p, price)) {
+    safe(() => p.sendMessage(`§7"Come back with §6${price}§7 doubloons, friend."`));
     return;
   }
   const id = o.item === 'random_fruit' ? `bc:fruit_${pick(DATA.fruitOrder)}` : o.item === 'random_amulet' ? `bc:${pick(Object.keys(DATA.amulets))}` : o.item;

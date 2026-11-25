@@ -24,5 +24,11 @@
   },
   "bc:waygate": {
     "sound": "stone"
+  },
+  "bc:mana_spawner": {
+    "sound": "metal"
+  },
+  "bc:obelisk_core": {
+    "sound": "stone"
   }
 }

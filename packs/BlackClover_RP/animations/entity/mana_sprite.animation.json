@@ -1,0 +1,52 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.mana_sprite.fly": {
+      "loop": true,
+      "bones": {
+        "root": {
+          "position": [
+            0,
+            "2.0 + math.sin(q.life_time * 160.0) * 1.0",
+            0
+          ]
+        },
+        "wingR1": {
+          "rotation": [
+            0,
+            "20.0 + math.sin(q.life_time * 2400.0) * 40.0",
+            0
+          ]
+        },
+        "wingL1": {
+          "rotation": [
+            0,
+            "-20.0 - math.sin(q.life_time * 2400.0) * 40.0",
+            0
+          ]
+        },
+        "wingR2": {
+          "rotation": [
+            0,
+            "10.0 - math.sin(q.life_time * 2400.0) * 30.0",
+            0
+          ]
+        },
+        "wingL2": {
+          "rotation": [
+            0,
+            "-10.0 + math.sin(q.life_time * 2400.0) * 30.0",
+            0
+          ]
+        },
+        "head": {
+          "rotation": [
+            0,
+            "math.sin(q.life_time * 60.0) * 15.0",
+            0
+          ]
+        }
+      }
+    }
+  }
+}

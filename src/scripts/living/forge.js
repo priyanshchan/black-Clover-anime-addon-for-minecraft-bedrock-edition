@@ -8,6 +8,8 @@ import { emit } from '../core/bus.js';
 import { PIECES, bonusLines, damageTakenMul, gearOf, pieceId, pieceName, readUpgrades, writeUpgrades } from '../core/armor.js';
 import { particle, rgb, sound } from '../core/fx.js';
 import { isCreative, safe } from '../core/util.js';
+import { EquipmentSlot } from '@minecraft/server';
+import { affixLine, readRoll, reforge } from '../core/loot.js';
 
 const A = DATA.armor;
 const SLOT_NAME = { head: 'Helmet', chest: 'Chestplate', legs: 'Leggings', feet: 'Boots' };
@@ -206,11 +208,42 @@ export async function openForge(p) {
     if (h.pc.slot === 'chest') btn('§lSew a squad mantle\n§r§8A squad robe\'s perk, on your armour', () => mantleMenu(p));
     btn('§lSalvage\n§r§8Half its materials back', () => salvageMenu(p));
   }
+  const rolled = heldRoll(p);
+  if (rolled) btn(`§lReforge ${rolled.roll.name}\n§r§8Reroll its affixes: ${costText(reforgeCost(rolled.roll.rarity))}`, () => reforgeHeld(p));
   btn('§lThe Armoury\n§r§8Sets, bonuses, materials', () => armoryPage(p, () => openForge(p)));
   f.button('§8Close');
   const r = await f.show(p);
   if (r.canceled || r.selection === undefined || r.selection >= acts.length) return;
   await acts[r.selection]();
+}
+
+// ------------------------------------------------------------------------------- v1.1.0: reforging relics and weapons
+function heldRoll(p) {
+  const item = safe(() => p.getComponent('minecraft:equippable')?.getEquipment(EquipmentSlot.Mainhand));
+  const roll = item ? readRoll(item) : undefined;
+  return roll ? { item, roll } : undefined;
+}
+/** What a reroll costs: mana crystals, sprite dust and star fragments, by rarity. */
+export function reforgeCost(rarity) {
+  const [c, d, s] = DATA.loot.reforge[rarity] ?? [2, 0, 0];
+  return [['bc:mana_crystal', c], ['bc:sprite_dust', d], ['bc:star_fragment', s]];
+}
+NAMES['bc:sprite_dust'] = 'Sprite Dust';
+NAMES['bc:star_fragment'] = 'Star Fragment';
+/** Reroll the affixes of the relic or weapon in the hand (keeping its rarity). */
+export function reforgeHeld(p) {
+  const h = heldRoll(p);
+  if (!h || !pay(p, reforgeCost(h.roll.rarity))) return false;
+  const before = Object.entries(h.roll.affixes).map(([k, v]) => affixLine(h.roll.kind, k, v)).join('§7, ');
+  const roll = reforge(h.item);
+  if (!roll) return false;
+  safe(() => p.getComponent('minecraft:equippable')?.setEquipment(EquipmentSlot.Mainhand, h.item));
+  const after = Object.entries(roll.affixes).map(([k, v]) => affixLine(roll.kind, k, v)).join('§7, ');
+  particle(p.dimension, 'bc:burst_spark', p.location, { color: rgb('ff70e0'), scale: 1 });
+  sound(p.dimension, 'random.anvil_use', p.location, 0.8, 1.3);
+  safe(() => p.sendMessage(`§dReforged: §8${before.replace(/§./g, '')} §7-> §f${after}`));
+  emit('reforge', p);
+  return true;
 }
 
 async function forgeMenu(p) {

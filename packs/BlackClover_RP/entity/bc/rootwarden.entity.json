@@ -1,0 +1,37 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:rootwarden",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "default": "textures/entity/bc/rootwarden"
+      },
+      "geometry": {
+        "default": "geometry.bc.rootwarden"
+      },
+      "animations": {
+        "idle": "animation.bc.rootwarden.idle",
+        "walk": "animation.bc.rootwarden.walk",
+        "attack": "animation.bc.rootwarden.attack"
+      },
+      "scripts": {
+        "animate": [
+          "idle",
+          {
+            "walk": "q.modified_move_speed > 0.01"
+          }
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "spawn_egg": {
+        "base_color": "#3c2a18",
+        "overlay_color": "#9cff6a"
+      }
+    }
+  }
+}

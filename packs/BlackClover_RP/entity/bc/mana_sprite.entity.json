@@ -1,0 +1,37 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:mana_sprite",
+      "materials": {
+        "default": "entity_emissive_alpha"
+      },
+      "textures": {
+        "default": "textures/entity/bc/mana_sprite"
+      },
+      "geometry": {
+        "default": "geometry.bc.mana_sprite"
+      },
+      "animations": {
+        "fly": "animation.bc.mana_sprite.fly",
+        "aura": "animation.bc.mob.aura"
+      },
+      "scripts": {
+        "animate": [
+          "fly",
+          "aura"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.default"
+      ],
+      "particle_effects": {
+        "aura": "bc:mana_aura"
+      },
+      "spawn_egg": {
+        "base_color": "#58b07a",
+        "overlay_color": "#d8fff0"
+      }
+    }
+  }
+}

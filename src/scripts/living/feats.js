@@ -92,6 +92,15 @@ on('scroll', (p) => bump(p, 'scrolls'));
 on('lair', (p) => bump(p, 'lairs'));
 // v1.0.0
 on('gate', (p) => bump(p, 'gates'));
+// v1.1.0: the Untamed Kingdom
+on('region', (p) => bump(p, 'regions'));
+on('landmark', (p) => bump(p, 'landmarks'));
+on('warden', (p) => bump(p, 'wardens'));
+on('wyvern', (p) => bump(p, 'wyverns'));
+on('legendary', (p) => atLeast(p, 'legendaries', 1));
+on('mimic', (p) => bump(p, 'mimics'));
+on('infernal', (p) => bump(p, 'infernals'));
+on('request', (p) => bump(p, 'requests'));
 on('waygate', (p) => bump(p, 'waygate'));
 // v0.8.0: armour
 on('forge', (p) => bump(p, 'forged'));

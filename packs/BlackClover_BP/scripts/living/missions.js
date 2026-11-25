@@ -137,6 +137,8 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
 on('boss', (p) => progress(p, (m) => m.kind === 'boss'));
 on('cast', (p) => progress(p, (m) => m.kind === 'cast'));
 on('event_win', (p) => progress(p, (m) => m.kind === 'event'));
+on('landmark', (p) => progress(p, (m) => m.kind === 'landmark'));
+on('region', (p) => progress(p, (m) => m.kind === 'discover'));
 on('xp', (p, amount) => progress(p, (m) => m.kind === 'xp', Math.max(0, Math.floor(amount))));
 
 // ------------------------------------------------------------------------------- the board

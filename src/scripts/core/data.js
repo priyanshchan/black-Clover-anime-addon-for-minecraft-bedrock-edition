@@ -3,6 +3,7 @@ import { EquipmentSlot, system, world } from '@minecraft/server';
 import { DATA } from '../generated/data.js';
 import { clamp } from './util.js';
 import { armorMaxMana, armorPowerMul, armorRegenMul, mantleOf } from './armor.js';
+import { mods } from './mods.js';
 
 export const MAX_LEVEL = 20;
 const KEYS = { attr: 'bc:attr', level: 'bc:level', xp: 'bc:xp', mana: 'bc:mana', spell: 'bc:spell', anti: 'bc:anti', joined: 'bc:joined' };
@@ -108,7 +109,7 @@ function rankBonus(p) {
 
 export function maxMana(p, s = state(p)) {
   const r = robe(p);
-  return 100 + (s.level - 1) * 12 + (r === 'golden_dawn_robe' ? 40 : 0) + (r === 'blue_rose_robe' ? 15 : 0) + rankBonus(p) + (amuletOf(p) === 'amulet_mana' ? 30 : 0) + armorMaxMana(p);
+  return 100 + (s.level - 1) * 12 + (r === 'golden_dawn_robe' ? 40 : 0) + (r === 'blue_rose_robe' ? 15 : 0) + rankBonus(p) + (amuletOf(p) === 'amulet_mana' ? 30 : 0) + armorMaxMana(p) + Math.round(mods(p).maxMana);
 }
 
 export function regenPerSecond(p, s = state(p)) {
@@ -116,7 +117,7 @@ export function regenPerSecond(p, s = state(p)) {
   const rb = robe(p);
   if (rb === 'black_bull_robe') r *= 1.25;
   if (amuletOf(p) === 'amulet_mana') r *= 1.2;
-  r *= armorRegenMul(p);
+  r *= armorRegenMul(p) * mods(p).regen;
   if (rb === 'aqua_deer_robe') {
     const v = p.getVelocity();
     if (Math.abs(v.x) + Math.abs(v.z) > 0.05) r *= 1.3;
@@ -147,7 +148,8 @@ export function spellPower(p, s = state(p)) {
   if (r === 'purple_orca_robe' && (s.attr === 'water' || s.attr === 'ice')) m *= 1.15;
   if (amuletOf(p) === 'amulet_power') m *= 1.12;
   const hp = p.getComponent('minecraft:health');
-  m *= armorPowerMul(p, hp ? hp.currentValue / Math.max(1, hp.effectiveMax) : 1);
+  m *= armorPowerMul(p, hp ? hp.currentValue / Math.max(1, hp.effectiveMax) : 1, s.attr);
+  m *= mods(p).power;
   return m;
 }
 

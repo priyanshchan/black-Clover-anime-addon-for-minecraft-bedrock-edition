@@ -1236,3 +1236,335 @@ MISSIONS += [
     ('m_bandit_band', 'kill', 'bc:bandit', 8, 'Break up a bandit band', 1),
 ]
 MERCHANT += [('bc:waygate', 1, 160, 'Mana Waygate')]
+
+# ======================================================================================
+# v1.1.0: the Untamed Kingdom - a named, random world. Regions with their own names, realms, danger and traits;
+# landmarks seeded across every region (Mage Spires, Wyvern Roosts, Catacombs, ruined hamlets, graveyards...);
+# random loot with rarities, rolled relics and weapons; Champion and Infernal elites; encounters your own actions wake;
+# daily omens; wanderers with rumours, trades and requests; journals that tell the land's story.
+# ======================================================================================
+REGION_SIZE = 320            # a region is a 320 x 320 block cell of the world
+# realms by distance from the world spawn: (up to, id, name, colour, base danger stars, traits)
+REALMS = [
+    (600, 'noble', 'Noble Realm', '§e', 1, 1),
+    (1500, 'common', 'Common Realm', '§a', 2, 1),
+    (2800, 'forsaken', 'Forsaken Realm', '§7', 3, 2),
+    (10 ** 9, 'marches', 'the Marches', '§c', 4, 2),
+]
+# past the Forsaken Realm the land runs toward the neighbouring kingdoms (by compass direction)
+MARCHES = {'north': 'the Spade Marches', 'east': 'the Heart Marches', 'south': 'the Southern Wilds', 'west': 'the Diamond Marches'}
+# region names: syllables and landforms that suit what the land is made of
+REGION_SYLLABLES = (
+    ['Ash', 'Bel', 'Cor', 'Dun', 'El', 'Fen', 'Gal', 'Hal', 'Ir', 'Kel', 'Lor', 'Mor', 'Nor', 'Os', 'Pel', 'Quen', 'Rav', 'Sel', 'Thal', 'Ul',
+     'Var', 'Wyn', 'Yr', 'Zan', 'Brin', 'Cael', 'Drav', 'Ery', 'Gor', 'Hest', 'Myr', 'Tor', 'Vel', 'Ald', 'Bram', 'Cyr'],
+    ['a', 'e', 'i', 'o', 'en', 'ar', 'or', 'ith', 'an', 'el', 'and', 'ow', '', '', ''],
+    ['mere', 'dale', 'wick', 'holm', 'ford', 'moor', 'reach', 'hollow', 'vale', 'crest', 'fell', 'gard', 'stead', 'thorn', 'wood', 'more',
+     'brook', 'spire', 'haven', 'watch', 'barrow', 'rest', 'mark', 'shade'],
+)
+REGION_ADJECTIVES = ['Whispering', 'Ashen', 'Sunken', 'Shattered', 'Silent', 'Weeping', 'Gilded', 'Thorned', 'Howling', 'Drowned', 'Blighted',
+                     'Starlit', 'Hollow', 'Crimson', 'Pale', 'Burning', 'Forgotten', 'Broken', 'Wandering', 'Restless', 'Golden', 'Moonlit',
+                     'Bleak', 'Verdant', 'Iron', 'Lonely', 'Cursed', 'Singing']
+REGION_LANDFORMS = {
+    'forest': ['Wood', 'Woods', 'Weald', 'Grove', 'Thicket', 'Forest'],
+    'darkwood': ['Darkwood', 'Gloom', 'Shadowwood', 'Wildwood', 'Tangles'],
+    'jungle': ['Jungle', 'Tangle', 'Verdance', 'Wilds'],
+    'taiga': ['Pines', 'Taiga', 'Firwood', 'Hollows'],
+    'plains': ['Fields', 'Plains', 'Meadows', 'Downs', 'Leas', 'Heath'],
+    'desert': ['Sands', 'Dunes', 'Wastes', 'Expanse'],
+    'badlands': ['Badlands', 'Mesas', 'Scar', 'Canyons'],
+    'savanna': ['Savanna', 'Steppe', 'Grasslands', 'Barrens'],
+    'frozen': ['Tundra', 'Frostlands', 'Snowfields', 'Rime', 'Glacier'],
+    'mountains': ['Peaks', 'Highlands', 'Crags', 'Heights', 'Spires'],
+    'swamp': ['Fen', 'Marsh', 'Mire', 'Bog', 'Swamp'],
+    'water': ['Coast', 'Shallows', 'Lakes', 'Strand', 'Isles'],
+    'blossom': ['Vale', 'Gardens', 'Bloomwood', 'Glade'],
+    'mushroom': ['Sporelands', 'Fungal Isles'],
+    'hills': ['Hills', 'Wolds', 'Tors', 'Downs'],
+}
+# what each region is like: id -> (name, colour, description, the land classes it favours)
+REGION_TRAITS = {
+    'mana_rich': ('Mana-Rich', '§b', '+30% mana regeneration', []),
+    'ley_line': ('Ley Line', '§d', '+10% spell power', []),
+    'wild_magic': ('Wild Magic', '§5', 'spells may surge (free, or cast twice) - or misfire', []),
+    'haunted': ('Haunted', '§8', 'Hollow Knights and wraiths walk at night; ghost lights drift', ['darkwood', 'swamp', 'taiga', 'plains', 'frozen']),
+    'bandit_country': ('Bandit Country', '§c', 'bandits roam and ambush travellers', ['plains', 'savanna', 'desert', 'badlands', 'hills']),
+    'devil_scarred': ('Devil-Scarred', '§4', 'imps lurk, and Devil Gates tear open more often', ['badlands', 'desert', 'darkwood', 'swamp']),
+    'wyvern_lands': ('Wyvern Territory', '§2', 'wyverns roost in the heights and hunt overhead', ['mountains', 'badlands', 'desert', 'frozen', 'hills', 'savanna']),
+    'fae_wilds': ('Fae Wilds', '§a', 'sprites dance in fairy rings - mischievous, and generous', ['forest', 'blossom', 'plains', 'jungle', 'mushroom']),
+    'ancient': ('Ancient Ruins', '§6', 'the old kingdom\'s spires, crypts and obelisks lie thick here', []),
+    'sanctuary': ('Sanctuary', '§f', 'a quiet land: no ambushes, and wanderers come here to rest', ['plains', 'blossom', 'forest']),
+    'treasure': ('Hoard-Rich', '§e', 'treasure maps and journals that mark buried caches turn up far more often', ['desert', 'water', 'badlands']),
+    'untamed': ('Untamed', '§4', 'elites are twice as common - and drop better loot', ['jungle', 'darkwood', 'mountains', 'frozen']),
+}
+# one-line lore for a region, chosen by its first trait ({name} = the region's name)
+REGION_LORE = {
+    'mana_rich': ['The air of {name} hums; even the grass glitters with spent mana.', 'Old mages came to {name} to drink the ley-wells dry. They never could.'],
+    'ley_line': ['A ley line runs under {name}. Spells cast here leave scorch-marks on the sky.', 'Grimoires flutter open by themselves in {name}.'],
+    'wild_magic': ['Magic misbehaves in {name}. Locals cast their spells twice, or not at all.', 'In {name} the wind sometimes tastes of lightning.'],
+    'haunted': ['Knights fell by the hundred in {name}. Some of them still keep watch.', 'Nobody lights a fire in {name} after dark. The lights come anyway.'],
+    'bandit_country': ['{name} belongs to whoever holds the road. Today that is the Brotherhood.', 'Travellers cross {name} in convoys, or not at all.'],
+    'devil_scarred': ['Something tore through {name} long ago. The scars still smoke.', 'Imps nest in the cracks of {name}, waiting for the next gate.'],
+    'wyvern_lands': ['Shadows cross {name} at noon - wyverns, circling their hoards.', 'Shepherds in {name} count their flocks twice a day, and still come up short.'],
+    'fae_wilds': ['Sprites dance in the rings of {name}. Bring something shiny.', 'Paths in {name} lead somewhere different each time you walk them.'],
+    'ancient': ['The old kingdom built its spires in {name}, and its dead lie beneath them.', 'Every stone in {name} remembers a spell.'],
+    'sanctuary': ['{name} is a quiet country. Wanderers come here to rest their feet.', 'Even the wolves of {name} seem tired of fighting.'],
+    'treasure': ['They say {name} is paved with buried gold, if you know where to dig.', 'Every fool with a map ends up in {name} sooner or later.'],
+    'untamed': ['Nothing in {name} has ever been tamed - least of all its monsters.', 'The beasts of {name} grow strong on the bones of knights.'],
+}
+
+# Landmarks seeded across the world: id -> dict(name, weight, land (classes, '*' = any dry land), stars (min), master, desc)
+LANDMARKS = {
+    'spire': dict(name='Mage Spire', weight=6, land='*', stars=2, master='bc:spire_warden',
+                  desc='a five-floor tower of the old kingdom - each floor guarded, the Spire Warden waiting at the top'),
+    'roost': dict(name='Wyvern Roost', weight=6, land=['mountains', 'badlands', 'desert', 'frozen', 'hills', 'savanna', 'taiga'], stars=2, master='wyvern',
+                  desc='a nest of bones and gold where a Mana Wyvern (Ember, Frost or Storm) sleeps on its hoard'),
+    'catacombs': dict(name='Ancient Catacombs', weight=6, land='*', stars=1, master='bc:dungeon_golem',
+                      desc='a stair down into a maze of crypts - every one different - with a guardian at its heart'),
+    'hamlet': dict(name='Ruined Hamlet', weight=9, land=['plains', 'forest', 'savanna', 'taiga', 'hills', 'blossom', 'frozen'], stars=1, master='',
+                   desc='a village nobody lives in any more - some are empty, some are not'),
+    'graveyard': dict(name='Old Graveyard', weight=8, land='*', stars=1, master='bc:hollow_knight',
+                      desc='tombstones, a crypt, and the Hollow who rise from it at night'),
+    'obelisk': dict(name='Mana Obelisk', weight=7, land='*', stars=1, master='',
+                    desc='an ancient obelisk that answers a prayer with a boon - or a curse'),
+    'fairy_ring': dict(name='Fairy Ring', weight=6, land=['forest', 'blossom', 'plains', 'jungle', 'mushroom', 'darkwood', 'taiga'], stars=1, master='',
+                       desc='a ring of mushrooms where sprites bargain - your offering for a random gift'),
+    'watchtower': dict(name='Ruined Watchtower', weight=7, land='*', stars=1, master='',
+                       desc='a broken Magic Knight watchtower, now held by bandits - with a mana spawner'),
+    'caravan': dict(name='Wrecked Caravan', weight=7, land=['plains', 'savanna', 'desert', 'badlands', 'forest', 'hills'], stars=1, master='',
+                    desc='a broken cart and scattered cargo - and maybe the bandits who broke it'),
+    'crater': dict(name='Star Crater', weight=5, land='*', stars=1, master='',
+                   desc='where a star fell long ago: mana crystals, a Star Fragment, and something guarding them'),
+    'skeleton': dict(name='Colossal Bones', weight=5, land=['desert', 'badlands', 'savanna', 'plains', 'frozen', 'hills'], stars=1, master='',
+                     desc='the bones of something enormous, with a treasure hidden in its skull'),
+    'battlefield': dict(name='Forgotten Battlefield', weight=5, land=['plains', 'savanna', 'hills', 'taiga', 'frozen', 'badlands'], stars=2, master='',
+                        desc='old banners and broken grimoires where two armies died - the Hollow still fight here at night'),
+    'lost_waygate': dict(name='Lost Waygate', weight=5, land='*', stars=1, master='',
+                         desc='a ruined Mana Waygate of the old kingdom - touch it to add it to the network'),
+    'witch_hut': dict(name='Hedge Witch Hut', weight=5, land=['swamp', 'darkwood', 'forest', 'taiga', 'jungle'], stars=1, master='',
+                      desc='a stilt hut where a hedge witch lives - a trader, or a curse'),
+}
+# how many landmarks a region gets: base + per danger star (the Ancient Ruins trait adds 2)
+LANDMARK_BASE = 2
+LANDMARK_PER_STAR = 0.6
+
+# ------------------------------------------------------------------------------------- random loot
+# rarities: (id, name, colour, weight, affixes, power)
+RARITIES = [
+    ('common', 'Common', '§f', 50, 1, 1.0),
+    ('uncommon', 'Uncommon', '§a', 28, 1, 1.35),
+    ('rare', 'Rare', '§9', 14, 2, 1.7),
+    ('epic', 'Epic', '§5', 6, 2, 2.1),
+    ('legendary', 'Legendary', '§6', 1.8, 3, 2.7),
+    ('mythic', 'Mythic', '§c', 0.2, 4, 3.4),
+]
+RARITY_STAR_SHIFT = 0.28     # each danger star above one makes every step up the rarity ladder 28% likelier
+# relics: hold up to three in your hotbar. id -> (name, description, favoured affixes)
+RELICS = {
+    'relic_ring': ('Signet Ring', 'a ring cut with an old house\'s sigil', ['mana', 'regen', 'power', 'scholar']),
+    'relic_talisman': ('Rune Talisman', 'a stone tablet humming with a single rune', ['haste', 'ward', 'guard', 'mana']),
+    'relic_idol': ('Bone Idol', 'a little carved idol of a forgotten god', ['vigor', 'thorns', 'leech', 'guard']),
+    'relic_eye': ('Crystal Eye', 'a crystal that sees in the dark', ['sight', 'luck', 'power', 'fortune']),
+    'relic_fang': ('Wyvern Fang', 'a fang that is still warm', ['might', 'leech', 'ember', 'thorns']),
+    'relic_feather': ('Spirit Feather', 'a feather lighter than air', ['swift', 'leap', 'gills', 'regen']),
+}
+RELIC_SLOTS = 3
+# relic affixes: id -> (label with {v}, base value at Common, flag = an effect with no number)
+RELIC_AFFIXES = {
+    'mana': ('+{v} max mana', 8, False),
+    'regen': ('+{v}% mana regeneration', 6, False),
+    'power': ('+{v}% spell power', 4, False),
+    'haste': ('-{v}% spell cooldowns', 3, False),
+    'vigor': ('+{v} max health', 2, False),
+    'ward': ('-{v}% damage from spells', 4, False),
+    'guard': ('-{v}% damage taken', 2, False),
+    'thorns': ('melee attackers take {v} damage', 1, False),
+    'leech': ('heal {v}% of melee damage dealt', 3, False),
+    'might': ('+{v}% melee damage', 5, False),
+    'luck': ('+{v}% chance of extra loot', 6, False),
+    'scholar': ('+{v}% magic XP', 5, False),
+    'fortune': ('+{v}% doubloons found', 8, False),
+    'swift': ('Swiftness', 1, True),
+    'leap': ('Jump Boost', 1, True),
+    'sight': ('Night Vision', 1, True),
+    'gills': ('Water Breathing', 1, True),
+    'ember': ('Fire Resistance', 1, True),
+}
+# rolled weapons (vanilla swords and axes): affix id -> (label with {v}, base value at Common)
+WEAPON_AFFIXES = {
+    'sharp': ('+{v}% damage', 6),
+    'burning': ('sets foes ablaze ({v}s)', 2),
+    'frost': ('{v}% chance to freeze', 12),
+    'storm': ('{v}% chance to call lightning', 5),
+    'vampiric': ('heal {v}% of damage dealt', 4),
+    'mana_thirst': ('+{v} mana per hit', 2),
+    'executioner': ('+{v}% damage below 30% health', 15),
+    'giantslayer': ('+{v}% damage to bosses and elites', 10),
+    'cleave': ('cleaves a nearby foe for {v}%', 25),
+    'quick': ('Haste while held', 1),
+}
+WEAPON_BASES = {
+    'common': ['minecraft:stone_sword', 'minecraft:iron_sword', 'minecraft:stone_axe'],
+    'uncommon': ['minecraft:iron_sword', 'minecraft:iron_axe'],
+    'rare': ['minecraft:iron_sword', 'minecraft:iron_axe', 'minecraft:diamond_sword'],
+    'epic': ['minecraft:diamond_sword', 'minecraft:diamond_axe'],
+    'legendary': ['minecraft:diamond_sword', 'minecraft:diamond_axe', 'minecraft:netherite_sword'],
+    'mythic': ['minecraft:netherite_sword', 'minecraft:netherite_axe'],
+}
+# item names: "<prefix> <base> of <suffix>"; Legendary and Mythic items get a name of their own
+ITEM_PREFIX = {'mana': 'Arcane', 'regen': 'Flowing', 'power': 'Empowered', 'haste': 'Quickened', 'vigor': 'Hale', 'ward': 'Warding',
+               'guard': 'Stalwart', 'thorns': 'Thorned', 'leech': 'Thirsting', 'might': 'Mighty', 'luck': 'Lucky', 'scholar': 'Learned',
+               'fortune': 'Gilded', 'swift': 'Swift', 'leap': 'Bounding', 'sight': 'Watchful', 'gills': 'Tidal', 'ember': 'Emberproof',
+               'sharp': 'Keen', 'burning': 'Burning', 'frost': 'Frozen', 'storm': 'Thundering', 'vampiric': 'Vampiric', 'mana_thirst': 'Mana-Drinking',
+               'executioner': 'Merciless', 'giantslayer': 'Giant-Felling', 'cleave': 'Cleaving', 'quick': 'Hasty'}
+ITEM_SUFFIX = ['of the Wyvern', 'of Embers', 'of the Hollow', 'of Ley Lines', 'of the Fae', 'of the Old Kingdom', 'of Stars', 'of the Marches',
+               'of Dawn', 'of the Deep', 'of Ashes', 'of the Spire', 'of Thorns', 'of the Moon', 'of the Lost Squad', 'of Tides']
+LEGEND_SYLLABLES = (['Vel', 'Mor', 'Ash', 'Kael', 'Ser', 'Thra', 'Ul', 'Ys', 'Dra', 'Cor', 'Nym', 'Zeph', 'Rhae', 'Ost'],
+                    ['mora', 'ith', 'andel', 'yra', 'oth', 'iel', 'ane', 'orn', 'essa', 'ion', 'ar', 'uin'])
+LEGEND_EPITHETS = ['the Ashen Promise', 'Last Light of the Spire', 'the Unbroken Oath', 'Whisper of the Deep', 'the Wyvern\'s Due',
+                   'Bane of the Hollow', 'the Starfallen', 'Keeper of Ley Lines', 'the Queen\'s Regret', 'the Seventh Leaf',
+                   'Song of the Marches', 'the Gravewarden', 'the Thousandth Spell', 'Heart of the Old Kingdom']
+REFORGE_COST = {'common': (2, 0, 0), 'uncommon': (4, 0, 0), 'rare': (6, 1, 0), 'epic': (10, 2, 1), 'legendary': (16, 3, 2), 'mythic': (24, 4, 3)}
+# (mana crystals, sprite dust, star fragments)
+
+# ------------------------------------------------------------------------------------- elites: Champions and Infernals
+ELITE_AFFIXES.update({
+    'blinking': ('Blinking', '§5', 'teleports behind its foe every few seconds'),
+    'frostbound': ('Frostbound', '§b', 'its blows freeze: slowness and mining fatigue'),
+    'stormcaller': ('Stormcaller', '§e', 'calls lightning down on its foe every 6 seconds'),
+    'gravitic': ('Gravitic', '§d', 'drags its foes toward it'),
+    'regenerating': ('Regenerating', '§a', 'heals 2% of its health every second'),
+    'reflective': ('Reflective', '§f', 'turns a quarter of spell damage back on the caster'),
+    'webbing': ('Webbing', '§7', 'tangles its foes in cobwebs'),
+    'splitting': ('Splitting', '§6', 'splits into two lesser copies when it falls'),
+    'ghostly': ('Ghostly', '§8', 'fades from sight now and then'),
+    'juggernaut': ('Juggernaut', '§4', 'cannot be knocked back, and hits like a hammer'),
+})
+# tiers: (id, name, colour, affixes, health boost level)
+ELITE_TIERS = [('elite', 'Elite', '§6', 1, 2), ('champion', 'Champion', '§e', 2, 4), ('infernal', 'Infernal', '§c', 3, 7)]
+ELITE_TIER_CHANCE = {'champion': 0.22, 'infernal': 0.05}   # of all elites, before danger stars
+ELITE_STAR_BONUS = 0.012     # elite chance added per danger star above one
+
+# ------------------------------------------------------------------------------------- encounters your actions wake
+# id -> (chance per action, what appears, message)
+ENCOUNTERS = {
+    'chop': (0.004, 'bc:rootwarden', '§2The tree groans... a Rootwarden tears itself free of the bark!'),
+    'mine': (0.002, 'bc:mana_wraith', '§7The rock splits open - a Mana Wraith seeps out of the stone!'),
+    'grass': (0.0015, 'bc:mana_sprite', '§aSomething giggles in the grass...'),
+    'bed': (0.05, 'bc:hollow_knight', '§8You wake with a start. A Hollow Knight stands over your bed.'),
+    'mimic': (0.12, 'bc:mimic', '§cThe chest has TEETH!'),
+    'wraith': (0.03, 'bc:mana_wraith', '§8Its spirit will not rest...'),
+}
+
+# ------------------------------------------------------------------------------------- omens: a new one most mornings
+OMEN_CHANCE = 0.6
+OMENS = {
+    'mana_tide': ('Mana Tide', '§b', 'The ley lines swell: +25% mana regeneration for everyone today.'),
+    'wild_surge': ('Wild Surge', '§d', 'Magic runs wild today: spells may surge, or misfire, anywhere.'),
+    'starfall': ('Starfall', '§e', 'Stars will fall tonight. Find where they land - each leaves a Star Fragment.'),
+    'hollow_night': ('Hollow Night', '§8', 'The Hollow walk tonight: fallen knights rise across the land.'),
+    'wyvern_migration': ('Wyvern Migration', '§2', 'Wyverns are on the wing today. Watch the skies.'),
+    'merchants_fair': ('Merchants\' Fair', '§6', 'Wanderers are on every road, and the merchant sells for 20% less.'),
+    'bandit_moon': ('Bandit Moon', '§c', 'Bandits are bold today - and their purses are heavy.'),
+    'fae_revel': ('Fae Revel', '§a', 'The fae are generous today: fairy-ring bargains favour you.'),
+    'calm': ('Calm Skies', '§f', 'A quiet day: no ambushes, and wounds heal faster.'),
+    'lucky_stars': ('Lucky Stars', '§6', 'Fortune smiles: loot is far likelier to roll a rarer item today.'),
+}
+
+# ------------------------------------------------------------------------------------- wanderers
+# kind -> (title, what they do, texture variant)
+WANDERERS = {
+    'pilgrim': ('Pilgrim', 'walks from shrine to shrine and knows every road', 0),
+    'cartographer': ('Cartographer', 'sells Explorer\'s Maps to the landmarks nobody has found', 1),
+    'peddler': ('Peddler', 'trades odd goods - and now and then a relic', 2),
+    'hermit': ('Hermit Mage', 'knows the old magic and sells spell scrolls', 3),
+    'bard': ('Bard', 'trades in tales - true ones point the way to treasure', 4),
+    'lost_knight': ('Lost Knight', 'a Magic Knight far from their squad, who may join yours', 5),
+}
+WANDERER_FIRST = ['Oswin', 'Maren', 'Tobiah', 'Ilse', 'Corwin', 'Nell', 'Fenwick', 'Ysolde', 'Barnaby', 'Wren', 'Ambrose', 'Tilda', 'Garrow',
+                  'Liesel', 'Quill', 'Rosamund', 'Hob', 'Edda', 'Percival', 'Saffi']
+WANDERER_EPITHET = ['the Wanderer', 'of the Long Road', 'Two-Boots', 'the Grey', 'Lightfoot', 'the Unlucky', 'of Nowhere in Particular',
+                    'Mapmaker', 'the Patient', 'Sixpence', 'the Last of Their Squad', 'Old Lantern']
+WANDERER_GREETINGS = {
+    'pilgrim': ['Peace on your road, friend.', 'I have walked from the Noble Realm on these feet. Ask me anything.'],
+    'cartographer': ['Maps! Maps to places nobody has found yet!', 'Every blank on my map is a fortune, if you are brave.'],
+    'peddler': ['Buttons, buckles, the odd cursed ring - what\'ll it be?', 'Fell off a cart. Several carts, actually.'],
+    'hermit': ['Hm. A grimoire. Not a bad one, either.', 'I left the Capital to read in peace. Then people kept finding me.'],
+    'bard': ['Sit! A tale for a doubloon, a true one for two.', 'I have a song about a wyvern. It ends badly for the knight.'],
+    'lost_knight': ['My squad... we were scattered. Have you seen a camp?', 'I have not slept in three days. Is it over? Did we win?'],
+}
+# rumours point at real landmarks: {what}, {dir}, {dist}, {region}
+RUMORS = ['There is a {what} to the {dir}, {dist} blocks or so. I would not go alone.',
+          'Folk in {region} whisper about a {what} out {dir}. About {dist} blocks.',
+          'I passed a {what} to the {dir}, maybe {dist} blocks back. Something watched me the whole way.',
+          'If it is treasure you want, try the {what} {dist} blocks {dir} of here.',
+          'Do not go {dir}. There is a {what} out there, {dist} blocks off, and nobody comes back the same.']
+# requests: fetch an item (id, count min, max) or deal with a landmark
+WANDERER_FETCH = [('minecraft:bread', 4, 8), ('bc:mana_crystal', 5, 10), ('minecraft:iron_ingot', 4, 8), ('minecraft:leather', 3, 6),
+                  ('bc:sprite_dust', 2, 4), ('bc:hollow_ember', 2, 4), ('minecraft:cooked_beef', 4, 8), ('bc:doubloon', 20, 40),
+                  ('minecraft:torch', 16, 32), ('bc:rune_shard', 1, 3), ('minecraft:book', 2, 4), ('bc:mimic_tooth', 1, 1)]
+
+# ------------------------------------------------------------------------------------- journals
+# {region} {other} (another region) {what} (a landmark) {dir} {dist} {name} {day}
+JOURNALS = [
+    'Day {day}. We made camp in {region}. {name} swears the {what} to the {dir} still holds its treasure. We go at first light.',
+    'If you read this, do not climb the {what}. Whatever waits at the top does not sleep, and it does not forget.',
+    'The road from {other} was long. {name} is gone - taken in the night, near the {what}. I am writing this so someone knows.',
+    'Note to self: the sprites of {region} want shiny things. Bring something shiny. Do NOT bring something you love.',
+    'Squad orders: hold the {what} until relieved. That was forty days ago. Nobody has come.',
+    'The merchant swore this map was real. If it is, the {what} is {dist} blocks {dir} of {region}.',
+    '{name} found a grimoire in the dirt today, burned at the edges. It still turned its own pages.',
+    'They say a wyvern sleeps on a bed of gold somewhere in the heights. They say a lot of things.',
+]
+# journals that mark a buried cache: the cache lies {dist} blocks {dir} of where the page was found
+CACHE_JOURNALS = [
+    'We buried our pay {dist} paces {dir} of this spot, under the old stone. If I do not come back, {name}, it is yours.',
+    'Hid the sack {dist} paces to the {dir}. Mark it in your head; never on paper. ...I wrote it on paper.',
+    'The captain\'s purse is buried {dist} paces {dir} of here. The captain does not need it any more.',
+]
+
+# ------------------------------------------------------------------------------------- items, materials, feats, missions
+V11_ITEMS = {
+    'explorer_map': ('§6Explorer\'s Map', 'Leads you to a landmark nobody has found. Hold it to follow the arrow.'),
+    'journal_page': ('§fTorn Journal Page', 'Read it: a page of someone\'s story. Some mark a buried cache.'),
+    'star_fragment': ('§eStar Fragment', 'A shard of a fallen star. Reforges Epic and better relics and weapons.'),
+    'sprite_dust': ('§aSprite Dust', 'Glittering dust shed by Mana Sprites. Used to reforge relics and weapons.'),
+    'mimic_tooth': ('§cMimic Tooth', 'A tooth from a chest that bit back. Merchants pay well for them.'),
+    'hollow_ember': ('§8Hollow Ember', 'The last spark of a Hollow Knight\'s grimoire. Wanderers collect them.'),
+    'spire_core': ('§bSpire Core', 'The heart of a Spire Warden. Use it to raise a Mana Waygate in an instant.'),
+}
+REGION_FIND_XP = 40          # magic XP for discovering a new region
+FEATS += [
+    ('cartographer', 'Cartographer', 'Discover 10 regions.', 'regions', 10, 1, 80, 'the Cartographer'),
+    ('world_walker', 'World Walker', 'Discover 40 regions.', 'regions', 40, 3, 300, 'the World Walker'),
+    ('trailblazer', 'Trailblazer', 'Find 15 landmarks.', 'landmarks', 15, 2, 150, 'the Trailblazer'),
+    ('spire_breaker', 'Spire Breaker', 'Defeat a Spire Warden at the top of its spire.', 'wardens', 1, 2, 150, 'Spire Breaker'),
+    ('wyvernslayer', 'Wyvernslayer', 'Defeat 3 Mana Wyverns.', 'wyverns', 3, 3, 250, 'the Wyvernslayer'),
+    ('legendary', 'Legend Hunter', 'Find a Legendary or Mythic item.', 'legendaries', 1, 2, 150, 'the Fortunate'),
+    ('it_bit_me', 'It Bit Me', 'Defeat a Mimic.', 'mimics', 1, 1, 40, 'Chest-Wary'),
+    ('infernal', 'Into the Inferno', 'Defeat an Infernal elite.', 'infernals', 1, 2, 150, 'the Unburnt'),
+    ('good_samaritan', 'Good Samaritan', 'Fulfil 5 wanderers\' requests.', 'requests', 5, 2, 120, 'the Kind'),
+]
+MISSIONS += [
+    ('m_landmark', 'landmark', '', 2, 'Explore: find 2 landmarks', 1),
+    ('m_region', 'discover', '', 2, 'Explore: discover 2 new regions', 1),
+    ('m_hollow', 'kill', 'bc:hollow_knight', 6, 'Lay 6 Hollow Knights to rest', 2),
+]
+MERCHANT += [('bc:explorer_map', 1, 60, 'Explorer\'s Map')]
+# merchant buys mimic teeth for doubloons (see living/merchant.js)
+MIMIC_TOOTH_PRICE = 45
+
+# the Wyvernscale armour set (forged from Wyvern Scales)
+ARMOR_SETS['wyvernscale'] = dict(
+    name='Wyvernscale', pieces=('Wyvernscale Helm', 'Wyvernscale Hauberk', 'Wyvernscale Greaves', 'Wyvernscale Talons'),
+    prot=(3, 8, 6, 3), dur=500, material='wyvern_scale', stars=8, mc='§2',
+    style='wyvern', base='wyvern', accent='gold', glow='ffb040',
+    b2='Fire Resistance, and you take no fall damage',
+    b4='Wyvern\'s Fury: fire, ice and lightning spells hit 20% harder, and fire and lightning hurt you 40% less')
+ARMOR_MATERIALS['wyvern_scale'] = ('§2Wyvern Scale', 'A scale shed by a Mana Wyvern - harder than mana-steel, warm to the touch.', {
+    'bc:ember_wyvern': (1.0, 5, 9), 'bc:frost_wyvern': (1.0, 5, 9), 'bc:storm_wyvern': (1.0, 5, 9)})
+# the three Mana Wyverns: id -> (name, element, colour, breath effect, the land they roost in)
+WYVERNS = {
+    'ember_wyvern': ('Ember Wyvern', 'flame', 'ff7a2a', 'fire', ['desert', 'badlands', 'savanna']),
+    'frost_wyvern': ('Frost Wyvern', 'ice', '8ae6ff', 'freeze', ['frozen', 'taiga', 'mountains']),
+    'storm_wyvern': ('Storm Wyvern', 'lightning', 'ffe03a', 'shock', ['hills', 'mountains', 'plains', 'forest', 'jungle']),
+}

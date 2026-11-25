@@ -50,7 +50,7 @@ export function countCoins(p) {
   return n;
 }
 
-function takeCoins(p, amount) {
+export function takeCoins(p, amount) {
   const inv = p.getComponent('minecraft:inventory')?.container;
   if (!inv || countCoins(p) < amount) return false;
   let left = amount;
