@@ -23,7 +23,7 @@ const MAX = 400;
 
 /** @typedef {{x: number, z: number, kind: string}} Slot */
 /** @typedef {{k: string, rx: number, rz: number, name: string, base: string, land: string, realm: string, realmName: string, mc: string,
- *   stars: number, traits: string[], lore: string, slots: Slot[], by: string[], day: number}} Region */
+ *   stars: number, traits: string[], lore: string, slots: Slot[], by: string[], day: number, kingdom?: string}} Region */
 
 // ------------------------------------------------------------------------------- where things are
 export function cellOf(x, z) {
@@ -51,8 +51,13 @@ export function realmAt(x, z) {
   const d = Math.hypot(x - sp.x, z - sp.z);
   const realm = W.realms.find((r) => d <= r.upTo) ?? W.realms[W.realms.length - 1];
   let name = realm.name;
-  if (realm.id === 'marches') name = W.marches[compassWord(x - sp.x, z - sp.z).split('-')[0]] ?? realm.name;
-  return { ...realm, name, dist: d };
+  let kingdom = '';
+  if (realm.id === 'marches') {
+    const dir = compassWord(x - sp.x, z - sp.z).split('-')[0];
+    name = W.marches[dir] ?? realm.name;
+    kingdom = DATA.marchKingdom[dir] ?? '';   // v1.2.0: the Diamond, Spade and Heart Marches belong to their kingdoms
+  }
+  return { ...realm, name, kingdom, dist: d };
 }
 
 // ------------------------------------------------------------------------------- what the land is made of
@@ -149,7 +154,7 @@ function rollTraits(r, land, realm) {
   return out;
 }
 
-const UNIQUE = new Set(['spire', 'roost', 'catacombs', 'lost_waygate']);
+const UNIQUE = new Set(['spire', 'roost', 'catacombs', 'lost_waygate', 'diamond_fort', 'spade_citadel', 'heart_sanctum']);
 const BOOST = {
   ancient: { spire: 2, catacombs: 2, obelisk: 2, graveyard: 1.5 }, haunted: { graveyard: 2.5, battlefield: 2.5 }, wyvern_lands: { roost: 4 },
   fae_wilds: { fairy_ring: 4 }, bandit_country: { watchtower: 2.5, caravan: 2.5 }, treasure: { skeleton: 2.5, crater: 2 }, sanctuary: { hamlet: 2, obelisk: 2 },
@@ -162,9 +167,10 @@ export function kindFits(kind, land) {
   if (kind === 'roost') return Object.values(W.wyverns).some((w) => w.land.includes(land));
   return L.land === '*' || L.land.includes(land);
 }
-export function chooseKind(r, land, stars, traits, taken) {
+export function chooseKind(r, land, stars, traits, taken, kingdom = '') {
   const entries = Object.entries(W.landmarks).map(([k, L]) => {
     if (!kindFits(k, land) || stars < L.stars || (UNIQUE.has(k) && taken.includes(k))) return [k, 0];
+    if ((L.kingdom ?? '') !== '' && L.kingdom !== kingdom) return [k, 0];   // v1.2.0: forts stand only in their own Marches
     let w = L.weight;
     for (const t of traits) w *= BOOST[t]?.[k] ?? 1;
     return [k, w];
@@ -174,6 +180,7 @@ export function chooseKind(r, land, stars, traits, taken) {
 
 function rollSlots(seed, land, traits) {
   const { r, rx, rz, stars } = seed;
+  const kingdom = seed.realm.kingdom ?? '';
   const sp = spawnPoint();
   const n = Math.min(8, W.landmarkBase + Math.round(stars * W.landmarkPerStar + r()) + (traits.includes('ancient') ? 2 : 0));
   /** @type {Slot[]} */
@@ -184,7 +191,7 @@ function rollSlots(seed, land, traits) {
     const z = Math.floor(rz * SIZE + 28 + r() * (SIZE - 56));
     if (Math.hypot(x - sp.x, z - sp.z) < 90) continue;
     if (out.some((s) => Math.hypot(s.x - x, s.z - z) < 72)) continue;
-    const kind = chooseKind(r, land, stars, traits, taken);
+    const kind = chooseKind(r, land, stars, traits, taken, kingdom);
     taken.push(kind);
     out.push({ x, z, kind });
   }
@@ -242,6 +249,7 @@ export function ensureRegion(dim, rx, rz, at) {
   const lore = pickR(r, loreList).replace('{name}', name.replace(/^the /, 'the '));
   /** @type {Region} */
   const rec = { k, rx, rz, name, base: seed.base, land, realm: seed.realm.id, realmName: seed.realm.name, mc: seed.realm.mc, stars: seed.stars, traits, lore,
+    kingdom: seed.realm.kingdom ?? '',
     slots: rollSlots(seed, land, traits), by: [], day: safe(() => world.getDay()) ?? 0 };
   all[k] = rec;
   persist();

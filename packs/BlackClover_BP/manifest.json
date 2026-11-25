@@ -2,11 +2,11 @@
   "format_version": 2,
   "header": {
     "name": "Black Clover: Grimoire Awakening §7(Behavior)",
-    "description": "v1.1.0 - the Untamed Kingdom: named regions with their own danger and traits, landmarks in every region (Mage Spires, Wyvern Roosts, Catacombs, ruined hamlets...), random loot with rarities and rolled relics, Champion and Infernal elites, omens and wanderers; plus a living world, 40 grimoires, 34 Abyss Fruits, nine armour sets and companions. Unofficial fan addon.",
+    "description": "v1.2.0 - Dragonbound & Kingdoms: hatch, raise and ride a Mana Wyvern of your own; the Diamond, Spade and Heart kingdoms hold the Marches with forts and commanders; the Royal Capital rises near home. Plus named regions, landmarks, random loot, a living world, 40 grimoires, 34 Abyss Fruits and companions. Unofficial fan addon.",
     "uuid": "e31c2aa6-e171-5e62-8d60-e4fb08605627",
     "version": [
       1,
-      1,
+      2,
       0
     ],
     "min_engine_version": [
@@ -21,7 +21,7 @@
       "uuid": "7a204969-4e4b-52ad-86a4-9560f8777441",
       "version": [
         1,
-        1,
+        2,
         0
       ]
     },
@@ -31,7 +31,7 @@
       "uuid": "0f990b2f-059e-5390-9de6-781d9993b2f6",
       "version": [
         1,
-        1,
+        2,
         0
       ],
       "entry": "scripts/main.js"
@@ -42,7 +42,7 @@
       "uuid": "fb6916dc-6965-5317-97d9-c2f0276ce444",
       "version": [
         1,
-        1,
+        2,
         0
       ]
     },

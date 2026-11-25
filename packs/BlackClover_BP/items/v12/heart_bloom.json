@@ -1,0 +1,24 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:heart_bloom",
+      "menu_category": {
+        "category": "items"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_heart_bloom"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§dHeart Bloom"
+      },
+      "minecraft:max_stack_size": {
+        "value": 64
+      }
+    }
+  }
+}

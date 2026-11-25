@@ -139,11 +139,11 @@ function perm(name, states) {
 }
 const SOFT = (id) => id === 'minecraft:air' || id.includes('leaves') || id.includes('grass') && id !== 'minecraft:grass_block' || id.includes('flower') || id.includes('fern')
   || id.includes('bush') || id === 'minecraft:snow_layer' || id.includes('water') || id.includes('vine') || id.includes('sapling') || id.includes('mushroom');
-const FILLER = { spire: 'minecraft:stone_bricks', roost: 'minecraft:stone', catacombs: 'minecraft:stone_bricks', obelisk: 'minecraft:polished_deepslate',
+const FILLER = { capital: 'minecraft:stone_bricks', diamond_fort: 'minecraft:stone_bricks', spade_citadel: 'minecraft:blackstone', spire: 'minecraft:stone_bricks', roost: 'minecraft:stone', catacombs: 'minecraft:stone_bricks', obelisk: 'minecraft:polished_deepslate',
   watchtower: 'minecraft:cobblestone', lost_waygate: 'minecraft:stone_bricks', crater: 'minecraft:stone' };
-const RADIUS = { spire: 7, roost: 10, catacombs: 4, hamlet: 6, graveyard: 9, obelisk: 5, fairy_ring: 7, watchtower: 6, caravan: 7, crater: 8, skeleton: 9,
+const RADIUS = { capital: 24, diamond_fort: 11, spade_citadel: 11, heart_sanctum: 10, spire: 7, roost: 10, catacombs: 4, hamlet: 6, graveyard: 9, obelisk: 5, fairy_ring: 7, watchtower: 6, caravan: 7, crater: 8, skeleton: 9,
   battlefield: 10, lost_waygate: 5, witch_hut: 6, starfall: 5 };
-const TOL = { spire: 6, roost: 9, catacombs: 8, crater: 7, battlefield: 7, starfall: 7 };
+const TOL = { capital: 9, diamond_fort: 7, spade_citadel: 7, spire: 6, roost: 9, catacombs: 8, crater: 7, battlefield: 7, starfall: 7 };
 
 /**
  * Lay one blueprint into the world (a generator, so big builds are spread over ticks). Absolute positions of its chests,
@@ -185,6 +185,17 @@ function* layBlueprint(dim, bp, ax, ay, az, filler, out) {
   for (const [name, dx, dy, dz] of bp.marks ?? []) (out.marks[name] ??= []).push([ax + dx, ay + dy, az + dz]);
 }
 
+/** Lay a blueprint over several ticks; `finish(out)` runs when it is done (v1.2.0: the Royal Capital is built this way). */
+export function buildBlueprint(dim, bp, x, y, z, filler, finish) {
+  const out = { chests: [], spawners: [], spawns: [], traps: [], marks: {} };
+  function* job() {
+    yield* layBlueprint(dim, bp, x, y, z, filler, out);
+    safe(() => finish?.(out));
+  }
+  system.runJob(job());
+  return out;
+}
+
 function* layBlocks(dim, list) {
   let n = 0;
   for (const [x, y, z, name] of list) {
@@ -196,7 +207,7 @@ function* layBlocks(dim, list) {
 }
 
 /** Is a spot level enough for a landmark of this size? Returns the ground there, or undefined. */
-function levelAt(dim, x, z, kind) {
+export function levelAt(dim, x, z, kind) {
   const g = groundAt(dim, x, z);
   if (!g || g.water) return undefined;
   const r = RADIUS[kind] ?? 6;
@@ -222,7 +233,7 @@ export function raise(dim, slot, opts = {}) {
   const stars = reg?.stars ?? 1;
   const traits = reg?.traits ?? [];
   let kind = slot.kind;
-  if (kind !== 'starfall' && !kindFits(kind, g0.land)) kind = g0.water ? kind : chooseKind(r, g0.land, stars, traits, ['spire', 'roost', 'catacombs', 'lost_waygate']);
+  if (kind !== 'starfall' && !kindFits(kind, g0.land)) kind = g0.water ? kind : chooseKind(r, g0.land, stars, traits, ['spire', 'roost', 'catacombs', 'lost_waygate'], reg?.kingdom ?? '');
   let spot;
   for (const [ox, oz] of [[0, 0], [9, 0], [-9, 0], [0, 9], [0, -9], [14, 14], [-14, -14], [14, -14], [-14, 14]]) {
     const g = levelAt(dim, slot.x + ox, slot.z + oz, kind);
@@ -288,6 +299,13 @@ export function raise(dim, slot, opts = {}) {
       const b = safe(() => dim.getBlock({ x, y, z }));
       if (b) safe(() => fillChest(b, table, stars, loot));
       if (!['spire_top', 'hoard', 'witch', 'starfall'].includes(table) && Math.random() < W.encounters.mimic.chance) rec.mimics.push([x, y, z]);
+    }
+    // v1.2.0: a roost's hoard often holds an egg
+    if (kind === 'roost' && out.chests.length && Math.random() < DATA.dragon.fromHoard) {
+      const [x, y, z] = out.chests[0];
+      const inv = safe(() => dim.getBlock({ x, y, z })?.getComponent('minecraft:inventory')?.container);
+      if (inv) safe(() => inv.setItem(Math.floor(Math.random() * inv.size), new ItemStack(`bc:${DATA.dragon.eggs[rec.sub || 'storm_wyvern']}`, 1)));
+      rec.done.push('egg');
     }
     const list = spawnerList();
     for (const [x, y, z, pool] of out.spawners) list.push([x, y, z, pool, dim.id]);
@@ -558,6 +576,15 @@ function approach(p, rec) {
     if (e) safe(() => e.triggerEvent('bc:sleep'));
   } else if (rec.kind === 'roost' && boss && mark && dist3(p.location, mark) < 13) {
     wakeWyvern(boss, p);
+  } else if (W.landmarks[rec.kind]?.master === 'commander' && mark && !boss && dist3(p.location, mark) < 12) {
+    // v1.2.0: a kingdom fort's commander
+    const K = DATA.kingdoms[W.landmarks[rec.kind].kingdom];
+    const e = spawnMaster(dim, rec, `bc:${K.soldier}`, mark, { up: 0.2 });
+    if (e) {
+      makeElite(e, undefined, 'infernal');
+      safe(() => (e.nameTag = `${K.mc}§l${K.commander}§r ${String(e.nameTag).replace(/^[^(]*/, '§7')}`));
+      for (const q of dim.getPlayers({ location: p.location, maxDistance: 32 })) title(q, `${K.mc}§l${K.commander.toUpperCase()}`, `§7The ${K.name} holds this fort`, 60);
+    }
   } else if (rec.kind === 'catacombs' && mark && !boss && dist3(p.location, mark) < 14) {
     const e = spawnMaster(dim, rec, 'bc:dungeon_golem', mark, { up: 0.2 });
     if (e) title(p, '§6§lTHE GUARDIAN WAKES', '§7The catacombs\' heart will not let you leave with its gold', 60);
@@ -586,9 +613,12 @@ function approach(p, rec) {
     emit('lost_waygate', p);
   }
   // residents: a hedge witch (or something worse), a hermit in a ruined hamlet, a captive in the catacombs
-  const home = rec.marks.witch?.[0] ?? (rec.kind === 'hamlet' && rec.sub === 'hermit' ? rec.marks.bed?.[0] : undefined);
+  const home = rec.marks.witch?.[0] ?? rec.marks.priestess?.[0] ?? (rec.kind === 'hamlet' && rec.sub === 'hermit' ? rec.marks.bed?.[0] : undefined);
   if (home && !rec.resident && d2 < 26) {
-    if (rec.kind === 'witch_hut' && Math.random() < 0.4) {
+    if (rec.kind === 'heart_sanctum') {
+      const e = residentMaker?.(dim, { x: home[0] + 0.5, y: home[1], z: home[2] + 0.5 }, 'priestess', { stay: true });
+      rec.resident = e?.id ?? 'none';
+    } else if (rec.kind === 'witch_hut' && Math.random() < 0.4) {
       const e = safe(() => dim.spawnEntity('bc:rogue_mage', { x: home[0] + 0.5, y: home[1], z: home[2] + 0.5 }));
       if (e) {
         makeElite(e, undefined, 'champion');
@@ -664,6 +694,7 @@ world.afterEvents.entityDie.subscribe((ev) => safe(() => {
     }
   }
   if (rec.kind === 'roost') for (const p of players) emit('wyvern', p);
+  if (W.landmarks[rec.kind]?.master === 'commander') for (const p of players) emit('commander', p, rec);
   for (const p of players) emit('landmark_clear', p, rec);
 }, 'landmarkMaster'));
 

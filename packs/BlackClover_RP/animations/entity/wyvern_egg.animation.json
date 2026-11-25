@@ -1,0 +1,22 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.wyvern_egg.idle": {
+      "loop": true,
+      "bones": {
+        "egg": {
+          "rotation": [
+            0,
+            0,
+            "math.sin(q.life_time * 400.0) * math.max(0.0, math.sin(q.life_time * 40.0) - 0.7) * 30.0"
+          ],
+          "scale": [
+            "1.0 + math.sin(q.life_time * 90.0) * 0.02",
+            "1.0 + math.sin(q.life_time * 90.0) * 0.02",
+            "1.0 + math.sin(q.life_time * 90.0) * 0.02"
+          ]
+        }
+      }
+    }
+  }
+}

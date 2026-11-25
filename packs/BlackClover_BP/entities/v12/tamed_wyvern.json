@@ -1,0 +1,350 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "bc:tamed_wyvern",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "properties": {
+        "bc:element": {
+          "type": "int",
+          "range": [
+            0,
+            2
+          ],
+          "default": 0,
+          "client_sync": true
+        },
+        "bc:stage": {
+          "type": "int",
+          "range": [
+            0,
+            2
+          ],
+          "default": 0,
+          "client_sync": true
+        },
+        "bc:asleep": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        },
+        "bc:saddled": {
+          "type": "bool",
+          "default": false,
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "bc_tamed_wyvern",
+          "mob"
+        ]
+      },
+      "minecraft:breathable": {
+        "total_supply": 15,
+        "suffocate_time": 0
+      },
+      "minecraft:nameable": {
+        "always_show": true,
+        "allow_name_tag_renaming": true
+      },
+      "minecraft:persistent": {},
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": false
+      },
+      "minecraft:knockback_resistance": {
+        "value": 0.6
+      },
+      "minecraft:tameable": {
+        "probability": 0.0,
+        "tame_items": "minecraft:emerald_block"
+      },
+      "minecraft:navigation.walk": {
+        "can_path_over_water": true,
+        "avoid_water": true,
+        "avoid_damage_blocks": true
+      },
+      "minecraft:movement.basic": {},
+      "minecraft:jump.static": {},
+      "minecraft:can_climb": {},
+      "minecraft:follow_range": {
+        "value": 32,
+        "max": 32
+      },
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "fall",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "suffocation",
+            "deals_damage": "no"
+          }
+        ]
+      },
+      "minecraft:behavior.float": {
+        "priority": 0
+      },
+      "minecraft:behavior.owner_hurt_by_target": {
+        "priority": 1
+      },
+      "minecraft:behavior.owner_hurt_target": {
+        "priority": 2
+      },
+      "minecraft:behavior.melee_box_attack": {
+        "priority": 3,
+        "speed_multiplier": 1.2,
+        "track_target": true
+      },
+      "minecraft:behavior.random_stroll": {
+        "priority": 7,
+        "speed_multiplier": 0.8
+      },
+      "minecraft:behavior.look_at_player": {
+        "priority": 8,
+        "look_distance": 8,
+        "probability": 0.3
+      },
+      "minecraft:interact": {
+        "interactions": [
+          {
+            "on_interact": {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "player"
+              },
+              "event": "bc:noop"
+            },
+            "interact_text": "action.interact.talk"
+          }
+        ]
+      },
+      "minecraft:conditional_bandwidth_optimization": {
+        "default_values": {
+          "max_optimized_distance": 64.0,
+          "max_dropped_ticks": 2,
+          "use_motion_prediction_hints": true
+        }
+      }
+    },
+    "events": {
+      "minecraft:entity_spawned": {
+        "add": {
+          "component_groups": [
+            "bc:hatchling",
+            "bc:follow",
+            "bc:grounded"
+          ]
+        }
+      },
+      "bc:noop": {},
+      "bc:element_0": {
+        "set_property": {
+          "bc:element": 0
+        }
+      },
+      "bc:element_1": {
+        "set_property": {
+          "bc:element": 1
+        }
+      },
+      "bc:element_2": {
+        "set_property": {
+          "bc:element": 2
+        }
+      },
+      "bc:grow_1": {
+        "remove": {
+          "component_groups": [
+            "bc:hatchling"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "bc:juvenile"
+          ]
+        },
+        "set_property": {
+          "bc:stage": 1
+        }
+      },
+      "bc:grow_2": {
+        "remove": {
+          "component_groups": [
+            "bc:juvenile",
+            "bc:hatchling"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "bc:adult"
+          ]
+        },
+        "set_property": {
+          "bc:stage": 2
+        }
+      },
+      "bc:sit": {
+        "remove": {
+          "component_groups": [
+            "bc:follow"
+          ]
+        },
+        "set_property": {
+          "bc:asleep": true
+        }
+      },
+      "bc:stand": {
+        "add": {
+          "component_groups": [
+            "bc:follow"
+          ]
+        },
+        "set_property": {
+          "bc:asleep": false
+        }
+      },
+      "bc:roam": {
+        "remove": {
+          "component_groups": [
+            "bc:follow"
+          ]
+        },
+        "set_property": {
+          "bc:asleep": false
+        }
+      },
+      "bc:saddle": {
+        "add": {
+          "component_groups": [
+            "bc:rideable"
+          ]
+        },
+        "set_property": {
+          "bc:saddled": true
+        }
+      },
+      "bc:mount": {
+        "remove": {
+          "component_groups": [
+            "bc:grounded",
+            "bc:follow"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "bc:mounted"
+          ]
+        },
+        "set_property": {
+          "bc:asleep": false
+        }
+      },
+      "bc:dismount": {
+        "remove": {
+          "component_groups": [
+            "bc:mounted"
+          ]
+        },
+        "add": {
+          "component_groups": [
+            "bc:grounded",
+            "bc:follow"
+          ]
+        }
+      }
+    },
+    "component_groups": {
+      "bc:hatchling": {
+        "minecraft:health": {
+          "value": 24,
+          "max": 24
+        },
+        "minecraft:collision_box": {
+          "width": 0.6,
+          "height": 0.6
+        },
+        "minecraft:movement": {
+          "value": 0.3
+        },
+        "minecraft:attack": {
+          "damage": 2
+        }
+      },
+      "bc:juvenile": {
+        "minecraft:health": {
+          "value": 80,
+          "max": 80
+        },
+        "minecraft:collision_box": {
+          "width": 1.2,
+          "height": 1.1
+        },
+        "minecraft:movement": {
+          "value": 0.3
+        },
+        "minecraft:attack": {
+          "damage": 6
+        }
+      },
+      "bc:adult": {
+        "minecraft:health": {
+          "value": 200,
+          "max": 200
+        },
+        "minecraft:collision_box": {
+          "width": 2.0,
+          "height": 1.8
+        },
+        "minecraft:movement": {
+          "value": 0.32
+        },
+        "minecraft:attack": {
+          "damage": 11
+        }
+      },
+      "bc:rideable": {
+        "minecraft:rideable": {
+          "seat_count": 1,
+          "crouching_skip_interact": true,
+          "family_types": [
+            "player"
+          ],
+          "interact_text": "action.interact.ride.horse",
+          "pull_in_entities": false,
+          "seats": [
+            {
+              "position": [
+                0.0,
+                2.05,
+                0.1
+              ]
+            }
+          ]
+        }
+      },
+      "bc:follow": {
+        "minecraft:behavior.follow_owner": {
+          "priority": 4,
+          "speed_multiplier": 1.3,
+          "start_distance": 10,
+          "stop_distance": 4
+        }
+      },
+      "bc:grounded": {
+        "minecraft:physics": {}
+      },
+      "bc:mounted": {
+        "minecraft:physics": {
+          "has_gravity": false
+        }
+      }
+    }
+  }
+}

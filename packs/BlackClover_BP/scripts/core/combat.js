@@ -28,9 +28,11 @@ const FACTION = {
   // v1.1.0
   'bc:hollow_knight': 'undead', 'bc:ember_wyvern': 'wild', 'bc:frost_wyvern': 'wild', 'bc:storm_wyvern': 'wild', 'bc:spire_warden': 'wild',
   'bc:mimic': 'wild', 'bc:rootwarden': 'wild', 'bc:wanderer': 'clover',
+  // v1.2.0
+  'bc:diamond_legionnaire': 'diamond', 'bc:spade_zealot': 'spade', 'bc:heart_guardian': 'clover',
 };
 /** NPCs that only harm a player who attacked them first. */
-const PEACEFUL = new Set(['bc:magic_knight', 'bc:construct', 'bc:magic_merchant', 'bc:shade_soldier', 'bc:earth_golem', 'bc:mirror_clone', 'bc:wanderer']);
+const PEACEFUL = new Set(['bc:magic_knight', 'bc:construct', 'bc:magic_merchant', 'bc:shade_soldier', 'bc:earth_golem', 'bc:mirror_clone', 'bc:wanderer', 'bc:heart_guardian']);
 /** @type {Map<string, Map<string, number>>} npc id -> player id -> tick the grudge ends */
 const grudges = new Map();
 
@@ -67,9 +69,11 @@ const HUNTS = {
   bandit: ['bc_knight', 'bc_navy'],
   hive: ['bc_knight', 'bc_navy'],
   wild: ['bc_knight', 'bc_navy'],
+  diamond: ['bc_knight', 'bc_navy', 'bc_heart'],
+  spade: ['bc_knight', 'bc_navy', 'bc_heart'],
 };
 /** Factions that are hostile to players (they form warbands). */
-export const HOSTILE_SIDES = new Set(['devil', 'pirate', 'rogue', 'witch', 'undead', 'bandit', 'hive', 'wild']);
+export const HOSTILE_SIDES = new Set(['devil', 'pirate', 'rogue', 'witch', 'undead', 'bandit', 'hive', 'wild', 'diamond', 'spade']);
 export const TEAMS = ['a', 'b', 'c'];
 
 // ---------------------------------------------------------------------------- hooks

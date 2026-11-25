@@ -876,9 +876,35 @@ def v11_sheet():
     grid(e, 4, 300, 'v110.png', 'v1.1.0: the Untamed Kingdom')
 
 
+def v12_sheet():
+    """v1.2.0: Dragonbound & Kingdoms - a saddled wyvern, its eggs, the kingdom soldiers and the new wanderers."""
+    from bc.models import v11, v12
+    e = []
+    ta = v12.tamed_animations()
+    pose = {}
+    render.pose_from_anim(ta['animation.bc.tamed_wyvern.fly'], 0.25, pose=pose)
+    e.append(('Your wyvern, saddled', model(v11.wyvern_geo('frost_wyvern', saddle=True)), pose, 35, 22, 1.05))
+    pose = {}
+    render.pose_from_anim(ta['animation.bc.tamed_wyvern.ground'], 0.3, pose=pose)
+    e.append(('Ember Wyvern, grown', model(v11.wyvern_geo('ember_wyvern', saddle=True)), pose, 40, 20, 1.05))
+    for k, label in (('ember_wyvern', 'Ember Egg'), ('frost_wyvern', 'Frost Egg'), ('storm_wyvern', 'Storm Egg')):
+        e.append((label, model(v12.egg_geo(k)), {}, 30, 15, 1.9))
+    for fn, prefix, label in ((v12.legionnaire_geo, 'diamond_legionnaire', 'Diamond Legionnaire'), (v12.zealot_geo, 'spade_zealot', 'Spade Zealot'),
+                              (v12.guardian_geo, 'heart_guardian', 'Heart Guardian')):
+        pose = {}
+        render.pose_from_anim(v12.soldier_animations(prefix)[f'animation.bc.{prefix}.cast'], 0.3, pose=pose)
+        e.append((label, model(fn()), pose, 30, 10, 1.5))
+    wan = v11.wanderer_animations()
+    for i, label in ((6, 'Heart Priestess'), (7, 'Quartermaster')):
+        pose = {}
+        render.pose_from_anim(wan['animation.bc.wanderer.idle'], 0.3, pose=pose)
+        e.append((label, model(v11.wanderer_geo(i)), pose, 30, 10, 1.5))
+    grid(e, 5, 280, 'v120.png', 'v1.2.0: Dragonbound & Kingdoms')
+
+
 if __name__ == '__main__':
     names = sys.argv[1:] or ['hero', 'spells_sheet', 'gear_sheet', 'mobs_sheet', 'robes_sheet', 'hud_mock', 'icons_strip', 'seas_sheet',
-                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet', 'v9_sheet', 'vfx_sheet', 'v10_sheet', 'v11_sheet']
+                             'fruits_strip', 'wave3_sheet', 'wave4_sheet', 'v2_sheet', 'v3_sheet', 'v5_sheet', 'v7_sheet', 'v75_sheet', 'v8_sheet', 'v9_sheet', 'vfx_sheet', 'v10_sheet', 'v11_sheet', 'v12_sheet']
     for n in names:
         print('rendering', n)
         globals()[n]()

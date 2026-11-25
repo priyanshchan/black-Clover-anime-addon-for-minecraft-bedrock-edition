@@ -1,0 +1,189 @@
+{
+  "format_version": "1.10.0",
+  "animations": {
+    "animation.bc.spade_zealot.idle": {
+      "loop": true,
+      "bones": {
+        "body": {
+          "rotation": [
+            "math.sin(q.life_time * 90.0) * 1.2",
+            0,
+            0
+          ]
+        },
+        "rightArm": {
+          "rotation": [
+            "-12.0 + math.sin(q.life_time * 90.0) * 2.0",
+            0,
+            4
+          ]
+        },
+        "leftArm": {
+          "rotation": [
+            "math.sin(q.life_time * 90.0) * -2.0",
+            0,
+            -4
+          ]
+        },
+        "orb": {
+          "rotation": [
+            0,
+            "q.life_time * 120.0",
+            0
+          ],
+          "position": [
+            0,
+            "math.sin(q.life_time * 120.0) * 0.6",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.spade_zealot.walk": {
+      "loop": true,
+      "bones": {
+        "rightLeg": {
+          "rotation": [
+            "math.cos(q.modified_distance_moved * 38.17) * 38.0 * q.modified_move_speed",
+            0,
+            0
+          ]
+        },
+        "leftLeg": {
+          "rotation": [
+            "-(math.cos(q.modified_distance_moved * 38.17) * 38.0 * q.modified_move_speed)",
+            0,
+            0
+          ]
+        },
+        "leftArm": {
+          "rotation": [
+            "(math.cos(q.modified_distance_moved * 38.17) * 38.0 * q.modified_move_speed) * 0.7",
+            0,
+            0
+          ]
+        },
+        "rightArm": {
+          "rotation": [
+            "-(math.cos(q.modified_distance_moved * 38.17) * 38.0 * q.modified_move_speed) * 0.3",
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.spade_zealot.look_at_target": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "rotation": [
+            "q.target_x_rotation",
+            "q.target_y_rotation",
+            0
+          ]
+        }
+      }
+    },
+    "animation.bc.spade_zealot.attack": {
+      "animation_length": 0.45,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.12": [
+              -150,
+              20,
+              10
+            ],
+            "0.26": [
+              -40,
+              -25,
+              0
+            ],
+            "0.45": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "body": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.12": [
+              0,
+              15,
+              0
+            ],
+            "0.26": [
+              0,
+              -20,
+              0
+            ],
+            "0.45": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    },
+    "animation.bc.spade_zealot.cast": {
+      "animation_length": 0.8,
+      "bones": {
+        "rightArm": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.25": [
+              -120,
+              10,
+              10
+            ],
+            "0.55": [
+              -90,
+              0,
+              0
+            ],
+            "0.8": [
+              0,
+              0,
+              0
+            ]
+          }
+        },
+        "body": {
+          "rotation": {
+            "0.0": [
+              0,
+              0,
+              0
+            ],
+            "0.25": [
+              0,
+              -15,
+              0
+            ],
+            "0.8": [
+              0,
+              0,
+              0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

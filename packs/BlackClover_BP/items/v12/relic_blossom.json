@@ -1,0 +1,27 @@
+{
+  "format_version": "1.21.60",
+  "minecraft:item": {
+    "description": {
+      "identifier": "bc:relic_blossom",
+      "menu_category": {
+        "category": "equipment"
+      }
+    },
+    "components": {
+      "minecraft:icon": {
+        "textures": {
+          "default": "bc_relic_blossom"
+        }
+      },
+      "minecraft:display_name": {
+        "value": "§dSpirit Blossom"
+      },
+      "minecraft:max_stack_size": {
+        "value": 1
+      },
+      "minecraft:glint": {
+        "value": true
+      }
+    }
+  }
+}

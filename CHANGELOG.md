@@ -1,5 +1,33 @@
 # Changelog
 
+## v1.2.0 (2026-11-25)
+
+**Dragonbound & Kingdoms.** Hatch, raise and ride a Mana Wyvern; the neighbouring kingdoms hold the Marches; the Royal Capital rises near home.
+
+### Dragonbound
+* **Wyvern Eggs** (Ember, Frost, Storm) from roost hoards (40%) and slain wild wyverns (15%). Place one and keep it in its element - fire, a campfire, lava or magma for Ember; snow or ice for Frost; a lightning rod, copper or high ground for Storm - and after 4 minutes it hatches, bonded to you.
+* **Growing up**: hatchling, juvenile (600 growth), adult (1800). It grows while you are within 64 blocks; meat, fish and mana crystals speed it up. Juveniles and adults breathe their element at monsters near you.
+* **Riding**: saddle your adult (the Wyvern Saddle) and climb on - look to steer, forward to fly, jump to climb, sneak to step off. While riding, the **Wyvern Whistle** breathes fire, frost or lightning where you look. On the ground the whistle switches follow / stay / roam, and sneak-use calls your wyvern to you.
+* A fallen wyvern leaves its egg behind.
+
+### Kingdoms of the Marches
+* The Marches belong to the **Diamond Kingdom** (west), the **Spade Kingdom** (north) and the **Heart Kingdom** (east).
+* New soldiers: **Diamond Legionnaires** (crystal and steel magic), **Spade Zealots** (dark and gravity magic), **Heart Guardians** (plant and spirit magic - friendly, they fight monsters).
+* **Patrols** in the Diamond and Spade Marches; **border forts** (Diamond Border Fort, Spade Citadel) with a Diamond Commander or Spade Inquisitor; the friendly **Heart Sanctum** with a priestess who trades.
+* **Spoils of war** (Diamond Shards, Spade Sigils): the Capital's quartermaster pays 25 doubloons each and a star for every ten.
+* **Spirit Draught** (Heart Bloom, mana crystal, glass bottle): Regeneration and +50% mana regeneration for 3 minutes.
+* Three kingdom relics: the **Legion Prism**, the **Zealot's Brand** and the **Spirit Blossom**.
+
+### The Royal Capital
+* Once per world, 150-230 blocks from spawn: walls and towers, a gate, a plaza with a fountain and a Waygate, the Magic Knight HQ (Mission Board, War Table, Squad Banner), a smithy (Magic Forge), an inn, a market of shopkeepers (peddler, Royal Cartographer, apothecary, innkeeper, quartermaster), houses and Magic Knights on guard.
+* No monsters spawn and no ambushes come inside. The first visit makes it your home (your spawn point, unless you slept elsewhere).
+* Cheat: `/scriptevent bc:capital [here]`.
+
+### Other changes
+* Seven new feats: Hatchling, Wyvern Bond, Dragon Rider, Border Warden, Fort Breaker, Friend of Hearts, To the Capital. New mission: *Hold the border*.
+* The merchant sells Wyvern Saddles. The Atlas shows the way to the Capital and how your wyverns are growing.
+* Feat progress is now saved every couple of seconds (it could be lost on leaving before).
+
 ## v1.1.0 (2026-11-25)
 
 **The Untamed Kingdom.** World-building and randomness: a named world of regions with their own danger and character, landmarks over every hill, random loot, tougher elites, encounters, omens and wanderers.

@@ -1,0 +1,57 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:tamed_wyvern",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "e0": "textures/entity/bc/tamed/ember_wyvern",
+        "e1": "textures/entity/bc/tamed/frost_wyvern",
+        "e2": "textures/entity/bc/tamed/storm_wyvern"
+      },
+      "geometry": {
+        "default": "geometry.bc.tamed_wyvern"
+      },
+      "animations": {
+        "fly": "animation.bc.tamed_wyvern.fly",
+        "ground": "animation.bc.tamed_wyvern.ground",
+        "walk": "animation.bc.tamed_wyvern.walk",
+        "sleep": "animation.bc.tamed_wyvern.sleep",
+        "look": "animation.bc.tamed_wyvern.look",
+        "breath": "animation.bc.tamed_wyvern.breath",
+        "bite": "animation.bc.tamed_wyvern.bite",
+        "roar": "animation.bc.tamed_wyvern.roar",
+        "grow": "animation.bc.tamed_wyvern.grow"
+      },
+      "scripts": {
+        "animate": [
+          "grow",
+          {
+            "fly": "!q.is_on_ground && !q.property('bc:asleep')"
+          },
+          {
+            "ground": "q.is_on_ground && !q.property('bc:asleep')"
+          },
+          {
+            "walk": "q.is_on_ground && q.modified_move_speed > 0.05 && !q.property('bc:asleep')"
+          },
+          {
+            "sleep": "q.property('bc:asleep')"
+          },
+          {
+            "look": "!q.property('bc:asleep')"
+          }
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.tamed_wyvern"
+      ],
+      "spawn_egg": {
+        "base_color": "#286a30",
+        "overlay_color": "#ffa040"
+      }
+    }
+  }
+}

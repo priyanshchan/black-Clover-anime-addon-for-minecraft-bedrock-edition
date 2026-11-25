@@ -1,6 +1,6 @@
 # Black Clover: Grimoire Awakening
 
-> **Version 1.1.0 - the Untamed Kingdom.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
+> **Version 1.2.0 - Dragonbound & Kingdoms.** [Download the latest release](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/releases) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md) · Found a bug or a balance problem? Please [open an issue](https://github.com/priyanshchan/black-Clover-anime-addon-for-minecraft-bedrock-edition/issues/new/choose).
 
 **An unofficial Black Clover fan addon for Minecraft Bedrock Edition** – receive your own grimoire, master one of 40 magic attributes, lead a squad of Magic Knight companions with their own personalities and specialisations, draw anti-magic demon swords, wear squad robes, fly brooms, and fight devils, pirates, bandits, assassins, rogue mages, insect swarms, wyverns and nineteen giant bosses - across a world where every region has its own name, danger and landmarks to find.
 
@@ -26,6 +26,7 @@ Every model, texture, particle, sound and icon in this pack is original and gene
 * **Enemies** – Dark Disciples (hooded mages that cast dark bolts and blink behind you) and the **Devil** boss (420 HP, two phases, boss bar, dark lightning, summons, roar, orb barrages).
 * **Magic Knight's Handbook** – in-game menu for your stats, spell selection, every attribute's spell list and a guide.
 * Player cast / slash / guard animations, camera shake, titles.
+* **v1.2.0 – Dragonbound & Kingdoms:** hatch a **Mana Wyvern** of your own from an egg, raise it from hatchling to adult (it fights beside you), **saddle it and ride it** through the sky breathing fire, frost or lightning; the **Diamond, Spade and Heart kingdoms** hold the Marches with patrols, **border forts** and their Commanders (the Heart Kingdom is friendly, with priestesses who trade spirit relics); the **Royal Capital** rises near home - walls, the Magic Knight HQ, a market, an inn, a smithy, a Waygate, guards - a safe home base.
 * **v1.1.0 – the Untamed Kingdom:** every 320-block region now has a **name of its own**, a realm (Noble, Common, Forsaken, the Marches), **danger stars** and **traits** (Mana-Rich, Haunted, Wyvern Territory, Fae Wilds, Wild Magic...); **15 kinds of landmark** seeded across them - Mage Spires with the Spire Warden, Wyvern Roosts with sleeping **Mana Wyverns**, procedural **Catacombs**, ruined hamlets, graveyards, obelisks, fairy rings and more, with **Mana Spawners** and **Mimics**; **random loot** from Common to Mythic with rolled **relics** and weapons (reforge them at the Magic Forge); **Champion and Infernal** elites with ten new traits; encounters your own actions wake; daily **omens**; **wanderers** with rumours, trades and requests; Explorer's Maps, journals, the Atlas, and the Wyvernscale armour set.
 * **v1.0.0 – a living world:** world events are now **incidents out in the world** - reported by direction and distance, marked by smoke and light on the horizon and tracked on your HUD. They develop while you are away (gates grow, rituals complete, raids march on your home, armies decide their battles) and resolve with consequences; their units appear only when you arrive, and hunters creep up from behind. Plus four grimoires (Storm, Blossom, Coral, Dream), four Abyss Fruits (Spark, Echo, Sand, Gale), new incidents (caravans, mana springs, camp sieges, refugees, ruins), **Mana Waygates** for fast travel, and new feats and missions.
 * **v0.9.0 – spells that look the part:** every spell and fruit power is redrawn in layers - magic circles, flashes, shock rings, sparks that bounce, solid beams with white-hot cores, real lightning, licking flames, rolling smoke, dust waves and ground cracks - with a rebuilt glowing projectile (and burning comets), element trails, and new full-body cast animations for players, knights and fruit brawlers.
@@ -65,6 +66,7 @@ Every detail lives in **[docs/](docs/README.md)** (generated from the game data,
 | [Companions](docs/companions.md) | your saved party: recruiting, the whistle, orders, stances, formations, bond and its perks, robes, levels to 20 |
 | [AI & simulation](docs/ai-and-simulation.md) | how NPCs, enemies and bosses think, battles (tactics, morale, leaders, bets, camera), the world simulation |
 | [World events](docs/world-events.md) | every event, its odds, conditions and rewards |
+| [Dragonbound & Kingdoms](docs/dragonbound.md) | wyvern eggs, growing, riding and breath; the Diamond, Spade and Heart kingdoms; the Royal Capital |
 | [The Untamed Kingdom](docs/exploration.md) | regions, realms, danger and traits; every landmark; random loot, relics and rolled weapons; Champions and Infernals; encounters; omens; wanderers; maps and journals |
 | [Mobs & bosses](docs/mobs-and-bosses.md) | every creature's health, attack, spawning and drops; all the bosses; factions; structures; elites |
 | [Items & recipes](docs/items-and-recipes.md) | every crafting recipe, every item id, both shops |
@@ -347,6 +349,20 @@ Defeating captains, devils, the Leviathan, Tidewatch officers or other ships rai
 /summon bc:dungeon_golem
 /summon bc:tidewatch_commodore
 ```
+
+---
+
+## v1.2.0: Dragonbound & Kingdoms
+
+![v1.2.0](docs/images/v120.png)
+
+* **A wyvern of your own.** Wyvern Eggs come from roost hoards and slain wild wyverns. Keep an egg in its element - fire for **Ember**, snow or ice for **Frost**, a lightning rod or high ground for **Storm** - and it hatches, bonded to you. → [Dragonbound & Kingdoms](docs/dragonbound.md)
+* **Raise it.** It grows while you are near (feed it meat, fish or mana crystals to hurry it): a hatchling follows you, a **juvenile fights beside you** and breathes its element at monsters, an **adult can be saddled**.
+* **Ride it.** Climb on, look to steer, hold forward to fly, jump to climb - and use the **Wyvern Whistle** to breathe fire, frost or lightning where you look. On the ground the whistle switches follow / stay / roam and calls your wyvern to your side. If it falls, it leaves an egg.
+* **The kingdoms of the Marches.** Past the Forsaken Realm, the **Diamond Kingdom** (west) and the **Spade Kingdom** (north) hold the land with crystal-armoured Legionnaires and hooded Zealots who fight with their own magic, send **patrols**, and hold **border forts** under a **Diamond Commander** or **Spade Inquisitor**. Their spoils of war - Diamond Shards and Spade Sigils - sell at the Capital for doubloons and stars.
+* **The Heart Kingdom** (east) is a friend: its Guardians fight monsters beside you, and each **Heart Sanctum** has a priestess who trades spirit relics and **Spirit Draughts**.
+* **The Royal Capital** rises near home: walls and towers, a plaza with a fountain and a Waygate, the Magic Knight HQ (Mission Board, War Table, Squad Banner), a smithy with a Magic Forge, an inn, a market of shopkeepers, the quartermaster, and Magic Knights on guard. No monsters spawn and no ambushes come inside, and it becomes your home.
+* Seven new feats (Hatchling, Wyvern Bond, Dragon Rider, Border Warden, Fort Breaker, Friend of Hearts, To the Capital), three kingdom relics, and a new mission.
 
 ---
 

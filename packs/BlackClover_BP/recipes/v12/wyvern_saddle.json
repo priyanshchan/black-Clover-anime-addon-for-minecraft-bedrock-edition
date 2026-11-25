@@ -1,0 +1,33 @@
+{
+  "format_version": "1.20.10",
+  "minecraft:recipe_shaped": {
+    "description": {
+      "identifier": "bc:wyvern_saddle"
+    },
+    "tags": [
+      "crafting_table"
+    ],
+    "pattern": [
+      "LSL",
+      "LIL"
+    ],
+    "key": {
+      "L": {
+        "item": "minecraft:leather"
+      },
+      "S": {
+        "item": "bc:wyvern_scale"
+      },
+      "I": {
+        "item": "minecraft:iron_ingot"
+      }
+    },
+    "unlock": {
+      "context": "AlwaysUnlocked"
+    },
+    "result": {
+      "item": "bc:wyvern_saddle",
+      "count": 1
+    }
+  }
+}

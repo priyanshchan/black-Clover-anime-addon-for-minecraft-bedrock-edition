@@ -1,0 +1,34 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:client_entity": {
+    "description": {
+      "identifier": "bc:wyvern_egg",
+      "materials": {
+        "default": "entity_alphatest"
+      },
+      "textures": {
+        "e0": "textures/entity/bc/egg/ember_wyvern",
+        "e1": "textures/entity/bc/egg/frost_wyvern",
+        "e2": "textures/entity/bc/egg/storm_wyvern"
+      },
+      "geometry": {
+        "default": "geometry.bc.wyvern_egg"
+      },
+      "animations": {
+        "idle": "animation.bc.wyvern_egg.idle"
+      },
+      "scripts": {
+        "animate": [
+          "idle"
+        ]
+      },
+      "render_controllers": [
+        "controller.render.bc.wyvern_egg"
+      ],
+      "spawn_egg": {
+        "base_color": "#842a12",
+        "overlay_color": "#ffa040"
+      }
+    }
+  }
+}

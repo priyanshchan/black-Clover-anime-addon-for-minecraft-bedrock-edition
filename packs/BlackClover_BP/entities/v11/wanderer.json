@@ -10,7 +10,7 @@
           "type": "int",
           "range": [
             0,
-            5
+            7
           ],
           "default": 0,
           "client_sync": true
@@ -141,6 +141,16 @@
       "bc:look_5": {
         "set_property": {
           "bc:look": 5
+        }
+      },
+      "bc:look_6": {
+        "set_property": {
+          "bc:look": 6
+        }
+      },
+      "bc:look_7": {
+        "set_property": {
+          "bc:look": 7
         }
       }
     }

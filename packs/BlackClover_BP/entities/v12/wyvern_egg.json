@@ -1,0 +1,111 @@
+{
+  "format_version": "1.21.0",
+  "minecraft:entity": {
+    "description": {
+      "identifier": "bc:wyvern_egg",
+      "is_spawnable": false,
+      "is_summonable": true,
+      "properties": {
+        "bc:element": {
+          "type": "int",
+          "range": [
+            0,
+            2
+          ],
+          "default": 0,
+          "client_sync": true
+        }
+      }
+    },
+    "components": {
+      "minecraft:type_family": {
+        "family": [
+          "bc_wyvern_egg",
+          "inanimate"
+        ]
+      },
+      "minecraft:health": {
+        "value": 6,
+        "max": 6
+      },
+      "minecraft:collision_box": {
+        "width": 0.6,
+        "height": 0.9
+      },
+      "minecraft:physics": {},
+      "minecraft:pushable": {
+        "is_pushable": false,
+        "is_pushable_by_piston": false
+      },
+      "minecraft:knockback_resistance": {
+        "value": 1.0
+      },
+      "minecraft:movement": {
+        "value": 0.0
+      },
+      "minecraft:persistent": {},
+      "minecraft:nameable": {},
+      "minecraft:damage_sensor": {
+        "triggers": [
+          {
+            "cause": "fall",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "fire",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "fire_tick",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "lava",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "freezing",
+            "deals_damage": "no"
+          },
+          {
+            "cause": "lightning",
+            "deals_damage": "no"
+          }
+        ]
+      },
+      "minecraft:interact": {
+        "interactions": [
+          {
+            "on_interact": {
+              "filters": {
+                "test": "is_family",
+                "subject": "other",
+                "value": "player"
+              },
+              "event": "bc:noop"
+            },
+            "interact_text": "action.interact.talk"
+          }
+        ]
+      }
+    },
+    "events": {
+      "bc:noop": {},
+      "bc:element_0": {
+        "set_property": {
+          "bc:element": 0
+        }
+      },
+      "bc:element_1": {
+        "set_property": {
+          "bc:element": 1
+        }
+      },
+      "bc:element_2": {
+        "set_property": {
+          "bc:element": 2
+        }
+      }
+    }
+  }
+}

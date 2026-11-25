@@ -7961,6 +7961,12 @@ export const DATA = {
       "count": 1,
       "price": 60,
       "label": "Explorer's Map"
+    },
+    {
+      "item": "bc:wyvern_saddle",
+      "count": 1,
+      "price": 220,
+      "label": "Wyvern Saddle"
     }
   ],
   "factions": {
@@ -8490,6 +8496,14 @@ export const DATA = {
       "target": "bc:hollow_knight",
       "count": 6,
       "title": "Lay 6 Hollow Knights to rest",
+      "tier": 2
+    },
+    {
+      "id": "m_border",
+      "kind": "kill",
+      "target": "bc_kingdom_foe",
+      "count": 6,
+      "title": "Hold the border: defeat 6 kingdom soldiers",
       "tier": 2
     }
   ],
@@ -9058,6 +9072,76 @@ export const DATA = {
       "stars": 2,
       "coins": 120,
       "title": "the Kind"
+    },
+    {
+      "id": "hatchling",
+      "name": "Hatchling",
+      "desc": "Hatch a Wyvern Egg.",
+      "counter": "hatched",
+      "goal": 1,
+      "stars": 1,
+      "coins": 60,
+      "title": "the Egg-Warmer"
+    },
+    {
+      "id": "wyvern_bond",
+      "name": "Wyvern Bond",
+      "desc": "Raise a wyvern to full size.",
+      "counter": "adult_wyverns",
+      "goal": 1,
+      "stars": 2,
+      "coins": 150,
+      "title": "Wyvernkin"
+    },
+    {
+      "id": "dragon_rider",
+      "name": "Dragon Rider",
+      "desc": "Ride your wyvern into the sky.",
+      "counter": "wyvern_rides",
+      "goal": 1,
+      "stars": 2,
+      "coins": 150,
+      "title": "the Dragon Rider"
+    },
+    {
+      "id": "border_warden",
+      "name": "Border Warden",
+      "desc": "Defeat 25 Diamond or Spade soldiers.",
+      "counter": "kingdom_kills",
+      "goal": 25,
+      "stars": 2,
+      "coins": 150,
+      "title": "Border Warden"
+    },
+    {
+      "id": "fort_breaker",
+      "name": "Fort Breaker",
+      "desc": "Defeat a kingdom commander in their fort.",
+      "counter": "commanders",
+      "goal": 1,
+      "stars": 2,
+      "coins": 200,
+      "title": "the Fort Breaker"
+    },
+    {
+      "id": "friend_of_hearts",
+      "name": "Friend of Hearts",
+      "desc": "Trade with a Heart Priestess.",
+      "counter": "heart_trades",
+      "goal": 1,
+      "stars": 1,
+      "coins": 60,
+      "title": "Friend of Hearts"
+    },
+    {
+      "id": "to_the_capital",
+      "name": "To the Capital",
+      "desc": "Reach the Royal Capital.",
+      "counter": "capital",
+      "goal": 1,
+      "stars": 1,
+      "coins": 50,
+      "title": "Citizen of the Crown"
     }
   ],
   "armor": {
@@ -10167,6 +10251,33 @@ export const DATA = {
         "stars": 1,
         "master": "",
         "desc": "a stilt hut where a hedge witch lives - a trader, or a curse"
+      },
+      "diamond_fort": {
+        "name": "Diamond Border Fort",
+        "weight": 22,
+        "land": "*",
+        "stars": 3,
+        "master": "commander",
+        "kingdom": "diamond",
+        "desc": "a crystal-crowned keep of the Diamond legions - Legionnaires on the walls and a Diamond Commander inside"
+      },
+      "spade_citadel": {
+        "name": "Spade Citadel",
+        "weight": 22,
+        "land": "*",
+        "stars": 3,
+        "master": "commander",
+        "kingdom": "spade",
+        "desc": "a black citadel of the Spade zealots, with a Spade Inquisitor at its heart"
+      },
+      "heart_sanctum": {
+        "name": "Heart Sanctum",
+        "weight": 22,
+        "land": "*",
+        "stars": 3,
+        "master": "",
+        "kingdom": "heart",
+        "desc": "a spirit grove of the Heart Kingdom - its guardians are friendly, and its priestess trades"
       }
     },
     "landmarkBase": 2,
@@ -10323,6 +10434,16 @@ export const DATA = {
         "title": "Lost Knight",
         "desc": "a Magic Knight far from their squad, who may join yours",
         "look": 5
+      },
+      "quartermaster": {
+        "title": "Quartermaster",
+        "desc": "runs the Royal Capital's war office: buys spoils of war, sells saddles and contracts",
+        "look": 7
+      },
+      "priestess": {
+        "title": "Heart Priestess",
+        "desc": "keeps a Heart Sanctum: trades spirit relics and draughts, and thanks friends with Heart Blooms",
+        "look": 6
       }
     },
     "wandererFirst": [
@@ -10385,6 +10506,14 @@ export const DATA = {
       "lost_knight": [
         "My squad... we were scattered. Have you seen a camp?",
         "I have not slept in three days. Is it over? Did we win?"
+      ],
+      "quartermaster": [
+        "Spoils from the Marches? The Crown pays well for them.",
+        "Every shard you bring back is one less legion on our border."
+      ],
+      "priestess": [
+        "Be welcome, friend of the Clover. The spirits are calm today.",
+        "The grove remembers kindness. So do I."
       ]
     },
     "rumors": [
@@ -10614,6 +10743,36 @@ export const DATA = {
           "leap",
           "gills",
           "regen"
+        ]
+      },
+      "relic_prism": {
+        "name": "Legion Prism",
+        "desc": "a cut crystal from a Diamond commander's crown",
+        "favour": [
+          "power",
+          "ward",
+          "guard",
+          "might"
+        ]
+      },
+      "relic_brand": {
+        "name": "Zealot's Brand",
+        "desc": "a black iron brand still warm from a Spade forge",
+        "favour": [
+          "power",
+          "leech",
+          "haste",
+          "thorns"
+        ]
+      },
+      "relic_blossom": {
+        "name": "Spirit Blossom",
+        "desc": "a flower that never wilts, from the Heart Kingdom",
+        "favour": [
+          "regen",
+          "vigor",
+          "mana",
+          "swift"
         ]
       }
     },
@@ -10908,6 +11067,199 @@ export const DATA = {
         4,
         3
       ]
+    }
+  },
+  "dragon": {
+    "eggs": {
+      "ember_wyvern": "wyvern_egg_ember",
+      "frost_wyvern": "wyvern_egg_frost",
+      "storm_wyvern": "wyvern_egg_storm"
+    },
+    "hatchSeconds": 240,
+    "needs": {
+      "ember_wyvern": "fire, a campfire, lava or magma within 4 blocks",
+      "frost_wyvern": "snow or ice within 4 blocks",
+      "storm_wyvern": "a lightning rod or copper within 4 blocks, or high ground (y 100 or above)"
+    },
+    "fromHoard": 0.4,
+    "fromWyvern": 0.15,
+    "stages": [
+      {
+        "name": "hatchling",
+        "at": 0,
+        "hp": 24,
+        "ride": false
+      },
+      {
+        "name": "juvenile",
+        "at": 600,
+        "hp": 80,
+        "ride": false
+      },
+      {
+        "name": "adult",
+        "at": 1800,
+        "hp": 200,
+        "ride": true
+      }
+    ],
+    "growthPerSecond": 1,
+    "food": {
+      "minecraft:beef": 40,
+      "minecraft:porkchop": 40,
+      "minecraft:mutton": 40,
+      "minecraft:chicken": 30,
+      "minecraft:rabbit": 30,
+      "minecraft:cod": 30,
+      "minecraft:salmon": 30,
+      "minecraft:cooked_beef": 60,
+      "minecraft:cooked_porkchop": 60,
+      "minecraft:cooked_mutton": 60,
+      "minecraft:cooked_chicken": 45,
+      "minecraft:cooked_cod": 45,
+      "minecraft:cooked_salmon": 45,
+      "bc:mana_crystal": 90
+    },
+    "names": [
+      [
+        "Skar",
+        "Vael",
+        "Ory",
+        "Thun",
+        "Ash",
+        "Kry",
+        "Zeph",
+        "Mor",
+        "Ign",
+        "Fros",
+        "Bryn",
+        "Cael",
+        "Rhaz",
+        "Tyr"
+      ],
+      [
+        "vath",
+        "ira",
+        "gorn",
+        "axis",
+        "mere",
+        "dris",
+        "yx",
+        "wing",
+        "fang",
+        "is",
+        "ael",
+        "thor",
+        "ka",
+        "veil"
+      ]
+    ],
+    "rideSpeed": 0.95,
+    "breathCooldown": 4
+  },
+  "kingdoms": {
+    "diamond": {
+      "name": "Diamond Kingdom",
+      "mc": "\u00a7b",
+      "marches": "the Diamond Marches",
+      "soldier": "diamond_legionnaire",
+      "soldier_name": "Diamond Legionnaire",
+      "commander": "Diamond Commander",
+      "hostile": true,
+      "kits": [
+        "crystal",
+        "steel"
+      ],
+      "fort": "diamond_fort",
+      "spoils": "diamond_shard",
+      "desc": "a war-hungry kingdom that forges its mages into weapons; its legions hold the western Marches"
+    },
+    "spade": {
+      "name": "Spade Kingdom",
+      "mc": "\u00a75",
+      "marches": "the Spade Marches",
+      "soldier": "spade_zealot",
+      "soldier_name": "Spade Zealot",
+      "commander": "Spade Inquisitor",
+      "hostile": true,
+      "kits": [
+        "dark",
+        "gravity"
+      ],
+      "fort": "spade_citadel",
+      "spoils": "spade_sigil",
+      "desc": "a cold kingdom ruled by dark magic; its zealots guard the northern Marches"
+    },
+    "heart": {
+      "name": "Heart Kingdom",
+      "mc": "\u00a7d",
+      "marches": "the Heart Marches",
+      "soldier": "heart_guardian",
+      "soldier_name": "Heart Guardian",
+      "commander": "",
+      "hostile": false,
+      "kits": [
+        "plant",
+        "spirit"
+      ],
+      "fort": "heart_sanctum",
+      "spoils": "heart_bloom",
+      "desc": "a gentle kingdom of spirit magic; its guardians keep the eastern Marches and welcome friends"
+    }
+  },
+  "marchKingdom": {
+    "west": "diamond",
+    "north": "spade",
+    "east": "heart"
+  },
+  "capital": {
+    "distance": [
+      150,
+      230
+    ],
+    "radius": 26,
+    "safe": 56
+  },
+  "spoilsPrice": {
+    "diamond_shard": 25,
+    "spade_sigil": 25
+  },
+  "v12Items": {
+    "wyvern_egg_ember": {
+      "name": "\u00a76Ember Wyvern Egg",
+      "desc": "Place it near fire, lava or magma and it hatches an Ember Wyvern of your own."
+    },
+    "wyvern_egg_frost": {
+      "name": "\u00a7bFrost Wyvern Egg",
+      "desc": "Place it in snow or beside ice and it hatches a Frost Wyvern of your own."
+    },
+    "wyvern_egg_storm": {
+      "name": "\u00a7eStorm Wyvern Egg",
+      "desc": "Place it by a lightning rod or copper, or high on a mountain, to hatch a Storm Wyvern."
+    },
+    "wyvern_whistle": {
+      "name": "\u00a72Wyvern Whistle",
+      "desc": "Use: follow / stay / roam. Sneak-use: call it to you. While riding: breathe!"
+    },
+    "wyvern_saddle": {
+      "name": "\u00a76Wyvern Saddle",
+      "desc": "Use it on your grown wyvern, then ride it into the sky."
+    },
+    "diamond_shard": {
+      "name": "\u00a7bDiamond Shard",
+      "desc": "Crystal cut from a Diamond Legionnaire's armour. The Capital's quartermaster pays for them."
+    },
+    "spade_sigil": {
+      "name": "\u00a75Spade Sigil",
+      "desc": "A black iron sigil carried by Spade zealots. The Capital's quartermaster pays for them."
+    },
+    "heart_bloom": {
+      "name": "\u00a7dHeart Bloom",
+      "desc": "A spirit-flower of the Heart Kingdom, given in friendship. Brew it into a Spirit Draught."
+    },
+    "spirit_draught": {
+      "name": "\u00a7dSpirit Draught",
+      "desc": "Regeneration and +50% mana regeneration for 3 minutes."
     }
   },
   "eliteTiers": [

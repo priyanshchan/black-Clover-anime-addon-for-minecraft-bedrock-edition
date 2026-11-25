@@ -43,6 +43,8 @@ def gen_items(ctx: Ctx):
             comps['minecraft:glint'] = {'value': True}
         write_json(BP, f'items/v11/{key}.json', item_json(f'{NS}:{key}', name, _icon(ctx, key, ic[key]), comps))
     for key, (name, _, _) in RELICS.items():
+        if key not in ic:
+            continue   # (v1.2.0 relics are written by v12gen)
         write_json(BP, f'items/v11/{key}.json', item_json(f'{NS}:{key}', f'§d{name}', _icon(ctx, key, ic[key]), {
             'minecraft:max_stack_size': {'value': 1}, 'minecraft:glint': {'value': True}}, category='equipment'))
     write_json(BP, 'recipes/v11/explorer_map.json', shaped('explorer_map', ['PPP', 'PCP', 'PPP'], {'P': 'minecraft:paper', 'C': 'minecraft:compass'}))

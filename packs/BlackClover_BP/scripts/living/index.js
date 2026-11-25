@@ -40,6 +40,10 @@ import './ambush.js';
 import './wanderers.js';
 import { readJournal, useExplorerMap } from './exploration.js';
 import { useSpireCore } from './spirecore.js';
+// v1.2.0: Dragonbound & Kingdoms
+import { placeEgg, useWhistle as useWyvernWhistle } from './dragonbound.js';
+import { drinkDraught } from './kingdoms.js';
+import './capital.js';
 import { useScroll, useSmokeBomb } from './consumables.js';
 import { useCloverLeaf } from './squad.js';
 import { placeDummy } from './roster.js';
@@ -86,6 +90,14 @@ export function useLivingItem(p, item) {
     system.run(() => readJournal(p).catch(() => {}));
   } else if (id === 'bc:spire_core') {
     if (safe(() => useSpireCore(p))) consume(p, id);
+  } else if (id.startsWith('bc:wyvern_egg_')) {
+    safe(() => placeEgg(p, id));
+  } else if (id === 'bc:wyvern_whistle') {
+    safe(() => useWyvernWhistle(p));
+  } else if (id === 'bc:wyvern_saddle') {
+    safe(() => p.onScreenDisplay.setActionBar('§6Use the saddle on your fully grown wyvern.'));
+  } else if (id === 'bc:spirit_draught') {
+    if (safe(() => drinkDraught(p))) consume(p, id);
   } else if (id === 'bc:companion_tome') {
     safe(() => p.onScreenDisplay.setActionBar('§bTalk to a companion (level 10+) while holding the tome to retrain their specialisation.'));
   } else return false;

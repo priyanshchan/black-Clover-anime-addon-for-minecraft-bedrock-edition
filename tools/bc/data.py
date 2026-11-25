@@ -1568,3 +1568,93 @@ WYVERNS = {
     'frost_wyvern': ('Frost Wyvern', 'ice', '8ae6ff', 'freeze', ['frozen', 'taiga', 'mountains']),
     'storm_wyvern': ('Storm Wyvern', 'lightning', 'ffe03a', 'shock', ['hills', 'mountains', 'plains', 'forest', 'jungle']),
 }
+
+# ======================================================================================
+# v1.2.0: Dragonbound & Kingdoms - hatch, raise and ride a Mana Wyvern of your own; the neighbouring kingdoms hold the
+# Marches with soldiers, border forts and commanders (the Heart Kingdom is friendly); the Royal Capital rises near home.
+# ======================================================================================
+WYVERN_EGGS = {'ember_wyvern': 'wyvern_egg_ember', 'frost_wyvern': 'wyvern_egg_frost', 'storm_wyvern': 'wyvern_egg_storm'}
+EGG_HATCH_SECONDS = 240           # seconds of the right conditions
+EGG_NEEDS = {
+    'ember_wyvern': 'fire, a campfire, lava or magma within 4 blocks',
+    'frost_wyvern': 'snow or ice within 4 blocks',
+    'storm_wyvern': 'a lightning rod or copper within 4 blocks, or high ground (y 100 or above)',
+}
+EGG_FROM_HOARD = 0.4              # a roost's hoard holds an egg
+EGG_FROM_WYVERN = 0.15            # a slain wild wyvern leaves an egg
+# growth stages: (name, growth points needed, health, rideable)
+WYVERN_STAGES = [('hatchling', 0, 24, False), ('juvenile', 600, 80, False), ('adult', 1800, 200, True)]
+WYVERN_GROWTH_PER_SECOND = 1      # while its owner is within 64 blocks
+WYVERN_FOOD = {
+    'minecraft:beef': 40, 'minecraft:porkchop': 40, 'minecraft:mutton': 40, 'minecraft:chicken': 30, 'minecraft:rabbit': 30,
+    'minecraft:cod': 30, 'minecraft:salmon': 30, 'minecraft:cooked_beef': 60, 'minecraft:cooked_porkchop': 60, 'minecraft:cooked_mutton': 60,
+    'minecraft:cooked_chicken': 45, 'minecraft:cooked_cod': 45, 'minecraft:cooked_salmon': 45, 'bc:mana_crystal': 90,
+}
+WYVERN_NAMES = (['Skar', 'Vael', 'Ory', 'Thun', 'Ash', 'Kry', 'Zeph', 'Mor', 'Ign', 'Fros', 'Bryn', 'Cael', 'Rhaz', 'Tyr'],
+                ['vath', 'ira', 'gorn', 'axis', 'mere', 'dris', 'yx', 'wing', 'fang', 'is', 'ael', 'thor', 'ka', 'veil'])
+WYVERN_RIDE_SPEED = 0.95          # blocks per tick, flat out
+WYVERN_BREATH_COOLDOWN = 4        # seconds
+# the kingdoms beyond the Marches: id -> dict
+KINGDOMS = {
+    'diamond': dict(name='Diamond Kingdom', mc='§b', marches='the Diamond Marches', soldier='diamond_legionnaire', soldier_name='Diamond Legionnaire',
+                    commander='Diamond Commander', hostile=True, kits=['crystal', 'steel'], fort='diamond_fort', spoils='diamond_shard',
+                    desc='a war-hungry kingdom that forges its mages into weapons; its legions hold the western Marches'),
+    'spade': dict(name='Spade Kingdom', mc='§5', marches='the Spade Marches', soldier='spade_zealot', soldier_name='Spade Zealot',
+                  commander='Spade Inquisitor', hostile=True, kits=['dark', 'gravity'], fort='spade_citadel', spoils='spade_sigil',
+                  desc='a cold kingdom ruled by dark magic; its zealots guard the northern Marches'),
+    'heart': dict(name='Heart Kingdom', mc='§d', marches='the Heart Marches', soldier='heart_guardian', soldier_name='Heart Guardian',
+                  commander='', hostile=False, kits=['plant', 'spirit'], fort='heart_sanctum', spoils='heart_bloom',
+                  desc='a gentle kingdom of spirit magic; its guardians keep the eastern Marches and welcome friends'),
+}
+MARCH_KINGDOM = {'west': 'diamond', 'north': 'spade', 'east': 'heart'}
+LANDMARKS.update({
+    'diamond_fort': dict(name='Diamond Border Fort', weight=22, land='*', stars=3, master='commander', kingdom='diamond',
+                         desc='a crystal-crowned keep of the Diamond legions - Legionnaires on the walls and a Diamond Commander inside'),
+    'spade_citadel': dict(name='Spade Citadel', weight=22, land='*', stars=3, master='commander', kingdom='spade',
+                          desc='a black citadel of the Spade zealots, with a Spade Inquisitor at its heart'),
+    'heart_sanctum': dict(name='Heart Sanctum', weight=22, land='*', stars=3, master='', kingdom='heart',
+                          desc='a spirit grove of the Heart Kingdom - its guardians are friendly, and its priestess trades'),
+})
+# the Royal Capital: built once per world, this far from the world spawn
+CAPITAL_DISTANCE = (150, 230)
+CAPITAL_RADIUS = 26               # its walls
+CAPITAL_SAFE = 56                 # no ambushes, and monsters do not spawn, this close
+# spoils of war: what the Capital's quartermaster pays for them (doubloons each; a star every 10)
+SPOILS_PRICE = {'diamond_shard': 25, 'spade_sigil': 25}
+V12_ITEMS = {
+    'wyvern_egg_ember': ('§6Ember Wyvern Egg', 'Place it near fire, lava or magma and it hatches an Ember Wyvern of your own.'),
+    'wyvern_egg_frost': ('§bFrost Wyvern Egg', 'Place it in snow or beside ice and it hatches a Frost Wyvern of your own.'),
+    'wyvern_egg_storm': ('§eStorm Wyvern Egg', 'Place it by a lightning rod or copper, or high on a mountain, to hatch a Storm Wyvern.'),
+    'wyvern_whistle': ('§2Wyvern Whistle', 'Use: follow / stay / roam. Sneak-use: call it to you. While riding: breathe!'),
+    'wyvern_saddle': ('§6Wyvern Saddle', 'Use it on your grown wyvern, then ride it into the sky.'),
+    'diamond_shard': ('§bDiamond Shard', 'Crystal cut from a Diamond Legionnaire\'s armour. The Capital\'s quartermaster pays for them.'),
+    'spade_sigil': ('§5Spade Sigil', 'A black iron sigil carried by Spade zealots. The Capital\'s quartermaster pays for them.'),
+    'heart_bloom': ('§dHeart Bloom', 'A spirit-flower of the Heart Kingdom, given in friendship. Brew it into a Spirit Draught.'),
+    'spirit_draught': ('§dSpirit Draught', 'Regeneration and +50% mana regeneration for 3 minutes.'),
+}
+RELICS.update({
+    'relic_prism': ('Legion Prism', 'a cut crystal from a Diamond commander\'s crown', ['power', 'ward', 'guard', 'might']),
+    'relic_brand': ('Zealot\'s Brand', 'a black iron brand still warm from a Spade forge', ['power', 'leech', 'haste', 'thorns']),
+    'relic_blossom': ('Spirit Blossom', 'a flower that never wilts, from the Heart Kingdom', ['regen', 'vigor', 'mana', 'swift']),
+})
+WANDERERS.update({
+    'quartermaster': ('Quartermaster', 'runs the Royal Capital\'s war office: buys spoils of war, sells saddles and contracts', 7),
+    'priestess': ('Heart Priestess', 'keeps a Heart Sanctum: trades spirit relics and draughts, and thanks friends with Heart Blooms', 6),
+})
+WANDERER_GREETINGS.update({
+    'quartermaster': ['Spoils from the Marches? The Crown pays well for them.', 'Every shard you bring back is one less legion on our border.'],
+    'priestess': ['Be welcome, friend of the Clover. The spirits are calm today.', 'The grove remembers kindness. So do I.'],
+})
+FEATS += [
+    ('hatchling', 'Hatchling', 'Hatch a Wyvern Egg.', 'hatched', 1, 1, 60, 'the Egg-Warmer'),
+    ('wyvern_bond', 'Wyvern Bond', 'Raise a wyvern to full size.', 'adult_wyverns', 1, 2, 150, 'Wyvernkin'),
+    ('dragon_rider', 'Dragon Rider', 'Ride your wyvern into the sky.', 'wyvern_rides', 1, 2, 150, 'the Dragon Rider'),
+    ('border_warden', 'Border Warden', 'Defeat 25 Diamond or Spade soldiers.', 'kingdom_kills', 25, 2, 150, 'Border Warden'),
+    ('fort_breaker', 'Fort Breaker', 'Defeat a kingdom commander in their fort.', 'commanders', 1, 2, 200, 'the Fort Breaker'),
+    ('friend_of_hearts', 'Friend of Hearts', 'Trade with a Heart Priestess.', 'heart_trades', 1, 1, 60, 'Friend of Hearts'),
+    ('to_the_capital', 'To the Capital', 'Reach the Royal Capital.', 'capital', 1, 1, 50, 'Citizen of the Crown'),
+]
+MISSIONS += [
+    ('m_border', 'kill', 'bc_kingdom_foe', 6, 'Hold the border: defeat 6 kingdom soldiers', 2),
+]
+MERCHANT += [('bc:wyvern_saddle', 1, 220, 'Wyvern Saddle')]
